@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Text.Json;
-using Managed.Cui;
-using static Managed.Cui.Cui;
+using Managed.Forms;
+using static Managed.Forms.Cui;
 
 internal static unsafe class Program
 {

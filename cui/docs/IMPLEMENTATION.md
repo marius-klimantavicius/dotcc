@@ -327,3 +327,33 @@ packaging, recipe and postprocessor checks pass. The broader campaign framework
 suite has one unrelated existing Blink digest-literal failure; details and
 current metadata hashes are in [METADATA-VALIDATION.json](METADATA-VALIDATION.json).
 Prior runtime qualification remains recorded against its original inputs.
+
+
+## Translated namespace rename
+
+The queued rename changes the translated core to `Managed.Forms.Cui`, companion
+to `Managed.Forms.Gallery.Gallery` and authored host namespace to `Managed.Forms`.
+The safe namespace stays `Cui.Managed`; assembly/project names and product
+boundaries are unchanged. Recipes, overrides, qualification generators, aliases,
+reflection checks and authoritative wrapper templates use the new prefix. Only
+the three affected reviewed-output hashes change; the native retention evidence
+and storage/lifetime policy are preserved.
+
+The normal recipe re-emits all 58 core and two gallery units, imports the new
+JSON symbol sidecar and builds/publishes both forms. A second complete emission
+uses byte-verified retained staged source paths to keep internal unit identifiers
+stable in the committed diff; all objects are emitted with current overrides.
+The normal clean-staging run also passed, so retained inputs are not a build
+dependency. Generated C# is never patched. The longer namespace changes size
+split boundaries and initializer chunk hashes. Exact normalized source comparison
+checks every declaration, statement and literal across partial-file boundaries,
+and expands generated initializer chunks in constructor order. It establishes
+namespace-only executable equivalence for both forms of both products. The JSON
+payload equals the previous payload after prefix substitution, including an
+unchanged runtime fingerprint.
+
+Fresh qualification and current source/product hashes are recorded separately in
+[NAMESPACE-VALIDATION.json](NAMESPACE-VALIDATION.json). Earlier managed-library,
+gallery, emoji and metadata receipts retain their original historical bindings.
+Performance and the full sixteen-palette matrix are not rerun for this rename.
+Actual Windows execution remains unrun.

@@ -87,7 +87,7 @@ class RecipeContracts(unittest.TestCase):
             # A private profile exercises the option instead of hardcoding it.
             (work / "config").mkdir()
             (work / "config/profile.json").write_text(json.dumps({"deduplication": {"inline": True, "static": False}}))
-            self.assertNotIn("--deduplicate-static", codegen.link_flags(work, "Cui", "Managed.Cui"))
+            self.assertNotIn("--deduplicate-static", codegen.link_flags(work, "Cui", "Managed.Forms"))
 
     def test_processing_copies_authored_sources_and_publication_retargets_all_links(self):
         with tempfile.TemporaryDirectory() as temporary:

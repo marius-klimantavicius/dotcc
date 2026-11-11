@@ -9,7 +9,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.PlatformHost.IsWindows"
+        "method": "global::Managed.Forms.PlatformHost.IsWindows"
       }
     },
     {
@@ -28,7 +28,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.PlatformHost.ListDirectory"
+        "method": "global::Managed.Forms.PlatformHost.ListDirectory"
       }
     },
     {
@@ -44,7 +44,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.PlatformHost.FileDialog"
+        "method": "global::Managed.Forms.PlatformHost.FileDialog"
       }
     },
     {
@@ -57,7 +57,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.PlatformHost.OpenUrl"
+        "method": "global::Managed.Forms.PlatformHost.OpenUrl"
       }
     }
   ]

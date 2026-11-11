@@ -1,6 +1,6 @@
-using Raw = global::Managed.Cui.Cui;
-using static global::Managed.Cui.Cui;
-using CBool = global::Managed.Cui.Cui.CBool;
+using Raw = global::Managed.Forms.Cui;
+using static global::Managed.Forms.Cui;
+using CBool = global::Managed.Forms.Cui.CBool;
 namespace Cui.Managed;
 // Native singleton arguments are synchronous stack locals. Pointer fields retain
 // their frame/owned backing storage; see docs/MANAGED-STORAGE-AUDIT.md.

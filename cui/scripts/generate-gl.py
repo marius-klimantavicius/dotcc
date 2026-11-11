@@ -26,7 +26,7 @@ def generate():
     code = ["// Generated from config/opengl.json by scripts/generate-gl.py.",
             "// CUI calls managed thunks; only these thunks invoke native GL addresses.",
             "#nullable enable", "using System;", "using System.Runtime.InteropServices;",
-            "namespace Managed.Cui;", "internal static unsafe class OpenGlHost", "{"]
+            "namespace Managed.Forms;", "internal static unsafe class OpenGlHost", "{"]
     for function in functions:
         name = function["name"]
         ret = csharp(function["return"])

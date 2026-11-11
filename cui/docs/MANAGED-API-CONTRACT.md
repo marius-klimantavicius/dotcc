@@ -1,6 +1,6 @@
 # Managed CUI API contract
 
-Namespace `Cui.Managed`, project `src/ManagedCui/ManagedCui.csproj`. The wrapper references only the matching generated core; it never references the translated gallery. Select raw with `-p:CuiVariant=Raw`, or override `CuiProject` with an ordinary project path.
+Namespace `Cui.Managed`, project `src/ManagedCui/ManagedCui.csproj`. The wrapper references only the matching generated `Managed.Forms.Cui` core; it never references the translated gallery. Select raw with `-p:CuiVariant=Raw`, or override `CuiProject` with an ordinary project path.
 
 ## Frozen naming and data contract
 
@@ -728,7 +728,7 @@ idempotent after context destruction. Application presentation is performed once
 per constructed frame. Retained-array synchronization runs at audited native
 mutation points rather than after every cell/text call.
 
-The Linux library raw/processed × JIT/NativeAOT matrix now passes ordinary
+The pre-rename Linux library raw/processed × JIT/NativeAOT matrix passed ordinary
 project-reference builds, whole-wrapper AOT rooting, recursive public-surface
 audits, 75 safety assertions per variant and three equivalent-work benchmark
 trials per variant. All three workloads add zero steady-state managed bytes,
@@ -737,11 +737,12 @@ timing gates. See MANAGED-LIBRARY-VALIDATION.json and MANAGED-API-GUIDE.md.
 Full authored-gallery Linux qualification also passes; see
 MANAGED-GALLERY-VALIDATION.json. Actual Windows execution remains unrun.
 
-Current storage qualification includes returned-stack-frame overwrite, compacting
+Storage qualification includes returned-stack-frame overwrite, compacting
 GC and caller-array mutation before exact deferred rendering, plus a 256-box
 descriptor-only UI under a 4 KiB marshalling limit using zero arena bytes. The
-current receipt records stack-local source hashes and actual arena demand;
-pre-change source/timing evidence is historical. All 225 synchronous singleton
+pre-rename receipt records stack-local source hashes and actual arena demand.
+Its hashes bind baseline `d5a662499`; NAMESPACE-VALIDATION.json records fresh
+post-rename safety checks. Performance evidence remains historical. All 225 synchronous singleton
 sites have been replaced and source reproduction enforces the reviewed policy.
 
 Reviewed guards also reject short candlestick label arrays, table/grid text

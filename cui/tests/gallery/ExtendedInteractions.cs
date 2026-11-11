@@ -1,5 +1,5 @@
 using System.Text;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
 internal static unsafe partial class Program
 {

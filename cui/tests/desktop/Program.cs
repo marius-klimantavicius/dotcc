@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using Managed.Cui;
+using Managed.Forms;
 using G = Glfw.Glfw;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
 // Full translated app-loop qualification. Only the OS driver injects input;
 // no cui_input_* calls, synthetic widget state, or direct input callbacks.

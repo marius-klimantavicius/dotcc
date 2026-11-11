@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Cui.Managed;
 using Cui.ManagedGallery;
-using OriginalGallery = Managed.Cui.Gallery.Gallery;
-using static Managed.Cui.Cui;
+using OriginalGallery = Managed.Forms.Gallery.Gallery;
+using static Managed.Forms.Cui;
 
 internal static unsafe partial class Program
 {

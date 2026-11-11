@@ -3,9 +3,9 @@
   "policy": "Stack for synchronous singleton arguments; frame/owned storage for retained pointees and state. No blanket pointer heuristic. See MANAGED-STORAGE-AUDIT.md.",
   "reviewed_outputs": {
     "Types.cs": "e98039a8e7dade7d2cf824e344a0e401071445cf33182d40125454bd9db53b55",
-    "Ui.Api.cs": "e75c96482783c84fa25a4e1e416cb8bea297bf32ea1af5d886e6d498f54a6593",
-    "Ui.Marshalling.cs": "56e0be601740bf48ad023575f051761ee354434b64f9bcb2b2ec5386ab4d5e5f",
-    "Ui.ScopeDispatch.cs": "c6cba5ebf9dbb618dbe38a8ec6fee40c416410c1dab86ebf6e7c3a8d6922b9e8"
+    "Ui.Api.cs": "39e16d1ecabfc1c1371bafe632edc9cbc522f1cc85f2c76f8b68571670718866",
+    "Ui.Marshalling.cs": "fea6b93c2bf0de2b4a6775a0756305bf628dcfc1132a067ab1ca9a099081a992",
+    "Ui.ScopeDispatch.cs": "36899aed78866bc9b8596a9fe2fc86a668c62e7aaa353e9afd64f3134804880c"
   },
   "native_header_sha256": "1c6b9d51c14428f13d986072ba59699a1773107ba5567e6b20702ed7035503ee",
   "native_evidence": [

@@ -1,5 +1,5 @@
-using Raw = global::Managed.Cui.Cui;
-using static global::Managed.Cui.Cui;
+using Raw = global::Managed.Forms.Cui;
+using static global::Managed.Forms.Cui;
 
 namespace Cui.Managed;
 
@@ -20,7 +20,7 @@ public sealed class ApplicationOptions
 /// <summary>Owns the translated desktop application and its managed UI boundary.</summary>
 public sealed unsafe class Application : IDisposable
 {
-    private global::Managed.Cui.DesktopApplication? app;
+    private global::Managed.Forms.DesktopApplication? app;
     private readonly int owner = Environment.CurrentManagedThreadId;
     private bool pendingRender;
     public Ui Ui { get; }

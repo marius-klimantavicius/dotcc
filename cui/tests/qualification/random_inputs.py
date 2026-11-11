@@ -42,14 +42,14 @@ def overrides(path):
         ("cui_qualification_rand", "int", ["int", "int"], "Next"),
         ("cui_qualification_srand", "void", ["unsigned int"], "Seed")):
         rows.append(dict(name=name, signature=dict(returnType=result, parameterTypes=parameters),
-                         target=dict(kind="managedMethod", method="global::Managed.Cui.QualificationRandom." + target)))
+                         target=dict(kind="managedMethod", method="global::Managed.Forms.QualificationRandom." + target)))
     path.write_text(json.dumps(dict(version=1, functionOverrides=rows)))
 
 
 def configure(directory):
     (directory / "QualificationRandom.cs").write_text('''using System;
 using System.IO;
-namespace Managed.Cui;
+namespace Managed.Forms;
 internal static class QualificationRandom {
     private static uint seed=1;
     private static BinaryWriter? trace;

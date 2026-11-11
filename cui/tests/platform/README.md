@@ -18,6 +18,7 @@ compiles a native control using the actual staged browser and app sources. Its
 native sizes/offsets are compared against actual DotCC-emitted CUI types.
 The managed fixture compiles verbatim selected staged path, sorting, default
 places and app-creation functions, with controlled window/core/GL services.
+It emits `Managed.Forms.Cui` alongside the authored `Managed.Forms` host.
 The GLFW init/allocation-failure prefix is selected verbatim and aborts if
 execution reaches the part that would create a real window. Emoji discovery
 uses the actual staged function with a recorded file-loading service. No

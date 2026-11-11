@@ -1,5 +1,5 @@
-using Raw = global::Managed.Cui.Cui;
-using static global::Managed.Cui.Cui;
+using Raw = global::Managed.Forms.Cui;
+using static global::Managed.Forms.Cui;
 
 namespace Cui.Managed;
 

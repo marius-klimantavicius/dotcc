@@ -1,4 +1,4 @@
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
 internal static unsafe class GalleryClockFixture
 {
@@ -16,7 +16,7 @@ internal static unsafe class GalleryClockFixture
         string? expected = Environment.GetEnvironmentVariable("CUI_GALLERY_EXPECTED_EPOCH");
         if (expected is null) return;
         long epoch = long.Parse(expected, System.Globalization.CultureInfo.InvariantCulture);
-        long observed = Managed.Cui.Cui.Libc.time(null);
+        long observed = Managed.Forms.Cui.Libc.time(null);
         if (observed != epoch) throw new InvalidOperationException($"Wall-clock fixture did not reach translated CUI: expected {epoch}, observed {observed}");
         Console.WriteLine($"CLOCK_FIXTURE\t{observed}\t{TimeZoneInfo.Local.Id}");
     }

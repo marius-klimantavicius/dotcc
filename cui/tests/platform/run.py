@@ -127,7 +127,7 @@ def main():
     (work / 'overrides.json').write_text(json.dumps(overrides), encoding='utf-8')
     generated = work / 'generated'
     run(['dotnet', args.dotcc.resolve(), ROOT / 'tests/platform/fixture.c', '--emit=managedlib',
-         '--class-name', 'Cui', '--namespace', 'Managed.Cui', '--runtime=c', '--literal-pool',
+         '--class-name', 'Cui', '--namespace', 'Managed.Forms', '--runtime=c', '--literal-pool',
          '--overrides-file', work / 'overrides.json', '--override-report', work / 'override-report.jsonl',
          '-std=c99', '-DPLATFORM_ISOLATED', '-DGLFW_INCLUDE_NONE', *defines,
          '-I', work, '-I', ROOT / 'config/include', '-I', staged / 'include', '-I', staged / 'src', '-I', staged / 'src/platform',

@@ -1,0 +1,1338 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-11",
+  "status": "passed",
+  "scope": "Translated namespace rename only; current Linux execution evidence, no performance rerun",
+  "baselineCommit": "d5a66249930a22588a130540374da52cd7765485",
+  "windows": "unrun",
+  "namespaces": {
+    "core": "Managed.Forms.Cui",
+    "companion": "Managed.Forms.Gallery.Gallery",
+    "host": "Managed.Forms",
+    "safe": "Cui.Managed"
+  },
+  "unchanged": [
+    "Project and assembly names",
+    "Pointer-free safe API and all lifetime/storage guards",
+    "Native retention fingerprints, guarded emoji adaptations and upstream grid-selection behavior",
+    "Original gallery C sources and copied managed GLFW"
+  ],
+  "historicalReceipts": {
+    "MANAGED-LIBRARY-VALIDATION.json": {
+      "sha256": "fbdbe0832c6dbe4e30bbe4ced4e39b1f68f6dbe2427cf09874e6dd82c87fcc04",
+      "binding": "Historical pre-rename source/product hashes; not asserted to match current files"
+    },
+    "MANAGED-GALLERY-VALIDATION.json": {
+      "sha256": "d97f5dc15043d8f97d92e9700e19ab5cba7deb71019dab8a09a10204940b44ea",
+      "binding": "Historical pre-rename source/product hashes; not asserted to match current files"
+    },
+    "EMOJI-POPUP-VALIDATION.json": {
+      "sha256": "bca9fbc1e3677f2b6bcda9a6198cefa70d8bdfd6a1146df1cd8cd8c9dafe05c8",
+      "binding": "Historical pre-rename source/product hashes; not asserted to match current files"
+    },
+    "EMOJI-VALIDATION.json": {
+      "sha256": "ee166ce6832f8a63c2d4a0bff8025219b1e1877aea975d5f3ff8417462fee308",
+      "binding": "Historical pre-rename source/product hashes; not asserted to match current files"
+    },
+    "METADATA-VALIDATION.json": {
+      "sha256": "7dbee951da3c1f7684f8e577ab9999072c0bd65857548629bd22839715bb4e69",
+      "binding": "Historical pre-rename source/product hashes; not asserted to match current files"
+    }
+  },
+  "regeneration": [
+    {
+      "runId": "20261111-095648-232efaf1",
+      "status": "failed",
+      "receiptSha256": "64879c6eb92a45055b11c53005b2495d8562b3134024dc272f8dbef4c9d20f22",
+      "scope": "clean-staging source emission",
+      "resolvedFailure": "Initial raw build ran before the parallel host rename landed; corrected by completed host edits and both successful complete regenerations."
+    },
+    {
+      "runId": "20261111-100014-394ad14a",
+      "status": "passed",
+      "receiptSha256": "8e3417e0aaea822ee3cc69f1174181447945b4986050527ffb34d14354f7ace1",
+      "scope": "clean-staging source emission",
+      "coreUnits": 58,
+      "galleryUnits": 2,
+      "deduplicateInline": true,
+      "deduplicateStatic": true,
+      "managedReference": "Dotcc.ManagedSymbols.json",
+      "recipe": "scripts/campaign.py",
+      "allObjectsReemitted": true
+    },
+    {
+      "runId": "20261111-100330-7bfd895c",
+      "status": "passed",
+      "receiptSha256": "56d6f10482e1364d9c089b5e969d0ba6fa30739a07b24ce23ba2c53fed36625b",
+      "scope": "canonical emission at verified retained staged paths",
+      "coreUnits": 58,
+      "galleryUnits": 2,
+      "deduplicateInline": true,
+      "deduplicateStatic": true,
+      "managedReference": "Dotcc.ManagedSymbols.json",
+      "recipe": "scripts/campaign.py",
+      "allObjectsReemitted": true,
+      "verifiedRetainedStagedFiles": 520
+    }
+  ],
+  "equivalence": [
+    {
+      "product": "TranslatedCui",
+      "form": "raw",
+      "headersEqual": true,
+      "normalizedBodiesEqual": true,
+      "normalizedBodySha256": "3a507f24f9f78594d8a48d86140fd1c53a5c56f7880bb9f7b279ecbc5a3b18b7",
+      "initializerChunksBefore": 19,
+      "initializerChunksAfter": 19,
+      "explanation": "Exact line content ignoring outer indentation/empty lines and partial-class file boundaries; namespace replacement and expansion of all generated initializer chunks in constructor call order only. No statement, literal, attribute or declaration omitted."
+    },
+    {
+      "product": "TranslatedCui",
+      "form": "processed",
+      "headersEqual": true,
+      "normalizedBodiesEqual": true,
+      "normalizedBodySha256": "5832b70f79618c922388bbc3fc470b4c631c979bfba5bfac4a035032a97eba64",
+      "initializerChunksBefore": 19,
+      "initializerChunksAfter": 19,
+      "explanation": "Exact line content ignoring outer indentation/empty lines and partial-class file boundaries; namespace replacement and expansion of all generated initializer chunks in constructor call order only. No statement, literal, attribute or declaration omitted."
+    },
+    {
+      "product": "TranslatedCuiGallery",
+      "form": "raw",
+      "headersEqual": true,
+      "normalizedBodiesEqual": true,
+      "normalizedBodySha256": "dea314c81821cf72f94ea9363d07e179c28da703612aaf832648572c1beae4d8",
+      "initializerChunksBefore": 10,
+      "initializerChunksAfter": 10,
+      "explanation": "Exact line content ignoring outer indentation/empty lines and partial-class file boundaries; namespace replacement and expansion of all generated initializer chunks in constructor call order only. No statement, literal, attribute or declaration omitted."
+    },
+    {
+      "product": "TranslatedCuiGallery",
+      "form": "processed",
+      "headersEqual": true,
+      "normalizedBodiesEqual": true,
+      "normalizedBodySha256": "82ac282e30d78be9f92a46618888bf342a591870571632a3b640b48d4f4efedb",
+      "initializerChunksBefore": 10,
+      "initializerChunksAfter": 10,
+      "explanation": "Exact line content ignoring outer indentation/empty lines and partial-class file boundaries; namespace replacement and expansion of all generated initializer chunks in constructor call order only. No statement, literal, attribute or declaration omitted."
+    }
+  ],
+  "authoredNamespaceOnlyFiles": [
+    "cui/config/gallery.json",
+    "cui/config/glfw-overrides.json",
+    "cui/config/host-overrides.json",
+    "cui/samples/ManagedConsumer/LegacySmoke.cs",
+    "cui/samples/ManagedConsumer/Program.cs",
+    "cui/scripts/campaign.py",
+    "cui/scripts/generate-gl.py",
+    "cui/scripts/qualify.py",
+    "cui/src/Host/DesktopApplication.cs",
+    "cui/src/Host/GlfwHost.Callbacks.cs",
+    "cui/src/Host/GlfwHost.cs",
+    "cui/src/Host/OpenGlHost.cs",
+    "cui/src/Host/PlatformHost.cs",
+    "cui/src/ManagedCui/Callbacks.cs",
+    "cui/src/ManagedCui/Lifetime.cs",
+    "cui/src/ManagedCui/Resources.cs",
+    "cui/src/ManagedCui/Surfaces.cs",
+    "cui/src/ManagedCui/Ui.Api.cs",
+    "cui/src/ManagedCui/Ui.Marshalling.cs",
+    "cui/src/ManagedCui/Ui.Overloads.cs",
+    "cui/src/ManagedCui/Ui.ScopeDispatch.cs",
+    "cui/src/ManagedCui/Ui.cs",
+    "cui/src/ManagedCui/Utf8.cs",
+    "cui/tests/desktop-services/Program.cs",
+    "cui/tests/desktop/Program.cs",
+    "cui/tests/gallery/ClockFixture.cs",
+    "cui/tests/gallery/ExtendedInteractions.cs",
+    "cui/tests/gallery/ExtendedObservations.cs",
+    "cui/tests/gallery/Observation.cs",
+    "cui/tests/gallery/Program.cs",
+    "cui/tests/gallery/ResponsiveInteractions.cs",
+    "cui/tests/host-glfw/Program.cs",
+    "cui/tests/host-glfw/build-probe.py",
+    "cui/tests/managed-gallery/GalleryBenchmark.cs",
+    "cui/tests/managed-gallery/Program.cs",
+    "cui/tests/managed-gallery/SessionAdapter.cs",
+    "cui/tests/managed/AllocationTracking.cs",
+    "cui/tests/managed/Benchmark.cs",
+    "cui/tests/managed/DelayedTemporaries.cs",
+    "cui/tests/managed/Program.cs",
+    "cui/tests/managed/Safety.cs",
+    "cui/tests/platform/Program.cs",
+    "cui/tests/platform/run.py",
+    "cui/tests/qualification/random_inputs.py",
+    "cui/tests/recipe/test_recipe.py"
+  ],
+  "metadata": [
+    {
+      "product": "TranslatedCui",
+      "namespaceOnlyPayload": true,
+      "owner": "Managed.Forms.Cui",
+      "types": 874,
+      "functions": 4711,
+      "runtimeHashUnchanged": true,
+      "runtimeHash": "B990BF43277165DB383FBC30C00E927D6134B5B3C6FAEFE7A7493A3B2AEF0DDC",
+      "sha256": "04a1adb0e083ba56cbed85ce52d91fee63d0afe74b384f196cab320929c81f6f"
+    },
+    {
+      "product": "TranslatedCui.Raw",
+      "namespaceOnlyPayload": true,
+      "owner": "Managed.Forms.Cui",
+      "types": 874,
+      "functions": 4711,
+      "runtimeHashUnchanged": true,
+      "runtimeHash": "B990BF43277165DB383FBC30C00E927D6134B5B3C6FAEFE7A7493A3B2AEF0DDC",
+      "sha256": "04a1adb0e083ba56cbed85ce52d91fee63d0afe74b384f196cab320929c81f6f"
+    }
+  ],
+  "validation": {
+    "variants": [
+      {
+        "form": "raw",
+        "mode": "jit",
+        "status": "passed",
+        "libraryBinarySha256": "313d942a69f0fc84825a01625ea5956d8539e82c88d84144f90dbafe580f3034",
+        "translatedBinarySha256": "4c242195afe26fc836da0f915d61f542eabf201cd5bc5cfd9c340af91f3949d1",
+        "wrapperBinarySha256": "31d9d564759937960a3b9a4072ae8064e5c9290884e2eeaaf25cec8c9c5eef15",
+        "safetyAssertions": 75,
+        "publicSurfaceAssertions": 12164,
+        "publicTypes": 293,
+        "unsafePublicSignatures": 0,
+        "capturePalette": {
+          "theme": 0,
+          "accent": 0
+        },
+        "pages": 27,
+        "comparisons": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            0
+          ],
+          [
+            11,
+            0,
+            0
+          ],
+          [
+            12,
+            0,
+            0
+          ],
+          [
+            13,
+            0,
+            0
+          ],
+          [
+            14,
+            0,
+            0
+          ],
+          [
+            15,
+            0,
+            0
+          ],
+          [
+            16,
+            0,
+            0
+          ],
+          [
+            17,
+            0,
+            0
+          ],
+          [
+            18,
+            0,
+            0
+          ],
+          [
+            19,
+            0,
+            0
+          ],
+          [
+            20,
+            0,
+            0
+          ],
+          [
+            21,
+            0,
+            0
+          ],
+          [
+            22,
+            0,
+            0
+          ],
+          [
+            23,
+            0,
+            0
+          ],
+          [
+            24,
+            0,
+            0
+          ],
+          [
+            25,
+            0,
+            0
+          ],
+          [
+            26,
+            0,
+            0
+          ]
+        ],
+        "comparison": "Each case: [page, translated maximum channel error, native maximum channel error]. Full-window RGBA; ordered main text and all node layouts exact; native layout floats decoded as IEEE float32 bits. No masks.",
+        "input": {
+          "wrapperAssertions": 4042,
+          "translatedAssertions": 4042,
+          "actionsEach": 95,
+          "emojiEditCheckpoints": 17,
+          "emojiCropsExact": true,
+          "extendedState": "EXTENDED_STATE\tgridSelected=1\tselectedPosition=1\tsortColumn=0\trowName=Aiko Asante\tbio=4D616E61676564206D756C74696C696E6520656469746F720A7365636F6E64206C696E65",
+          "responsiveState": "NARROW_STATE\tpage=1\tdrawer=0\tviewport=1240,820",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        }
+      },
+      {
+        "form": "raw",
+        "mode": "aot",
+        "status": "passed",
+        "libraryBinarySha256": "d18630ea095d9c7d35fc0753cb7b6211ad339d89c637c286023fd19d426a05bb",
+        "translatedBinarySha256": "515e0b76eb046627bd943f532b672e9b5fec8c402ca0e789ab5239ed832a0598",
+        "wrapperBinarySha256": "14372aa801b24eb94948e1b7c1626e91e4120aab35eccb44fd872c7eea10611b",
+        "safetyAssertions": 75,
+        "publicSurfaceAssertions": 12164,
+        "publicTypes": 293,
+        "unsafePublicSignatures": 0,
+        "capturePalette": {
+          "theme": 0,
+          "accent": 0
+        },
+        "pages": 27,
+        "comparisons": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            0
+          ],
+          [
+            11,
+            0,
+            0
+          ],
+          [
+            12,
+            0,
+            0
+          ],
+          [
+            13,
+            0,
+            0
+          ],
+          [
+            14,
+            0,
+            0
+          ],
+          [
+            15,
+            0,
+            0
+          ],
+          [
+            16,
+            0,
+            0
+          ],
+          [
+            17,
+            0,
+            0
+          ],
+          [
+            18,
+            0,
+            0
+          ],
+          [
+            19,
+            0,
+            0
+          ],
+          [
+            20,
+            0,
+            0
+          ],
+          [
+            21,
+            0,
+            0
+          ],
+          [
+            22,
+            0,
+            0
+          ],
+          [
+            23,
+            0,
+            0
+          ],
+          [
+            24,
+            0,
+            0
+          ],
+          [
+            25,
+            0,
+            0
+          ],
+          [
+            26,
+            0,
+            0
+          ]
+        ],
+        "comparison": "Each case: [page, translated maximum channel error, native maximum channel error]. Full-window RGBA; ordered main text and all node layouts exact; native layout floats decoded as IEEE float32 bits. No masks.",
+        "input": {
+          "wrapperAssertions": 4042,
+          "translatedAssertions": 4042,
+          "actionsEach": 95,
+          "emojiEditCheckpoints": 17,
+          "emojiCropsExact": true,
+          "extendedState": "EXTENDED_STATE\tgridSelected=1\tselectedPosition=1\tsortColumn=0\trowName=Aiko Asante\tbio=4D616E61676564206D756C74696C696E6520656469746F720A7365636F6E64206C696E65",
+          "responsiveState": "NARROW_STATE\tpage=1\tdrawer=0\tviewport=1240,820",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        }
+      },
+      {
+        "form": "processed",
+        "mode": "jit",
+        "status": "passed",
+        "libraryBinarySha256": "7bc63665a24970b4534c0bc49ab3aca64bb5ae07ba6dfe5ab6f04073b734d64c",
+        "translatedBinarySha256": "a663ec4c27fb7d8212caeb93b0966d4d43518914c93118a8dfb466cc4432dc3a",
+        "wrapperBinarySha256": "6041701add99c12483e17deb3f73cbe45cc860f542de43e7c765f0a86c769d9a",
+        "safetyAssertions": 75,
+        "publicSurfaceAssertions": 12164,
+        "publicTypes": 293,
+        "unsafePublicSignatures": 0,
+        "capturePalette": {
+          "theme": 0,
+          "accent": 0
+        },
+        "pages": 27,
+        "comparisons": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            0
+          ],
+          [
+            11,
+            0,
+            0
+          ],
+          [
+            12,
+            0,
+            0
+          ],
+          [
+            13,
+            0,
+            0
+          ],
+          [
+            14,
+            0,
+            0
+          ],
+          [
+            15,
+            0,
+            0
+          ],
+          [
+            16,
+            0,
+            0
+          ],
+          [
+            17,
+            0,
+            0
+          ],
+          [
+            18,
+            0,
+            0
+          ],
+          [
+            19,
+            0,
+            0
+          ],
+          [
+            20,
+            0,
+            0
+          ],
+          [
+            21,
+            0,
+            0
+          ],
+          [
+            22,
+            0,
+            0
+          ],
+          [
+            23,
+            0,
+            0
+          ],
+          [
+            24,
+            0,
+            0
+          ],
+          [
+            25,
+            0,
+            0
+          ],
+          [
+            26,
+            0,
+            0
+          ]
+        ],
+        "comparison": "Each case: [page, translated maximum channel error, native maximum channel error]. Full-window RGBA; ordered main text and all node layouts exact; native layout floats decoded as IEEE float32 bits. No masks.",
+        "input": {
+          "wrapperAssertions": 4042,
+          "translatedAssertions": 4042,
+          "actionsEach": 95,
+          "emojiEditCheckpoints": 17,
+          "emojiCropsExact": true,
+          "extendedState": "EXTENDED_STATE\tgridSelected=1\tselectedPosition=1\tsortColumn=0\trowName=Aiko Asante\tbio=4D616E61676564206D756C74696C696E6520656469746F720A7365636F6E64206C696E65",
+          "responsiveState": "NARROW_STATE\tpage=1\tdrawer=0\tviewport=1240,820",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        }
+      },
+      {
+        "form": "processed",
+        "mode": "aot",
+        "status": "passed",
+        "libraryBinarySha256": "b06cea5ceb668b09bae901e0d2cea66132367841299be95032f5cafdbe5785fd",
+        "translatedBinarySha256": "53840010c74caa476e39ebe8514d68edbbae364d0fc37adfaa3c400485826754",
+        "wrapperBinarySha256": "e89a2da617e3c767f5df8858848a0d0e9fe235bdfec31212d9cc971a0147f167",
+        "safetyAssertions": 75,
+        "publicSurfaceAssertions": 12164,
+        "publicTypes": 293,
+        "unsafePublicSignatures": 0,
+        "capturePalette": {
+          "theme": 0,
+          "accent": 0
+        },
+        "pages": 27,
+        "comparisons": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0
+          ],
+          [
+            6,
+            0,
+            0
+          ],
+          [
+            7,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            0
+          ],
+          [
+            11,
+            0,
+            0
+          ],
+          [
+            12,
+            0,
+            0
+          ],
+          [
+            13,
+            0,
+            0
+          ],
+          [
+            14,
+            0,
+            0
+          ],
+          [
+            15,
+            0,
+            0
+          ],
+          [
+            16,
+            0,
+            0
+          ],
+          [
+            17,
+            0,
+            0
+          ],
+          [
+            18,
+            0,
+            0
+          ],
+          [
+            19,
+            0,
+            0
+          ],
+          [
+            20,
+            0,
+            0
+          ],
+          [
+            21,
+            0,
+            0
+          ],
+          [
+            22,
+            0,
+            0
+          ],
+          [
+            23,
+            0,
+            0
+          ],
+          [
+            24,
+            0,
+            0
+          ],
+          [
+            25,
+            0,
+            0
+          ],
+          [
+            26,
+            0,
+            0
+          ]
+        ],
+        "comparison": "Each case: [page, translated maximum channel error, native maximum channel error]. Full-window RGBA; ordered main text and all node layouts exact; native layout floats decoded as IEEE float32 bits. No masks.",
+        "input": {
+          "wrapperAssertions": 4042,
+          "translatedAssertions": 4042,
+          "actionsEach": 95,
+          "emojiEditCheckpoints": 17,
+          "emojiCropsExact": true,
+          "extendedState": "EXTENDED_STATE\tgridSelected=1\tselectedPosition=1\tsortColumn=0\trowName=Aiko Asante\tbio=4D616E61676564206D756C74696C696E6520656469746F720A7365636F6E64206C696E65",
+          "responsiveState": "NARROW_STATE\tpage=1\tdrawer=0\tviewport=1240,820",
+          "cleanup": "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"
+        }
+      }
+    ],
+    "standalone": {
+      "status": "passed",
+      "windows": "unrun",
+      "variants": [
+        {
+          "form": "raw",
+          "mode": "jit",
+          "status": "passed",
+          "binarySha256": "be939fdc6d212113fb8a342f8d21488deace52e2f4f1a7833a53a0ba211ae48e",
+          "dependencies": [
+            "ManagedGallery/1.0.0",
+            "Glfw/1.0.0",
+            "ManagedCui/1.0.0",
+            "TranslatedCui/1.0.0"
+          ],
+          "pages": 27,
+          "frames": 108,
+          "unsafeCallerBuild": false,
+          "captureBytes": 4067200,
+          "lifecycle": "dispose twice, disposed reuse rejected, reopen succeeds",
+          "closure": "Copied outputs executed from empty cwd; source/original-output file access rejected by strace",
+          "log": "${NAMESPACE_WORK}/product/raw-jit/smoke.log"
+        },
+        {
+          "form": "raw",
+          "mode": "aot",
+          "status": "passed",
+          "binarySha256": "ed635c35b575e781a03b8423b743c963674384c33e70e5c4a8b1ddfdcc82352b",
+          "dependencies": [],
+          "pages": 27,
+          "frames": 108,
+          "unsafeCallerBuild": false,
+          "captureBytes": 4067200,
+          "lifecycle": "dispose twice, disposed reuse rejected, reopen succeeds",
+          "closure": "Copied outputs executed from empty cwd; source/original-output file access rejected by strace",
+          "log": "${NAMESPACE_WORK}/product/raw-aot/smoke.log"
+        },
+        {
+          "form": "processed",
+          "mode": "jit",
+          "status": "passed",
+          "binarySha256": "13c0699d51ba1b861270ef04d45d3d4a7bbc8e9d0d34a86b703c88279845f9fd",
+          "dependencies": [
+            "ManagedGallery/1.0.0",
+            "Glfw/1.0.0",
+            "ManagedCui/1.0.0",
+            "TranslatedCui/1.0.0"
+          ],
+          "pages": 27,
+          "frames": 108,
+          "unsafeCallerBuild": false,
+          "captureBytes": 4067200,
+          "lifecycle": "dispose twice, disposed reuse rejected, reopen succeeds",
+          "closure": "Copied outputs executed from empty cwd; source/original-output file access rejected by strace",
+          "log": "${NAMESPACE_WORK}/product/processed-jit/smoke.log"
+        },
+        {
+          "form": "processed",
+          "mode": "aot",
+          "status": "passed",
+          "binarySha256": "e91fb0de035097b0ff1d7c7cdbd2e9dabf84740f9ca3cfd75e5bed63b2c5e5fa",
+          "dependencies": [],
+          "pages": 27,
+          "frames": 108,
+          "unsafeCallerBuild": false,
+          "captureBytes": 4067200,
+          "lifecycle": "dispose twice, disposed reuse rejected, reopen succeeds",
+          "closure": "Copied outputs executed from empty cwd; source/original-output file access rejected by strace",
+          "log": "${NAMESPACE_WORK}/product/processed-aot/smoke.log"
+        }
+      ],
+      "display": {
+        "kind": "owned Xvfb",
+        "cleanup": "terminated and reaped",
+        "pid": 1883021,
+        "display": ":2",
+        "exitCode": 0
+      }
+    },
+    "originalGallerySmoke": {
+      "status": "passed",
+      "variants": [
+        {
+          "variant": "consumer-raw-jit-run",
+          "status": "passed",
+          "logSha256": "366899a5aa4072eac3e405040007b480e1bc5c15e7c5ee363c8b7e5f3027bb42"
+        },
+        {
+          "variant": "consumer-raw-aot-run",
+          "status": "passed",
+          "logSha256": "d2594ed509b6b56bf7a5fe506a9f810d20281eb4af592d06e8b911cab89b8a16"
+        },
+        {
+          "variant": "consumer-processed-jit-run",
+          "status": "passed",
+          "logSha256": "050a3592db947f6c572c7b8591b9caecd3d53dccee1fb6bc345766f30a36e8bc"
+        },
+        {
+          "variant": "consumer-processed-aot-run",
+          "status": "passed",
+          "logSha256": "22d4633350df308b4ac15603201882995ccfb706feac776883e2270c9ea8ddd2"
+        }
+      ],
+      "display": {
+        "kind": "owned Xvfb",
+        "cleanup": "terminated and reaped",
+        "pid": 1895236,
+        "display": ":2",
+        "exitCode": 0
+      }
+    },
+    "dependencyAudit": {
+      "status": "passed",
+      "runId": "20261111-100723-4e0ed561",
+      "forms": [
+        "raw",
+        "processed"
+      ],
+      "modes": [],
+      "receiptSha256": "dc3a0aa450f28534a22846661ab1a8843496b465701a0e536548982105de6d31",
+      "findings": [
+        {
+          "form": "raw",
+          "gallery_core": "matching form",
+          "native_cui_glfw": false,
+          "references": "campaign-local and evaluated",
+          "sample": "ordinary core/gallery project references"
+        },
+        {
+          "form": "processed",
+          "gallery_core": "matching form",
+          "native_cui_glfw": false,
+          "references": "campaign-local and evaluated",
+          "sample": "ordinary core/gallery project references"
+        }
+      ]
+    },
+    "consumer": {
+      "status": "passed",
+      "runId": "20261111-100814-73238e23",
+      "forms": [
+        "raw",
+        "processed"
+      ],
+      "modes": [
+        "jit",
+        "aot"
+      ],
+      "receiptSha256": "25dcd5b536c25e41cfebc5c68b996fcf85a854429c7246be98e273a058e71bf3"
+    },
+    "nativeReference": {
+      "reportSha256": "4f0b789436c6f16ecd7a7ef83bcc8df5bdc62498a28fd864795bb2d1c6f8b953",
+      "binarySha256": "76edf88ca57a7cc962e62cf3d68eb49a3ac45a922010b9d141b711963873527d",
+      "status": "reused passing hash-verified native observer and captures; original C inputs/adaptations unchanged"
+    },
+    "solution": {
+      "processed": "passed",
+      "raw": "passed",
+      "errors": 0,
+      "existingTranslatedCS1718WarningsPerCore": 5,
+      "defaultSolutionWarnings": 5,
+      "rawSelectedSolutionWarnings": 10,
+      "rawSelectionNote": "Solution explicitly includes processed products and additionally builds raw transitive products; five existing warnings from each core."
+    },
+    "templates": {
+      "status": "passed",
+      "outputs": 4,
+      "zeroArenaSingletons": true,
+      "nativeDefinitions": 214,
+      "nativeHeader": "matched",
+      "nativeRetentionFingerprintsUnchanged": true
+    },
+    "platform": {
+      "status": "passed",
+      "managedBehaviorAndAbiAssertions": 130,
+      "guardedAnchorRejections": 42,
+      "windowsAbiShimOnly": true
+    },
+    "nativeGlSignatures": 46,
+    "recipeTests": 2
+  },
+  "receipts": {
+    "affected-matrix.log": {
+      "path": "${NAMESPACE_WORK}/affected-matrix.log",
+      "sha256": "74726fc4e184eccfb53c9b3b2ee381e1a4fc447a39c652689968b0decd9a07a9"
+    },
+    "audit.log": {
+      "path": "${NAMESPACE_WORK}/audit.log",
+      "sha256": "ec0bc844f5a7919a65473cc089c8d29e211ca6d1dd86b72488f51506495282bf"
+    },
+    "consumer.log": {
+      "path": "${NAMESPACE_WORK}/consumer.log",
+      "sha256": "202ae6d7751861f3c91689dcf0f71a45d9c84144a9f94c5393bfea41c2edbc3f"
+    },
+    "equivalence.log": {
+      "path": "${NAMESPACE_WORK}/equivalence.log",
+      "sha256": "ce776edc44b050ff826f3b90ceca2cef98f02ea61142421854ac9f9edaac2330"
+    },
+    "gl-abi.log": {
+      "path": "${NAMESPACE_WORK}/gl-abi.log",
+      "sha256": "a3ce915fe644bb4f5f15f96eca652b0089c70ea50d2696163f1cab842d33180d"
+    },
+    "gl-generated.log": {
+      "path": "${NAMESPACE_WORK}/gl-generated.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original-gallery-smoke.log": {
+      "path": "${NAMESPACE_WORK}/original-gallery-smoke.log",
+      "sha256": "2730d185a5561af1e1104c5d7e22aefeb7a0da76d21666576d155ef9bb86439f"
+    },
+    "platform.log": {
+      "path": "${NAMESPACE_WORK}/platform.log",
+      "sha256": "d36f4a01e6898ffb076c29446280b8c7558cd19b31875a992cc5da36cdab4002"
+    },
+    "product.log": {
+      "path": "${NAMESPACE_WORK}/product.log",
+      "sha256": "cd7ce3855c82526a5e40476a5701c910c3e218a4f1212e88300f9470c7f36790"
+    },
+    "recipe.log": {
+      "path": "${NAMESPACE_WORK}/recipe.log",
+      "sha256": "47d9a74bd5d0103a9c633e896786c61fcd273778f5ef71a3796e4ba527074687"
+    },
+    "solution-raw.log": {
+      "path": "${NAMESPACE_WORK}/solution-raw.log",
+      "sha256": "c6154c07dba20d408c442916725c88a728495125b5be3c93a4626a69693fef43"
+    },
+    "solution.log": {
+      "path": "${NAMESPACE_WORK}/solution.log",
+      "sha256": "b18ac5916d33d5639dcf314139e29bb5ef912e6629daf38c34be704f0130bb4b"
+    },
+    "stable-regenerate.log": {
+      "path": "${NAMESPACE_WORK}/stable-regenerate.log",
+      "sha256": "2a3d00e3bd45cb08c47508b5e0d28f39c4aec0cc92c59a8953fc1ac6ba2b8ea0"
+    },
+    "templates.log": {
+      "path": "${NAMESPACE_WORK}/templates.log",
+      "sha256": "cfb46ad3e92512dc6ab82836d0076775f1800376bbdfa14d2f74acfb4e4423fd"
+    },
+    "translate-complete.log": {
+      "path": "${NAMESPACE_WORK}/translate-complete.log",
+      "sha256": "16f36d28f6e7771ab6d24ff7d6bea3040050c3856f6a6b4412a3e5e25de737f3"
+    },
+    "translate.log": {
+      "path": "${NAMESPACE_WORK}/translate.log",
+      "sha256": "fd695da8758bb8eeecef3b995567a4e937b4405748c74560779312027b1d1837"
+    },
+    "affected-matrix/evidence.json": {
+      "path": "${NAMESPACE_WORK}/affected-matrix/evidence.json",
+      "sha256": "4aa9c0520ade97d37aa12ec85bf9246d5265f72d031ad21771422bd9e3dfd9ee"
+    },
+    "product/evidence.json": {
+      "path": "${NAMESPACE_WORK}/product/evidence.json",
+      "sha256": "ee33f93521805aee673afa5355c20dfe33c2f0dea7e25344c32ce37e0ba9affd"
+    },
+    "original-gallery-smoke/evidence.json": {
+      "path": "${NAMESPACE_WORK}/original-gallery-smoke/evidence.json",
+      "sha256": "a465cb486162fb5805f9862a11fe3c52af64a72bf8858aad2dc3ab1400addb6a"
+    },
+    "equivalence.py": {
+      "path": "${NAMESPACE_WORK}/equivalence.py",
+      "sha256": "e8b482136a5c1726e4fcae701aa6dac00114621929022a3ddf41b52108835250"
+    },
+    "validate-matrix.py": {
+      "path": "${NAMESPACE_WORK}/validate-matrix.py",
+      "sha256": "f9bffaa235858eb65756c06c03c9ea66cd2e11516b07dd67f5b34a37ca399df2"
+    },
+    "stable-regenerate.py": {
+      "path": "${NAMESPACE_WORK}/stable-regenerate.py",
+      "sha256": "b8201f5c371958ea0e006ca8b048c0aa799e88e40e10a7a0c6fdd1f905bade08"
+    }
+  },
+  "sourceHashes": {
+    "cui/config/gallery.json": "1891cdaaa847044487348d2797c5d2f50f83f5bf8232354a1c91c641c2fa50e7",
+    "cui/config/glfw-overrides.json": "f23d7c7201adbadcdc604bda30b9f35173630e216c7bb848d5916b0ff9e20f8a",
+    "cui/config/glfw-source.json": "a9052f60d5a8cbd06721cd9f44c699418122e6e122067c6b79fe5eeaedfcc302",
+    "cui/config/host-overrides.json": "e151e2d6b1c14f5c8a0dd25627ef3218fecd1f76477485aff0f5aa2f1d5743a2",
+    "cui/config/opengl.json": "b323db9f56b9a6a0f6e64b4155868f06226eb671cea0ac0dddf499cdaacf4e53",
+    "cui/config/profile.json": "289fd3bf5732735390c68ec2b4c969b56b1020533f4fb94db09fbaa4b654943e",
+    "cui/config/source.json": "6dd322895c812dcfb654f29c5d5fb04dcc3f84a578392441c48d3c7e93c08392",
+    "cui/samples/ManagedConsumer/LegacySmoke.cs": "0f6af827e11928d8de8c61a8f77d9aa8b6fc240dbe0d412bf85240c6a74d17ee",
+    "cui/samples/ManagedConsumer/ManagedConsumer.csproj": "995de295fe0e259bb45540d094417445f9d27a4c0a283d241a3c36d04a1ed7e1",
+    "cui/samples/ManagedConsumer/Program.cs": "c8aee235c0e85be14003de4531ab9cab68fd571470e2f56ad7776140f4a9e74a",
+    "cui/samples/ManagedGallery/GalleryDemo.cs": "e7f88a5f5ac9f5eb7f35416a2fc207ac587097102b8efbf40984360d9bbbeb4e",
+    "cui/samples/ManagedGallery/GalleryExtendedA.cs": "e7746a9e43aba95f50b6b48aceb530facbb6a5fd3f6d133d54e6afa3975f50fd",
+    "cui/samples/ManagedGallery/GalleryExtendedB.cs": "673869ccd76c744f0e2e87663eb933115134b51dc4fd85616c8791279935be51",
+    "cui/samples/ManagedGallery/GalleryObservations.cs": "a94a5ea93fbb38132bc082732a17a72d9074a529d099d70b1071ced5e7f733d6",
+    "cui/samples/ManagedGallery/GalleryPrimary.cs": "fd7fcbfec3fe363a6025a80d2934bb4dd9196376d7b228304afbda9ca8d2e397",
+    "cui/samples/ManagedGallery/ManagedGallery.csproj": "a999b4c828c113598d9e036ad917fd4c745418de50e884008a0cf94097464a9e",
+    "cui/samples/ManagedGallery/Program.cs": "658c7148fe6f827f7054830aaa481e8c4403350f1714c69d2ac7dc5eec15cfb3",
+    "cui/scripts/build.sh": "273f02a85a235c08533f06457bd2ad1b81d474173895148cec1728c1cecfb109",
+    "cui/scripts/campaign.py": "e1b5d8741ad267967d0d0302f36ec9e0510605674c6925cf5d48133966496e51",
+    "cui/scripts/codegen.py": "acdd5cc801af07f8e415fcbdb4e9b1e6e32725041153bee31bff7234d6076aa2",
+    "cui/scripts/common.sh": "a3cc86c4e04511c22acb323a953f354eca773251cf5f3a5321a739f04f87d288",
+    "cui/scripts/fetch.sh": "29a53cd86ff8501c80928a33d368846b099adeb3bc04c7288385cabf0eef9c50",
+    "cui/scripts/gallery.py": "a9e45200f7babbafc52c5e554576cf5d9e0d568ec3f99e38ddf238ced799d344",
+    "cui/scripts/generate-gl.py": "12417830a100af1f7937849d3a933177e54b31f9b88e73f4667b49e3f0b19f10",
+    "cui/scripts/managed-api/generate.py": "b87dbb25f70f25e9f27e371aa9392a2a353b9ea944de1dd975384c96268b5a7f",
+    "cui/scripts/managed-api/reviewed.json": "5ec8b20df51ee7a0714b75b79f4bcca11671b3f7e4be9782eda57211914c339a",
+    "cui/scripts/managed-api/templates/Types.cs.in": "e98039a8e7dade7d2cf824e344a0e401071445cf33182d40125454bd9db53b55",
+    "cui/scripts/managed-api/templates/Ui.Api.cs.in": "39e16d1ecabfc1c1371bafe632edc9cbc522f1cc85f2c76f8b68571670718866",
+    "cui/scripts/managed-api/templates/Ui.Marshalling.cs.in": "fea6b93c2bf0de2b4a6775a0756305bf628dcfc1132a067ab1ca9a099081a992",
+    "cui/scripts/managed-api/templates/Ui.ScopeDispatch.cs.in": "36899aed78866bc9b8596a9fe2fc86a668c62e7aaa353e9afd64f3134804880c",
+    "cui/scripts/probe.sh": "12e259ea14d10c036d908f92ee453427aa2e2467599a4dfc35ed542e4e33843f",
+    "cui/scripts/qualify.py": "c88350dcb531880dd14e01c135b809afb82bc0b3114d4365b7b18c675055f9e8",
+    "cui/scripts/stage.py": "208f29f9230b60ce8e8152a2c3abb9f508bad853512cfa8d4abd177192d639fe",
+    "cui/scripts/suites.py": "01d56b8229f25fd5b71c5ee14bda50972947777eb350a67fc743d54cf153f4fe",
+    "cui/scripts/test.sh": "cf0c1fe72f7a9158f4ca6d0876fc5d532f84f7bc40ce6915ebe198448aca4e6a",
+    "cui/scripts/translate.sh": "f76c6f1d81661c318b8aaab29ebfcdbb67b502cbbe19b88fa29992af5e4686c2",
+    "cui/scripts/verify.sh": "a286887ad9ba44407d8785386b5de1b18a91399e9d3aef5b823b80af8258365b",
+    "cui/src/Host/DesktopApplication.cs": "139ce208ad2283fd28712e58e1fda98e5a319046dcd30ce5ea1caf2f8a0dae59",
+    "cui/src/Host/GlfwHost.Callbacks.cs": "dcca5a2781069baeaa1b3c7ab99ad7db7739dc02c443e226bc098d57013e8610",
+    "cui/src/Host/GlfwHost.cs": "6dc3f337c89d30a4ce39e56e41e775405f71209fc0eb3d1caf27522f88c51af9",
+    "cui/src/Host/OpenGlHost.cs": "10b4d68dcf09eef050bfe105d4665857acaf468be30a5d7f8a0e881feb973078",
+    "cui/src/Host/PlatformHost.cs": "fb76c891423f60b9ec781c65f4dfb2ed641c2df916a3f2cb9e827ac23dde1046",
+    "cui/src/ManagedCui/Callbacks.cs": "71e23c6584d54933568f02258d112e0baa5ccbcdd090bf13f4528a6687e97f82",
+    "cui/src/ManagedCui/Diagnostics.cs": "efad65c05a053cb4863a5b1f323e94414c544fac185877f767539083b41398fa",
+    "cui/src/ManagedCui/Icons.cs": "13be3695579736b209a467275ef26a78ddc20dc8d267d933fe5eeae32fe4e63f",
+    "cui/src/ManagedCui/Lifetime.cs": "aa536b5854a61c6871302b9d2bc27f7ff5961f5bd84ce7ef63ab10b4db26f7e1",
+    "cui/src/ManagedCui/ManagedCui.csproj": "6c030e030eaa9a653e6ed43e5383cca0e15e3c55ce075554c6fdba830018c27e",
+    "cui/src/ManagedCui/Resources.cs": "22c4487b52425c7b42bfeb7e12a93ab19e97b5f1bbd55d29368c486625185133",
+    "cui/src/ManagedCui/Surfaces.cs": "efe25053c22cb22c974630e25ebc64744f983a6debf7917a6cd7dd50e61f09eb",
+    "cui/src/ManagedCui/Types.cs": "e98039a8e7dade7d2cf824e344a0e401071445cf33182d40125454bd9db53b55",
+    "cui/src/ManagedCui/Ui.Api.cs": "39e16d1ecabfc1c1371bafe632edc9cbc522f1cc85f2c76f8b68571670718866",
+    "cui/src/ManagedCui/Ui.Marshalling.cs": "fea6b93c2bf0de2b4a6775a0756305bf628dcfc1132a067ab1ca9a099081a992",
+    "cui/src/ManagedCui/Ui.Overloads.cs": "186f27714930cb55c17a13454e7cd1ae52237729a86b28cd5445450b5cbc53dc",
+    "cui/src/ManagedCui/Ui.ScopeDispatch.cs": "36899aed78866bc9b8596a9fe2fc86a668c62e7aaa353e9afd64f3134804880c",
+    "cui/src/ManagedCui/Ui.cs": "56c677acd9cc663fc67a10ca8142edff6234f70e2fb0748fd192d75d724a65f9",
+    "cui/src/ManagedCui/Utf8.cs": "8a5006e59e230b832d3c346f80f5d1676088073b1f19acdd7288a845599e9ed4",
+    "cui/src/ManagedCui/Validation.cs": "99acceb1cde6ff0e1683aa83c15ec6ba93a094009a33f291b5668d173fb693d4",
+    "cui/src/ManagedCui/Values.cs": "3cd6fb0bec0891b2d4fa388162dc2bbfd45d967f0e7e1efff9c4952826df8543",
+    "cui/tests/desktop/DesktopInput.Tests.csproj": "7f2d6c2d006bad5c60e18c33d6cccdac4dcc61e2699da1124dbf7331cf329117",
+    "cui/tests/desktop/OsInput.cs": "615dbf965a446f3c337dc8c7074599daac27de60d15acd8ef0bbabe6cd4ea890",
+    "cui/tests/desktop/Program.cs": "e79b49ed094453cdb0a83bfb8bfdb93affd2d9e97700c49288484558fe7dee96",
+    "cui/tests/desktop/run.py": "8e7d781684eb6e4d5fe3c6ecfb40fc5de9f0ba856f032e6a7f5feb606512dca5",
+    "cui/tests/desktop-services/DesktopServices.Tests.csproj": "1f04b9aaa494a5c68618b6f4f0cbc480a8100fed4e9e4b443fa20e33a879da50",
+    "cui/tests/desktop-services/Program.cs": "0295fbfa6fd35d50442c7f4e78558194b95fc0d74d53506a1f74079c0f73afd6",
+    "cui/tests/desktop-services/evidence.json": "a558e8bee6d38b648a7e0067d4e218eb76e69987739bdffdeb2157eb121a76c6",
+    "cui/tests/desktop-services/run.py": "db6830c008c8daf730bcfb2a2835305ee96d3d4558a320b3afc06df5f7ae54d1",
+    "cui/tests/gallery/ClockFixture.cs": "d7b7f9c17ca5258e238ec02a38b609e72ce6a41e57879b14c768d9616de7313c",
+    "cui/tests/gallery/ExtendedInteractions.cs": "817154f6f7dba924cef9a5f575908dea5a93354a0b93ba5c9cb3fe5a6a51f944",
+    "cui/tests/gallery/ExtendedObservations.cs": "78a2d00674ff0c287a2618d755767c399fd4340f6dfc8e38ad4c2ef866129a00",
+    "cui/tests/gallery/Gallery.Tests.csproj": "b8baa9fb3790c6c3d5a75629674eb92eaf878491840e0f08af5129f6f7c24464",
+    "cui/tests/gallery/Observation.cs": "f22faa9f488271c5a655dbdfa373974df2aab05ab22f542f082121ef8e0c2af7",
+    "cui/tests/gallery/Program.cs": "db7a743594c66a106ebe66f3dc7f559e6c378266b913bea54d75a927a3c805f0",
+    "cui/tests/gallery/ResponsiveInteractions.cs": "96a88ad8eb972393f1bc15f782c6aa5a4e1b9a66070e71dec6c84c59c87584e5",
+    "cui/tests/gallery/evidence.json": "25c38f070bc8881045100ac2bf2900699e603d15d2c4c9be1971b52f5f633ded",
+    "cui/tests/gallery/run.py": "51254c3d6e25ff2cc76e8a6bedb61aa1db28040d1440ab25496d75fcfe162503",
+    "cui/tests/host-glfw/HostGlfw.Tests.csproj": "eafc87278166301e1036d53e263b7fb8bdafcd3e3d80a7f07ab8b227a9c7151d",
+    "cui/tests/host-glfw/Program.cs": "b7371316e337d8031dc04acc07b9989df6faea2cd499e1e60c76990c19e419d8",
+    "cui/tests/host-glfw/build-probe.py": "38b02020db907c29903ce16cf7fb18ae7377ff9dc88fc8371b5334d07c839c26",
+    "cui/tests/host-glfw/verify-abi.py": "36659571b9b46f9878c75e5bf1fd363947dafdab3e15473a54ac8cae6db7b3f4",
+    "cui/tests/managed/AllocationTracking.cs": "9ce754d1f1e795124b0b1958aa2afe91ffff73b318bce91f845023171905073d",
+    "cui/tests/managed/Benchmark.cs": "fdde6e70cb34cee92962e74f5eb721044bbf6bbde041eda616cd91a1a9cc589d",
+    "cui/tests/managed/DelayedTemporaries.cs": "f7a5a146b37e8ff73c5f8052b60fbba45d6ce18cb3602f663c4d44295c4783b7",
+    "cui/tests/managed/ManagedCui.Tests.csproj": "995f19ef468d7857908613b5ba9ec5bd834e7a35211a9fdbfbe7ba014a9de057",
+    "cui/tests/managed/Program.cs": "0de6a6d1410334ee71057d8832f1bf3669a60d9a1baeedf85716ecf029e7c8d5",
+    "cui/tests/managed/Safety.cs": "6674a755fc0e59f33b39d4c384e5bbd51c68f890238559ac77bd7bbe53526ca3",
+    "cui/tests/managed/run.py": "ac41636d918daadc886d7fe5f4794d456376fe377e479c1b5d3f39c103001a46",
+    "cui/tests/managed-gallery/GalleryBenchmark.cs": "8b37fd1c041ecbbe6943584b7f7c7407d963bc5850a2e8944d226a765b773b95",
+    "cui/tests/managed-gallery/ManagedGallery.Tests.csproj": "81f0fb58bff3cff62e2ca3057f44da288a855b92ad62c177dc654981e2b8272f",
+    "cui/tests/managed-gallery/Program.cs": "fae470db1ea4ca15f01ceb47d568609bd0bb7d94069f4f38d6a63a45d8d5de37",
+    "cui/tests/managed-gallery/SessionAdapter.cs": "993c8cd6d758f76184b1ada7527960531c52fb8d936bee9d6e4814c6b63cc353",
+    "cui/tests/managed-gallery/product.py": "6ad31bb86e62a28191748b8ab014f24d4aae8e0e15d917d8fff2cd7a651c0ea1",
+    "cui/tests/managed-gallery/qualify-existing.py": "d87006733e8377d53a8eec70611a4277a958bb50ce5ddce443d55e512e94356d",
+    "cui/tests/managed-gallery/record.py": "f8dfad2911e11a623ebca061d8402ea6e506699cee1a836e6c97255b4a4686cc",
+    "cui/tests/managed-gallery/run.py": "fa1d33b2608c97f686e261ce76592d85fc13f75527c9f6f5e068506a77e1508d",
+    "cui/tests/platform/Program.cs": "8fbef60788e2764ba3493bf9536343dff8d9b26b25205e7b74c5f5bc9a8e4a53",
+    "cui/tests/platform/run.py": "a6378dc179541eee56f607b5a0cd5081066f08f01e4fc043d4abddeb674854cf",
+    "cui/tests/qualification/evidence.json": "20b33bf4176fd6c0b2120b68468865a36a72fbce66ebbf90c439b7a857348bf4",
+    "cui/tests/qualification/font.json": "96dce37ec3709ea9357a2d101fd4fb901cb2d66272a89c1a88e1e0602dcd69bd",
+    "cui/tests/qualification/random_inputs.py": "71879622416d289fed6f1479492a838da7d5644c6104224d2595e72c2d32805c",
+    "cui/tests/recipe/test_recipe.py": "16c546fca4c9531def3f779b5ac94b64413e30d8f79d8cc235e4a91dec4c4176"
+  },
+  "productHashes": {
+    "TranslatedCui": {
+      ".campaign-files.json": "5a53c3654d17d2a2e500f1b60ddab7724112fe3d7a71ae904bc9dd48de29ac95",
+      "Cui.00000.cs": "95776d80c81bb3d4e85772f99aa08bbe45dec6b80785155c0ea3963ab369069b",
+      "Cui.00001.cs": "dba937a2a809b54a8f1c0fac93cc057972c470b6daff4457caafdc597bbabe20",
+      "Cui.00002.cs": "81b56adc33d08669aca3d10b801e17e2400b51ee15a14ef4c48509c5dc5aca98",
+      "Cui.00003.cs": "812aa509a84669f5b22d1490a2f54b893721b972365d2b401e09936586a24cc1",
+      "Cui.00004.cs": "160f393c056769de1e8f4f763ad29bf6a58b7a67375dce59068044af312ad276",
+      "Cui.00005.cs": "bd60753797ad1ebaf92b7a2b28fa90159944a379df2700d742256c98e0ebf3b1",
+      "Cui.00006.cs": "dd32f84202f5a1abf1ecb36f816c8ecd5bda7bac01aab46484bc58fc79c8cbbf",
+      "Cui.00007.cs": "dc8f4f10f23a1ac7b54eb34f782aa66cd20716dffecc89fbcfecfbd28a0856fc",
+      "Cui.00008.cs": "59bd34ba7e17a82e068d1ccb2b9072bceddb0ef64aa36f5edc82ed46f0223129",
+      "Cui.00009.cs": "30485840bd90f345217bd8176231453c72c87f62b1750f131c95e0006f1b885a",
+      "Cui.00010.cs": "4b95b9fb211cffab69c8ecea958df5d1f0aceb2ef36e2b5fa18b7eae7b87e53d",
+      "Cui.00011.cs": "abcb7596e43d2c5ff271ac59b7e4eb976ffe688a779fedc0672a4ec79be94f44",
+      "Cui.00012.cs": "a876d3cd2afc7783eb67ca1a003645693933520a762b24906ca274c4bb45b4f3",
+      "Cui.00013.cs": "cc75c79f77a5731425c2c6ce73202714ac6fdeb7f8a122a24d38de6683ec2f22",
+      "Cui.00014.cs": "a163520d6aedd0054c624d9592246d68ca938d190980ba1c299f81d9c9c97c6d",
+      "Cui.00015.cs": "42b107d4de45d5f66f6262900abcdc82d9f1096054123521427bccf4a049f4ec",
+      "Cui.00016.cs": "60535928a0967fd65ac2f7e5ba00a14781c043b9c44d44cc8e4e7320d0a99b20",
+      "Cui.cs": "e61ebac34721f5ea721dca5376e53a8da371d77a40d9b40c7a945895501c5096",
+      "Dotcc.ManagedSymbols.json": "04a1adb0e083ba56cbed85ce52d91fee63d0afe74b384f196cab320929c81f6f",
+      "Dotcc.SourceFiles.txt": "666c95f6248d2251ef3a2836cad3da507c83c7b1c5704775aa386d316c897548",
+      "TranslatedCui.csproj": "a503aa26492b9d84d030df3793228f7df131c8c78ad8673d8372a62b7489064a",
+      "notices/GLFW-LICENSE.md": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+      "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+      "notices/LICENSE-Geist.txt": "934b987e215a2bc463d7b1a99456c1d83e9505f5ef6d8b0dd439181fb2414b1b",
+      "notices/LICENSE-Inter.txt": "cc36dd53b88f8c7f138b9708e0c4b598816e4e52c7e252859e67e1e7edbcf117",
+      "notices/LICENSE-Lucide.txt": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35"
+    },
+    "TranslatedCui.Raw": {
+      ".campaign-files.json": "5a53c3654d17d2a2e500f1b60ddab7724112fe3d7a71ae904bc9dd48de29ac95",
+      "Cui.00000.cs": "a1c29f6f04769f7151932e73cf8a401a21c6ea2ffde2a3158e54532ea934fb2e",
+      "Cui.00001.cs": "5f8bc74c2c91dbe00867f04ae0068bdcd5a43cd45a15e33ca4167104d0cdb520",
+      "Cui.00002.cs": "c1367c9123eb4e960baa5c91f73b6e420fb2a23c9eac871d98f2386089b664a0",
+      "Cui.00003.cs": "2bce40625232d55b80c5c7e88e0d598f515450e6e64188a77f0560778dbadcf4",
+      "Cui.00004.cs": "3c8c67826b372aae1d8708d6c0b4d163c7a81c724eb331073d7554dd75f5b631",
+      "Cui.00005.cs": "58402220babb5af6e2bb720398bce1caecc92ddb8034ee0d29331a13487bb2b3",
+      "Cui.00006.cs": "e378e1a2fde0911be91dad82816a57ae833c5c6e9c57044c46fa4fcae872476e",
+      "Cui.00007.cs": "08e3a9a4b6bdc48e662b1205ed68e2d4f5bbaa18edc0741305f02bfa137df80c",
+      "Cui.00008.cs": "f3c55a720617e1ab6d45431272ab81ec26b3c5d449af574fc4e728e98963ea4b",
+      "Cui.00009.cs": "bf4dab3e7773bac9ef97de55f23e314dcfbacbd9dc493c6a9c6e8f22cb5c23ad",
+      "Cui.00010.cs": "bb8a818f90c6d3fe08f450e846a62be0f1024caf685fcd3cd3b9789693bbd360",
+      "Cui.00011.cs": "8cf55be7b6147fb87fe493b4c83c2caa2866f5004aecbfd1cc7a29d318630c32",
+      "Cui.00012.cs": "36ef29969c275fb2f7ed100f41f17a8c26ade5f48f688dbdb7a9c64a3e714473",
+      "Cui.00013.cs": "678b967e176491ecbea5aa58a9c2b8db7d5b4652b740f5cb35e5acc1f135a3d8",
+      "Cui.00014.cs": "219680a46be1d6cd7e7aee6c752b95c2b41945e90b5b6c624c7eee1899e47546",
+      "Cui.00015.cs": "ca2b4aeb79bade4589ad13c7f00f2dde9aac69cdd469966586bcbeed9ac69b58",
+      "Cui.00016.cs": "1fcd2625121fcbebacf87af19cc8be3956ea310ef118363a08c9e1dbfe7c054a",
+      "Cui.cs": "e61ebac34721f5ea721dca5376e53a8da371d77a40d9b40c7a945895501c5096",
+      "Dotcc.ManagedSymbols.json": "04a1adb0e083ba56cbed85ce52d91fee63d0afe74b384f196cab320929c81f6f",
+      "Dotcc.SourceFiles.txt": "666c95f6248d2251ef3a2836cad3da507c83c7b1c5704775aa386d316c897548",
+      "TranslatedCui.csproj": "1900d6ebca7fa6115c6cc7b7d84079fbfa8ed0f1179ff62f761ed7922f7fd72d",
+      "notices/GLFW-LICENSE.md": "149704059b5d0bf551637e50042dd4de9c2cae921021f6636298911e3a5f9462",
+      "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+      "notices/LICENSE-Geist.txt": "934b987e215a2bc463d7b1a99456c1d83e9505f5ef6d8b0dd439181fb2414b1b",
+      "notices/LICENSE-Inter.txt": "cc36dd53b88f8c7f138b9708e0c4b598816e4e52c7e252859e67e1e7edbcf117",
+      "notices/LICENSE-Lucide.txt": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35"
+    },
+    "TranslatedCuiGallery": {
+      ".campaign-files.json": "9860c9eff544a6c21d89e7a7006e688b635e3f26cc40997fdb20b51b1a350fb3",
+      "Dotcc.SourceFiles.txt": "efe527a441ddc9ea704f9d6b26ccbe609028d2932a9b62cc961959e5e59b92ec",
+      "Gallery.00000.cs": "1ce1acca735bc5437b179dcb8a708f7762018804f44bfa85acdf351bc6354ae3",
+      "Gallery.00001.cs": "0439e799c2b381b1d28e277e1453ff6f39549e32ce1378efd85cfaddfded3863",
+      "Gallery.cs": "83b262f25f9416cac3f17044a629bedc44973ec7826adf66de50fef8a65216ea",
+      "TranslatedCuiGallery.csproj": "44785e122207d0b4650bc037cff03efb217fc77b500cf2d5633c52840a5c227a",
+      "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+      "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35",
+      "upstream/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+      "upstream/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c",
+      "upstream/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+      "upstream/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+      "upstream/provenance.json": "d3b3679d3b1454e122950c0f8973e8aceb1c01ed675f7d3d5bca10be9268b87d"
+    },
+    "TranslatedCuiGallery.Raw": {
+      ".campaign-files.json": "9860c9eff544a6c21d89e7a7006e688b635e3f26cc40997fdb20b51b1a350fb3",
+      "Dotcc.SourceFiles.txt": "efe527a441ddc9ea704f9d6b26ccbe609028d2932a9b62cc961959e5e59b92ec",
+      "Gallery.00000.cs": "7b56e7e3c82440f2be3212c4328b134116211a4e837fae85b8980354b083d394",
+      "Gallery.00001.cs": "bcb7b422650b9fd9b9bdd5dc5816699b962d799a6e4d2adf85ee6ea11177069a",
+      "Gallery.cs": "83b262f25f9416cac3f17044a629bedc44973ec7826adf66de50fef8a65216ea",
+      "TranslatedCuiGallery.csproj": "44785e122207d0b4650bc037cff03efb217fc77b500cf2d5633c52840a5c227a",
+      "notices/LICENSE": "993ce06560d0aa89d7825c205b676caf14ebf7483989cd5edd597a5a285a5633",
+      "notices/THIRD_PARTY.md": "49a8cabf46f03cec8bfbffdfa3b60a684dd699967098f187768ec84181d23e35",
+      "upstream/gallery_more.c": "1c083dbdef6fa97cde088c29ee0547bee2de32cb1f0697f35f2cee0259a63f02",
+      "upstream/gallery_more.h": "04225c16a2712518b6bf517a0880b0caffc337b7b16f23b8a647c9c32792de0c",
+      "upstream/gallery_ui.c": "012dabfff1234ac8cb497901779f4d329589d9bda4e09e729db35697c382b250",
+      "upstream/gallery_ui.h": "82b030ab36290bad74e68e5d9e34147298a580de2911cf691554c1be1d309bf7",
+      "upstream/provenance.json": "d3b3679d3b1454e122950c0f8973e8aceb1c01ed675f7d3d5bca10be9268b87d"
+    }
+  },
+  "limitations": [
+    "Actual Windows execution unavailable and unrun",
+    "Only light/neutral palette repeated after rename; historical 16-palette matrix not rerun",
+    "Historical performance measurements were not repeated or rebound to new sources",
+    "Native gallery observer binary/captures reused from a passing hash-verified independent run; managed binaries freshly built and executed"
+  ],
+  "tools": {
+    "dotnetSdk": "10.0.114",
+    "runtime": "10.0.14",
+    "platform": "Linux x64/X11",
+    "compilerSha256": "b4effa2c4450ee430ccf9abb52fa81afb11e6cb711f0cfcc30ec54c016666261",
+    "postprocessorSha256": "a06d334a0a6d4533efe01a982897da0f1206ad3f9b557a2084d5435af8a6d2fb"
+  },
+  "reproduction": [
+    "Set external CUI_WORK_ROOT, CUI_SOURCE_ROOT, TMPDIR; bash cui/scripts/translate.sh --fetch never --jobs 4 --form all",
+    "python3 -B cui/scripts/managed-api/generate.py --check --native-root \"$CUI_SOURCE_ROOT\"",
+    "dotnet build cui/ManagedConsumer.slnx -c Release --artifacts-path \"$CUI_WORK_ROOT/solution\" -m:1; repeat with -p:CuiProject selecting the raw core",
+    "bash cui/scripts/test.sh --suite consumer --suite audit --form all --mode all (under an X11 display)",
+    "python3 -B cui/tests/managed-gallery/product.py --work-root \"$CUI_WORK_ROOT/product\" --form all --mode all",
+    "The retained validate-matrix.py uses existing runner build/compare/input functions for safety, surface, all 27 light/neutral captures and full OS workflows, omitting benchmarks. Existing managed and managed-gallery runners reproduce a broader superset; their full benchmark/16-palette gates remain required for new performance claims."
+  ]
+}

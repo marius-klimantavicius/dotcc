@@ -1,5 +1,9 @@
 # Managed library qualification
 
+The safe API remains `Cui.Managed`; direct comparison workloads alias the
+translated core as `using Raw = Managed.Forms.Cui;`. Project and assembly names
+are unchanged.
+
 Run from any directory with .NET 10 and a work directory on external storage:
 
 ```bash

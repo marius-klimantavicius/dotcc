@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Managed.Cui;
-using static Managed.Cui.Cui;
+using Managed.Forms;
+using static Managed.Forms.Cui;
 
 internal static unsafe class LegacySmoke
 {

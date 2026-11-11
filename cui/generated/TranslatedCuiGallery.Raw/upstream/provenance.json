@@ -22,7 +22,7 @@
   "gallery": {
     "product": "TranslatedCuiGallery",
     "class": "Gallery",
-    "namespace": "Managed.Cui.Gallery",
+    "namespace": "Managed.Forms.Gallery",
     "sources": [
       "examples/gallery_ui.c",
       "examples/gallery_more.c"

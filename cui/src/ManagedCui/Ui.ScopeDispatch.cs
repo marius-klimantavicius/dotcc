@@ -1,4 +1,4 @@
-using Raw = global::Managed.Cui.Cui;
+using Raw = global::Managed.Forms.Cui;
 namespace Cui.Managed;
 internal enum ScopeKind { Id, Disabled, Accordion, Box, ButtonGroup, Card, CardStack, CardStackItem, Carousel, CarouselSlide, ContextMenu, DataGrid, Dialog, DialogFooter, Dock, ExpandableCard, HoverCard, Kanban, KanbanCard, KanbanColumn, Menu, Node, NodeEditor, Popover, Reasoning, Reorder, ReorderItem, Scroll, Sheet, Spotlight, SwipeItem, Table, Tree, UserMenu, VirtualList }
 public sealed unsafe partial class Ui

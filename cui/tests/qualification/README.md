@@ -54,9 +54,9 @@ Minimal bidi/inflate/shaping programs independently emit their unchanged source
 closure. Every qualification link uses the same CUI profile's inline and static
 deduplication flags as the delivered libraries, including these minimal closures.
 No generated C# is patched. An authored managed entry point calls the
-emitted typed `Cui.main` API with stable UTF-8 arguments. Only project scaffolding
-is adjusted; processed host inputs are private copies so postprocessing cannot
-rewrite authored campaign sources.
+emitted typed `Managed.Forms.Cui.main` API with stable UTF-8 arguments. Only
+project scaffolding is adjusted; processed host inputs are private copies so
+postprocessing cannot rewrite authored campaign sources.
 
 Core programs share one linked executable to avoid repeating the large core link.
 Each test's sole top-level `main` definition is renamed in a staged test copy,
@@ -69,9 +69,9 @@ sequence depends on its implementation, and C permits different operand
 evaluation orders for random calls in a mutation assignment. The ordinary native
 GLFW baseline retains its original 6,147 assertions. For strict differential
 comparison, a test-only typed input hook records values from the actual emitted
-`Cui.Libc.srand/rand` provider, tagged with seed, original source line and call
-site. Native C replays those exact call-site queues and must consume every value.
-All 69 named groups must have identical cumulative assertion counts; the four
+`Managed.Forms.Cui.Libc.srand/rand` provider, tagged with seed, original source
+line and call site. Native C replays those exact call-site queues and must consume
+every value. All 69 named groups must have identical cumulative assertion counts; the four
 managed variants must produce identical recorded input hashes. The control
 changes input delivery and adds group-count diagnostics; it preserves assertions
 and mutation/drag algorithms. No shared random generator is changed.

@@ -1,10 +1,10 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using C = Managed.Cui.Cui;
+using C = Managed.Forms.Cui;
 using G = Glfw.Glfw;
 using K = Glfw.GLFW;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
 // Exercises actual emitted overrides and the translated OpenGL renderer.
 // Both the full library and the focused build-probe.py output are supported.

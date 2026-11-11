@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Managed.Cui;
-using static Managed.Cui.Cui;
-using Gallery = Managed.Cui.Gallery.Gallery;
+using Managed.Forms;
+using static Managed.Forms.Cui;
+using Gallery = Managed.Forms.Gallery.Gallery;
 
 internal static unsafe class Program
 {

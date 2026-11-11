@@ -1,6 +1,6 @@
 using System.Text;
 using Cui.Managed;
-using Raw = Managed.Cui.Cui;
+using Raw = Managed.Forms.Cui;
 
 internal static unsafe partial class Program
 {

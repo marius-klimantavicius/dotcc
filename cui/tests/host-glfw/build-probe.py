@@ -33,7 +33,7 @@ def main():
     subprocess.run([*command, str(source / "src/render/cui_render_gl.c"), "--emit=obj", *common,
                     "-o", str(objects / "render.cs")], check=True, env=env)
     subprocess.run([*command, str(objects / "glfw.cs"), str(objects / "render.cs"), "--emit=managedlib",
-                    "--nest-types", "--runtime=c", "--class-name", "Cui", "--namespace", "Managed.Cui",
+                    "--nest-types", "--runtime=c", "--class-name", "Cui", "--namespace", "Managed.Forms",
                     "--split=size", "--split-size=262144", "--literal-pool", "--deduplicate-inline", "-o", str(output)], check=True, env=env)
     project = ET.Element("Project", Sdk="Microsoft.NET.Sdk")
     properties = ET.SubElement(project, "PropertyGroup")

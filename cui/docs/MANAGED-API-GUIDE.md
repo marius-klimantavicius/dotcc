@@ -1,6 +1,8 @@
 # Using ManagedCui
 
 Reference `cui/src/ManagedCui/ManagedCui.csproj` and import `Cui.Managed`.
+The wrapper uses translated `Managed.Forms.Cui` internally; the safe namespace
+and the `ManagedCui` project/assembly name are unchanged.
 The library targets .NET 10. Caller projects can set `AllowUnsafeBlocks=false`.
 The default project reference selects processed CUI; `-p:CuiVariant=Raw` selects
 the raw translation. Neither product needs a native CUI or GLFW library.

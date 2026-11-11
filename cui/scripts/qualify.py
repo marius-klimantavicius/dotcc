@@ -281,7 +281,7 @@ class Run:
             objects = [*objects, self.emit(unit, program / f"extra-{i}.cs", flags, name + f"/extra-{i}")]
         raw = program / "raw"
         self.run(["dotnet", self.args.compiler, *objects, main, "--emit=managedlib",
-                  *helper(ROOT / "scripts/codegen.py").link_flags(ROOT, "Cui", "Managed.Cui"),
+                  *helper(ROOT / "scripts/codegen.py").link_flags(ROOT, "Cui", "Managed.Forms"),
                   "-o", raw], name + "/link")
         project = next(raw.glob("*.csproj"))
         if kind == "core":
@@ -293,7 +293,7 @@ class Run:
         # Authored test entry point calls the emitted typed API, with stable UTF-8 argv.
         (raw / "QualificationEntry.cs").write_text('''using System;
 using System.Runtime.InteropServices;
-using Managed.Cui;
+using Managed.Forms;
 internal static unsafe class QualificationEntry {
     public static int Main(string[] args) {
         byte** argv = (byte**)NativeMemory.AllocZeroed((nuint)(args.Length + 2), (nuint)sizeof(byte*));

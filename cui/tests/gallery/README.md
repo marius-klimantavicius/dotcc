@@ -1,6 +1,8 @@
 # Original upstream gallery qualification
 
 This harness references `TranslatedCuiGallery` and its matching canonical core.
+Their translated types are `Managed.Forms.Gallery.Gallery` and
+`Managed.Forms.Cui`; the project and assembly names are unchanged.
 It executes the translated `gallery_ui.c` and `gallery_more.c`, rather than a
 managed reconstruction of their controls. The native control compiles the same
 staged gallery sources against native CUI's GLFW backend with shaping and all

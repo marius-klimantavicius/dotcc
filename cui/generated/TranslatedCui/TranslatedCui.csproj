@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>Managed.Cui</RootNamespace>
+    <RootNamespace>Managed.Forms</RootNamespace>
     <AssemblyName>TranslatedCui</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>disable</Nullable>

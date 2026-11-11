@@ -1,9 +1,9 @@
 #nullable enable
 using System;
 using System.Text;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
-namespace Managed.Cui;
+namespace Managed.Forms;
 
 /// <summary>Owns one translated CUI GLFW application on its creating thread.</summary>
 /// <remarks>Dispose on the owner thread. The UI pointer is borrowed until disposal.

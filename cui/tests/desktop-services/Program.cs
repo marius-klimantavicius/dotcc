@@ -1,6 +1,6 @@
 using System.Text;
-using Managed.Cui;
-using static Managed.Cui.Cui;
+using Managed.Forms;
+using static Managed.Forms.Cui;
 
 // This executable calls public translated entry points, never PlatformHost.
 // The Python coordinator drives the real desktop tools on its own Xvfb.

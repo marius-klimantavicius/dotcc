@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
-namespace Managed.Cui;
+namespace Managed.Forms;
 
 internal static unsafe class PlatformHost
 {

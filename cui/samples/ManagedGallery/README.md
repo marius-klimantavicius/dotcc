@@ -5,6 +5,9 @@ the pinned upstream gallery. The project explicitly disables unsafe blocks and
 references only the ManagedCui wrapper. The translated original companion is an
 independent oracle, not an implementation dependency of this application.
 
+The wrapper uses `Managed.Forms.Cui` internally. The safe `Cui.Managed`
+namespace and all project/assembly names are unchanged.
+
 Choose external directories for build output and temporary files:
 
 ```bash

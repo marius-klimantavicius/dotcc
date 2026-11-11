@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using G = global::Glfw.Glfw;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
-namespace Managed.Cui;
+namespace Managed.Forms;
 
 // Only the owner thread enters GLFW. Opaque identifiers are never dereferenced
 // and are never reused, including across initialization cycles. The dictionaries

@@ -3,7 +3,7 @@
 #nullable enable
 using System;
 using System.Runtime.InteropServices;
-namespace Managed.Cui;
+namespace Managed.Forms;
 internal static unsafe class OpenGlHost
 {
     private static delegate* unmanaged<uint, void> native_glEnable;

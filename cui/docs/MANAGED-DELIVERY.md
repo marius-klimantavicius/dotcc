@@ -9,8 +9,10 @@ The product is [ManagedCui](../src/ManagedCui/ManagedCui.csproj), namespace
 The sample compiles with `AllowUnsafeBlocks=false` and references only the
 wrapper. The wrapper references the translated CUI core, which uses the committed
 managed GLFW port. The original translated gallery and `ManagedConsumer` remain
-independent comparison applications. No generated CUI implementation, original
-gallery source, metadata sidecar, GLFW implementation or host was changed.
+independent comparison applications. The later namespace rename regenerates the
+core as `Managed.Forms.Cui` and the companion as `Managed.Forms.Gallery.Gallery`, including host bindings and JSON
+symbol targets. `Cui.Managed`, project/assembly names and behavior are preserved.
+The original gallery C sources and copied GLFW implementation are unchanged.
 
 ## API and ownership
 
@@ -37,14 +39,28 @@ required ownership. Checked-in [templates](../scripts/managed-api/README.md)
 reproduce reviewed sources and verify hashes for 214 native definitions plus
 the header. They also reject unexpected concurrent changes.
 
-## Current qualification
+## Qualification and namespace rename
 
-The source-bound receipts are [library](MANAGED-LIBRARY-VALIDATION.json) and
-[gallery](MANAGED-GALLERY-VALIDATION.json). They describe the revised stack-local
-source, not the earlier implementation's timings. Full logs, binaries, raw
-captures and benchmark data remain under caller-selected external storage.
+The [namespace rename receipt](NAMESPACE-VALIDATION.json) binds current sources
+and fresh Linux binaries to the focused post-rename checks. The source-bound
+[library](MANAGED-LIBRARY-VALIDATION.json) and
+[gallery](MANAGED-GALLERY-VALIDATION.json) receipts are historical pre-rename
+evidence at `d5a662499`: their hashes bind that version, not today's aliases.
+Their full palette, interaction and performance results below remain historical.
+The rename checks do not claim a repeated performance or sixteen-palette run.
+Full logs, binaries, captures and benchmark data use external storage.
 
-| Gate | Current Linux result |
+Fresh rename checks pass all four raw/processed × JIT/NativeAOT variants:
+75 safety and 12,164 public-surface assertions each, exact 27-page light/neutral
+pixels/text/layout against translated and retained native references, and 4,042
+assertions/95 OS actions for each original and safe gallery. All four standalone
+samples pass copied-output lifecycle/dependency checks; both original consumer
+smoke modes also pass. Both solution selections, paired regeneration, metadata,
+platform ABI, GL signatures and template/native-retention checks pass. Normal
+solution builds retain five existing translated warnings; raw selection builds
+both core forms and reports five from each. No new source warning is introduced.
+
+| Gate | Pre-rename Linux result |
 | --- | --- |
 | Ordinary references and whole-wrapper NativeAOT | All four variants pass |
 | Recursive public API audit | 293 types; zero unsafe public signatures; 12,164 assertions/variant |
@@ -59,7 +75,7 @@ captures and benchmark data remain under caller-selected external storage.
 | Campaign integration | Recipe tests and raw/processed project/dependency audit pass |
 
 The native gate retains the established maximum one-byte normalized GL channel
-rounding rule. The actual current comparisons are exact. Native layout floats
+rounding rule. The pre-rename comparisons were exact. Native layout floats
 are compared by float32 bits after parsing equivalent C/C# decimal formats.
 There are no pixel masks, sidebar exclusions or omitted dynamic pages.
 
@@ -82,7 +98,7 @@ zero arena bytes after the correction. Delayed-render regression overwrites
 returned stack storage, compacts GC and mutates caller arrays before requiring
 exact software pixels against direct CUI.
 
-## Measured cost
+## Pre-rename measured cost
 
 Measurements use .NET SDK 10.0.114/runtime 10.0.14, Linux x64 and an AMD Ryzen 9
 7950X. Each variant has three independent Release benchmark processes, with

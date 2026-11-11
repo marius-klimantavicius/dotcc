@@ -45,7 +45,7 @@ def prepare(ctx):
     return Translation(units,
                        ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE",
                         *flags(json_file(ctx.root / "config/profile.json")["defines"], [ctx.root / "config/include", source / "include"])],
-                       [*helper(ctx.root / "scripts/codegen.py").link_flags(ctx.root, "Cui", "Managed.Cui"),
+                       [*helper(ctx.root / "scripts/codegen.py").link_flags(ctx.root, "Cui", "Managed.Forms"),
                         "--export-enum", "CUI_*", "--export-managed-symbols"],
                        objects=True, configure=configure, finish=finish,
                        companions=helper(ctx.root / "scripts/gallery.py").companions)

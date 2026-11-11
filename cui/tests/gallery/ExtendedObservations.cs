@@ -1,4 +1,4 @@
-using OriginalGallery = Managed.Cui.Gallery.Gallery;
+using OriginalGallery = Managed.Forms.Gallery.Gallery;
 
 internal static unsafe partial class Program
 {

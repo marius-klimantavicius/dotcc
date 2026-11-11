@@ -5,6 +5,10 @@ retain the independent gallery's node/edit/allocator assertions, and references
 the translated gallery only for benchmark/oracle work. Those references are not
 dependencies of `samples/ManagedGallery`.
 
+Raw observations use `Managed.Forms.Cui`; the translated benchmark/oracle alias
+is `using OriginalGallery = Managed.Forms.Gallery.Gallery;`. The showcase's safe
+namespace remains `Cui.Managed`, with unchanged project and assembly names.
+
 Run the full Linux matrix from any working directory, using absolute paths for
 the script, original pinned source and externally configured work/tool directories:
 

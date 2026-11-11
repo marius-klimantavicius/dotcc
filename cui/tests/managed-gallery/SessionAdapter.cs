@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Cui.Managed;
 using Cui.ManagedGallery;
-using static Managed.Cui.Cui;
+using static Managed.Forms.Cui;
 
 internal static unsafe partial class Program
 {

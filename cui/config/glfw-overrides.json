@@ -11,7 +11,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwCreateStandardCursor"
+        "method": "global::Managed.Forms.GlfwHost.glfwCreateStandardCursor"
       },
       "requireMatch": true
     },
@@ -29,7 +29,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwCreateWindow"
+        "method": "global::Managed.Forms.GlfwHost.glfwCreateWindow"
       },
       "requireMatch": true
     },
@@ -43,7 +43,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwDestroyCursor"
+        "method": "global::Managed.Forms.GlfwHost.glfwDestroyCursor"
       },
       "requireMatch": true
     },
@@ -57,7 +57,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwDestroyWindow"
+        "method": "global::Managed.Forms.GlfwHost.glfwDestroyWindow"
       },
       "requireMatch": true
     },
@@ -71,7 +71,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetClipboardString"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetClipboardString"
       },
       "requireMatch": true
     },
@@ -87,7 +87,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetCursorPos"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetCursorPos"
       },
       "requireMatch": true
     },
@@ -103,7 +103,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetFramebufferSize"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetFramebufferSize"
       },
       "requireMatch": true
     },
@@ -115,7 +115,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetPrimaryMonitor"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetPrimaryMonitor"
       },
       "requireMatch": true
     },
@@ -129,7 +129,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetProcAddress"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetProcAddress"
       },
       "requireMatch": true
     },
@@ -141,7 +141,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetTime"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetTime"
       },
       "requireMatch": true
     },
@@ -155,7 +155,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetVideoMode"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetVideoMode"
       },
       "requireMatch": true
     },
@@ -171,7 +171,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetWindowContentScale"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetWindowContentScale"
       },
       "requireMatch": true
     },
@@ -185,7 +185,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetWindowMonitor"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetWindowMonitor"
       },
       "requireMatch": true
     },
@@ -199,7 +199,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwGetWindowUserPointer"
+        "method": "global::Managed.Forms.GlfwHost.glfwGetWindowUserPointer"
       },
       "requireMatch": true
     },
@@ -211,7 +211,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwInit"
+        "method": "global::Managed.Forms.GlfwHost.glfwInit"
       },
       "requireMatch": true
     },
@@ -225,7 +225,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwMakeContextCurrent"
+        "method": "global::Managed.Forms.GlfwHost.glfwMakeContextCurrent"
       },
       "requireMatch": true
     },
@@ -237,7 +237,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwPollEvents"
+        "method": "global::Managed.Forms.GlfwHost.glfwPollEvents"
       },
       "requireMatch": true
     },
@@ -252,7 +252,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetCharCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetCharCallback"
       },
       "requireMatch": true
     },
@@ -267,7 +267,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetClipboardString"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetClipboardString"
       },
       "requireMatch": true
     },
@@ -282,7 +282,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetCursor"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetCursor"
       },
       "requireMatch": true
     },
@@ -297,7 +297,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetCursorEnterCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetCursorEnterCallback"
       },
       "requireMatch": true
     },
@@ -312,7 +312,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetCursorPosCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetCursorPosCallback"
       },
       "requireMatch": true
     },
@@ -327,7 +327,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetDropCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetDropCallback"
       },
       "requireMatch": true
     },
@@ -342,7 +342,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetKeyCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetKeyCallback"
       },
       "requireMatch": true
     },
@@ -357,7 +357,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetMouseButtonCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetMouseButtonCallback"
       },
       "requireMatch": true
     },
@@ -372,7 +372,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetScrollCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetScrollCallback"
       },
       "requireMatch": true
     },
@@ -387,7 +387,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowCloseCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowCloseCallback"
       },
       "requireMatch": true
     },
@@ -402,7 +402,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowFocusCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowFocusCallback"
       },
       "requireMatch": true
     },
@@ -417,7 +417,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowRefreshCallback"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowRefreshCallback"
       },
       "requireMatch": true
     },
@@ -433,7 +433,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowSize"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowSize"
       },
       "requireMatch": true
     },
@@ -451,7 +451,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowSizeLimits"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowSizeLimits"
       },
       "requireMatch": true
     },
@@ -466,7 +466,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowTitle"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowTitle"
       },
       "requireMatch": true
     },
@@ -481,7 +481,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSetWindowUserPointer"
+        "method": "global::Managed.Forms.GlfwHost.glfwSetWindowUserPointer"
       },
       "requireMatch": true
     },
@@ -495,7 +495,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwShowWindow"
+        "method": "global::Managed.Forms.GlfwHost.glfwShowWindow"
       },
       "requireMatch": true
     },
@@ -509,7 +509,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSwapBuffers"
+        "method": "global::Managed.Forms.GlfwHost.glfwSwapBuffers"
       },
       "requireMatch": true
     },
@@ -523,7 +523,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwSwapInterval"
+        "method": "global::Managed.Forms.GlfwHost.glfwSwapInterval"
       },
       "requireMatch": true
     },
@@ -535,7 +535,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwTerminate"
+        "method": "global::Managed.Forms.GlfwHost.glfwTerminate"
       },
       "requireMatch": true
     },
@@ -547,7 +547,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwWaitEvents"
+        "method": "global::Managed.Forms.GlfwHost.glfwWaitEvents"
       },
       "requireMatch": true
     },
@@ -561,7 +561,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwWaitEventsTimeout"
+        "method": "global::Managed.Forms.GlfwHost.glfwWaitEventsTimeout"
       },
       "requireMatch": true
     },
@@ -576,7 +576,7 @@
       },
       "target": {
         "kind": "managedMethod",
-        "method": "global::Managed.Cui.GlfwHost.glfwWindowHint"
+        "method": "global::Managed.Forms.GlfwHost.glfwWindowHint"
       },
       "requireMatch": true
     }

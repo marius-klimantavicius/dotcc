@@ -2,8 +2,8 @@
 using System;
 using System.Runtime.InteropServices;
 using G = global::Glfw.Glfw;
-using static Managed.Cui.Cui;
-namespace Managed.Cui;
+using static Managed.Forms.Cui;
+namespace Managed.Forms;
 internal static unsafe partial class GlfwHost
 {
     public static delegate*<GLFWwindow*, double, double, void> glfwSetCursorPosCallback(GLFWwindow* w, delegate*<GLFWwindow*, double, double, void> callback)

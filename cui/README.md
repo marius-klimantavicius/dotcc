@@ -113,6 +113,12 @@ Windows native controls and real desktop execution must be qualified separately.
 
 ## Consume
 
+The translated core type is `Managed.Forms.Cui`; the independent translated
+gallery type is `Managed.Forms.Gallery.Gallery`. Authored desktop adapters use
+`Managed.Forms`. Project and assembly names remain `TranslatedCui` and
+`TranslatedCuiGallery`; the safe wrapper remains `Cui.Managed`. See the
+[namespace rename evidence](docs/NAMESPACE-VALIDATION.json).
+
 Reference `generated/TranslatedCui/TranslatedCui.csproj`, or select the raw form
 at `generated/TranslatedCui.Raw/TranslatedCui.csproj`. Both reference the original
 authored host sources and the copied GLFW project. No scratch directory or
@@ -181,7 +187,9 @@ this sidecar with the core when regenerating the gallery. Preparation applies
 one guarded upstream gallery repair: close the emoji popup after leaving its
 ID scope. The original acquired source remains unchanged; the native control
 uses the identical repair. Earlier gallery, deduplication and core reports
-retain their historical product hashes and qualification scope.
+retain their historical product hashes and qualification scope. The later
+[namespace rename receipt](docs/NAMESPACE-VALIDATION.json) binds current products;
+all prior validation JSON retains its pre-rename bindings.
 Preparation also connects missing emoji in the original editable text renderer
 to CUI's existing color emoji engine. The shared text iterator supplies matching
 paint, caret and hit-test advances; the original UTF-8 buffer and editor remain

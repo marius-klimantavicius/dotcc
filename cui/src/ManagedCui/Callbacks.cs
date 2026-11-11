@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
-using Raw = global::Managed.Cui.Cui;
-using static global::Managed.Cui.Cui;
+using Raw = global::Managed.Forms.Cui;
+using static global::Managed.Forms.Cui;
 
 namespace Cui.Managed;
 
@@ -56,7 +56,7 @@ public sealed unsafe partial class Ui
         var root = GCHandle.Alloc(new FileRoot(this, handler, new FileEntry[65536]));
         callbackRoots.Add(root); pointer = GCHandle.ToIntPtr(root); fileRoots.Add(handler, pointer); return (void*)pointer;
     }
-    private static int FileListThunk(void* user, byte* path, cui_file_entry* output, int capacity, byte* names, ulong namesCapacity, global::Managed.Cui.Cui.CBool hidden)
+    private static int FileListThunk(void* user, byte* path, cui_file_entry* output, int capacity, byte* names, ulong namesCapacity, global::Managed.Forms.Cui.CBool hidden)
     {
         FileRoot? root = null;
         try

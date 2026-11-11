@@ -119,13 +119,15 @@ A source-preservation check confirmed identical public declarations and exact
 source equality after only the 225 storage substitutions and two comments. The
 63 remaining arena allocation sites all allocate variable-length data.
 
-The coordinator's current raw/processed × JIT/NativeAOT library matrix passes
+The coordinator's pre-rename raw/processed × JIT/NativeAOT library matrix passed
 75 safety assertions per variant, including stack overwrite/compacting GC before
 deferred rendering and a descriptor-only frame with zero arena use. Three
-benchmark trials per variant pass allocation, timing and retention gates; current
-arena-use measurements are recorded in `MANAGED-LIBRARY-VALIDATION.json`.
+benchmark trials per variant passed allocation, timing and retention gates;
+pre-rename arena-use measurements are recorded in `MANAGED-LIBRARY-VALIDATION.json`.
 Full palette/page, OS, native geometry and standalone qualification are separate
 coordinator gates. The implementation delegate did not run or modify them.
+These historical hashes bind baseline `d5a662499`; [namespace validation](NAMESPACE-VALIDATION.json)
+records fresh post-rename safety checks and unchanged native retention evidence.
 
 ## Complete converted-site inventory
 

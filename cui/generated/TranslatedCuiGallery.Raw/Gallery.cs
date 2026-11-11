@@ -5,7 +5,7 @@
 // </auto-generated>
 #pragma warning disable CS0162, CS8909, CS1717, CS0164, CS0642, CS0675, CS0219, CS0649
 #pragma warning disable CS8981
-namespace Managed.Cui.Gallery;
+namespace Managed.Forms.Gallery;
 using System;
 using System.Globalization;
 using System.Numerics;
@@ -19,401 +19,401 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Win32.SafeHandles;
-using static global::Managed.Cui.Cui.Libc;
+using static global::Managed.Forms.Cui.Libc;
 using static Gallery;
-using DotCcFunctions = global::Managed.Cui.Gallery.Gallery;
-using static global::Managed.Cui.Gallery.Gallery.GalleryGlobalsSpecial;
-using DotCcGlobals = global::Managed.Cui.Gallery.Gallery.GalleryGlobalsSpecial;
+using DotCcFunctions = global::Managed.Forms.Gallery.Gallery;
+using static global::Managed.Forms.Gallery.Gallery.GalleryGlobalsSpecial;
+using DotCcGlobals = global::Managed.Forms.Gallery.Gallery.GalleryGlobalsSpecial;
 
 // ---- typedef'd `using` aliases (same as exe mode).
-using __DotCcEnum_6375695F646972 = global::Managed.Cui.Cui.cui_dir;
-using __DotCcEnum_6375695F6A757374696679 = global::Managed.Cui.Cui.cui_justify;
-using __DotCcEnum_6375695F73697A655F6B696E64 = global::Managed.Cui.Cui.cui_size_kind;
-using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Cui.Cui.cui_theme_mode;
-using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Cui.Cui.cui_button_variant;
-using __DotCcEnum_6375695F746F6E65 = global::Managed.Cui.Cui.cui_tone;
-using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Cui.Cui.cui_tabs_variant;
-using __DotCcEnum_6375695F73696465 = global::Managed.Cui.Cui.cui_side;
-using __DotCcEnum_6375695F616363656E74 = global::Managed.Cui.Cui.cui_accent;
-using __DotCcEnum_6375695F616C69676E = global::Managed.Cui.Cui.cui_align;
-using __DotCcEnum_6375695F746F6B656E = global::Managed.Cui.Cui.cui_token;
-using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Cui.Cui.cui_control_size;
-using __DotCcEnum_6375695F6B6579 = global::Managed.Cui.Cui.cui_key;
-using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Cui.Cui.cui_text_align;
-using __DotCcEnum_6375695F6D6F64 = global::Managed.Cui.Cui.cui_mod;
-using __DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64 = global::Managed.Cui.Cui.cui_annotation_kind;
-using __DotCcEnum_6375695F7461736B5F737461747573 = global::Managed.Cui.Cui.cui_task_status;
-using __DotCcEnum_6375695F71756572795F74797065 = global::Managed.Cui.Cui.cui_query_type;
-using __DotCcEnum_6375695F706C6163656D656E74 = global::Managed.Cui.Cui.cui_placement;
-using __DotCcEnum_6375695F737461747573 = global::Managed.Cui.Cui.cui_status;
-using __DotCcEnum_6375695F6C6F616465725F7374796C65 = global::Managed.Cui.Cui.cui_loader_style;
-using __DotCcEnum_6375695F617869735F756E697473 = global::Managed.Cui.Cui.cui_axis_units;
-using __DotCcEnum_6375695F6A6F625F737461747573 = global::Managed.Cui.Cui.cui_job_status;
-using __DotCcEnum_6375695F7365766572697479 = global::Managed.Cui.Cui.cui_severity;
-using cui_accent = global::Managed.Cui.Cui.cui_accent;
-using cui_agent_plan_opts = global::Managed.Cui.Cui.cui_agent_plan_opts;
-using cui_agent_status_opts = global::Managed.Cui.Cui.cui_agent_status_opts;
-using cui_alert_opts = global::Managed.Cui.Cui.cui_alert_opts;
-using cui_align = global::Managed.Cui.Cui.cui_align;
-using cui_allocator = global::Managed.Cui.Cui.cui_allocator;
-using cui_annotation_kind = global::Managed.Cui.Cui.cui_annotation_kind;
-using cui_api_endpoint = global::Managed.Cui.Cui.cui_api_endpoint;
-using cui_api_explorer_opts = global::Managed.Cui.Cui.cui_api_explorer_opts;
-using cui_api_explorer_result = global::Managed.Cui.Cui.cui_api_explorer_result;
-using cui_api_param = global::Managed.Cui.Cui.cui_api_param;
-using cui_avatar_opts = global::Managed.Cui.Cui.cui_avatar_opts;
-using cui_axis_units = global::Managed.Cui.Cui.cui_axis_units;
-using cui_badge_opts = global::Managed.Cui.Cui.cui_badge_opts;
-using cui_banner_opts = global::Managed.Cui.Cui.cui_banner_opts;
-using cui_bar_list_opts = global::Managed.Cui.Cui.cui_bar_list_opts;
-using cui_blame_commit = global::Managed.Cui.Cui.cui_blame_commit;
-using cui_blame_opts = global::Managed.Cui.Cui.cui_blame_opts;
-using cui_blame_result = global::Managed.Cui.Cui.cui_blame_result;
-using cui_box = global::Managed.Cui.Cui.cui_box;
-using cui_button_opts = global::Managed.Cui.Cui.cui_button_opts;
-using cui_button_variant = global::Managed.Cui.Cui.cui_button_variant;
-using cui_cal_event = global::Managed.Cui.Cui.cui_cal_event;
-using cui_calendar_heatmap_opts = global::Managed.Cui.Cui.cui_calendar_heatmap_opts;
-using cui_candle = global::Managed.Cui.Cui.cui_candle;
-using cui_candlestick_opts = global::Managed.Cui.Cui.cui_candlestick_opts;
-using cui_canvas_result = global::Managed.Cui.Cui.cui_canvas_result;
-using cui_card_opts = global::Managed.Cui.Cui.cui_card_opts;
-using cui_card_stack_opts = global::Managed.Cui.Cui.cui_card_stack_opts;
-using cui_carousel_opts = global::Managed.Cui.Cui.cui_carousel_opts;
-using cui_chart_annotation = global::Managed.Cui.Cui.cui_chart_annotation;
-using cui_chart_opts = global::Managed.Cui.Cui.cui_chart_opts;
-using cui_chat_opts = global::Managed.Cui.Cui.cui_chat_opts;
-using cui_check_opts = global::Managed.Cui.Cui.cui_check_opts;
-using cui_check_step = global::Managed.Cui.Cui.cui_check_step;
-using cui_checklist_opts = global::Managed.Cui.Cui.cui_checklist_opts;
-using cui_chip_opts = global::Managed.Cui.Cui.cui_chip_opts;
-using cui_choice = global::Managed.Cui.Cui.cui_choice;
-using cui_code_editor_opts = global::Managed.Cui.Cui.cui_code_editor_opts;
-using cui_code_editor_result = global::Managed.Cui.Cui.cui_code_editor_result;
-using cui_code_opts = global::Managed.Cui.Cui.cui_code_opts;
-using cui_color = global::Managed.Cui.Cui.cui_color;
-using cui_command = global::Managed.Cui.Cui.cui_command;
-using cui_comment_opts = global::Managed.Cui.Cui.cui_comment_opts;
-using cui_commit = global::Managed.Cui.Cui.cui_commit;
-using cui_commit_graph_opts = global::Managed.Cui.Cui.cui_commit_graph_opts;
-using cui_commit_graph_result = global::Managed.Cui.Cui.cui_commit_graph_result;
-using cui_compare_opts = global::Managed.Cui.Cui.cui_compare_opts;
-using cui_composer_opts = global::Managed.Cui.Cui.cui_composer_opts;
-using cui_confirm_opts = global::Managed.Cui.Cui.cui_confirm_opts;
-using cui_confirm_popover_opts = global::Managed.Cui.Cui.cui_confirm_popover_opts;
-using cui_context_opts = global::Managed.Cui.Cui.cui_context_opts;
-using cui_control_size = global::Managed.Cui.Cui.cui_control_size;
-using cui_corners = global::Managed.Cui.Cui.cui_corners;
-using cui_countdown_opts = global::Managed.Cui.Cui.cui_countdown_opts;
-using cui_counter_opts = global::Managed.Cui.Cui.cui_counter_opts;
-using cui_coverage_file = global::Managed.Cui.Cui.cui_coverage_file;
-using cui_coverage_opts = global::Managed.Cui.Cui.cui_coverage_opts;
-using cui_coverage_result = global::Managed.Cui.Cui.cui_coverage_result;
-using cui_cropper_opts = global::Managed.Cui.Cui.cui_cropper_opts;
-using cui_ctx = global::Managed.Cui.Cui.cui_ctx;
-using cui_ctx_desc = global::Managed.Cui.Cui.cui_ctx_desc;
-using cui_cursor = global::Managed.Cui.Cui.cui_cursor;
-using cui_curve_key = global::Managed.Cui.Cui.cui_curve_key;
-using cui_curve_mode = global::Managed.Cui.Cui.cui_curve_mode;
-using cui_curve_opts = global::Managed.Cui.Cui.cui_curve_opts;
-using cui_curve_result = global::Managed.Cui.Cui.cui_curve_result;
-using cui_date = global::Managed.Cui.Cui.cui_date;
-using cui_date_opts = global::Managed.Cui.Cui.cui_date_opts;
-using cui_date_range = global::Managed.Cui.Cui.cui_date_range;
-using cui_date_range_opts = global::Managed.Cui.Cui.cui_date_range_opts;
-using cui_diagnostic = global::Managed.Cui.Cui.cui_diagnostic;
-using cui_dialog_opts = global::Managed.Cui.Cui.cui_dialog_opts;
-using cui_diff_hunk = global::Managed.Cui.Cui.cui_diff_hunk;
-using cui_diff_mode = global::Managed.Cui.Cui.cui_diff_mode;
-using cui_diff_opts = global::Managed.Cui.Cui.cui_diff_opts;
-using cui_diff_range = global::Managed.Cui.Cui.cui_diff_range;
-using cui_diff_result = global::Managed.Cui.Cui.cui_diff_result;
-using cui_diff_row = global::Managed.Cui.Cui.cui_diff_row;
-using cui_diff_row_kind = global::Managed.Cui.Cui.cui_diff_row_kind;
-using cui_diff_stats = global::Managed.Cui.Cui.cui_diff_stats;
-using cui_dir = global::Managed.Cui.Cui.cui_dir;
-using cui_direction = global::Managed.Cui.Cui.cui_direction;
-using cui_doc_tab = global::Managed.Cui.Cui.cui_doc_tab;
-using cui_doc_tabs_opts = global::Managed.Cui.Cui.cui_doc_tabs_opts;
-using cui_doc_tabs_result = global::Managed.Cui.Cui.cui_doc_tabs_result;
-using cui_dock_item_opts = global::Managed.Cui.Cui.cui_dock_item_opts;
-using cui_dock_opts = global::Managed.Cui.Cui.cui_dock_opts;
-using cui_dock_panel_opts = global::Managed.Cui.Cui.cui_dock_panel_opts;
-using cui_dockspace_opts = global::Managed.Cui.Cui.cui_dockspace_opts;
-using cui_dot_chart_opts = global::Managed.Cui.Cui.cui_dot_chart_opts;
-using cui_dot_chart_result = global::Managed.Cui.Cui.cui_dot_chart_result;
-using cui_dot_display_opts = global::Managed.Cui.Cui.cui_dot_display_opts;
-using cui_dot_series = global::Managed.Cui.Cui.cui_dot_series;
-using cui_draw_cmd = global::Managed.Cui.Cui.cui_draw_cmd;
-using cui_draw_data = global::Managed.Cui.Cui.cui_draw_data;
-using cui_dropzone_opts = global::Managed.Cui.Cui.cui_dropzone_opts;
-using cui_elevation = global::Managed.Cui.Cui.cui_elevation;
-using cui_emoji_picker_opts = global::Managed.Cui.Cui.cui_emoji_picker_opts;
-using cui_empty_opts = global::Managed.Cui.Cui.cui_empty_opts;
-using cui_event_track_opts = global::Managed.Cui.Cui.cui_event_track_opts;
-using cui_event_track_result = global::Managed.Cui.Cui.cui_event_track_result;
-using cui_expandable_card_opts = global::Managed.Cui.Cui.cui_expandable_card_opts;
-using cui_expandable_text_opts = global::Managed.Cui.Cui.cui_expandable_text_opts;
-using cui_fader_opts = global::Managed.Cui.Cui.cui_fader_opts;
-using cui_feature_flag = global::Managed.Cui.Cui.cui_feature_flag;
-using cui_feature_flags_opts = global::Managed.Cui.Cui.cui_feature_flags_opts;
-using cui_feature_flags_result = global::Managed.Cui.Cui.cui_feature_flags_result;
-using cui_file_browser_opts = global::Managed.Cui.Cui.cui_file_browser_opts;
-using cui_file_browser_result = global::Managed.Cui.Cui.cui_file_browser_result;
-using cui_file_entry = global::Managed.Cui.Cui.cui_file_entry;
-using cui_file_picker_opts = global::Managed.Cui.Cui.cui_file_picker_opts;
-using cui_filter_field = global::Managed.Cui.Cui.cui_filter_field;
-using cui_flame_opts = global::Managed.Cui.Cui.cui_flame_opts;
-using cui_flame_result = global::Managed.Cui.Cui.cui_flame_result;
-using cui_flame_span = global::Managed.Cui.Cui.cui_flame_span;
-using cui_flame_view = global::Managed.Cui.Cui.cui_flame_view;
-using cui_funnel_opts = global::Managed.Cui.Cui.cui_funnel_opts;
-using cui_gantt_opts = global::Managed.Cui.Cui.cui_gantt_opts;
-using cui_gantt_task = global::Managed.Cui.Cui.cui_gantt_task;
-using cui_gauge_band = global::Managed.Cui.Cui.cui_gauge_band;
-using cui_gradient_opts = global::Managed.Cui.Cui.cui_gradient_opts;
-using cui_gradient_result = global::Managed.Cui.Cui.cui_gradient_result;
-using cui_gradient_stop = global::Managed.Cui.Cui.cui_gradient_stop;
-using cui_gradient_text_opts = global::Managed.Cui.Cui.cui_gradient_text_opts;
-using cui_graph_edge = global::Managed.Cui.Cui.cui_graph_edge;
-using cui_graph_node = global::Managed.Cui.Cui.cui_graph_node;
-using cui_graph_opts = global::Managed.Cui.Cui.cui_graph_opts;
-using cui_graph_result = global::Managed.Cui.Cui.cui_graph_result;
-using cui_grid_column = global::Managed.Cui.Cui.cui_grid_column;
-using cui_grid_opts = global::Managed.Cui.Cui.cui_grid_opts;
-using cui_heatmap_opts = global::Managed.Cui.Cui.cui_heatmap_opts;
-using cui_hex_range = global::Managed.Cui.Cui.cui_hex_range;
-using cui_hex_result = global::Managed.Cui.Cui.cui_hex_result;
-using cui_hex_selection = global::Managed.Cui.Cui.cui_hex_selection;
-using cui_hex_view_opts = global::Managed.Cui.Cui.cui_hex_view_opts;
-using cui_histogram_opts = global::Managed.Cui.Cui.cui_histogram_opts;
-using cui_histogram_series = global::Managed.Cui.Cui.cui_histogram_series;
-using cui_hold_opts = global::Managed.Cui.Cui.cui_hold_opts;
-using cui_hover_card_opts = global::Managed.Cui.Cui.cui_hover_card_opts;
-using cui_http_method = global::Managed.Cui.Cui.cui_http_method;
-using cui_image_opts = global::Managed.Cui.Cui.cui_image_opts;
-using cui_image_view = global::Managed.Cui.Cui.cui_image_view;
-using cui_image_viewer_opts = global::Managed.Cui.Cui.cui_image_viewer_opts;
-using cui_inline_edit_opts = global::Managed.Cui.Cui.cui_inline_edit_opts;
-using cui_input_opts = global::Managed.Cui.Cui.cui_input_opts;
-using cui_inspector_opts = global::Managed.Cui.Cui.cui_inspector_opts;
-using cui_job_status = global::Managed.Cui.Cui.cui_job_status;
-using cui_json_opts = global::Managed.Cui.Cui.cui_json_opts;
-using cui_justify = global::Managed.Cui.Cui.cui_justify;
-using cui_kanban_column_opts = global::Managed.Cui.Cui.cui_kanban_column_opts;
-using cui_kanban_move = global::Managed.Cui.Cui.cui_kanban_move;
-using cui_key = global::Managed.Cui.Cui.cui_key;
-using cui_key_combo = global::Managed.Cui.Cui.cui_key_combo;
-using cui_keymap_binding = global::Managed.Cui.Cui.cui_keymap_binding;
-using cui_keymap_opts = global::Managed.Cui.Cui.cui_keymap_opts;
-using cui_keymap_result = global::Managed.Cui.Cui.cui_keymap_result;
-using cui_knob_opts = global::Managed.Cui.Cui.cui_knob_opts;
-using cui_kv_editor_opts = global::Managed.Cui.Cui.cui_kv_editor_opts;
-using cui_kv_pair = global::Managed.Cui.Cui.cui_kv_pair;
-using cui_level_meter_opts = global::Managed.Cui.Cui.cui_level_meter_opts;
-using cui_list_item_opts = global::Managed.Cui.Cui.cui_list_item_opts;
-using cui_loader_opts = global::Managed.Cui.Cui.cui_loader_opts;
-using cui_loader_style = global::Managed.Cui.Cui.cui_loader_style;
-using cui_log_buffer = global::Managed.Cui.Cui.cui_log_buffer;
-using cui_log_level = global::Managed.Cui.Cui.cui_log_level;
-using cui_log_line = global::Managed.Cui.Cui.cui_log_line;
-using cui_log_view_opts = global::Managed.Cui.Cui.cui_log_view_opts;
-using cui_markdown_opts = global::Managed.Cui.Cui.cui_markdown_opts;
-using cui_markdown_result = global::Managed.Cui.Cui.cui_markdown_result;
-using cui_menu_bar_menu_opts = global::Managed.Cui.Cui.cui_menu_bar_menu_opts;
-using cui_menu_bar_opts = global::Managed.Cui.Cui.cui_menu_bar_opts;
-using cui_menu_item_opts = global::Managed.Cui.Cui.cui_menu_item_opts;
-using cui_menu_opts = global::Managed.Cui.Cui.cui_menu_opts;
-using cui_metric_opts = global::Managed.Cui.Cui.cui_metric_opts;
-using cui_mod = global::Managed.Cui.Cui.cui_mod;
-using cui_model = global::Managed.Cui.Cui.cui_model;
-using cui_model_picker_opts = global::Managed.Cui.Cui.cui_model_picker_opts;
-using cui_money_opts = global::Managed.Cui.Cui.cui_money_opts;
-using cui_month_event = global::Managed.Cui.Cui.cui_month_event;
-using cui_month_opts = global::Managed.Cui.Cui.cui_month_opts;
-using cui_month_result = global::Managed.Cui.Cui.cui_month_result;
-using cui_mouse_button = global::Managed.Cui.Cui.cui_mouse_button;
-using cui_multi_select_opts = global::Managed.Cui.Cui.cui_multi_select_opts;
-using cui_nav_opts = global::Managed.Cui.Cui.cui_nav_opts;
-using cui_net_request = global::Managed.Cui.Cui.cui_net_request;
-using cui_node_editor_opts = global::Managed.Cui.Cui.cui_node_editor_opts;
-using cui_node_opts = global::Managed.Cui.Cui.cui_node_opts;
-using cui_node_view = global::Managed.Cui.Cui.cui_node_view;
-using cui_now_playing = global::Managed.Cui.Cui.cui_now_playing;
-using cui_now_playing_opts = global::Managed.Cui.Cui.cui_now_playing_opts;
-using cui_number_opts = global::Managed.Cui.Cui.cui_number_opts;
-using cui_path_bar_opts = global::Managed.Cui.Cui.cui_path_bar_opts;
-using cui_path_bar_result = global::Managed.Cui.Cui.cui_path_bar_result;
-using cui_pin_opts = global::Managed.Cui.Cui.cui_pin_opts;
-using cui_pipeline_job = global::Managed.Cui.Cui.cui_pipeline_job;
-using cui_pipeline_opts = global::Managed.Cui.Cui.cui_pipeline_opts;
-using cui_pipeline_result = global::Managed.Cui.Cui.cui_pipeline_result;
-using cui_placement = global::Managed.Cui.Cui.cui_placement;
-using cui_plan_step = global::Managed.Cui.Cui.cui_plan_step;
-using cui_platform_iface = global::Managed.Cui.Cui.cui_platform_iface;
-using cui_popover_opts = global::Managed.Cui.Cui.cui_popover_opts;
-using cui_presence_user = global::Managed.Cui.Cui.cui_presence_user;
-using cui_problems_opts = global::Managed.Cui.Cui.cui_problems_opts;
-using cui_problems_result = global::Managed.Cui.Cui.cui_problems_result;
-using cui_progress_opts = global::Managed.Cui.Cui.cui_progress_opts;
-using cui_prompt_suggestion = global::Managed.Cui.Cui.cui_prompt_suggestion;
-using cui_prompt_suggestions_opts = global::Managed.Cui.Cui.cui_prompt_suggestions_opts;
-using cui_prop_opts = global::Managed.Cui.Cui.cui_prop_opts;
-using cui_query_field = global::Managed.Cui.Cui.cui_query_field;
-using cui_query_node = global::Managed.Cui.Cui.cui_query_node;
-using cui_query_opts = global::Managed.Cui.Cui.cui_query_opts;
-using cui_query_type = global::Managed.Cui.Cui.cui_query_type;
-using cui_radar_opts = global::Managed.Cui.Cui.cui_radar_opts;
-using cui_radial_gauge_opts = global::Managed.Cui.Cui.cui_radial_gauge_opts;
-using cui_radio_cards_opts = global::Managed.Cui.Cui.cui_radio_cards_opts;
-using cui_reaction = global::Managed.Cui.Cui.cui_reaction;
-using cui_readout_opts = global::Managed.Cui.Cui.cui_readout_opts;
-using cui_reasoning_opts = global::Managed.Cui.Cui.cui_reasoning_opts;
-using cui_rect = global::Managed.Cui.Cui.cui_rect;
-using cui_regex_match = global::Managed.Cui.Cui.cui_regex_match;
-using cui_regex_tester_opts = global::Managed.Cui.Cui.cui_regex_tester_opts;
-using cui_regex_tester_result = global::Managed.Cui.Cui.cui_regex_tester_result;
-using cui_renderer_iface = global::Managed.Cui.Cui.cui_renderer_iface;
-using cui_request_bar_opts = global::Managed.Cui.Cui.cui_request_bar_opts;
-using cui_request_bar_result = global::Managed.Cui.Cui.cui_request_bar_result;
-using cui_response_actions_opts = global::Managed.Cui.Cui.cui_response_actions_opts;
-using cui_rings_opts = global::Managed.Cui.Cui.cui_rings_opts;
-using cui_ruler_opts = global::Managed.Cui.Cui.cui_ruler_opts;
-using cui_sankey_link = global::Managed.Cui.Cui.cui_sankey_link;
-using cui_sankey_opts = global::Managed.Cui.Cui.cui_sankey_opts;
-using cui_scatter_opts = global::Managed.Cui.Cui.cui_scatter_opts;
-using cui_scatter_series = global::Managed.Cui.Cui.cui_scatter_series;
-using cui_schedule_opts = global::Managed.Cui.Cui.cui_schedule_opts;
-using cui_schedule_result = global::Managed.Cui.Cui.cui_schedule_result;
-using cui_scroll_opts = global::Managed.Cui.Cui.cui_scroll_opts;
-using cui_scrub_opts = global::Managed.Cui.Cui.cui_scrub_opts;
-using cui_segmented_opts = global::Managed.Cui.Cui.cui_segmented_opts;
-using cui_select_opts = global::Managed.Cui.Cui.cui_select_opts;
-using cui_series = global::Managed.Cui.Cui.cui_series;
-using cui_severity = global::Managed.Cui.Cui.cui_severity;
-using cui_shadow = global::Managed.Cui.Cui.cui_shadow;
-using cui_sheet_opts = global::Managed.Cui.Cui.cui_sheet_opts;
-using cui_shortcut_recorder_opts = global::Managed.Cui.Cui.cui_shortcut_recorder_opts;
-using cui_side = global::Managed.Cui.Cui.cui_side;
-using cui_signature_opts = global::Managed.Cui.Cui.cui_signature_opts;
-using cui_size = global::Managed.Cui.Cui.cui_size;
-using cui_size_kind = global::Managed.Cui.Cui.cui_size_kind;
-using cui_slider_opts = global::Managed.Cui.Cui.cui_slider_opts;
-using cui_source = global::Managed.Cui.Cui.cui_source;
-using cui_speed_action = global::Managed.Cui.Cui.cui_speed_action;
-using cui_speed_dial_opts = global::Managed.Cui.Cui.cui_speed_dial_opts;
-using cui_split_bar_opts = global::Managed.Cui.Cui.cui_split_bar_opts;
-using cui_split_button_opts = global::Managed.Cui.Cui.cui_split_button_opts;
-using cui_split_opts = global::Managed.Cui.Cui.cui_split_opts;
-using cui_spotlight_opts = global::Managed.Cui.Cui.cui_spotlight_opts;
-using cui_stack_frame = global::Managed.Cui.Cui.cui_stack_frame;
-using cui_stack_trace_opts = global::Managed.Cui.Cui.cui_stack_trace_opts;
-using cui_stack_trace_result = global::Managed.Cui.Cui.cui_stack_trace_result;
-using cui_status = global::Managed.Cui.Cui.cui_status;
-using cui_status_bar_opts = global::Managed.Cui.Cui.cui_status_bar_opts;
-using cui_status_button_opts = global::Managed.Cui.Cui.cui_status_button_opts;
-using cui_status_item_opts = global::Managed.Cui.Cui.cui_status_item_opts;
-using cui_status_progress_opts = global::Managed.Cui.Cui.cui_status_progress_opts;
-using cui_strings = global::Managed.Cui.Cui.cui_strings;
-using cui_swipe_action = global::Managed.Cui.Cui.cui_swipe_action;
-using cui_tab_bar_item = global::Managed.Cui.Cui.cui_tab_bar_item;
-using cui_tab_bar_opts = global::Managed.Cui.Cui.cui_tab_bar_opts;
-using cui_table_column = global::Managed.Cui.Cui.cui_table_column;
-using cui_table_opts = global::Managed.Cui.Cui.cui_table_opts;
-using cui_table_sort = global::Managed.Cui.Cui.cui_table_sort;
-using cui_tabs_opts = global::Managed.Cui.Cui.cui_tabs_opts;
-using cui_tabs_variant = global::Managed.Cui.Cui.cui_tabs_variant;
-using cui_tag_opts = global::Managed.Cui.Cui.cui_tag_opts;
-using cui_task_status = global::Managed.Cui.Cui.cui_task_status;
-using cui_terminal_buffer = global::Managed.Cui.Cui.cui_terminal_buffer;
-using cui_terminal_line = global::Managed.Cui.Cui.cui_terminal_line;
-using cui_terminal_opts = global::Managed.Cui.Cui.cui_terminal_opts;
-using cui_terminal_result = global::Managed.Cui.Cui.cui_terminal_result;
-using cui_test_explorer_opts = global::Managed.Cui.Cui.cui_test_explorer_opts;
-using cui_test_explorer_result = global::Managed.Cui.Cui.cui_test_explorer_result;
-using cui_test_item = global::Managed.Cui.Cui.cui_test_item;
-using cui_text_align = global::Managed.Cui.Cui.cui_text_align;
-using cui_text_fx_opts = global::Managed.Cui.Cui.cui_text_fx_opts;
-using cui_text_mark = global::Managed.Cui.Cui.cui_text_mark;
-using cui_text_metrics = global::Managed.Cui.Cui.cui_text_metrics;
-using cui_text_opts = global::Managed.Cui.Cui.cui_text_opts;
-using cui_texture_format = global::Managed.Cui.Cui.cui_texture_format;
-using cui_theme = global::Managed.Cui.Cui.cui_theme;
-using cui_theme_mode = global::Managed.Cui.Cui.cui_theme_mode;
-using cui_ticker_item = global::Managed.Cui.Cui.cui_ticker_item;
-using cui_ticker_opts = global::Managed.Cui.Cui.cui_ticker_opts;
-using cui_tile_opts = global::Managed.Cui.Cui.cui_tile_opts;
-using cui_time_histogram_opts = global::Managed.Cui.Cui.cui_time_histogram_opts;
-using cui_time_histogram_result = global::Managed.Cui.Cui.cui_time_histogram_result;
-using cui_time_opts = global::Managed.Cui.Cui.cui_time_opts;
-using cui_timeline_clip = global::Managed.Cui.Cui.cui_timeline_clip;
-using cui_timeline_editor_opts = global::Managed.Cui.Cui.cui_timeline_editor_opts;
-using cui_timeline_editor_result = global::Managed.Cui.Cui.cui_timeline_editor_result;
-using cui_timeline_opts = global::Managed.Cui.Cui.cui_timeline_opts;
-using cui_timeline_ruler = global::Managed.Cui.Cui.cui_timeline_ruler;
-using cui_timeline_track = global::Managed.Cui.Cui.cui_timeline_track;
-using cui_timeline_view = global::Managed.Cui.Cui.cui_timeline_view;
-using cui_toast_opts = global::Managed.Cui.Cui.cui_toast_opts;
-using cui_toc_item = global::Managed.Cui.Cui.cui_toc_item;
-using cui_toggle_group_opts = global::Managed.Cui.Cui.cui_toggle_group_opts;
-using cui_token = global::Managed.Cui.Cui.cui_token;
-using cui_tone = global::Managed.Cui.Cui.cui_tone;
-using cui_tool_call_opts = global::Managed.Cui.Cui.cui_tool_call_opts;
-using cui_tool_opts = global::Managed.Cui.Cui.cui_tool_opts;
-using cui_toolbar_opts = global::Managed.Cui.Cui.cui_toolbar_opts;
-using cui_tour_opts = global::Managed.Cui.Cui.cui_tour_opts;
-using cui_tour_step = global::Managed.Cui.Cui.cui_tour_step;
-using cui_trace_marker = global::Managed.Cui.Cui.cui_trace_marker;
-using cui_trace_opts = global::Managed.Cui.Cui.cui_trace_opts;
-using cui_trace_result = global::Managed.Cui.Cui.cui_trace_result;
-using cui_trace_span = global::Managed.Cui.Cui.cui_trace_span;
-using cui_trace_track = global::Managed.Cui.Cui.cui_trace_track;
-using cui_trace_view = global::Managed.Cui.Cui.cui_trace_view;
-using cui_tree_node = global::Managed.Cui.Cui.cui_tree_node;
-using cui_tree_opts = global::Managed.Cui.Cui.cui_tree_opts;
-using cui_tree_table_events = global::Managed.Cui.Cui.cui_tree_table_events;
-using cui_tree_table_opts = global::Managed.Cui.Cui.cui_tree_table_opts;
-using cui_treemap_opts = global::Managed.Cui.Cui.cui_treemap_opts;
-using cui_uptime_opts = global::Managed.Cui.Cui.cui_uptime_opts;
-using cui_uptime_result = global::Managed.Cui.Cui.cui_uptime_result;
-using cui_uptime_service = global::Managed.Cui.Cui.cui_uptime_service;
-using cui_user_menu_opts = global::Managed.Cui.Cui.cui_user_menu_opts;
-using cui_vec2 = global::Managed.Cui.Cui.cui_vec2;
-using cui_vertex = global::Managed.Cui.Cui.cui_vertex;
-using cui_viz_item = global::Managed.Cui.Cui.cui_viz_item;
-using cui_voice_orb_opts = global::Managed.Cui.Cui.cui_voice_orb_opts;
-using cui_voice_state = global::Managed.Cui.Cui.cui_voice_state;
-using cui_waffle_opts = global::Managed.Cui.Cui.cui_waffle_opts;
-using cui_waterfall_opts = global::Managed.Cui.Cui.cui_waterfall_opts;
-using cui_waterfall_result = global::Managed.Cui.Cui.cui_waterfall_result;
-using cui_waveform_opts = global::Managed.Cui.Cui.cui_waveform_opts;
-using cui_week_opts = global::Managed.Cui.Cui.cui_week_opts;
-using cui_wheel_opts = global::Managed.Cui.Cui.cui_wheel_opts;
-using static global::Managed.Cui.Cui;
-using DotCcLiterals = global::Managed.Cui.Gallery.Gallery.GalleryLiterals;
-using DotCcPointers = global::Managed.Cui.Gallery.Gallery.GalleryFunctionPointers;
-using __DotCcFunctionOwner_636D705F70656F706C655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_636D705F74657874757265735F667265655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_66696C65735F6C6973745F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F616374696F6E735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F61695F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F617564696F5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F636170747572655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F636F64655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F646576746F6F6C73325F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F646576746F6F6C735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F646973636C6F737572655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F66696C65735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F677269645F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F696E707574735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F696E737472756D656E74735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F6D6F74696F6E5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F7069636B6572735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F706C616E6E696E675F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F7265616465725F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F736F6369616C5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_706167655F76697A5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Cui.Gallery.Gallery;
-using __DotCcFunctionOwner_7061696E745F7377617463685F5F756E69745F37364534383544383736324342323139334533373945353138384343354231343134393535324137354538363335434144373731454442384539393143414331 = global::Managed.Cui.Gallery.Gallery;
+using __DotCcEnum_6375695F646972 = global::Managed.Forms.Cui.cui_dir;
+using __DotCcEnum_6375695F6A757374696679 = global::Managed.Forms.Cui.cui_justify;
+using __DotCcEnum_6375695F73697A655F6B696E64 = global::Managed.Forms.Cui.cui_size_kind;
+using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Forms.Cui.cui_theme_mode;
+using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Forms.Cui.cui_button_variant;
+using __DotCcEnum_6375695F746F6E65 = global::Managed.Forms.Cui.cui_tone;
+using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Forms.Cui.cui_tabs_variant;
+using __DotCcEnum_6375695F73696465 = global::Managed.Forms.Cui.cui_side;
+using __DotCcEnum_6375695F616363656E74 = global::Managed.Forms.Cui.cui_accent;
+using __DotCcEnum_6375695F616C69676E = global::Managed.Forms.Cui.cui_align;
+using __DotCcEnum_6375695F746F6B656E = global::Managed.Forms.Cui.cui_token;
+using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Forms.Cui.cui_control_size;
+using __DotCcEnum_6375695F6B6579 = global::Managed.Forms.Cui.cui_key;
+using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Forms.Cui.cui_text_align;
+using __DotCcEnum_6375695F6D6F64 = global::Managed.Forms.Cui.cui_mod;
+using __DotCcEnum_6375695F616E6E6F746174696F6E5F6B696E64 = global::Managed.Forms.Cui.cui_annotation_kind;
+using __DotCcEnum_6375695F7461736B5F737461747573 = global::Managed.Forms.Cui.cui_task_status;
+using __DotCcEnum_6375695F71756572795F74797065 = global::Managed.Forms.Cui.cui_query_type;
+using __DotCcEnum_6375695F706C6163656D656E74 = global::Managed.Forms.Cui.cui_placement;
+using __DotCcEnum_6375695F737461747573 = global::Managed.Forms.Cui.cui_status;
+using __DotCcEnum_6375695F6C6F616465725F7374796C65 = global::Managed.Forms.Cui.cui_loader_style;
+using __DotCcEnum_6375695F617869735F756E697473 = global::Managed.Forms.Cui.cui_axis_units;
+using __DotCcEnum_6375695F6A6F625F737461747573 = global::Managed.Forms.Cui.cui_job_status;
+using __DotCcEnum_6375695F7365766572697479 = global::Managed.Forms.Cui.cui_severity;
+using cui_accent = global::Managed.Forms.Cui.cui_accent;
+using cui_agent_plan_opts = global::Managed.Forms.Cui.cui_agent_plan_opts;
+using cui_agent_status_opts = global::Managed.Forms.Cui.cui_agent_status_opts;
+using cui_alert_opts = global::Managed.Forms.Cui.cui_alert_opts;
+using cui_align = global::Managed.Forms.Cui.cui_align;
+using cui_allocator = global::Managed.Forms.Cui.cui_allocator;
+using cui_annotation_kind = global::Managed.Forms.Cui.cui_annotation_kind;
+using cui_api_endpoint = global::Managed.Forms.Cui.cui_api_endpoint;
+using cui_api_explorer_opts = global::Managed.Forms.Cui.cui_api_explorer_opts;
+using cui_api_explorer_result = global::Managed.Forms.Cui.cui_api_explorer_result;
+using cui_api_param = global::Managed.Forms.Cui.cui_api_param;
+using cui_avatar_opts = global::Managed.Forms.Cui.cui_avatar_opts;
+using cui_axis_units = global::Managed.Forms.Cui.cui_axis_units;
+using cui_badge_opts = global::Managed.Forms.Cui.cui_badge_opts;
+using cui_banner_opts = global::Managed.Forms.Cui.cui_banner_opts;
+using cui_bar_list_opts = global::Managed.Forms.Cui.cui_bar_list_opts;
+using cui_blame_commit = global::Managed.Forms.Cui.cui_blame_commit;
+using cui_blame_opts = global::Managed.Forms.Cui.cui_blame_opts;
+using cui_blame_result = global::Managed.Forms.Cui.cui_blame_result;
+using cui_box = global::Managed.Forms.Cui.cui_box;
+using cui_button_opts = global::Managed.Forms.Cui.cui_button_opts;
+using cui_button_variant = global::Managed.Forms.Cui.cui_button_variant;
+using cui_cal_event = global::Managed.Forms.Cui.cui_cal_event;
+using cui_calendar_heatmap_opts = global::Managed.Forms.Cui.cui_calendar_heatmap_opts;
+using cui_candle = global::Managed.Forms.Cui.cui_candle;
+using cui_candlestick_opts = global::Managed.Forms.Cui.cui_candlestick_opts;
+using cui_canvas_result = global::Managed.Forms.Cui.cui_canvas_result;
+using cui_card_opts = global::Managed.Forms.Cui.cui_card_opts;
+using cui_card_stack_opts = global::Managed.Forms.Cui.cui_card_stack_opts;
+using cui_carousel_opts = global::Managed.Forms.Cui.cui_carousel_opts;
+using cui_chart_annotation = global::Managed.Forms.Cui.cui_chart_annotation;
+using cui_chart_opts = global::Managed.Forms.Cui.cui_chart_opts;
+using cui_chat_opts = global::Managed.Forms.Cui.cui_chat_opts;
+using cui_check_opts = global::Managed.Forms.Cui.cui_check_opts;
+using cui_check_step = global::Managed.Forms.Cui.cui_check_step;
+using cui_checklist_opts = global::Managed.Forms.Cui.cui_checklist_opts;
+using cui_chip_opts = global::Managed.Forms.Cui.cui_chip_opts;
+using cui_choice = global::Managed.Forms.Cui.cui_choice;
+using cui_code_editor_opts = global::Managed.Forms.Cui.cui_code_editor_opts;
+using cui_code_editor_result = global::Managed.Forms.Cui.cui_code_editor_result;
+using cui_code_opts = global::Managed.Forms.Cui.cui_code_opts;
+using cui_color = global::Managed.Forms.Cui.cui_color;
+using cui_command = global::Managed.Forms.Cui.cui_command;
+using cui_comment_opts = global::Managed.Forms.Cui.cui_comment_opts;
+using cui_commit = global::Managed.Forms.Cui.cui_commit;
+using cui_commit_graph_opts = global::Managed.Forms.Cui.cui_commit_graph_opts;
+using cui_commit_graph_result = global::Managed.Forms.Cui.cui_commit_graph_result;
+using cui_compare_opts = global::Managed.Forms.Cui.cui_compare_opts;
+using cui_composer_opts = global::Managed.Forms.Cui.cui_composer_opts;
+using cui_confirm_opts = global::Managed.Forms.Cui.cui_confirm_opts;
+using cui_confirm_popover_opts = global::Managed.Forms.Cui.cui_confirm_popover_opts;
+using cui_context_opts = global::Managed.Forms.Cui.cui_context_opts;
+using cui_control_size = global::Managed.Forms.Cui.cui_control_size;
+using cui_corners = global::Managed.Forms.Cui.cui_corners;
+using cui_countdown_opts = global::Managed.Forms.Cui.cui_countdown_opts;
+using cui_counter_opts = global::Managed.Forms.Cui.cui_counter_opts;
+using cui_coverage_file = global::Managed.Forms.Cui.cui_coverage_file;
+using cui_coverage_opts = global::Managed.Forms.Cui.cui_coverage_opts;
+using cui_coverage_result = global::Managed.Forms.Cui.cui_coverage_result;
+using cui_cropper_opts = global::Managed.Forms.Cui.cui_cropper_opts;
+using cui_ctx = global::Managed.Forms.Cui.cui_ctx;
+using cui_ctx_desc = global::Managed.Forms.Cui.cui_ctx_desc;
+using cui_cursor = global::Managed.Forms.Cui.cui_cursor;
+using cui_curve_key = global::Managed.Forms.Cui.cui_curve_key;
+using cui_curve_mode = global::Managed.Forms.Cui.cui_curve_mode;
+using cui_curve_opts = global::Managed.Forms.Cui.cui_curve_opts;
+using cui_curve_result = global::Managed.Forms.Cui.cui_curve_result;
+using cui_date = global::Managed.Forms.Cui.cui_date;
+using cui_date_opts = global::Managed.Forms.Cui.cui_date_opts;
+using cui_date_range = global::Managed.Forms.Cui.cui_date_range;
+using cui_date_range_opts = global::Managed.Forms.Cui.cui_date_range_opts;
+using cui_diagnostic = global::Managed.Forms.Cui.cui_diagnostic;
+using cui_dialog_opts = global::Managed.Forms.Cui.cui_dialog_opts;
+using cui_diff_hunk = global::Managed.Forms.Cui.cui_diff_hunk;
+using cui_diff_mode = global::Managed.Forms.Cui.cui_diff_mode;
+using cui_diff_opts = global::Managed.Forms.Cui.cui_diff_opts;
+using cui_diff_range = global::Managed.Forms.Cui.cui_diff_range;
+using cui_diff_result = global::Managed.Forms.Cui.cui_diff_result;
+using cui_diff_row = global::Managed.Forms.Cui.cui_diff_row;
+using cui_diff_row_kind = global::Managed.Forms.Cui.cui_diff_row_kind;
+using cui_diff_stats = global::Managed.Forms.Cui.cui_diff_stats;
+using cui_dir = global::Managed.Forms.Cui.cui_dir;
+using cui_direction = global::Managed.Forms.Cui.cui_direction;
+using cui_doc_tab = global::Managed.Forms.Cui.cui_doc_tab;
+using cui_doc_tabs_opts = global::Managed.Forms.Cui.cui_doc_tabs_opts;
+using cui_doc_tabs_result = global::Managed.Forms.Cui.cui_doc_tabs_result;
+using cui_dock_item_opts = global::Managed.Forms.Cui.cui_dock_item_opts;
+using cui_dock_opts = global::Managed.Forms.Cui.cui_dock_opts;
+using cui_dock_panel_opts = global::Managed.Forms.Cui.cui_dock_panel_opts;
+using cui_dockspace_opts = global::Managed.Forms.Cui.cui_dockspace_opts;
+using cui_dot_chart_opts = global::Managed.Forms.Cui.cui_dot_chart_opts;
+using cui_dot_chart_result = global::Managed.Forms.Cui.cui_dot_chart_result;
+using cui_dot_display_opts = global::Managed.Forms.Cui.cui_dot_display_opts;
+using cui_dot_series = global::Managed.Forms.Cui.cui_dot_series;
+using cui_draw_cmd = global::Managed.Forms.Cui.cui_draw_cmd;
+using cui_draw_data = global::Managed.Forms.Cui.cui_draw_data;
+using cui_dropzone_opts = global::Managed.Forms.Cui.cui_dropzone_opts;
+using cui_elevation = global::Managed.Forms.Cui.cui_elevation;
+using cui_emoji_picker_opts = global::Managed.Forms.Cui.cui_emoji_picker_opts;
+using cui_empty_opts = global::Managed.Forms.Cui.cui_empty_opts;
+using cui_event_track_opts = global::Managed.Forms.Cui.cui_event_track_opts;
+using cui_event_track_result = global::Managed.Forms.Cui.cui_event_track_result;
+using cui_expandable_card_opts = global::Managed.Forms.Cui.cui_expandable_card_opts;
+using cui_expandable_text_opts = global::Managed.Forms.Cui.cui_expandable_text_opts;
+using cui_fader_opts = global::Managed.Forms.Cui.cui_fader_opts;
+using cui_feature_flag = global::Managed.Forms.Cui.cui_feature_flag;
+using cui_feature_flags_opts = global::Managed.Forms.Cui.cui_feature_flags_opts;
+using cui_feature_flags_result = global::Managed.Forms.Cui.cui_feature_flags_result;
+using cui_file_browser_opts = global::Managed.Forms.Cui.cui_file_browser_opts;
+using cui_file_browser_result = global::Managed.Forms.Cui.cui_file_browser_result;
+using cui_file_entry = global::Managed.Forms.Cui.cui_file_entry;
+using cui_file_picker_opts = global::Managed.Forms.Cui.cui_file_picker_opts;
+using cui_filter_field = global::Managed.Forms.Cui.cui_filter_field;
+using cui_flame_opts = global::Managed.Forms.Cui.cui_flame_opts;
+using cui_flame_result = global::Managed.Forms.Cui.cui_flame_result;
+using cui_flame_span = global::Managed.Forms.Cui.cui_flame_span;
+using cui_flame_view = global::Managed.Forms.Cui.cui_flame_view;
+using cui_funnel_opts = global::Managed.Forms.Cui.cui_funnel_opts;
+using cui_gantt_opts = global::Managed.Forms.Cui.cui_gantt_opts;
+using cui_gantt_task = global::Managed.Forms.Cui.cui_gantt_task;
+using cui_gauge_band = global::Managed.Forms.Cui.cui_gauge_band;
+using cui_gradient_opts = global::Managed.Forms.Cui.cui_gradient_opts;
+using cui_gradient_result = global::Managed.Forms.Cui.cui_gradient_result;
+using cui_gradient_stop = global::Managed.Forms.Cui.cui_gradient_stop;
+using cui_gradient_text_opts = global::Managed.Forms.Cui.cui_gradient_text_opts;
+using cui_graph_edge = global::Managed.Forms.Cui.cui_graph_edge;
+using cui_graph_node = global::Managed.Forms.Cui.cui_graph_node;
+using cui_graph_opts = global::Managed.Forms.Cui.cui_graph_opts;
+using cui_graph_result = global::Managed.Forms.Cui.cui_graph_result;
+using cui_grid_column = global::Managed.Forms.Cui.cui_grid_column;
+using cui_grid_opts = global::Managed.Forms.Cui.cui_grid_opts;
+using cui_heatmap_opts = global::Managed.Forms.Cui.cui_heatmap_opts;
+using cui_hex_range = global::Managed.Forms.Cui.cui_hex_range;
+using cui_hex_result = global::Managed.Forms.Cui.cui_hex_result;
+using cui_hex_selection = global::Managed.Forms.Cui.cui_hex_selection;
+using cui_hex_view_opts = global::Managed.Forms.Cui.cui_hex_view_opts;
+using cui_histogram_opts = global::Managed.Forms.Cui.cui_histogram_opts;
+using cui_histogram_series = global::Managed.Forms.Cui.cui_histogram_series;
+using cui_hold_opts = global::Managed.Forms.Cui.cui_hold_opts;
+using cui_hover_card_opts = global::Managed.Forms.Cui.cui_hover_card_opts;
+using cui_http_method = global::Managed.Forms.Cui.cui_http_method;
+using cui_image_opts = global::Managed.Forms.Cui.cui_image_opts;
+using cui_image_view = global::Managed.Forms.Cui.cui_image_view;
+using cui_image_viewer_opts = global::Managed.Forms.Cui.cui_image_viewer_opts;
+using cui_inline_edit_opts = global::Managed.Forms.Cui.cui_inline_edit_opts;
+using cui_input_opts = global::Managed.Forms.Cui.cui_input_opts;
+using cui_inspector_opts = global::Managed.Forms.Cui.cui_inspector_opts;
+using cui_job_status = global::Managed.Forms.Cui.cui_job_status;
+using cui_json_opts = global::Managed.Forms.Cui.cui_json_opts;
+using cui_justify = global::Managed.Forms.Cui.cui_justify;
+using cui_kanban_column_opts = global::Managed.Forms.Cui.cui_kanban_column_opts;
+using cui_kanban_move = global::Managed.Forms.Cui.cui_kanban_move;
+using cui_key = global::Managed.Forms.Cui.cui_key;
+using cui_key_combo = global::Managed.Forms.Cui.cui_key_combo;
+using cui_keymap_binding = global::Managed.Forms.Cui.cui_keymap_binding;
+using cui_keymap_opts = global::Managed.Forms.Cui.cui_keymap_opts;
+using cui_keymap_result = global::Managed.Forms.Cui.cui_keymap_result;
+using cui_knob_opts = global::Managed.Forms.Cui.cui_knob_opts;
+using cui_kv_editor_opts = global::Managed.Forms.Cui.cui_kv_editor_opts;
+using cui_kv_pair = global::Managed.Forms.Cui.cui_kv_pair;
+using cui_level_meter_opts = global::Managed.Forms.Cui.cui_level_meter_opts;
+using cui_list_item_opts = global::Managed.Forms.Cui.cui_list_item_opts;
+using cui_loader_opts = global::Managed.Forms.Cui.cui_loader_opts;
+using cui_loader_style = global::Managed.Forms.Cui.cui_loader_style;
+using cui_log_buffer = global::Managed.Forms.Cui.cui_log_buffer;
+using cui_log_level = global::Managed.Forms.Cui.cui_log_level;
+using cui_log_line = global::Managed.Forms.Cui.cui_log_line;
+using cui_log_view_opts = global::Managed.Forms.Cui.cui_log_view_opts;
+using cui_markdown_opts = global::Managed.Forms.Cui.cui_markdown_opts;
+using cui_markdown_result = global::Managed.Forms.Cui.cui_markdown_result;
+using cui_menu_bar_menu_opts = global::Managed.Forms.Cui.cui_menu_bar_menu_opts;
+using cui_menu_bar_opts = global::Managed.Forms.Cui.cui_menu_bar_opts;
+using cui_menu_item_opts = global::Managed.Forms.Cui.cui_menu_item_opts;
+using cui_menu_opts = global::Managed.Forms.Cui.cui_menu_opts;
+using cui_metric_opts = global::Managed.Forms.Cui.cui_metric_opts;
+using cui_mod = global::Managed.Forms.Cui.cui_mod;
+using cui_model = global::Managed.Forms.Cui.cui_model;
+using cui_model_picker_opts = global::Managed.Forms.Cui.cui_model_picker_opts;
+using cui_money_opts = global::Managed.Forms.Cui.cui_money_opts;
+using cui_month_event = global::Managed.Forms.Cui.cui_month_event;
+using cui_month_opts = global::Managed.Forms.Cui.cui_month_opts;
+using cui_month_result = global::Managed.Forms.Cui.cui_month_result;
+using cui_mouse_button = global::Managed.Forms.Cui.cui_mouse_button;
+using cui_multi_select_opts = global::Managed.Forms.Cui.cui_multi_select_opts;
+using cui_nav_opts = global::Managed.Forms.Cui.cui_nav_opts;
+using cui_net_request = global::Managed.Forms.Cui.cui_net_request;
+using cui_node_editor_opts = global::Managed.Forms.Cui.cui_node_editor_opts;
+using cui_node_opts = global::Managed.Forms.Cui.cui_node_opts;
+using cui_node_view = global::Managed.Forms.Cui.cui_node_view;
+using cui_now_playing = global::Managed.Forms.Cui.cui_now_playing;
+using cui_now_playing_opts = global::Managed.Forms.Cui.cui_now_playing_opts;
+using cui_number_opts = global::Managed.Forms.Cui.cui_number_opts;
+using cui_path_bar_opts = global::Managed.Forms.Cui.cui_path_bar_opts;
+using cui_path_bar_result = global::Managed.Forms.Cui.cui_path_bar_result;
+using cui_pin_opts = global::Managed.Forms.Cui.cui_pin_opts;
+using cui_pipeline_job = global::Managed.Forms.Cui.cui_pipeline_job;
+using cui_pipeline_opts = global::Managed.Forms.Cui.cui_pipeline_opts;
+using cui_pipeline_result = global::Managed.Forms.Cui.cui_pipeline_result;
+using cui_placement = global::Managed.Forms.Cui.cui_placement;
+using cui_plan_step = global::Managed.Forms.Cui.cui_plan_step;
+using cui_platform_iface = global::Managed.Forms.Cui.cui_platform_iface;
+using cui_popover_opts = global::Managed.Forms.Cui.cui_popover_opts;
+using cui_presence_user = global::Managed.Forms.Cui.cui_presence_user;
+using cui_problems_opts = global::Managed.Forms.Cui.cui_problems_opts;
+using cui_problems_result = global::Managed.Forms.Cui.cui_problems_result;
+using cui_progress_opts = global::Managed.Forms.Cui.cui_progress_opts;
+using cui_prompt_suggestion = global::Managed.Forms.Cui.cui_prompt_suggestion;
+using cui_prompt_suggestions_opts = global::Managed.Forms.Cui.cui_prompt_suggestions_opts;
+using cui_prop_opts = global::Managed.Forms.Cui.cui_prop_opts;
+using cui_query_field = global::Managed.Forms.Cui.cui_query_field;
+using cui_query_node = global::Managed.Forms.Cui.cui_query_node;
+using cui_query_opts = global::Managed.Forms.Cui.cui_query_opts;
+using cui_query_type = global::Managed.Forms.Cui.cui_query_type;
+using cui_radar_opts = global::Managed.Forms.Cui.cui_radar_opts;
+using cui_radial_gauge_opts = global::Managed.Forms.Cui.cui_radial_gauge_opts;
+using cui_radio_cards_opts = global::Managed.Forms.Cui.cui_radio_cards_opts;
+using cui_reaction = global::Managed.Forms.Cui.cui_reaction;
+using cui_readout_opts = global::Managed.Forms.Cui.cui_readout_opts;
+using cui_reasoning_opts = global::Managed.Forms.Cui.cui_reasoning_opts;
+using cui_rect = global::Managed.Forms.Cui.cui_rect;
+using cui_regex_match = global::Managed.Forms.Cui.cui_regex_match;
+using cui_regex_tester_opts = global::Managed.Forms.Cui.cui_regex_tester_opts;
+using cui_regex_tester_result = global::Managed.Forms.Cui.cui_regex_tester_result;
+using cui_renderer_iface = global::Managed.Forms.Cui.cui_renderer_iface;
+using cui_request_bar_opts = global::Managed.Forms.Cui.cui_request_bar_opts;
+using cui_request_bar_result = global::Managed.Forms.Cui.cui_request_bar_result;
+using cui_response_actions_opts = global::Managed.Forms.Cui.cui_response_actions_opts;
+using cui_rings_opts = global::Managed.Forms.Cui.cui_rings_opts;
+using cui_ruler_opts = global::Managed.Forms.Cui.cui_ruler_opts;
+using cui_sankey_link = global::Managed.Forms.Cui.cui_sankey_link;
+using cui_sankey_opts = global::Managed.Forms.Cui.cui_sankey_opts;
+using cui_scatter_opts = global::Managed.Forms.Cui.cui_scatter_opts;
+using cui_scatter_series = global::Managed.Forms.Cui.cui_scatter_series;
+using cui_schedule_opts = global::Managed.Forms.Cui.cui_schedule_opts;
+using cui_schedule_result = global::Managed.Forms.Cui.cui_schedule_result;
+using cui_scroll_opts = global::Managed.Forms.Cui.cui_scroll_opts;
+using cui_scrub_opts = global::Managed.Forms.Cui.cui_scrub_opts;
+using cui_segmented_opts = global::Managed.Forms.Cui.cui_segmented_opts;
+using cui_select_opts = global::Managed.Forms.Cui.cui_select_opts;
+using cui_series = global::Managed.Forms.Cui.cui_series;
+using cui_severity = global::Managed.Forms.Cui.cui_severity;
+using cui_shadow = global::Managed.Forms.Cui.cui_shadow;
+using cui_sheet_opts = global::Managed.Forms.Cui.cui_sheet_opts;
+using cui_shortcut_recorder_opts = global::Managed.Forms.Cui.cui_shortcut_recorder_opts;
+using cui_side = global::Managed.Forms.Cui.cui_side;
+using cui_signature_opts = global::Managed.Forms.Cui.cui_signature_opts;
+using cui_size = global::Managed.Forms.Cui.cui_size;
+using cui_size_kind = global::Managed.Forms.Cui.cui_size_kind;
+using cui_slider_opts = global::Managed.Forms.Cui.cui_slider_opts;
+using cui_source = global::Managed.Forms.Cui.cui_source;
+using cui_speed_action = global::Managed.Forms.Cui.cui_speed_action;
+using cui_speed_dial_opts = global::Managed.Forms.Cui.cui_speed_dial_opts;
+using cui_split_bar_opts = global::Managed.Forms.Cui.cui_split_bar_opts;
+using cui_split_button_opts = global::Managed.Forms.Cui.cui_split_button_opts;
+using cui_split_opts = global::Managed.Forms.Cui.cui_split_opts;
+using cui_spotlight_opts = global::Managed.Forms.Cui.cui_spotlight_opts;
+using cui_stack_frame = global::Managed.Forms.Cui.cui_stack_frame;
+using cui_stack_trace_opts = global::Managed.Forms.Cui.cui_stack_trace_opts;
+using cui_stack_trace_result = global::Managed.Forms.Cui.cui_stack_trace_result;
+using cui_status = global::Managed.Forms.Cui.cui_status;
+using cui_status_bar_opts = global::Managed.Forms.Cui.cui_status_bar_opts;
+using cui_status_button_opts = global::Managed.Forms.Cui.cui_status_button_opts;
+using cui_status_item_opts = global::Managed.Forms.Cui.cui_status_item_opts;
+using cui_status_progress_opts = global::Managed.Forms.Cui.cui_status_progress_opts;
+using cui_strings = global::Managed.Forms.Cui.cui_strings;
+using cui_swipe_action = global::Managed.Forms.Cui.cui_swipe_action;
+using cui_tab_bar_item = global::Managed.Forms.Cui.cui_tab_bar_item;
+using cui_tab_bar_opts = global::Managed.Forms.Cui.cui_tab_bar_opts;
+using cui_table_column = global::Managed.Forms.Cui.cui_table_column;
+using cui_table_opts = global::Managed.Forms.Cui.cui_table_opts;
+using cui_table_sort = global::Managed.Forms.Cui.cui_table_sort;
+using cui_tabs_opts = global::Managed.Forms.Cui.cui_tabs_opts;
+using cui_tabs_variant = global::Managed.Forms.Cui.cui_tabs_variant;
+using cui_tag_opts = global::Managed.Forms.Cui.cui_tag_opts;
+using cui_task_status = global::Managed.Forms.Cui.cui_task_status;
+using cui_terminal_buffer = global::Managed.Forms.Cui.cui_terminal_buffer;
+using cui_terminal_line = global::Managed.Forms.Cui.cui_terminal_line;
+using cui_terminal_opts = global::Managed.Forms.Cui.cui_terminal_opts;
+using cui_terminal_result = global::Managed.Forms.Cui.cui_terminal_result;
+using cui_test_explorer_opts = global::Managed.Forms.Cui.cui_test_explorer_opts;
+using cui_test_explorer_result = global::Managed.Forms.Cui.cui_test_explorer_result;
+using cui_test_item = global::Managed.Forms.Cui.cui_test_item;
+using cui_text_align = global::Managed.Forms.Cui.cui_text_align;
+using cui_text_fx_opts = global::Managed.Forms.Cui.cui_text_fx_opts;
+using cui_text_mark = global::Managed.Forms.Cui.cui_text_mark;
+using cui_text_metrics = global::Managed.Forms.Cui.cui_text_metrics;
+using cui_text_opts = global::Managed.Forms.Cui.cui_text_opts;
+using cui_texture_format = global::Managed.Forms.Cui.cui_texture_format;
+using cui_theme = global::Managed.Forms.Cui.cui_theme;
+using cui_theme_mode = global::Managed.Forms.Cui.cui_theme_mode;
+using cui_ticker_item = global::Managed.Forms.Cui.cui_ticker_item;
+using cui_ticker_opts = global::Managed.Forms.Cui.cui_ticker_opts;
+using cui_tile_opts = global::Managed.Forms.Cui.cui_tile_opts;
+using cui_time_histogram_opts = global::Managed.Forms.Cui.cui_time_histogram_opts;
+using cui_time_histogram_result = global::Managed.Forms.Cui.cui_time_histogram_result;
+using cui_time_opts = global::Managed.Forms.Cui.cui_time_opts;
+using cui_timeline_clip = global::Managed.Forms.Cui.cui_timeline_clip;
+using cui_timeline_editor_opts = global::Managed.Forms.Cui.cui_timeline_editor_opts;
+using cui_timeline_editor_result = global::Managed.Forms.Cui.cui_timeline_editor_result;
+using cui_timeline_opts = global::Managed.Forms.Cui.cui_timeline_opts;
+using cui_timeline_ruler = global::Managed.Forms.Cui.cui_timeline_ruler;
+using cui_timeline_track = global::Managed.Forms.Cui.cui_timeline_track;
+using cui_timeline_view = global::Managed.Forms.Cui.cui_timeline_view;
+using cui_toast_opts = global::Managed.Forms.Cui.cui_toast_opts;
+using cui_toc_item = global::Managed.Forms.Cui.cui_toc_item;
+using cui_toggle_group_opts = global::Managed.Forms.Cui.cui_toggle_group_opts;
+using cui_token = global::Managed.Forms.Cui.cui_token;
+using cui_tone = global::Managed.Forms.Cui.cui_tone;
+using cui_tool_call_opts = global::Managed.Forms.Cui.cui_tool_call_opts;
+using cui_tool_opts = global::Managed.Forms.Cui.cui_tool_opts;
+using cui_toolbar_opts = global::Managed.Forms.Cui.cui_toolbar_opts;
+using cui_tour_opts = global::Managed.Forms.Cui.cui_tour_opts;
+using cui_tour_step = global::Managed.Forms.Cui.cui_tour_step;
+using cui_trace_marker = global::Managed.Forms.Cui.cui_trace_marker;
+using cui_trace_opts = global::Managed.Forms.Cui.cui_trace_opts;
+using cui_trace_result = global::Managed.Forms.Cui.cui_trace_result;
+using cui_trace_span = global::Managed.Forms.Cui.cui_trace_span;
+using cui_trace_track = global::Managed.Forms.Cui.cui_trace_track;
+using cui_trace_view = global::Managed.Forms.Cui.cui_trace_view;
+using cui_tree_node = global::Managed.Forms.Cui.cui_tree_node;
+using cui_tree_opts = global::Managed.Forms.Cui.cui_tree_opts;
+using cui_tree_table_events = global::Managed.Forms.Cui.cui_tree_table_events;
+using cui_tree_table_opts = global::Managed.Forms.Cui.cui_tree_table_opts;
+using cui_treemap_opts = global::Managed.Forms.Cui.cui_treemap_opts;
+using cui_uptime_opts = global::Managed.Forms.Cui.cui_uptime_opts;
+using cui_uptime_result = global::Managed.Forms.Cui.cui_uptime_result;
+using cui_uptime_service = global::Managed.Forms.Cui.cui_uptime_service;
+using cui_user_menu_opts = global::Managed.Forms.Cui.cui_user_menu_opts;
+using cui_vec2 = global::Managed.Forms.Cui.cui_vec2;
+using cui_vertex = global::Managed.Forms.Cui.cui_vertex;
+using cui_viz_item = global::Managed.Forms.Cui.cui_viz_item;
+using cui_voice_orb_opts = global::Managed.Forms.Cui.cui_voice_orb_opts;
+using cui_voice_state = global::Managed.Forms.Cui.cui_voice_state;
+using cui_waffle_opts = global::Managed.Forms.Cui.cui_waffle_opts;
+using cui_waterfall_opts = global::Managed.Forms.Cui.cui_waterfall_opts;
+using cui_waterfall_result = global::Managed.Forms.Cui.cui_waterfall_result;
+using cui_waveform_opts = global::Managed.Forms.Cui.cui_waveform_opts;
+using cui_week_opts = global::Managed.Forms.Cui.cui_week_opts;
+using cui_wheel_opts = global::Managed.Forms.Cui.cui_wheel_opts;
+using static global::Managed.Forms.Cui;
+using DotCcLiterals = global::Managed.Forms.Gallery.Gallery.GalleryLiterals;
+using DotCcPointers = global::Managed.Forms.Gallery.Gallery.GalleryFunctionPointers;
+using __DotCcFunctionOwner_636D705F70656F706C655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_636D705F74657874757265735F667265655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_66696C65735F6C6973745F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F616374696F6E735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F61695F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F617564696F5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F636170747572655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F636F64655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F646576746F6F6C73325F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F646576746F6F6C735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F646973636C6F737572655F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F66696C65735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F677269645F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F696E707574735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F696E737472756D656E74735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F6D6F74696F6E5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F7069636B6572735F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F706C616E6E696E675F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F7265616465725F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F736F6369616C5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_706167655F76697A5F5F756E69745F31373141464632363430444546333834424639463534393530344138363546443442414537384543443633464544374441453844374633383139343538433934 = global::Managed.Forms.Gallery.Gallery;
+using __DotCcFunctionOwner_7061696E745F7377617463685F5F756E69745F37364534383544383736324342323139334533373945353138384343354231343134393535324137354538363335434144373731454442384539393143414331 = global::Managed.Forms.Gallery.Gallery;
 
 // Translated methods use direct calls and managed function pointers.
 public static partial class Gallery
@@ -423,272 +423,272 @@ public static partial class Gallery
 
     static unsafe Gallery()
     {
-        __DotCcInitializeGlobals_282C46A9979BC0BDA59B6A770418E6F15DF7CFDEC70AC616E642B251CAD44AFE();
-        __DotCcInitializeGlobals_3DB1452F7B9A8C867C09CD7B3C0F17B36129CF4FD1DE8A1884ECE48FC1517111();
-        __DotCcInitializeGlobals_47E408330D20337600FA3FD3945B9822AE227FEDE8BFA3D3F62CDC565A57A95B();
-        __DotCcInitializeGlobals_727861AB67C447097D8C7954FB10CC3B9FD8282A96770710D02C7AC6CE8D9593();
-        __DotCcInitializeGlobals_E6BA6807CD2D5F43ABFD72CD03D8D49EA188D6CF30DF4E5FCC49B169513BA181();
-        __DotCcInitializeGlobals_A29665FE849F051B66231BB3EB06C3B9C9FC8AAE6D7E11998AB5141A2924C95B();
-        __DotCcInitializeGlobals_141BA3BF81F73AB9B57E6B606ED657EFA8BE5F66A1A9627200A647FBD90F464B();
-        __DotCcInitializeGlobals_C0013B8828033CDE76CC8B53A07CAD3E7DF51C16016EF2B2592DFCF3C808F11D();
-        __DotCcInitializeGlobals_051708589B630C122A433EF5904BB23C44A8A182E2EBAA6FCB832BBFCE4A0BAF();
-        __DotCcInitializeGlobals_C3E22C82BE503605B82BF9D996A3A932075E2B3DC337281AA0950D17A2A29208();
+        __DotCcInitializeGlobals_F7662CAE458D27D825CAC6F8C15C32FD1B9E2E2B7BD1172031E7E9023EB79933();
+        __DotCcInitializeGlobals_CF30ADF3A2DEF07BDF0584DDA9867AC5DCA7816220B4211612E913307210F874();
+        __DotCcInitializeGlobals_8B69C64387C6F77CCBDC1779AF228692D345B995CFC60BB85C3D75E5357541D9();
+        __DotCcInitializeGlobals_FE5C18828FF56FCE0C54A903BAC5D8A3519C85CC68933B019B4AE11FDAE71049();
+        __DotCcInitializeGlobals_558CF53BD2BBDFC53AFE4D0C1677129F03CA660BEC6AFEC6696C650D609232DF();
+        __DotCcInitializeGlobals_D5D86AEF4003A50C89CADE831E90AF16FF8C51B5C93C6CFB87FAAAB0F596C890();
+        __DotCcInitializeGlobals_A668EA0ACB29AFDE0E64AFAEB08DC3D8AAB8A790119970E01A958505B00D567B();
+        __DotCcInitializeGlobals_633B58AE1773CDA2AD896E091BFC4E343D2FD2DB633B984C87D34B556D40A7AD();
+        __DotCcInitializeGlobals_9F9E4312270B3123C4FDCB0411B7A7E2E7125608B2B33C6CAD9DD63A83C78217();
+        __DotCcInitializeGlobals_8434112C229AFFA4C0036C3767618D2D29EE7CD77CF619557877C9349FF3BBD8();
     }
-    private static unsafe void __DotCcInitializeGlobals_282C46A9979BC0BDA59B6A770418E6F15DF7CFDEC70AC616E642B251CAD44AFE()
+    private static unsafe void __DotCcInitializeGlobals_F7662CAE458D27D825CAC6F8C15C32FD1B9E2E2B7BD1172031E7E9023EB79933()
     {
-        __dotcc_globalAddress_airdrop__s140__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.airdrop__s140__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_amount__s24__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.amount__s24__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_attack__s164__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.attack__s164__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_avatar__s57__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (ulong*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.avatar__s57__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_ax_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.ax_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_blur__s23__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.blur__s23__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_bt__s138__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.bt__s138__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_card1__s60__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.card1__s60__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_card2__s61__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.card2__s61__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_cg_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.cg_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_combo2__s27__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_key_combo*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.combo2__s27__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_combo__s26__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_key_combo*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.combo__s26__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_count__s191__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_crop__s97__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_rect*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.crop__s97__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_cutoff__s162__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.cutoff__s162__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_dark_tile__s141__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.dark_tile__s141__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_day__s40__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.day__s40__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_dh__s43__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.dh__s43__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_dm__s44__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.dm__s44__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_focus__s139__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.focus__s139__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_gv_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.gv_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_h2__s38__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.h2__s38__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_height__s45__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.height__s45__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_hi__s48__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.hi__s48__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_hour__s36__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.hour__s36__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_km_mods__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.km_mods__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_kv_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.kv_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_lo__s47__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.lo__s47__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_m2__s39__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.m2__s39__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_minute__s37__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.minute__s37__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_model__s149__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.model__s149__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_month__s41__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.month__s41__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_np__s143__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_now_playing*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_opacity__s21__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.opacity__s21__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_open_src__s79__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.open_src__s79__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_open_ui__s80__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.open_ui__s80__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_orb_state__s151__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_pan__s165__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.pan__s165__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_pl_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.pl_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_progress__s136__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.progress__s136__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_qb_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.qb_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_radius__s22__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.radius__s22__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_range__s34__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_date_range*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.range__s34__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_removed__s152__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_res__s163__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.res__s163__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_rq_method__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.rq_method__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_rq_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_salary__s25__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.salary__s25__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_selected__s192__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.selected__s192__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_split__s86__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.split__s86__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_stay__s35__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_date_range*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.stay__s35__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_tab__s142__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.tab__s142__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_temp__s46__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.temp__s46__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_term__s177__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_terminal_buffer*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.term__s177__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_th_s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.th_s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_th_s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.th_s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_theme_mode__s6__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.theme_mode__s6__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_tone__s32__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.tone__s32__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_tr_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.tr_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_tr_view__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_trace_view*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.tr_view__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_view__s96__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_image_view*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.view__s96__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_vote__s150__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.vote__s150__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_wf_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.wf_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_wifi__s137__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.wifi__s137__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        __dotcc_globalAddress_year__s42__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Cui.Gallery.Gallery.Globals.year__s42__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
-        global::Managed.Cui.Gallery.Gallery.Globals.page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<uint>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<cui_choice>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(7);
-        global::Managed.Cui.Gallery.Gallery.Globals.rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<person_row>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<int>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<cui_command>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_reaction>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_swipe_action>(1);
-        global::Managed.Cui.Gallery.Gallery.Globals.right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_swipe_action>(2);
-        global::Managed.Cui.Gallery.Gallery.Globals.titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_speed_action>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(128);
-        global::Managed.Cui.Gallery.Gallery.Globals.owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(64);
-        global::Managed.Cui.Gallery.Gallery.Globals.url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(96);
-        global::Managed.Cui.Gallery.Gallery.Globals.weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(16);
-        global::Managed.Cui.Gallery.Gallery.Globals.message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(160);
-        global::Managed.Cui.Gallery.Gallery.Globals.recent__s31__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(256);
-        global::Managed.Cui.Gallery.Gallery.Globals.langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(24);
-        global::Managed.Cui.Gallery.Gallery.Globals.items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.days__s51__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(31);
-        global::Managed.Cui.Gallery.Gallery.Globals.months__s52__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.years__s53__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.dbuf__s54__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(124);
-        global::Managed.Cui.Gallery.Gallery.Globals.ybuf__s55__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(72);
-        global::Managed.Cui.Gallery.Gallery.Globals.mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(256);
-        global::Managed.Cui.Gallery.Gallery.Globals.steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_check_step>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_toc_item>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.people__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<person>(2000);
-        global::Managed.Cui.Gallery.Gallery.Globals.order_ix__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(2000);
-        global::Managed.Cui.Gallery.Gallery.Globals.people_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(2000);
-        global::Managed.Cui.Gallery.Gallery.Globals.first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(16);
-        global::Managed.Cui.Gallery.Gallery.Globals.last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(16);
-        global::Managed.Cui.Gallery.Gallery.Globals.teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_filter_field>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.search__s77__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(64);
-        global::Managed.Cui.Gallery.Gallery.Globals.cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_grid_column>(5);
+        __dotcc_globalAddress_airdrop__s140__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.airdrop__s140__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_amount__s24__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.amount__s24__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_attack__s164__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.attack__s164__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_avatar__s57__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (ulong*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.avatar__s57__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_ax_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.ax_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_blur__s23__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.blur__s23__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_bt__s138__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.bt__s138__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_card1__s60__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.card1__s60__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_card2__s61__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.card2__s61__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_cg_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.cg_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_combo2__s27__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_key_combo*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.combo2__s27__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_combo__s26__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_key_combo*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.combo__s26__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_count__s191__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.count__s191__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_crop__s97__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_rect*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.crop__s97__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_cutoff__s162__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.cutoff__s162__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_dark_tile__s141__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.dark_tile__s141__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_day__s40__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.day__s40__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_dh__s43__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.dh__s43__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_dm__s44__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.dm__s44__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_focus__s139__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.focus__s139__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_gv_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.gv_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_h2__s38__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.h2__s38__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_height__s45__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.height__s45__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_hi__s48__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.hi__s48__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_hour__s36__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.hour__s36__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_km_mods__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.km_mods__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_kv_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.kv_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_lo__s47__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.lo__s47__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_m2__s39__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.m2__s39__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_minute__s37__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.minute__s37__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_model__s149__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.model__s149__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_month__s41__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.month__s41__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_np__s143__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_now_playing*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.np__s143__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_opacity__s21__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.opacity__s21__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_open_src__s79__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.open_src__s79__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_open_ui__s80__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.open_ui__s80__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_orb_state__s151__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.orb_state__s151__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_pan__s165__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.pan__s165__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_pl_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.pl_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_progress__s136__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.progress__s136__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_qb_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.qb_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_radius__s22__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.radius__s22__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_range__s34__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_date_range*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.range__s34__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_removed__s152__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.removed__s152__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_res__s163__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.res__s163__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_rq_method__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.rq_method__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_rq_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.rq_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_salary__s25__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.salary__s25__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_selected__s192__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.selected__s192__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_split__s86__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.split__s86__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_stay__s35__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_date_range*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.stay__s35__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_tab__s142__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.tab__s142__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_temp__s46__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (float*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.temp__s46__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_term__s177__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_terminal_buffer*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.term__s177__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_th_s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.th_s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_th_s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (double*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.th_s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_theme_mode__s6__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.theme_mode__s6__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_tone__s32__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.tone__s32__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_tr_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.tr_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_tr_view__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_trace_view*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.tr_view__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_view__s96__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (cui_image_view*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.view__s96__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_vote__s150__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.vote__s150__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_wf_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.wf_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_wifi__s137__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (CBool*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.wifi__s137__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        __dotcc_globalAddress_year__s42__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int*)global::System.Runtime.CompilerServices.Unsafe.AsPointer(ref global::Managed.Forms.Gallery.Gallery.Globals.year__s42__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94);
+        global::Managed.Forms.Gallery.Gallery.Globals.page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<uint>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<cui_choice>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(7);
+        global::Managed.Forms.Gallery.Gallery.Globals.rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<person_row>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<int>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<float>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = (byte**)Libc.GlobalArrayZeroed<nint>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1 = Libc.GlobalArrayZeroed<cui_command>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_reaction>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_swipe_action>(1);
+        global::Managed.Forms.Gallery.Gallery.Globals.right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_swipe_action>(2);
+        global::Managed.Forms.Gallery.Gallery.Globals.titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_speed_action>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(128);
+        global::Managed.Forms.Gallery.Gallery.Globals.owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(64);
+        global::Managed.Forms.Gallery.Gallery.Globals.url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(96);
+        global::Managed.Forms.Gallery.Gallery.Globals.weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(16);
+        global::Managed.Forms.Gallery.Gallery.Globals.message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(160);
+        global::Managed.Forms.Gallery.Gallery.Globals.recent__s31__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(256);
+        global::Managed.Forms.Gallery.Gallery.Globals.langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(24);
+        global::Managed.Forms.Gallery.Gallery.Globals.items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.days__s51__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(31);
+        global::Managed.Forms.Gallery.Gallery.Globals.months__s52__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.years__s53__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.dbuf__s54__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(124);
+        global::Managed.Forms.Gallery.Gallery.Globals.ybuf__s55__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(72);
+        global::Managed.Forms.Gallery.Gallery.Globals.mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(256);
+        global::Managed.Forms.Gallery.Gallery.Globals.steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_check_step>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_toc_item>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.people__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<person>(2000);
+        global::Managed.Forms.Gallery.Gallery.Globals.order_ix__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(2000);
+        global::Managed.Forms.Gallery.Gallery.Globals.people_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(2000);
+        global::Managed.Forms.Gallery.Gallery.Globals.first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(16);
+        global::Managed.Forms.Gallery.Gallery.Globals.last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(16);
+        global::Managed.Forms.Gallery.Gallery.Globals.teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_filter_field>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(3);
     }
-    private static unsafe void __DotCcInitializeGlobals_3DB1452F7B9A8C867C09CD7B3C0F17B36129CF4FD1DE8A1884ECE48FC1517111()
+    private static unsafe void __DotCcInitializeGlobals_CF30ADF3A2DEF07BDF0584DDA9867AC5DCA7816220B4211612E913307210F874()
     {
 
-        global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_presence_user>(7);
-        global::Managed.Cui.Gallery.Gallery.Globals.a__s90__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024000);
-        global::Managed.Cui.Gallery.Gallery.Globals.b__s91__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024000);
-        global::Managed.Cui.Gallery.Gallery.Globals.tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_ticker_item>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<kb_card>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(32);
-        global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(10);
-        global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_cal_event>(11);
-        global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_gantt_task>(7);
-        global::Managed.Cui.Gallery.Gallery.Globals.dur__s105__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(32);
-        global::Managed.Cui.Gallery.Gallery.Globals.mev__s108__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_month_event>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.traffic__s110__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(168);
-        global::Managed.Cui.Gallery.Gallery.Globals.days__s111__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(364);
-        global::Managed.Cui.Gallery.Gallery.Globals.wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(7);
-        global::Managed.Cui.Gallery.Gallery.Globals.hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(24);
-        global::Managed.Cui.Gallery.Gallery.Globals.mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(10);
-        global::Managed.Cui.Gallery.Gallery.Globals.a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_sankey_link>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.a__s126__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_vec2>(40);
-        global::Managed.Cui.Gallery.Gallery.Globals.b__s127__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_vec2>(40);
-        global::Managed.Cui.Gallery.Gallery.Globals.sa__s128__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(40);
-        global::Managed.Cui.Gallery.Gallery.Globals.sb__s129__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(40);
-        global::Managed.Cui.Gallery.Gallery.Globals.bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_gauge_band>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.candles__s132__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_candle>(2000);
-        global::Managed.Cui.Gallery.Gallery.Globals.peaks__s135__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
-        global::Managed.Cui.Gallery.Gallery.Globals.words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_tab_bar_item>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(512);
-        global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(2);
-        global::Managed.Cui.Gallery.Gallery.Globals.models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_model>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_source>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_prompt_suggestion>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_tour_step>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024);
-        global::Managed.Cui.Gallery.Gallery.Globals.chosen__s176__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024);
-        global::Managed.Cui.Gallery.Gallery.Globals.term_text__s178__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(65536);
-        global::Managed.Cui.Gallery.Gallery.Globals.term_lines__s179__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_terminal_line>(1024);
-        global::Managed.Cui.Gallery.Gallery.Globals.ents__s180__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_file_entry>(256);
-        global::Managed.Cui.Gallery.Gallery.Globals.names__s181__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(16384);
-        global::Managed.Cui.Gallery.Gallery.Globals.kv_pairs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_kv_pair>(12);
-        global::Managed.Cui.Gallery.Gallery.Globals.pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_diagnostic>(7);
-        global::Managed.Cui.Gallery.Gallery.Globals.stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_pipeline_job>(10);
-        global::Managed.Cui.Gallery.Gallery.Globals.qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_query_field>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_query_node>(16);
-        global::Managed.Cui.Gallery.Gallery.Globals.sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(64);
-        global::Managed.Cui.Gallery.Gallery.Globals.binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_keymap_binding>(24);
-        global::Managed.Cui.Gallery.Gallery.Globals.cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_commit>(10);
-        global::Managed.Cui.Gallery.Gallery.Globals.gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_graph_node>(9);
-        global::Managed.Cui.Gallery.Gallery.Globals.gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_graph_edge>(11);
-        global::Managed.Cui.Gallery.Gallery.Globals.wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_net_request>(10);
-        global::Managed.Cui.Gallery.Gallery.Globals.tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_trace_track>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.tr_spans__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_trace_span>(400);
-        global::Managed.Cui.Gallery.Gallery.Globals.tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_trace_marker>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(128);
-        global::Managed.Cui.Gallery.Gallery.Globals.rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024);
-        global::Managed.Cui.Gallery.Gallery.Globals.tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_test_item>(15);
-        global::Managed.Cui.Gallery.Gallery.Globals.st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_stack_frame>(6);
-        global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(256);
-        global::Managed.Cui.Gallery.Gallery.Globals.rq_params__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_kv_pair>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.up_api__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
-        global::Managed.Cui.Gallery.Gallery.Globals.up_web__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
-        global::Managed.Cui.Gallery.Gallery.Globals.up_db__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
-        global::Managed.Cui.Gallery.Gallery.Globals.up_cdn__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
-        global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.th_info__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
-        global::Managed.Cui.Gallery.Gallery.Globals.th_warn__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
-        global::Managed.Cui.Gallery.Gallery.Globals.th_err__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
-        global::Managed.Cui.Gallery.Gallery.Globals.cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_coverage_file>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(15);
-        global::Managed.Cui.Gallery.Gallery.Globals.bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(15);
-        global::Managed.Cui.Gallery.Gallery.Globals.bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_blame_commit>(5);
-        global::Managed.Cui.Gallery.Gallery.Globals.ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_feature_flag>(4);
-        global::Managed.Cui.Gallery.Gallery.Globals.envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
-        global::Managed.Cui.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_api_param>(2);
-        global::Managed.Cui.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_api_param>(2);
-        global::Managed.Cui.Gallery.Gallery.Globals.ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_api_endpoint>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<double>(8);
-        global::Managed.Cui.Gallery.Gallery.Globals.curve__s193__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(776);
-        global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<more_page>(18);
+        global::Managed.Forms.Gallery.Gallery.Globals.search__s77__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(64);
+        global::Managed.Forms.Gallery.Gallery.Globals.cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_grid_column>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<CBool>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_presence_user>(7);
+        global::Managed.Forms.Gallery.Gallery.Globals.a__s90__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024000);
+        global::Managed.Forms.Gallery.Gallery.Globals.b__s91__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024000);
+        global::Managed.Forms.Gallery.Gallery.Globals.tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_ticker_item>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<kb_card>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(32);
+        global::Managed.Forms.Gallery.Gallery.Globals.kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<uint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(10);
+        global::Managed.Forms.Gallery.Gallery.Globals.events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_cal_event>(11);
+        global::Managed.Forms.Gallery.Gallery.Globals.tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_gantt_task>(7);
+        global::Managed.Forms.Gallery.Gallery.Globals.dur__s105__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(32);
+        global::Managed.Forms.Gallery.Gallery.Globals.mev__s108__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_month_event>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.traffic__s110__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(168);
+        global::Managed.Forms.Gallery.Gallery.Globals.days__s111__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(364);
+        global::Managed.Forms.Gallery.Gallery.Globals.wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(7);
+        global::Managed.Forms.Gallery.Gallery.Globals.hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(24);
+        global::Managed.Forms.Gallery.Gallery.Globals.mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(10);
+        global::Managed.Forms.Gallery.Gallery.Globals.a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_sankey_link>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.a__s126__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_vec2>(40);
+        global::Managed.Forms.Gallery.Gallery.Globals.b__s127__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_vec2>(40);
+        global::Managed.Forms.Gallery.Gallery.Globals.sa__s128__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(40);
+        global::Managed.Forms.Gallery.Gallery.Globals.sb__s129__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(40);
+        global::Managed.Forms.Gallery.Gallery.Globals.bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_gauge_band>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.candles__s132__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_candle>(2000);
+        global::Managed.Forms.Gallery.Gallery.Globals.peaks__s135__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
+        global::Managed.Forms.Gallery.Gallery.Globals.words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_tab_bar_item>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(512);
+        global::Managed.Forms.Gallery.Gallery.Globals.files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(2);
+        global::Managed.Forms.Gallery.Gallery.Globals.models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_model>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_source>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_viz_item>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_prompt_suggestion>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_tour_step>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024);
+        global::Managed.Forms.Gallery.Gallery.Globals.chosen__s176__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024);
+        global::Managed.Forms.Gallery.Gallery.Globals.term_text__s178__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(65536);
+        global::Managed.Forms.Gallery.Gallery.Globals.term_lines__s179__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_terminal_line>(1024);
+        global::Managed.Forms.Gallery.Gallery.Globals.ents__s180__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_file_entry>(256);
+        global::Managed.Forms.Gallery.Gallery.Globals.names__s181__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(16384);
+        global::Managed.Forms.Gallery.Gallery.Globals.kv_pairs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_kv_pair>(12);
+        global::Managed.Forms.Gallery.Gallery.Globals.pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_diagnostic>(7);
+        global::Managed.Forms.Gallery.Gallery.Globals.stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_pipeline_job>(10);
+        global::Managed.Forms.Gallery.Gallery.Globals.qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_query_field>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_query_node>(16);
+        global::Managed.Forms.Gallery.Gallery.Globals.sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(64);
+        global::Managed.Forms.Gallery.Gallery.Globals.binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_keymap_binding>(24);
+        global::Managed.Forms.Gallery.Gallery.Globals.cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_commit>(10);
+        global::Managed.Forms.Gallery.Gallery.Globals.gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_graph_node>(9);
+        global::Managed.Forms.Gallery.Gallery.Globals.gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_graph_edge>(11);
+        global::Managed.Forms.Gallery.Gallery.Globals.wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_net_request>(10);
+        global::Managed.Forms.Gallery.Gallery.Globals.tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_trace_track>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.tr_spans__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_trace_span>(400);
+        global::Managed.Forms.Gallery.Gallery.Globals.tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_trace_marker>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(128);
+        global::Managed.Forms.Gallery.Gallery.Globals.rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(1024);
+        global::Managed.Forms.Gallery.Gallery.Globals.tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_test_item>(15);
+        global::Managed.Forms.Gallery.Gallery.Globals.st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_stack_frame>(6);
+        global::Managed.Forms.Gallery.Gallery.Globals.rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<byte>(256);
+        global::Managed.Forms.Gallery.Gallery.Globals.rq_params__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_kv_pair>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.up_api__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
+        global::Managed.Forms.Gallery.Gallery.Globals.up_web__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
+        global::Managed.Forms.Gallery.Gallery.Globals.up_db__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
+        global::Managed.Forms.Gallery.Gallery.Globals.up_cdn__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(90);
+        global::Managed.Forms.Gallery.Gallery.Globals.names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.th_info__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
+        global::Managed.Forms.Gallery.Gallery.Globals.th_warn__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
+        global::Managed.Forms.Gallery.Gallery.Globals.th_err__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(96);
+        global::Managed.Forms.Gallery.Gallery.Globals.cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_coverage_file>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(15);
+        global::Managed.Forms.Gallery.Gallery.Globals.bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<int>(15);
+        global::Managed.Forms.Gallery.Gallery.Globals.bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_blame_commit>(5);
+        global::Managed.Forms.Gallery.Gallery.Globals.ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_feature_flag>(4);
+        global::Managed.Forms.Gallery.Gallery.Globals.envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (byte**)Libc.GlobalArrayZeroed<nint>(3);
+        global::Managed.Forms.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_api_param>(2);
+        global::Managed.Forms.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_api_param>(2);
+        global::Managed.Forms.Gallery.Gallery.Globals.ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<cui_api_endpoint>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<double>(8);
+        global::Managed.Forms.Gallery.Gallery.Globals.curve__s193__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<float>(776);
+        global::Managed.Forms.Gallery.Gallery.Globals.pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = Libc.GlobalArrayZeroed<more_page>(18);
         {
-            byte** page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1317 /*"Overview"*/);
         page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1175 /*"Buttons"*/);
         page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1045 /*"Inputs"*/);
@@ -700,7 +700,7 @@ public static partial class Gallery
         page_names__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[8] = (DotCcLiterals.Pointer + DotCcLiterals.S81 /*"Charts"*/);
         };
         {
-            byte** page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S233 /*""*/);
         page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S423 /*""*/);
         page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S748 /*""*/);
@@ -712,15 +712,15 @@ public static partial class Gallery
         page_icons__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[8] = (DotCcLiterals.Pointer + DotCcLiterals.S1054 /*""*/);
         };
         {
-            uint* hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (uint*)global::Managed.Cui.Gallery.Gallery.Globals.hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            uint* hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (uint*)global::Managed.Forms.Gallery.Gallery.Globals.hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         DotCcLiterals.Puint_451AF0EE43D32D791520B9B5D9331F1F7C4F038E6631A4C31A7B0B0ECD368A11.CopyTo(new global::System.Span<uint>((uint*)(hex__s0__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 8));
         };
         {
-            float* s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_F3FED3F2B0137C0EFFEB17001EA07F04A79459D62028FDA58ACE6D0C313B87DC.Values.CopyTo(new global::System.Span<float>((float*)(s2__s1__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 9));
         };
         {
-            byte** people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S964 /*"Jonas Berg"*/);
         people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S255 /*"jonas@northlight.io"*/);
         people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S611 /*"Owner"*/);
@@ -735,7 +735,7 @@ public static partial class Gallery
         people__s2__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[11] = (DotCcLiterals.Pointer + DotCcLiterals.S1277 /*"Viewer"*/);
         };
         {
-            byte** countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S458 /*"Canada"*/);
         countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S438 /*"Denmark"*/);
         countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S4 /*"Germany"*/);
@@ -747,7 +747,7 @@ public static partial class Gallery
         countries__s3__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[8] = (DotCcLiterals.Pointer + DotCcLiterals.S406 /*"United States"*/);
         };
         {
-            byte** frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S899 /*"C99"*/);
         frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1235 /*"C11"*/);
         frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S956 /*"C17"*/);
@@ -759,7 +759,7 @@ public static partial class Gallery
         frameworks__s4__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[8] = (DotCcLiterals.Pointer + DotCcLiterals.S1383 /*"Rust"*/);
         };
         {
-            cui_choice* places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (cui_choice*)global::Managed.Cui.Gallery.Gallery.Globals.places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            cui_choice* places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (cui_choice*)global::Managed.Forms.Gallery.Gallery.Globals.places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         places__s5__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S1186 /*"This computer"*/),
@@ -783,11 +783,11 @@ public static partial class Gallery
         };
         };
     }
-    private static unsafe void __DotCcInitializeGlobals_47E408330D20337600FA3FD3945B9822AE227FEDE8BFA3D3F62CDC565A57A95B()
+    private static unsafe void __DotCcInitializeGlobals_8B69C64387C6F77CCBDC1779AF228692D345B995CFC60BB85C3D75E5357541D9()
     {
 
         {
-            byte** chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1598 /*"Design"*/);
         chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S241 /*"Engineering"*/);
         chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1311 /*"Marketing"*/);
@@ -796,7 +796,7 @@ public static partial class Gallery
         chips__s6__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[5] = (DotCcLiterals.Pointer + DotCcLiterals.S280 /*"Finance"*/);
         };
         {
-            byte** team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S76 /*"Kwame Asante"*/);
         team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1566 /*"Hana Novak"*/);
         team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1296 /*"Elif Kaya"*/);
@@ -806,7 +806,7 @@ public static partial class Gallery
         team__s7__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[6] = (DotCcLiterals.Pointer + DotCcLiterals.S1376 /*"Iris Coleman"*/);
         };
         {
-            person_row* rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (person_row*)global::Managed.Cui.Gallery.Gallery.Globals.rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            person_row* rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (person_row*)global::Managed.Forms.Gallery.Gallery.Globals.rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         rows__s8__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S964 /*"Jonas Berg"*/),
@@ -854,14 +854,14 @@ public static partial class Gallery
         };
         };
         {
-            byte** files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S915 /*"button.c"*/);
         files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S273 /*"dialog.c"*/);
         files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1264 /*"slider.c"*/);
         files__s9__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S465 /*"table.c"*/);
         };
         {
-            byte** tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S777 /*"Write the release notes"*/);
         tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S665 /*"Record the demo video"*/);
         tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S688 /*"Update the screenshots"*/);
@@ -869,11 +869,11 @@ public static partial class Gallery
         tasks__s10__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[4] = (DotCcLiterals.Pointer + DotCcLiterals.S884 /*"Post the announcement"*/);
         };
         {
-            int* tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (int*)global::Managed.Cui.Gallery.Gallery.Globals.tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            int* tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (int*)global::Managed.Forms.Gallery.Gallery.Globals.tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_E6D1A6F9E7B15C3F6300B20FED77F77E1D2B8237EE4A6EF2F6B8E76D91335434.Values.CopyTo(new global::System.Span<int>((int*)(tones__s11__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 5));
         };
         {
-            byte** labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S766 /*"Docs"*/);
         labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1220 /*"Video"*/);
         labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S766 /*"Docs"*/);
@@ -881,7 +881,7 @@ public static partial class Gallery
         labels__s12__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[4] = (DotCcLiterals.Pointer + DotCcLiterals.S1000 /*"Blog"*/);
         };
         {
-            byte** months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S397 /*"Jan"*/);
         months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S30 /*"Feb"*/);
         months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1581 /*"Mar"*/);
@@ -896,46 +896,46 @@ public static partial class Gallery
         months__s13__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[11] = (DotCcLiterals.Pointer + DotCcLiterals.S1411 /*"Dec"*/);
         };
         {
-            float* revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_C09B1D11B1A9B3D599D3BDF9AC36F9475B323478273F8489AA551739718DB742.Values.CopyTo(new global::System.Span<float>((float*)(revenue__s14__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 12));
         };
         {
-            float* costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_B162B8B41BA80DF6EA82ABEEF01E18CE7B68FC956A9AB04DC8E1E0A1F2667A69.Values.CopyTo(new global::System.Span<float>((float*)(costs__s15__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 12));
         };
         {
-            float* a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_79ACF9580AB5E57013F3B079085C66BA700C0A9F01EBCEA096B8554F6E3D3088.Values.CopyTo(new global::System.Span<float>((float*)(a__s16__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 6));
         };
         {
-            float* b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_A7F4BC57FE55AA03FA51D42B27F3828CCBB13FEB0FB8CF86C276AD1D3716B98D.Values.CopyTo(new global::System.Span<float>((float*)(b__s17__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 6));
         };
         {
-            float* shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_6851F9666864D72F5C019202E9F5CB4D67EDC34E9DD050E0949369311F5BC39A.Values.CopyTo(new global::System.Span<float>((float*)(shares__s18__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 4));
         };
         {
-            byte** labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S690 /*"Windows"*/);
         labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1088 /*"macOS"*/);
         labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S211 /*"Linux"*/);
         labels__s19__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S601 /*"Other"*/);
         };
         {
-            float* x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_C1192FBF15661BC1FDF1B224B28682E8F1EBEECEEB42281C7A82C6EFD79A9BEB.Values.CopyTo(new global::System.Span<float>((float*)(x__s20__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 8));
         };
         {
-            float* y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_977BBEDC7689F0DCA55205E5F01A77B9BD852709D49AC3204C0E839DC9A44565.Values.CopyTo(new global::System.Span<float>((float*)(y__s21__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 8));
         };
         {
-            float* z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            float* z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         __DotccPrimitiveView_A4287152D8980160BF4A7873C2C127FD367425E978137F2AD99EEB6B75FF6711.Values.CopyTo(new global::System.Span<float>((float*)(z__s22__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination), 8));
         };
         {
-            byte** weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            byte** weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S544 /*"W1"*/);
         weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1342 /*"W2"*/);
         weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S887 /*"W3"*/);
@@ -946,7 +946,7 @@ public static partial class Gallery
         weeks__s23__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[7] = (DotCcLiterals.Pointer + DotCcLiterals.S1425 /*"W8"*/);
         };
         {
-            cui_command* commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (cui_command*)global::Managed.Cui.Gallery.Gallery.Globals.commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
+            cui_command* commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination = (cui_command*)global::Managed.Forms.Gallery.Gallery.Globals.commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1;
         commands__s24__unit_76E485D8762CB2193E379E5188CC5B14149552A75E8635CAD771EDB8E991CAC1_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S277 /*"Go to Overview"*/),
@@ -1012,16 +1012,16 @@ public static partial class Gallery
         };
         };
         {
-            CBool* fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Cui.Gallery.Gallery.Globals.fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            CBool* fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Forms.Gallery.Gallery.Globals.fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_EA8B640A9B114C8D6AEA9CF5E8DA3767DB19E594435F52E6FEB34D25806FEADC.Values.CopyTo(new global::System.Span<CBool>((CBool*)(fmt__s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 4));
         };
         {
-            CBool* align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Cui.Gallery.Gallery.Globals.align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            CBool* align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Forms.Gallery.Gallery.Globals.align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_3CFFE6F3C0EACDAF1672C05E2A627F6E276FE9ABD3D36D2666BFA50247AF9BCD.Values.CopyTo(new global::System.Span<CBool>((CBool*)(align__s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 3));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.save_status__s2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = __DotCcEnum_6375695F737461747573.CUI_STATUS_IDLE;
+        global::Managed.Forms.Gallery.Gallery.Globals.save_status__s2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = __DotCcEnum_6375695F737461747573.CUI_STATUS_IDLE;
         {
-            cui_reaction* reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_reaction*)global::Managed.Cui.Gallery.Gallery.Globals.reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_reaction* reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_reaction*)global::Managed.Forms.Gallery.Gallery.Globals.reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         reactions__s4__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S501 /*""*/),
@@ -1047,49 +1047,49 @@ public static partial class Gallery
             active = 0,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.dial_choice__s5__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
-        global::Managed.Cui.Gallery.Gallery.Globals.theme_mode__s6__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
-        global::Managed.Cui.Gallery.Gallery.Globals.split_choice__s8__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.dial_choice__s5__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.theme_mode__s6__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.split_choice__s8__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
         {
-            byte** items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S244 /*"Save as draft"*/);
         items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1435 /*"Save and publish"*/);
         items__s9__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S886 /*"Schedule…"*/);
         };
         {
-            byte** icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S615 /*""*/);
         icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1494 /*""*/);
         icons__s10__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S330 /*""*/);
         };
         {
-            byte** labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1227 /*"Bold"*/);
         labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1076 /*"Italic"*/);
         labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S782 /*"Underline"*/);
         labels__s11__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S1321 /*"Code"*/);
         };
         {
-            byte** icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S140 /*""*/);
         icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1323 /*""*/);
         icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S581 /*""*/);
         icons__s12__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S946 /*""*/);
         };
         {
-            byte** alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S425 /*"Left"*/);
         alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S275 /*"Center"*/);
         alabels__s13__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S156 /*"Right"*/);
         };
         {
-            byte** aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S936 /*""*/);
         aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S368 /*""*/);
         aicons__s14__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1043 /*""*/);
         };
         {
-            cui_swipe_action* left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_swipe_action*)global::Managed.Cui.Gallery.Gallery.Globals.left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_swipe_action* left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_swipe_action*)global::Managed.Forms.Gallery.Gallery.Globals.left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         left__s15__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S1405 /*""*/),
@@ -1098,7 +1098,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_swipe_action* right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_swipe_action*)global::Managed.Cui.Gallery.Gallery.Globals.right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_swipe_action* right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_swipe_action*)global::Managed.Forms.Gallery.Gallery.Globals.right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         right__s16__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S387 /*""*/),
@@ -1113,17 +1113,17 @@ public static partial class Gallery
         };
         };
     }
-    private static unsafe void __DotCcInitializeGlobals_727861AB67C447097D8C7954FB10CC3B9FD8282A96770710D02C7AC6CE8D9593()
+    private static unsafe void __DotCcInitializeGlobals_FE5C18828FF56FCE0C54A903BAC5D8A3519C85CC68933B019B4AE11FDAE71049()
     {
 
         {
-            byte** titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1348 /*"Review the design tokens"*/);
         titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1161 /*"Reply to Jonas about the release"*/);
         titles__s17__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S193 /*"Book the offsite venue"*/);
         };
         {
-            cui_speed_action* acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_speed_action*)global::Managed.Cui.Gallery.Gallery.Globals.acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_speed_action* acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_speed_action*)global::Managed.Forms.Gallery.Gallery.Globals.acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         acts__s18__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S615 /*""*/),
@@ -1141,57 +1141,57 @@ public static partial class Gallery
         };
         };
         {
-            byte* title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.BBF8FCF7ABF95044EFDF317142F64F247C8000357E01B0C5362D313C05E6B976D.CopyTo(new global::System.Span<byte>((byte*)(title__s19__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 128));
         };
         {
-            byte* owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B9E1CD8E0C54F49BE6952ED4B23542BBB11BC6743FD5998253C9099C96069CC2B.CopyTo(new global::System.Span<byte>((byte*)(owner__s20__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 64));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.opacity__s21__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 80;
-        global::Managed.Cui.Gallery.Gallery.Globals.radius__s22__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 12;
-        global::Managed.Cui.Gallery.Gallery.Globals.blur__s23__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 24;
-        global::Managed.Cui.Gallery.Gallery.Globals.amount__s24__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1249.5;
-        global::Managed.Cui.Gallery.Gallery.Globals.salary__s25__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 98000;
-        global::Managed.Cui.Gallery.Gallery.Globals.combo__s26__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_key_combo { mods = (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL | (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT, key = __DotCcEnum_6375695F6B6579.CUI_KEY_P };
-        global::Managed.Cui.Gallery.Gallery.Globals.combo2__s27__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_key_combo { mods = 0, key = __DotCcEnum_6375695F6B6579.CUI_KEY_NONE };
+        global::Managed.Forms.Gallery.Gallery.Globals.opacity__s21__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 80;
+        global::Managed.Forms.Gallery.Gallery.Globals.radius__s22__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 12;
+        global::Managed.Forms.Gallery.Gallery.Globals.blur__s23__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 24;
+        global::Managed.Forms.Gallery.Gallery.Globals.amount__s24__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1249.5;
+        global::Managed.Forms.Gallery.Gallery.Globals.salary__s25__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 98000;
+        global::Managed.Forms.Gallery.Gallery.Globals.combo__s26__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_key_combo { mods = (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL | (int)__DotCcEnum_6375695F6D6F64.CUI_MOD_SHIFT, key = __DotCcEnum_6375695F6B6579.CUI_KEY_P };
+        global::Managed.Forms.Gallery.Gallery.Globals.combo2__s27__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_key_combo { mods = 0, key = __DotCcEnum_6375695F6B6579.CUI_KEY_NONE };
         {
-            byte* url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.BA0989736635B45DF97FA7245DCD1CEDC700059888E1956065BADFE2632A2076A.CopyTo(new global::System.Span<byte>((byte*)(url__s28__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 96));
         };
         {
-            byte* weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B251F52E51A5E1B7BA51C32D53EF337C39969DE00F6FE2F632C3ECE8B08B3032D.CopyTo(new global::System.Span<byte>((byte*)(weight__s29__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 16));
         };
         {
-            byte* message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B85EBB52B37F12F18883B399F52C77BA9CE6F2F1F4461E23EF856546249F34108.CopyTo(new global::System.Span<byte>((byte*)(message__s30__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 160));
         };
         {
-            CBool* langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Cui.Gallery.Gallery.Globals.langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            CBool* langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Forms.Gallery.Gallery.Globals.langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_99607BD1CDF75BB5EDBC42C3581E4FE223587AE53822312299D4C941F640635D.Values.CopyTo(new global::System.Span<CBool>((CBool*)(langs__s33__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 8));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.range__s34__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_date_range { start = new cui_date { year = 2026, month = 11, day = 3 }, end = new cui_date { year = 2026, month = 11, day = 14 } };
-        global::Managed.Cui.Gallery.Gallery.Globals.stay__s35__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_date_range { start = new cui_date { year = 2026, month = 12, day = 18 }, end = new cui_date { year = 2026, month = 12, day = 27 } };
-        global::Managed.Cui.Gallery.Gallery.Globals.hour__s36__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 9;
-        global::Managed.Cui.Gallery.Gallery.Globals.minute__s37__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 30;
-        global::Managed.Cui.Gallery.Gallery.Globals.h2__s38__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 18;
-        global::Managed.Cui.Gallery.Gallery.Globals.m2__s39__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 45;
-        global::Managed.Cui.Gallery.Gallery.Globals.day__s40__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 13;
-        global::Managed.Cui.Gallery.Gallery.Globals.month__s41__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 10;
-        global::Managed.Cui.Gallery.Gallery.Globals.year__s42__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 6;
-        global::Managed.Cui.Gallery.Gallery.Globals.dh__s43__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 7;
-        global::Managed.Cui.Gallery.Gallery.Globals.dm__s44__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 25;
-        global::Managed.Cui.Gallery.Gallery.Globals.height__s45__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 172;
-        global::Managed.Cui.Gallery.Gallery.Globals.temp__s46__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 21.5f;
-        global::Managed.Cui.Gallery.Gallery.Globals.lo__s47__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 40;
-        global::Managed.Cui.Gallery.Gallery.Globals.hi__s48__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 160;
+        global::Managed.Forms.Gallery.Gallery.Globals.range__s34__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_date_range { start = new cui_date { year = 2026, month = 11, day = 3 }, end = new cui_date { year = 2026, month = 11, day = 14 } };
+        global::Managed.Forms.Gallery.Gallery.Globals.stay__s35__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_date_range { start = new cui_date { year = 2026, month = 12, day = 18 }, end = new cui_date { year = 2026, month = 12, day = 27 } };
+        global::Managed.Forms.Gallery.Gallery.Globals.hour__s36__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 9;
+        global::Managed.Forms.Gallery.Gallery.Globals.minute__s37__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 30;
+        global::Managed.Forms.Gallery.Gallery.Globals.h2__s38__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 18;
+        global::Managed.Forms.Gallery.Gallery.Globals.m2__s39__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 45;
+        global::Managed.Forms.Gallery.Gallery.Globals.day__s40__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 13;
+        global::Managed.Forms.Gallery.Gallery.Globals.month__s41__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 10;
+        global::Managed.Forms.Gallery.Gallery.Globals.year__s42__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 6;
+        global::Managed.Forms.Gallery.Gallery.Globals.dh__s43__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 7;
+        global::Managed.Forms.Gallery.Gallery.Globals.dm__s44__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 25;
+        global::Managed.Forms.Gallery.Gallery.Globals.height__s45__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 172;
+        global::Managed.Forms.Gallery.Gallery.Globals.temp__s46__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 21.5f;
+        global::Managed.Forms.Gallery.Gallery.Globals.lo__s47__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 40;
+        global::Managed.Forms.Gallery.Gallery.Globals.hi__s48__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 160;
         {
-            float* bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            float* bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_CE3B12A614BF9C471ABDB686FBE73F650AE0AB7442F6B056B5E71FF4CC80BC03.Values.CopyTo(new global::System.Span<float>((float*)(bins__s49__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 24));
         };
         {
-            byte** items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S800 /*"C"*/);
         items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S924 /*"C++"*/);
         items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1383 /*"Rust"*/);
@@ -1202,7 +1202,7 @@ public static partial class Gallery
         items__s50__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[7] = (DotCcLiterals.Pointer + DotCcLiterals.S977 /*"Odin"*/);
         };
         {
-            byte** mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S259 /*"January"*/);
         mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S311 /*"February"*/);
         mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1369 /*"March"*/);
@@ -1217,14 +1217,14 @@ public static partial class Gallery
         mn__s56__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[11] = (DotCcLiterals.Pointer + DotCcLiterals.S607 /*"December"*/);
         };
         {
-            byte* last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B5341E6B2646979A70E57653007A1F310169421EC9BDD9F1A5648F75ADE005AF1.CopyTo(new global::System.Span<byte>((byte*)(last__s58__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 256));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.banner__s59__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.card1__s60__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.card2__s61__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.banner__s59__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.card1__s60__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.card2__s61__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
         {
-            cui_check_step* steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_check_step*)global::Managed.Cui.Gallery.Gallery.Globals.steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_check_step* steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_check_step*)global::Managed.Forms.Gallery.Gallery.Globals.steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         steps__s62__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S701 /*"Create your workspace"*/),
@@ -1255,7 +1255,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_toc_item* toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_toc_item*)global::Managed.Cui.Gallery.Gallery.Globals.toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_toc_item* toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_toc_item*)global::Managed.Forms.Gallery.Gallery.Globals.toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         toc__s65__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S1129 /*"Introduction"*/),
@@ -1305,10 +1305,10 @@ public static partial class Gallery
             level = 0,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.para__s66__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (nint)((DotCcLiterals.Pointer + DotCcLiterals.S225 /*"Components are functions. They draw themselves, handle input and return what happened. Your variables are the source of truth, so there is nothing to keep in sy"…*/));
-        global::Managed.Cui.Gallery.Gallery.Globals.last_sort__s68__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_table_sort { column = -1, descending = 0 };
+        global::Managed.Forms.Gallery.Gallery.Globals.para__s66__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (nint)((DotCcLiterals.Pointer + DotCcLiterals.S225 /*"Components are functions. They draw themselves, handle input and return what happened. Your variables are the source of truth, so there is nothing to keep in sy"…*/));
+        global::Managed.Forms.Gallery.Gallery.Globals.last_sort__s68__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_table_sort { column = -1, descending = 0 };
         {
-            byte** first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1300 /*"Maya"*/);
         first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S66 /*"Priya"*/);
         first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S890 /*"Jonas"*/);
@@ -1327,7 +1327,7 @@ public static partial class Gallery
         first__s69__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[15] = (DotCcLiterals.Pointer + DotCcLiterals.S1486 /*"Felix"*/);
         };
         {
-            byte** last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1600 /*"Okafor"*/);
         last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1007 /*"Nair"*/);
         last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S563 /*"Berg"*/);
@@ -1346,7 +1346,7 @@ public static partial class Gallery
         last__s70__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[15] = (DotCcLiterals.Pointer + DotCcLiterals.S1533 /*"Moreau"*/);
         };
         {
-            byte** teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1015 /*"Engine"*/);
         teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1598 /*"Design"*/);
         teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S429 /*"Platform"*/);
@@ -1354,7 +1354,7 @@ public static partial class Gallery
         teams__s71__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[4] = (DotCcLiterals.Pointer + DotCcLiterals.S36 /*"Growth"*/);
         };
         {
-            byte** team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1015 /*"Engine"*/);
         team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1598 /*"Design"*/);
         team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S429 /*"Platform"*/);
@@ -1362,51 +1362,51 @@ public static partial class Gallery
         team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[4] = (DotCcLiterals.Pointer + DotCcLiterals.S36 /*"Growth"*/);
         };
         {
-            byte** status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1203 /*"Active"*/);
         status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1132 /*"Away"*/);
         status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S305 /*"Invited"*/);
         };
         {
-            byte** role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S611 /*"Owner"*/);
         role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1509 /*"Admin"*/);
         role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1169 /*"Member"*/);
         };
         {
-            cui_filter_field* fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_filter_field*)global::Managed.Cui.Gallery.Gallery.Globals.fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_filter_field* fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_filter_field*)global::Managed.Forms.Gallery.Gallery.Globals.fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1546 /*"Team"*/),
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S439 /*""*/),
-            options = global::Managed.Cui.Gallery.Gallery.Globals.team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            options = global::Managed.Forms.Gallery.Gallery.Globals.team_opts__s72__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             option_count = 5,
         };
         fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1101 /*"Status"*/),
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S135 /*""*/),
-            options = global::Managed.Cui.Gallery.Gallery.Globals.status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            options = global::Managed.Forms.Gallery.Gallery.Globals.status_opts__s73__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             option_count = 3,
         };
         fields__s75__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1049 /*"Role"*/),
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S1197 /*""*/),
-            options = global::Managed.Cui.Gallery.Gallery.Globals.role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            options = global::Managed.Forms.Gallery.Gallery.Globals.role_opts__s74__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             option_count = 3,
         };
         };
         {
-            uint* filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Cui.Gallery.Gallery.Globals.filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            uint* filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Forms.Gallery.Gallery.Globals.filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.Puint_65536C129F290987890B4C6C880D43BDECAC47E954651457A53A49B362DA8969.CopyTo(new global::System.Span<uint>((uint*)(filters__s76__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 3));
         };
     }
-    private static unsafe void __DotCcInitializeGlobals_E6BA6807CD2D5F43ABFD72CD03D8D49EA188D6CF30DF4E5FCC49B169513BA181()
+    private static unsafe void __DotCcInitializeGlobals_558CF53BD2BBDFC53AFE4D0C1677129F03CA660BEC6AFEC6696C650D609232DF()
     {
 
         {
-            cui_grid_column* cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_grid_column*)global::Managed.Cui.Gallery.Gallery.Globals.cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_grid_column* cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_grid_column*)global::Managed.Forms.Gallery.Gallery.Globals.cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         cols__s78__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S525 /*"Name"*/),
@@ -1443,22 +1443,22 @@ public static partial class Gallery
             sortable = 1,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.open_src__s79__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.open_ui__s80__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.open_src__s79__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.open_ui__s80__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
         {
-            int* likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Cui.Gallery.Gallery.Globals.likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            int* likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Forms.Gallery.Gallery.Globals.likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_B22C7A955FC8DDA37F27B6250A97F3FAC6FBD8F4C89BB0EA7525546762A8CAD9.Values.CopyTo(new global::System.Span<int>((int*)(likes__s81__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 3));
         };
         {
-            CBool* liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Cui.Gallery.Gallery.Globals.liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            CBool* liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (CBool*)global::Managed.Forms.Gallery.Gallery.Globals.liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_3CFFE6F3C0EACDAF1672C05E2A627F6E276FE9ABD3D36D2666BFA50247AF9BCD.Values.CopyTo(new global::System.Span<CBool>((CBool*)(liked__s82__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 3));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.slide__s83__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.split__s86__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.45f;
-        global::Managed.Cui.Gallery.Gallery.Globals.deck__s87__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.revenue__s88__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 48210;
+        global::Managed.Forms.Gallery.Gallery.Globals.slide__s83__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.split__s86__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.45f;
+        global::Managed.Forms.Gallery.Gallery.Globals.deck__s87__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.revenue__s88__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 48210;
         {
-            cui_presence_user* who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_presence_user*)global::Managed.Cui.Gallery.Gallery.Globals.who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_presence_user* who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_presence_user*)global::Managed.Forms.Gallery.Gallery.Globals.who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         who__s89__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1189 /*"Maya Okafor"*/),
@@ -1552,7 +1552,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_ticker_item* tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_ticker_item*)global::Managed.Cui.Gallery.Gallery.Globals.tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_ticker_item* tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_ticker_item*)global::Managed.Forms.Gallery.Gallery.Globals.tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         tick__s92__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S1640 /*"Revenue"*/),
@@ -1593,25 +1593,25 @@ public static partial class Gallery
         };
         };
         {
-            byte** titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S691 /*"Faster exports"*/);
         titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1613 /*"ARM64 runners"*/);
         titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1428 /*"Shortcuts everywhere"*/);
         titles__s93__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S649 /*"Smaller downloads"*/);
         };
         {
-            byte** descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S894 /*"A 900 file project now exports in 40 seconds, down from four minutes."*/);
         descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S870 /*"Linux and macOS jobs can run on ARM64 machines in every plan."*/);
         descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S744 /*"Every action in the editor has a key, listed under Help, Shortcuts."*/);
         descs__s94__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S753 /*"The desktop app is 38 MB lighter after dropping the bundled browser."*/);
         };
         {
-            uint* tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Cui.Gallery.Gallery.Globals.tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            uint* tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Forms.Gallery.Gallery.Globals.tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.Puint_A07B72A7A1F4C2609DDF9E8821AE34F917DAF565C385E284046DA4719A3E617E.CopyTo(new global::System.Span<uint>((uint*)(tops__s95__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 4));
         };
         {
-            byte** names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S623 /*"Kyoto"*/);
         names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1177 /*"Lisbon"*/);
         names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S294 /*"Reykjavik"*/);
@@ -1619,11 +1619,11 @@ public static partial class Gallery
         names__s98__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[4] = (DotCcLiterals.Pointer + DotCcLiterals.S1004 /*"Hanoi"*/);
         };
         {
-            uint* cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Cui.Gallery.Gallery.Globals.cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            uint* cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Forms.Gallery.Gallery.Globals.cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.Puint_2FF25653D3CDCBCA046C72CB00878A153537FB4CE94A2452DA104528E5EFBEF7.CopyTo(new global::System.Span<uint>((uint*)(cols__s99__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 5));
         };
         {
-            kb_card* kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (kb_card*)global::Managed.Cui.Gallery.Gallery.Globals.kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            kb_card* kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (kb_card*)global::Managed.Forms.Gallery.Gallery.Globals.kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         kb_cards__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             id = 1,
@@ -1714,26 +1714,26 @@ public static partial class Gallery
         };
         };
         {
-            int* kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Cui.Gallery.Gallery.Globals.kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            int* kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Forms.Gallery.Gallery.Globals.kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_A297FA3D7DAD5064DBF443E178283B01FDE8D546787A1321053A171A8EAD0DDD.Values.CopyTo(new global::System.Span<int>((int*)(kb_cols__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 32));
         };
         {
-            int* kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Cui.Gallery.Gallery.Globals.kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            int* kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Forms.Gallery.Gallery.Globals.kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_E38FC71DEB2839C89252C8B7AE39FCD1DC269D58F254AA022DD6C00DCAE7A3BE.Values.CopyTo(new global::System.Span<int>((int*)(kb_len__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 4));
         };
         {
-            byte** col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1091 /*"Backlog"*/);
         col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S395 /*"In progress"*/);
         col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1339 /*"Review"*/);
         col_names__s100__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S866 /*"Done"*/);
         };
         {
-            uint* col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Cui.Gallery.Gallery.Globals.col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            uint* col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (uint*)global::Managed.Forms.Gallery.Gallery.Globals.col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.Puint_E9A5960A6088E0615186E962BBFC937BD1E102A636607FD2BF0D8DAA33487B79.CopyTo(new global::System.Span<uint>((uint*)(col_dots__s101__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 4));
         };
         {
-            byte** nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1487 /*"0"*/);
         nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1500 /*"1"*/);
         nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S929 /*"2"*/);
@@ -1746,7 +1746,7 @@ public static partial class Gallery
         nums__s102__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[9] = (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"9"*/);
         };
         {
-            cui_cal_event* events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_cal_event*)global::Managed.Cui.Gallery.Gallery.Globals.events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_cal_event* events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_cal_event*)global::Managed.Forms.Gallery.Gallery.Globals.events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         events__s103__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S914 /*"Standup"*/),
@@ -1848,7 +1848,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_gantt_task* tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_gantt_task*)global::Managed.Cui.Gallery.Gallery.Globals.tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_gantt_task* tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_gantt_task*)global::Managed.Forms.Gallery.Gallery.Globals.tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         tasks__s104__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S757 /*"Research"*/),
@@ -1928,11 +1928,11 @@ public static partial class Gallery
         };
         };
     }
-    private static unsafe void __DotCcInitializeGlobals_A29665FE849F051B66231BB3EB06C3B9C9FC8AAE6D7E11998AB5141A2924C95B()
+    private static unsafe void __DotCcInitializeGlobals_D5D86AEF4003A50C89CADE831E90AF16FF8C51B5C93C6CFB87FAAAB0F596C890()
     {
 
         {
-            byte** titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S914 /*"Standup"*/);
         titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S807 /*"Design review"*/);
         titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1229 /*"Offsite"*/);
@@ -1947,7 +1947,7 @@ public static partial class Gallery
         titles__s109__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[11] = (DotCcLiterals.Pointer + DotCcLiterals.S148 /*"Board meeting"*/);
         };
         {
-            byte** wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1202 /*"Mon"*/);
         wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1468 /*"Tue"*/);
         wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S546 /*"Wed"*/);
@@ -1957,7 +1957,7 @@ public static partial class Gallery
         wd__s113__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[6] = (DotCcLiterals.Pointer + DotCcLiterals.S1333 /*"Sun"*/);
         };
         {
-            byte** hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1519 /*"0h"*/);
         hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = null;
         hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = null;
@@ -1984,7 +1984,7 @@ public static partial class Gallery
         hours__s114__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[23] = null;
         };
         {
-            cui_viz_item* mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         mods__s115__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S859 /*"Layout"*/),
@@ -2037,15 +2037,15 @@ public static partial class Gallery
         };
         };
         {
-            float* a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            float* a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_4ED13E925A9C8AA12C44E0BBECD197776E03EE76EB5A08048F2E396858648D81.Values.CopyTo(new global::System.Span<float>((float*)(a__s116__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 6));
         };
         {
-            float* b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            float* b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_038EAE1CE7AA530602EC7165C2EA46DF828DFE8CF2E7DDF040337A92A8E6C912.Values.CopyTo(new global::System.Span<float>((float*)(b__s117__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 6));
         };
         {
-            byte** axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S496 /*"Speed"*/);
         axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S124 /*"Size"*/);
         axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1119 /*"Polish"*/);
@@ -2054,7 +2054,7 @@ public static partial class Gallery
         axes__s118__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[5] = (DotCcLiterals.Pointer + DotCcLiterals.S1267 /*"Tests"*/);
         };
         {
-            cui_viz_item* stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         stages__s119__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S1410 /*"Visited"*/),
@@ -2077,7 +2077,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_viz_item* parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         parts__s120__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S859 /*"Layout"*/),
@@ -2105,7 +2105,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_viz_item* plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         plats__s121__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S690 /*"Windows"*/),
@@ -2123,7 +2123,7 @@ public static partial class Gallery
         };
         };
         {
-            byte** nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S61 /*"Search"*/);
         nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1448 /*"Social"*/);
         nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S93 /*"Referral"*/);
@@ -2134,7 +2134,7 @@ public static partial class Gallery
         nodes__s122__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[7] = (DotCcLiterals.Pointer + DotCcLiterals.S1046 /*"Churned"*/);
         };
         {
-            cui_sankey_link* links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_sankey_link*)global::Managed.Cui.Gallery.Gallery.Globals.links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_sankey_link* links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_sankey_link*)global::Managed.Forms.Gallery.Gallery.Globals.links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         links__s123__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             from = 0,
@@ -2185,7 +2185,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_viz_item* pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         pages__s124__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S263 /*"/docs"*/),
@@ -2218,7 +2218,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_viz_item* rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         rings__s125__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S1350 /*"Move"*/),
@@ -2236,7 +2236,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_gauge_band* bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_gauge_band*)global::Managed.Cui.Gallery.Gallery.Globals.bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_gauge_band* bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_gauge_band*)global::Managed.Forms.Gallery.Gallery.Globals.bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         bands__s131__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             to = 60,
@@ -2253,35 +2253,35 @@ public static partial class Gallery
             tone = __DotCcEnum_6375695F746F6E65.CUI_TONE_DANGER,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.progress__s136__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.36f;
-        global::Managed.Cui.Gallery.Gallery.Globals.wifi__s137__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.bt__s138__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.focus__s139__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.airdrop__s140__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.dark_tile__s141__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.tab__s142__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.np__s143__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_now_playing { title = (DotCcLiterals.Pointer + DotCcLiterals.S190 /*"Low Tide"*/), artist = (DotCcLiterals.Pointer + DotCcLiterals.S1639 /*"Marlow Avenue"*/), art = 0, art_color = new cui_color { r = 200, g = 85, b = 61, a = 255 }, position = 76, duration = 222, playing = 1 };
+        global::Managed.Forms.Gallery.Gallery.Globals.progress__s136__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.36f;
+        global::Managed.Forms.Gallery.Gallery.Globals.wifi__s137__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.bt__s138__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.focus__s139__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.airdrop__s140__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.dark_tile__s141__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.tab__s142__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.np__s143__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_now_playing { title = (DotCcLiterals.Pointer + DotCcLiterals.S190 /*"Low Tide"*/), artist = (DotCcLiterals.Pointer + DotCcLiterals.S1639 /*"Marlow Avenue"*/), art = 0, art_color = new cui_color { r = 200, g = 85, b = 61, a = 255 }, position = 76, duration = 222, playing = 1 };
         {
-            byte** words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S284 /*"staging."*/);
         words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S539 /*"eu-west."*/);
         words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1363 /*"us-east."*/);
         words__s144__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S450 /*"all regions."*/);
         };
         {
-            byte** titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1092 /*"Software"*/);
         titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S602 /*"OpenGL 3.3"*/);
         titles__s145__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1442 /*"Your own"*/);
         };
         {
-            byte** blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1057 /*"Plain C into a pixel buffer. No GPU needed."*/);
         blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S354 /*"The default on desktop. Deploying now."*/);
         blurbs__s146__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1013 /*"The core emits triangles; bring any GPU API."*/);
         };
         {
-            cui_tab_bar_item* tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_tab_bar_item*)global::Managed.Cui.Gallery.Gallery.Globals.tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_tab_bar_item* tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_tab_bar_item*)global::Managed.Forms.Gallery.Gallery.Globals.tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         tabs__s147__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S422 /*""*/),
@@ -2308,23 +2308,23 @@ public static partial class Gallery
         };
         };
         {
-            byte* draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B076A27C79E5ACE2A3D47F9DD2E83E4FF6EA8872B3C2218F66C92B89B55F36560.CopyTo(new global::System.Span<byte>((byte*)(draft__s148__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 512));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.model__s149__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.vote__s150__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.orb_state__s151__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
-        global::Managed.Cui.Gallery.Gallery.Globals.removed__s152__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
-        global::Managed.Cui.Gallery.Gallery.Globals.busy__s153__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.started__s154__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.model__s149__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.vote__s150__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.orb_state__s151__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.removed__s152__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.busy__s153__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.started__s154__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
         {
-            byte** files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S373 /*"quarterly-report.pdf"*/);
         files__s155__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S739 /*"metrics.csv"*/);
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.file_count__s156__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
+        global::Managed.Forms.Gallery.Gallery.Globals.file_count__s156__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
         {
-            cui_model* models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_model*)global::Managed.Cui.Gallery.Gallery.Globals.models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_model* models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_model*)global::Managed.Forms.Gallery.Gallery.Globals.models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         models__s157__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1278 /*"Atlas"*/),
@@ -2348,11 +2348,11 @@ public static partial class Gallery
         };
         };
     }
-    private static unsafe void __DotCcInitializeGlobals_141BA3BF81F73AB9B57E6B606ED657EFA8BE5F66A1A9627200A647FBD90F464B()
+    private static unsafe void __DotCcInitializeGlobals_A668EA0ACB29AFDE0E64AFAEB08DC3D8AAB8A790119970E01A958505B00D567B()
     {
 
         {
-            cui_source* sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_source*)global::Managed.Cui.Gallery.Gallery.Globals.sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_source* sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_source*)global::Managed.Forms.Gallery.Gallery.Globals.sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         sources__s158__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             title = (DotCcLiterals.Pointer + DotCcLiterals.S198 /*"Immediate mode GUIs and why they keep coming back"*/),
@@ -2373,7 +2373,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_viz_item* parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Cui.Gallery.Gallery.Globals.parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_viz_item* parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_viz_item*)global::Managed.Forms.Gallery.Gallery.Globals.parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         parts__s159__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S436 /*"System"*/),
@@ -2391,14 +2391,14 @@ public static partial class Gallery
         };
         };
         {
-            byte** states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S867 /*"Idle"*/);
         states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S88 /*"Listening"*/);
         states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S698 /*"Thinking"*/);
         states__s160__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S242 /*"Speaking"*/);
         };
         {
-            cui_prompt_suggestion* sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_prompt_suggestion*)global::Managed.Cui.Gallery.Gallery.Globals.sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_prompt_suggestion* sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_prompt_suggestion*)global::Managed.Forms.Gallery.Gallery.Globals.sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         sugg__s161__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             icon = (DotCcLiterals.Pointer + DotCcLiterals.S946 /*""*/),
@@ -2424,16 +2424,16 @@ public static partial class Gallery
             detail = (DotCcLiterals.Pointer + DotCcLiterals.S1434 /*"Paste the stack trace"*/),
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.cutoff__s162__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1800;
-        global::Managed.Cui.Gallery.Gallery.Globals.res__s163__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.3f;
-        global::Managed.Cui.Gallery.Gallery.Globals.attack__s164__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 12;
-        global::Managed.Cui.Gallery.Gallery.Globals.pan__s165__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.15f;
+        global::Managed.Forms.Gallery.Gallery.Globals.cutoff__s162__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1800;
+        global::Managed.Forms.Gallery.Gallery.Globals.res__s163__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.3f;
+        global::Managed.Forms.Gallery.Gallery.Globals.attack__s164__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 12;
+        global::Managed.Forms.Gallery.Gallery.Globals.pan__s165__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0.15f;
         {
-            float* faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            float* faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_03F816330C1631884528FF28CE4FBDE3419A217602154185AA0D2C1BCF6B0EA5.Values.CopyTo(new global::System.Span<float>((float*)(faders__s166__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 6));
         };
         {
-            byte** names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S957 /*"Kick"*/);
         names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S409 /*"Snare"*/);
         names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S822 /*"Bass"*/);
@@ -2442,12 +2442,12 @@ public static partial class Gallery
         names__s168__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[5] = (DotCcLiterals.Pointer + DotCcLiterals.S71 /*"FX"*/);
         };
         {
-            float* marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Cui.Gallery.Gallery.Globals.marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            float* marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (float*)global::Managed.Forms.Gallery.Gallery.Globals.marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_53272437D9DE7A1C61EB00156E65E13BE4F63AEF0C863C0AF44B56BD9CF8AE48.Values.CopyTo(new global::System.Span<float>((float*)(marks__s169__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 6));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.tour__s170__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.tour__s170__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
         {
-            cui_tour_step* steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_tour_step*)global::Managed.Cui.Gallery.Gallery.Globals.steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_tour_step* steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_tour_step*)global::Managed.Forms.Gallery.Gallery.Globals.steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         steps__s171__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             target = 0,
@@ -2471,7 +2471,7 @@ public static partial class Gallery
         };
         };
         {
-            byte** demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1631 /*"assets"*/);
         demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S577 /*"src"*/);
         demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S768 /*"README.md"*/);
@@ -2480,12 +2480,12 @@ public static partial class Gallery
         demo__s172__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[5] = (DotCcLiterals.Pointer + DotCcLiterals.S854 /*"report.pdf"*/);
         };
         {
-            byte* folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.BD6E90BA9A807E4D2A8F9F70D89766C94A2A7E6A83C63D25E2977490B124F0242.CopyTo(new global::System.Span<byte>((byte*)(folder__s173__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 1024));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.kv_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.kv_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
         {
-            cui_diagnostic* pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_diagnostic*)global::Managed.Cui.Gallery.Gallery.Globals.pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_diagnostic* pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_diagnostic*)global::Managed.Forms.Gallery.Gallery.Globals.pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         pbm_diags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             severity = __DotCcEnum_6375695F7365766572697479.CUI_SEVERITY_ERROR,
@@ -2557,16 +2557,16 @@ public static partial class Gallery
             code = (DotCcLiterals.Pointer + DotCcLiterals.S1122 /*"-Wsign-compare"*/),
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.pl_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 3;
+        global::Managed.Forms.Gallery.Gallery.Globals.pl_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 3;
         {
-            byte** stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S939 /*"Build"*/);
         stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S34 /*"Test"*/);
         stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S606 /*"Package"*/);
         stages_en__s182__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S167 /*"Deploy"*/);
         };
         {
-            cui_pipeline_job* jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_pipeline_job*)global::Managed.Cui.Gallery.Gallery.Globals.jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_pipeline_job* jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_pipeline_job*)global::Managed.Forms.Gallery.Gallery.Globals.jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         jobs__s183__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S790 /*"linux-x64"*/),
@@ -2640,18 +2640,18 @@ public static partial class Gallery
         };
         };
         {
-            byte** qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S681 /*"Open"*/);
         qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S395 /*"In progress"*/);
         qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S472 /*"Closed"*/);
         };
         {
-            cui_query_field* qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_query_field*)global::Managed.Cui.Gallery.Gallery.Globals.qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_query_field* qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_query_field*)global::Managed.Forms.Gallery.Gallery.Globals.qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1101 /*"Status"*/),
             type = __DotCcEnum_6375695F71756572795F74797065.CUI_QUERY_CHOICE,
-            choices = global::Managed.Cui.Gallery.Gallery.Globals.qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            choices = global::Managed.Forms.Gallery.Gallery.Globals.qb_status__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             choice_count = 3,
         };
         qb_fields__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = new()
@@ -2671,7 +2671,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_query_node* qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_query_node*)global::Managed.Cui.Gallery.Gallery.Globals.qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_query_node* qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_query_node*)global::Managed.Forms.Gallery.Gallery.Globals.qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].depth = 0;
         qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].group = 1;
         qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].any = 0;
@@ -2708,18 +2708,18 @@ public static partial class Gallery
         qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[14] = default(cui_query_node);
         qb_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[15] = default(cui_query_node);
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.qb_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 5;
+        global::Managed.Forms.Gallery.Gallery.Globals.qb_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 5;
         {
-            byte* sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.BE46F720C712D7198C43F04AFC11A942C0E788B2AC287CB668340963A5249A0C0.CopyTo(new global::System.Span<byte>((byte*)(sc_cron__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 64));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.km_mods__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int)(__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL);
+        global::Managed.Forms.Gallery.Gallery.Globals.km_mods__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = (int)(__DotCcEnum_6375695F6D6F64.CUI_MOD_CTRL);
     }
-    private static unsafe void __DotCcInitializeGlobals_C0013B8828033CDE76CC8B53A07CAD3E7DF51C16016EF2B2592DFCF3C808F11D()
+    private static unsafe void __DotCcInitializeGlobals_633B58AE1773CDA2AD896E091BFC4E343D2FD2DB633B984C87D34B556D40A7AD()
     {
 
         {
-            cui_keymap_binding* binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_keymap_binding*)global::Managed.Cui.Gallery.Gallery.Globals.binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_keymap_binding* binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_keymap_binding*)global::Managed.Forms.Gallery.Gallery.Globals.binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             combo = new()
@@ -2952,7 +2952,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_keymap_binding* binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_keymap_binding*)global::Managed.Cui.Gallery.Gallery.Globals.binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_keymap_binding* binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_keymap_binding*)global::Managed.Forms.Gallery.Gallery.Globals.binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         binds__s184__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[23] = new()
         {
             combo = new()
@@ -2965,14 +2965,14 @@ public static partial class Gallery
         };
         };
         {
-            byte** cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S221 /*"File"*/);
         cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S840 /*"Navigate"*/);
         cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S6 /*"Edit"*/);
         cats_en__s185__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S468 /*"Run and debug"*/);
         };
         {
-            cui_commit* cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_commit*)global::Managed.Cui.Gallery.Gallery.Globals.cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_commit* cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_commit*)global::Managed.Forms.Gallery.Gallery.Globals.cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].hash = (DotCcLiterals.Pointer + DotCcLiterals.S89 /*"a91f3c2e"*/);
         cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].message = (DotCcLiterals.Pointer + DotCcLiterals.S491 /*"Merge branch 'feature/trace-viewer'"*/);
         cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].author = (DotCcLiterals.Pointer + DotCcLiterals.S1189 /*"Maya Okafor"*/);
@@ -3034,9 +3034,9 @@ public static partial class Gallery
         cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[9].refs = null;
         __DotccPrimitiveView_36653151EEB91FFEEA5895C6CCA585F770506559E756FA5F0DA743F5B487D1BD.Values.CopyTo(new global::System.Span<int>((int*)(cg_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[9].parent), 2));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.cg_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.cg_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
         {
-            cui_graph_node* gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_graph_node*)global::Managed.Cui.Gallery.Gallery.Globals.gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_graph_node* gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_graph_node*)global::Managed.Forms.Gallery.Gallery.Globals.gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         gv_nodes__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             label = (DotCcLiterals.Pointer + DotCcLiterals.S511 /*"app"*/),
@@ -3093,7 +3093,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_graph_edge* gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_graph_edge*)global::Managed.Cui.Gallery.Gallery.Globals.gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_graph_edge* gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_graph_edge*)global::Managed.Forms.Gallery.Gallery.Globals.gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         gv_edges__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             from = 0,
@@ -3150,13 +3150,13 @@ public static partial class Gallery
             to = 8,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.gv_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.gv_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
     }
-    private static unsafe void __DotCcInitializeGlobals_051708589B630C122A433EF5904BB23C44A8A182E2EBAA6FCB832BBFCE4A0BAF()
+    private static unsafe void __DotCcInitializeGlobals_9F9E4312270B3123C4FDCB0411B7A7E2E7125608B2B33C6CAD9DD63A83C78217()
     {
 
         {
-            cui_net_request* wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_net_request*)global::Managed.Cui.Gallery.Gallery.Globals.wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_net_request* wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_net_request*)global::Managed.Forms.Gallery.Gallery.Globals.wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].name = (DotCcLiterals.Pointer + DotCcLiterals.S286 /*"https://shop.example.com/"*/);
         wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].method = (DotCcLiterals.Pointer + DotCcLiterals.S1548 /*"GET"*/);
         wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].status = 200;
@@ -3228,9 +3228,9 @@ public static partial class Gallery
         wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[9].start = 0.702;
         __DotccPrimitiveView_14DCE5B23143AC17858C6E07D4A4D2F5149375895001884A8C26196B0DE9E9D7.Values.CopyTo(new global::System.Span<float>((float*)(wf_reqs__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[9].timing), 6));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.wf_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
+        global::Managed.Forms.Gallery.Gallery.Globals.wf_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
         {
-            cui_trace_track* tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_trace_track*)global::Managed.Cui.Gallery.Gallery.Globals.tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_trace_track* tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_trace_track*)global::Managed.Forms.Gallery.Gallery.Globals.tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         tr_tracks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1436 /*"Main thread"*/),
@@ -3252,11 +3252,11 @@ public static partial class Gallery
             name = (DotCcLiterals.Pointer + DotCcLiterals.S927 /*"GPU"*/),
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.tr_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
-        global::Managed.Cui.Gallery.Gallery.Globals.tr_view__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_trace_view { start = 0.0042, end = 0.0418, scroll = 0, mark_start = 0.0161, mark_end = 0.0236 };
-        global::Managed.Cui.Gallery.Gallery.Globals.tr_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.tr_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 0;
+        global::Managed.Forms.Gallery.Gallery.Globals.tr_view__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = new cui_trace_view { start = 0.0042, end = 0.0418, scroll = 0, mark_start = 0.0161, mark_end = 0.0236 };
+        global::Managed.Forms.Gallery.Gallery.Globals.tr_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
         {
-            cui_trace_marker* tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_trace_marker*)global::Managed.Cui.Gallery.Gallery.Globals.tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_trace_marker* tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_trace_marker*)global::Managed.Forms.Gallery.Gallery.Globals.tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         tr_marks__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S166 /*"vsync"*/),
@@ -3283,15 +3283,15 @@ public static partial class Gallery
         };
         };
         {
-            byte* rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B26C32264807FBDFC148CE8F169AB4E71DE0603C9F31BD31D9475044F3CB25757.CopyTo(new global::System.Span<byte>((byte*)(rx_pat__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 128));
         };
         {
-            byte* rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.B23E5117049F69B99604B01CBDB117A9B41E4DD9EFA0F002F3FBD57B6F84BD155.CopyTo(new global::System.Span<byte>((byte*)(rx_text__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 1024));
         };
         {
-            cui_test_item* tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_test_item*)global::Managed.Cui.Gallery.Gallery.Globals.tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_test_item* tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_test_item*)global::Managed.Forms.Gallery.Gallery.Globals.tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         tx_items__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S405 /*"layout"*/),
@@ -3390,7 +3390,7 @@ public static partial class Gallery
         };
         };
         {
-            byte** st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S75 /*"function total(cart) {"*/);
         st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S756 /*"  let sum = 0;"*/);
         st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S363 /*"  for (const item of cart.items) {"*/);
@@ -3399,14 +3399,14 @@ public static partial class Gallery
         st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[5] = (DotCcLiterals.Pointer + DotCcLiterals.S408 /*"  return sum;"*/);
         };
         {
-            byte** st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1530 /*"export function checkout(user) {"*/);
         st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S776 /*"  const cart = carts.get(user.id);"*/);
         st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1501 /*"  const amount = total(cart);"*/);
         st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S1182 /*"  return charge(user, amount);"*/);
         };
         {
-            cui_stack_frame* st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_stack_frame*)global::Managed.Cui.Gallery.Gallery.Globals.st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_stack_frame* st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_stack_frame*)global::Managed.Forms.Gallery.Gallery.Globals.st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         st_frames__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             function = (DotCcLiterals.Pointer + DotCcLiterals.S1372 /*"total"*/),
@@ -3414,7 +3414,7 @@ public static partial class Gallery
             line = 3,
             column = 29,
             external = 0,
-            source = global::Managed.Cui.Gallery.Gallery.Globals.st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            source = global::Managed.Forms.Gallery.Gallery.Globals.st_src1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             source_count = 6,
             source_first = 1,
         };
@@ -3425,7 +3425,7 @@ public static partial class Gallery
             line = 3,
             column = 18,
             external = 0,
-            source = global::Managed.Cui.Gallery.Gallery.Globals.st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            source = global::Managed.Forms.Gallery.Gallery.Globals.st_src2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             source_count = 4,
             source_first = 1,
         };
@@ -3462,23 +3462,23 @@ public static partial class Gallery
             external = 0,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.rq_method__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
+        global::Managed.Forms.Gallery.Gallery.Globals.rq_method__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1;
         {
-            byte* rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Cui.Gallery.Gallery.Globals.rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte* rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte*)global::Managed.Forms.Gallery.Gallery.Globals.rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         DotCcLiterals.BF582B5D3E074EC715C4C7D8A1605D60476B80C888EE56200E3EE9675ABB8DECA.CopyTo(new global::System.Span<byte>((byte*)(rq_url__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 256));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.rq_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
+        global::Managed.Forms.Gallery.Gallery.Globals.rq_n__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = -1;
         {
-            byte** names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S243 /*"API"*/);
         names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1601 /*"Website"*/);
         names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1423 /*"Database"*/);
         names_en__s187__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = (DotCcLiterals.Pointer + DotCcLiterals.S1024 /*"CDN"*/);
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.th_s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1794240000 + 3600 * 5;
-        global::Managed.Cui.Gallery.Gallery.Globals.th_s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1794240000 + 3600 * 7.5;
+        global::Managed.Forms.Gallery.Gallery.Globals.th_s0__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1794240000 + 3600 * 5;
+        global::Managed.Forms.Gallery.Gallery.Globals.th_s1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 1794240000 + 3600 * 7.5;
         {
-            cui_coverage_file* cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_coverage_file*)global::Managed.Cui.Gallery.Gallery.Globals.cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_coverage_file* cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_coverage_file*)global::Managed.Forms.Gallery.Gallery.Globals.cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         cv_files__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             path = (DotCcLiterals.Pointer + DotCcLiterals.S1036 /*"src/core/layout.c"*/),
@@ -3561,11 +3561,11 @@ public static partial class Gallery
         };
         };
     }
-    private static unsafe void __DotCcInitializeGlobals_C3E22C82BE503605B82BF9D996A3A932075E2B3DC337281AA0950D17A2A29208()
+    private static unsafe void __DotCcInitializeGlobals_8434112C229AFFA4C0036C3767618D2D29EE7CD77CF619557877C9349FF3BBD8()
     {
 
         {
-            byte** bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S293 /*"#include \"cui_internal.h\""*/);
         bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S704 /*""*/);
         bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1611 /*"\u002F* the width a component asks for *\u002F"*/);
@@ -3583,11 +3583,11 @@ public static partial class Gallery
         bl_lines__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[14] = (DotCcLiterals.Pointer + DotCcLiterals.S401 /*"}"*/);
         };
         {
-            int* bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Cui.Gallery.Gallery.Globals.bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            int* bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (int*)global::Managed.Forms.Gallery.Gallery.Globals.bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_8DEE1E9BE3A2F25BD3AC378949C7D49B2D6C7C02E2958E968F0E82969C637011.Values.CopyTo(new global::System.Span<int>((int*)(bl_commit__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 15));
         };
         {
-            cui_blame_commit* bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_blame_commit*)global::Managed.Cui.Gallery.Gallery.Globals.bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_blame_commit* bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_blame_commit*)global::Managed.Forms.Gallery.Gallery.Globals.bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         bl_commits__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             hash = (DotCcLiterals.Pointer + DotCcLiterals.S369 /*"a1b2c3d4e5"*/),
@@ -3625,7 +3625,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_feature_flag* ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_feature_flag*)global::Managed.Cui.Gallery.Gallery.Globals.ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_feature_flag* ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_feature_flag*)global::Managed.Forms.Gallery.Gallery.Globals.ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].key = (DotCcLiterals.Pointer + DotCcLiterals.S771 /*"new-checkout"*/);
         ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].description = (DotCcLiterals.Pointer + DotCcLiterals.S264 /*"Single-page checkout with saved cards"*/);
         __DotccPrimitiveView_316FA0BC9925CE0DFDB7B4A496B090E7F93AD733E471484FC72D145B361C996A.Values.CopyTo(new global::System.Span<CBool>((CBool*)(&ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0].on), 8));
@@ -3642,13 +3642,13 @@ public static partial class Gallery
         __DotccPrimitiveView_1D3BB41595BACDA0BFCF951549FAB0CB8A6450FA3941365730C30E4ABECF4128.Values.CopyTo(new global::System.Span<CBool>((CBool*)(&ff_flags__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3].on), 8));
         };
         {
-            byte** envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Cui.Gallery.Gallery.Globals.envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            byte** envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (byte**)global::Managed.Forms.Gallery.Gallery.Globals.envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = (DotCcLiterals.Pointer + DotCcLiterals.S1324 /*"Development"*/);
         envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = (DotCcLiterals.Pointer + DotCcLiterals.S1523 /*"Staging"*/);
         envs__s189__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[2] = (DotCcLiterals.Pointer + DotCcLiterals.S1208 /*"Production"*/);
         };
         {
-            cui_api_param* ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_api_param*)global::Managed.Cui.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_api_param* ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_api_param*)global::Managed.Forms.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S1133 /*"id"*/),
@@ -3667,7 +3667,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_api_param* ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_api_param*)global::Managed.Cui.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_api_param* ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_api_param*)global::Managed.Forms.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S470 /*"limit"*/),
@@ -3686,7 +3686,7 @@ public static partial class Gallery
         };
         };
         {
-            cui_api_endpoint* ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_api_endpoint*)global::Managed.Cui.Gallery.Gallery.Globals.ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            cui_api_endpoint* ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (cui_api_endpoint*)global::Managed.Forms.Gallery.Gallery.Globals.ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             method = (DotCcLiterals.Pointer + DotCcLiterals.S1548 /*"GET"*/),
@@ -3694,7 +3694,7 @@ public static partial class Gallery
             summary = (DotCcLiterals.Pointer + DotCcLiterals.S416 /*"List users"*/),
             tag = (DotCcLiterals.Pointer + DotCcLiterals.S555 /*"Users"*/),
             deprecated = 0,
-            @params = global::Managed.Cui.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            @params = global::Managed.Forms.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             param_count = 2,
         };
         ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[1] = new()
@@ -3711,7 +3711,7 @@ public static partial class Gallery
             summary = (DotCcLiterals.Pointer + DotCcLiterals.S1105 /*"Get a user"*/),
             tag = (DotCcLiterals.Pointer + DotCcLiterals.S555 /*"Users"*/),
             deprecated = 0,
-            @params = global::Managed.Cui.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            @params = global::Managed.Forms.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             param_count = 2,
         };
         ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[3] = new()
@@ -3721,7 +3721,7 @@ public static partial class Gallery
             summary = (DotCcLiterals.Pointer + DotCcLiterals.S49 /*"Update a user"*/),
             tag = (DotCcLiterals.Pointer + DotCcLiterals.S555 /*"Users"*/),
             deprecated = 0,
-            @params = global::Managed.Cui.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            @params = global::Managed.Forms.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             param_count = 1,
         };
         ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[4] = new()
@@ -3731,7 +3731,7 @@ public static partial class Gallery
             summary = (DotCcLiterals.Pointer + DotCcLiterals.S23 /*"Delete a user"*/),
             tag = (DotCcLiterals.Pointer + DotCcLiterals.S555 /*"Users"*/),
             deprecated = 0,
-            @params = global::Managed.Cui.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            @params = global::Managed.Forms.Gallery.Gallery.Globals.ax_p1__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             param_count = 1,
         };
         ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[5] = new()
@@ -3741,7 +3741,7 @@ public static partial class Gallery
             summary = (DotCcLiterals.Pointer + DotCcLiterals.S388 /*"List orders"*/),
             tag = (DotCcLiterals.Pointer + DotCcLiterals.S290 /*"Orders"*/),
             deprecated = 0,
-            @params = global::Managed.Cui.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
+            @params = global::Managed.Forms.Gallery.Gallery.Globals.ax_p2__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94,
             param_count = 2,
         };
         ax_eps__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[6] = new()
@@ -3760,15 +3760,15 @@ public static partial class Gallery
             deprecated = 1,
         };
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.ax_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
+        global::Managed.Forms.Gallery.Gallery.Globals.ax_sel__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
         {
-            double* cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (double*)global::Managed.Cui.Gallery.Gallery.Globals.cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            double* cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (double*)global::Managed.Forms.Gallery.Gallery.Globals.cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         __DotccPrimitiveView_6774A6A9840CC377A4E838E324FA84F9765D609A6C8AEE388881E35EA80A7F93.Values.CopyTo(new global::System.Span<double>((double*)(cups__s190__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination), 8));
         };
-        global::Managed.Cui.Gallery.Gallery.Globals.count__s191__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 3;
-        global::Managed.Cui.Gallery.Gallery.Globals.selected__s192__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
+        global::Managed.Forms.Gallery.Gallery.Globals.count__s191__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 3;
+        global::Managed.Forms.Gallery.Gallery.Globals.selected__s192__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94 = 2;
         {
-            more_page* pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (more_page*)global::Managed.Cui.Gallery.Gallery.Globals.pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
+            more_page* pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination = (more_page*)global::Managed.Forms.Gallery.Gallery.Globals.pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94;
         pages__unit_171AFF2640DEF384BF9F549504A865FD4BAE78ECD63FED7DAE8D7F3819458C94_destination[0] = new()
         {
             name = (DotCcLiterals.Pointer + DotCcLiterals.S638 /*"Actions"*/),

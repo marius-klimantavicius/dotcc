@@ -2,7 +2,7 @@
 
 Status: Linux delivery complete, including the stack-local storage correction.
 Actual Windows execution remains unrun. Baseline: `d1aec0cc9`. This campaign extends
-[the translated CUI plan](PLAN.md), preserving its generated products, managed
+[the translated CUI plan](PLAN.md), preserving its translated behavior, managed
 GLFW implementation and independent `ManagedConsumer` reference application.
 The [translation baseline](../../docs/plans/translation-baseline.md) applies.
 
@@ -11,16 +11,25 @@ unmanaged locals. Retained pointees and builder state keep their audited stable
 storage. The checked-in templates and source/native retention hashes enforce
 reproduction. See [the storage audit](MANAGED-STORAGE-AUDIT.md).
 
-Current Linux raw/processed × JIT/NativeAOT qualification passes ordinary builds,
+Pre-rename Linux raw/processed × JIT/NativeAOT qualification passes ordinary builds,
 whole-wrapper AOT rooting, recursive public API audits, 75 safety assertions per
 variant and three repeated equivalent-work benchmark trials per variant. All
 27 authored pages pass exact translated full-window pixels, text and node layout
 across both themes and all eight accents. Each variant passes 4,042 assertions
 and 95 state-asserted real OS actions. Copied standalone outputs pass lifecycle
-and dependency-closure checks in all four variants. Current source-bound receipts
-are [library](MANAGED-LIBRARY-VALIDATION.json) and
+and dependency-closure checks in all four variants. Historical pre-rename
+source-bound receipts are [library](MANAGED-LIBRARY-VALIDATION.json) and
 [gallery](MANAGED-GALLERY-VALIDATION.json); the
 [delivery report](MANAGED-DELIVERY.md) explains performance and limitations.
+
+The subsequent namespace rename uses `Managed.Forms.Cui` and
+`Managed.Forms.Gallery.Gallery`. The safe namespace remains `Cui.Managed`;
+project and assembly names are unchanged. Fresh namespace-specific evidence is
+in [NAMESPACE-VALIDATION.json](NAMESPACE-VALIDATION.json). Earlier receipt hashes
+bind the pre-rename version and the performance matrix has not been rerun.
+The focused rename gates pass on Linux in all four variants: regenerated paired
+products, safe public API/lifetime checks, all 27 light/neutral pages, full OS
+input workflows, ordinary samples and copied standalone closure.
 
 ## Product and boundary
 

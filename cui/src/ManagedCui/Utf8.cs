@@ -1,6 +1,6 @@
 using System.Buffers;
 using System.Text;
-using Raw = global::Managed.Cui.Cui;
+using Raw = global::Managed.Forms.Cui;
 
 namespace Cui.Managed;
 

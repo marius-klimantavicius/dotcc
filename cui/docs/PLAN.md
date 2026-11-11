@@ -9,7 +9,10 @@ authored 27-page `ManagedGallery` pass raw/processed × JIT/NativeAOT, all
 theme/accent differential captures, real OS interactions, lifetime/allocation
 and repeated performance qualification. See [its plan](MANAGED-PLAN.md) and
 [delivery report](MANAGED-DELIVERY.md). This does not close the Windows axis or
-replace the historical translated-core evidence.
+replace the historical translated-core evidence. The later namespace-only
+rename regenerates `Managed.Forms.Cui` and `Managed.Forms.Gallery.Gallery`;
+see [its focused validation](NAMESPACE-VALIDATION.json). Safe `Cui.Managed` and
+all project/assembly names are unchanged.
 
 This plan adopts [translation baseline v4](../../docs/plans/translation-baseline.md)
 and the [shared framework](../../docs/campaigns.md). The user selected the simpler
@@ -68,7 +71,7 @@ is needed. Existing unrelated working-tree edits are not campaign work.
 | D3 | ABI | One DotCC source ABI, 64-bit pointers, UTF-8 CUI strings and DotCC UTF-16 wide strings. Emitted layouts, callbacks and native GL calls pass Linux JIT/AOT probes; Windows structures pass a shim, with real Windows execution open. |
 | D4 | Boundary | Typed managed GLFW/OS overrides and exact managed-to-native GL thunks are implemented and executed on Linux. Copied GLFW and translated CUI algorithms remain the product boundary. |
 | D5 | Lifetime | One active desktop app, owner-thread calls, rooted retained callbacks and stable opaque handles. Raw and owning destruction preserve deferred-error visibility while releasing C allocations. Linux JIT/AOT lifecycle probes and full desktop workflows pass; Windows execution open. |
-| D6 | Delivery | Object emission, class `Cui`, namespace `Managed.Cui`; shared 256 KB splitting and literal pooling. CUI profile explicitly enables inline plus static implementation deduplication for core, gallery and qualification links. Canonical raw/processed products. Decided. |
+| D6 | Delivery | Object emission, class `Cui`, namespace `Managed.Forms`; shared 256 KB splitting and literal pooling. CUI profile explicitly enables inline plus static implementation deduplication for core, gallery and qualification links. Canonical raw/processed products. Decided. |
 | D7 | Oracles | Matching native GLFW 9/9 and native window workload pass. All four managed window buffers match native exactly. Upstream 12-program Linux matrix and Noto/HarfBuzz 661-case oracle pass. Native X11 preliminary control is diagnostic only. |
 | D8 | Matrix | Linux x64 raw/processed × JIT/AOT; Windows x64 same runtime dispatch and consumer, requiring actual execution. No Windows completion inferred from cross-compilation or Wine. P4/P6 open. |
 | D9 | Tests | Linux 12-program × four-variant matrix, software/images/RTL pixels, shaping, ordinary failures/lifetimes, native/managed GLFW windows, actual OS input and real desktop services pass. Existing eight fuzz and one soak programs remain excluded. Windows axis open. |

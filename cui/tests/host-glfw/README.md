@@ -1,7 +1,8 @@
 # GLFW/OpenGL boundary tests
 
-`HostGlfw.Tests.csproj` calls the **emitted** `Cui.glfw*` overrides and translated
-`cui_gl_*` renderer. It references the full processed library by default; supply
+`HostGlfw.Tests.csproj` calls the **emitted** `Managed.Forms.Cui.glfw*` overrides
+and translated `cui_gl_*` renderer. It references the full processed library by
+default; supply
 `-p:CuiProject=/absolute/path/to/TranslatedCui.csproj` to select raw or another
 output. The tests require .NET 10, a working Windows desktop or Linux X11/GLX,
 and OpenGL 3.3. On headless Linux, install Xvfb, xauth and Mesa. The renderer uses
@@ -34,7 +35,10 @@ to both build and publish when selecting an alternate library.
 When the full campaign output is unavailable, `build-probe.py` emits all 40 GLFW
 overrides from `abi-probe.c` and the **unmodified upstream GL renderer** with the
 campaign profile and compiler. It writes a disposable project referencing the
-authored host files and copied managed GLFW. No generated C# is patched:
+authored host files and copied managed GLFW. No generated C# is patched.
+
+The probe emits `Managed.Forms.Cui`, matching the authored `Managed.Forms`
+host namespace. Project and assembly names are unchanged. To run the probe:
 
 ```bash
 python3 cui/tests/host-glfw/build-probe.py --compiler "$DOTCC_COMPILER" \

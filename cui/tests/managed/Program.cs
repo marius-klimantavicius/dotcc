@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Cui.Managed;
-using Raw = Managed.Cui.Cui;
+using Raw = Managed.Forms.Cui;
 
 internal static unsafe partial class Program
 {

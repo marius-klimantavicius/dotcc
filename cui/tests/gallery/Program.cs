@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
-using Managed.Cui;
-using static Managed.Cui.Cui;
-using static Managed.Cui.Gallery.Gallery;
+using Managed.Forms;
+using static Managed.Forms.Cui;
+using static Managed.Forms.Gallery.Gallery;
 using G = Glfw.Glfw;
 
 internal sealed record PageResult(int Page, string Name, int Nodes, int MainText, uint TextHash, int Different);
