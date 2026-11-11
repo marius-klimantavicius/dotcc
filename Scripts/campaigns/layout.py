@@ -54,7 +54,8 @@ def check(layout, recipe):
             issues.append(f"Missing helper: scripts/{name}.sh")
     if not (layout.root / "samples/ManagedConsumer/ManagedConsumer.csproj").is_file():
         issues.append("Missing samples/ManagedConsumer/ManagedConsumer.csproj")
-    expected = {str(layout.project().relative_to(layout.root)), *recipe.projects}
+    expected = {layout.project().relative_to(layout.root).as_posix(),
+                *(name.replace("\\", "/") for name in recipe.projects)}
     for name in recipe.projects:
         project = layout.root / name
         if not project.is_file():
@@ -75,7 +76,7 @@ def check(layout, recipe):
     else:
         try:
             tree = ET.parse(layout.solution)
-            selected = {node.get("Path") for node in tree.iter("Project")}
+            selected = {node.get("Path", "").replace("\\", "/") for node in tree.iter("Project")}
             for name in sorted(expected - selected):
                 issues.append(f"Consumer solution is missing {name}")
             for name in selected:
@@ -98,10 +99,12 @@ def scaffold(layout, recipe):
             path.write_text(contents)
             path.chmod(0o755)
     tree = ET.parse(layout.solution) if layout.solution.exists() else ET.ElementTree(ET.Element("Solution"))
-    selected = {node.get("Path") for node in tree.iter("Project")}
-    for name in (str(layout.project().relative_to(layout.root)), *recipe.projects):
+    selected = {node.get("Path", "").replace("\\", "/") for node in tree.iter("Project")}
+    for name in (layout.project().relative_to(layout.root).as_posix(), *recipe.projects):
+        name = name.replace("\\", "/")
         if name not in selected:
             ET.SubElement(tree.getroot(), "Project", Path=name)
+            selected.add(name)
     ET.indent(tree, space="  ")
     tree.write(layout.solution, encoding="unicode")
     with layout.solution.open("a") as stream:

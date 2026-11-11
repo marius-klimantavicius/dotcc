@@ -196,15 +196,15 @@ class CompanionDeliveryTests(unittest.TestCase):
                 delivered = {str(path.relative_to(directory)) for path in source_files(directory)}
                 self.assertEqual(set(record["hashes"]), delivered)
                 for relative, content in assets.items():
-                    key = str(Path(relative))
+                    key = Path(relative).as_posix()
                     self.assertEqual((directory / relative).read_text(), content)
                     self.assertIn(key, owned)
-                    self.assertEqual(record["hashes"][key], digest(directory / relative))
+                    self.assertEqual(record["hashes"][str(Path(relative))], digest(directory / relative))
                 for relative in (".", "managed/csharp", "managed/fsharp", "managed/visualbasic"):
                     for cache in ("bin", "obj"):
                         path = directory / relative / cache / "cache.txt"
                         self.assertTrue(path.is_file())
-                        self.assertNotIn(str(path.relative_to(directory)), owned)
+                        self.assertNotIn(path.relative_to(directory).as_posix(), owned)
                         self.assertNotIn(str(path.relative_to(directory)), record["hashes"])
             self.assertEqual(check_product(self.ctx, form), self.ctx.layout.project(self.ctx.profile, form))
         self.assertFalse((self.root / "build/campaign/promotion.json").exists())
@@ -270,7 +270,7 @@ class CompanionDeliveryTests(unittest.TestCase):
                     relative = str(Path("caller") / cache / "notes.txt")
                     self.assertEqual((directory / relative).read_text(), "caller asset")
                     self.assertEqual(output["hashes"][relative], digest(directory / relative))
-                    self.assertNotIn(relative, owned)
+                    self.assertNotIn(Path(relative).as_posix(), owned)
 
     def test_four_products_processed_and_published_with_current_hashes(self):
         self.deliver()

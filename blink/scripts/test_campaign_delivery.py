@@ -1,6 +1,6 @@
 """Current delivery ownership is mandatory; historical hashes are optional."""
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -74,6 +74,27 @@ class CampaignDeliveryTests(unittest.TestCase):
 
     def test_warn_validates_recorded_delivery(self):
         self.assertEqual(self.load()['final_files'], self.receipt['outputs']['processed']['hashes'])
+
+    def test_nested_ownership_matches_windows_paths_with_either_manifest_separator(self):
+        relative_to = Path.relative_to
+        directories = {self.root / form for form in ('raw', 'processed')}
+
+        def windows_relative_to(path, *args, **kwargs):
+            relative = relative_to(path, *args, **kwargs)
+            return PureWindowsPath(relative.as_posix()) if args and Path(args[0]) in directories else relative
+
+        for separator in ('/', '\\'):
+            with self.subTest(separator=separator):
+                for form in ('raw', 'processed'):
+                    self.write(form + '/upstream/provenance.json', 'generated metadata')
+                    self.write(form + '/.campaign-files.json',
+                               ['Product.csproj', 'upstream' + separator + 'provenance.json'])
+                    directory = self.root / form
+                    self.receipt['outputs'][form]['hashes'] = {
+                        str(PureWindowsPath(path.relative_to(directory).as_posix())): delivery.sha(path)
+                        for path in directory.rglob('*') if path.is_file()}
+                with patch.object(Path, 'relative_to', windows_relative_to):
+                    self.assertEqual(self.load()['final_files'], self.receipt['outputs']['processed']['hashes'])
 
     def test_selected_tool_executable_names_are_preserved(self):
         snapshots = {}

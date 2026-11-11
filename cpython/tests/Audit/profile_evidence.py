@@ -234,12 +234,15 @@ def identity(campaign, form, project, expected_receipt):
                   == Path(pointer['outputs'][form]['project']).resolve(), 'Test-profile project changed')
     directory = project.parent
     owned = audit.read(directory/'.campaign-files.json')
-    audit.require(isinstance(owned, list) and len(owned) == len(set(owned)),
-                  'Invalid test-profile ownership closure')
+    audit.require(isinstance(owned, list), 'Invalid test-profile ownership closure')
+    owned = [name.replace('\\', '/') for name in owned]
+    audit.require(len(owned) == len(set(owned)), 'Invalid test-profile ownership closure')
     files = {name:audit.digest(audit.safe_file(directory, name)) for name in sorted(owned)}
     for name in ('.campaign-files.json', 'Dotcc.SourceFiles.txt', project.name):
         files[name] = audit.digest(audit.safe_file(directory, name))
-    audit.require(files == output['hashes'] == pointer['outputs'][form]['hashes'],
+    recorded = {name.replace('\\', '/'): value for name, value in output['hashes'].items()}
+    published = {name.replace('\\', '/'): value for name, value in pointer['outputs'][form]['hashes'].items()}
+    audit.require(files == recorded == published,
                   'Test-profile publication bytes changed')
     return {'receipt':str(receipt_path), 'receipt_sha256':audit.digest(receipt_path),
             'form':form, 'project':str(project), 'files':files}

@@ -160,7 +160,8 @@ def load_delivery(path):
         actual = {str(p.relative_to(directory)): sha(p) for p in directory.rglob('*')
                   if p.is_file() and not {'bin', 'obj'}.intersection(p.relative_to(directory).parts)}
         owned = json.loads((directory / '.campaign-files.json').read_text())
-        if set(actual) != set(owned) | {'.campaign-files.json'}:
+        if {name.replace('\\', '/') for name in actual} != (
+                {name.replace('\\', '/') for name in owned} | {'.campaign-files.json'}):
             raise RuntimeError('Current delivered ownership differs from producer: ' + form)
         if receipt.get('hash_policy') != 'off' and actual != outputs[form]['hashes']:
             raise RuntimeError('Current delivered files differ from producer receipt: ' + form)

@@ -55,6 +55,27 @@ class ProfilePublicationBinding(unittest.TestCase):
         self.assertEqual(observed['receipt_sha256'],audit.digest(self.receipt))
         self.assertEqual(observed['files'],self.output['hashes'])
 
+    def test_nested_ownership_and_hashes_accept_either_separator(self):
+        asset = self.project.parent/'upstream/provenance.json'
+        asset.parent.mkdir()
+        asset.write_text('generated metadata')
+        for owned_separator in ('/', '\\'):
+            for hash_separator in ('/', '\\'):
+                with self.subTest(owned_separator=owned_separator, hash_separator=hash_separator):
+                    owned = ['CPython.cs', self.project.name, 'upstream/provenance.json']
+                    self.project.with_name('.campaign-files.json').write_text(json.dumps(
+                        [name.replace('/', owned_separator) for name in owned]))
+                    files = {name:audit.digest(self.project.parent/name) for name in
+                             [*owned, '.campaign-files.json', 'Dotcc.SourceFiles.txt']}
+                    self.output['hashes'] = {name.replace('/', hash_separator): value for name, value in files.items()}
+                    self.publication['outputs']['processed']['hashes'] = copy.deepcopy(self.output['hashes'])
+                    self.write()
+                    self.assertEqual(self.observe()['files'], files)
+                    asset.write_text('changed metadata')
+                    with self.assertRaisesRegex(RuntimeError, 'publication bytes changed'):
+                        self.observe()
+                    asset.write_text('generated metadata')
+
     def test_embedded_receipt_cannot_qualify_test_profile(self):
         self.document['profile'] = 'embedded-gil'
         self.write()

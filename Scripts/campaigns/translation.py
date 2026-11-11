@@ -131,7 +131,7 @@ def deliver(ctx, raw, configure=None, finish=None, companions=None):
     pairs = []
     for form, directory in trees.items():
         prune_build_caches(directory)
-        names = [str(p.relative_to(directory)) for p in source_files(directory)]
+        names = [p.relative_to(directory).as_posix() for p in source_files(directory)]
         write_json(directory / ".campaign-files.json", names)
         pairs.append((directory, ctx.layout.directory(ctx.profile, form)))
 
@@ -210,7 +210,7 @@ def deliver_companions(ctx, raw, configure, finish, companions):
     pairs = []
     for (name, form), directory in trees.items():
         prune_build_caches(directory)
-        write_json(directory / ".campaign-files.json", [str(p.relative_to(directory)) for p in source_files(directory)])
+        write_json(directory / ".campaign-files.json", [p.relative_to(directory).as_posix() for p in source_files(directory)])
         pairs.append((directory, layouts[name].directory(ctx.profile, form)))
 
     def validate():

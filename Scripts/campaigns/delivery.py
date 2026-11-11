@@ -154,18 +154,18 @@ def _prepare_promotion(pairs, journal, metadata, legacy_owned):
             # Preserve files outside the emitter's prior ownership manifest.
             owned = target / ".campaign-files.json"
             if owned.exists():
-                names = set(json.loads(owned.read_text()))
+                names = {name.replace("\\", "/") for name in json.loads(owned.read_text())}
             else:
                 manifest = target / "Dotcc.SourceFiles.txt"
-                names = set(manifest.read_text().splitlines()) if manifest.exists() else set()
+                names = {name.replace("\\", "/") for name in manifest.read_text().splitlines()} if manifest.exists() else set()
                 names.update(p.name for p in target.glob("*.csproj"))
                 for pattern in legacy_owned:
-                    names.update(str(p.relative_to(target)) for p in target.glob(pattern) if p.is_file())
+                    names.update(p.relative_to(target).as_posix() for p in target.glob(pattern) if p.is_file())
             names.add(".campaign-files.json")
             names.add("Dotcc.SourceFiles.txt")
             for path in source_files(target):
                 relative = path.relative_to(target)
-                if str(relative) not in names:
+                if relative.as_posix() not in names:
                     destination = candidate / relative
                     if destination.exists():
                         if destination.read_bytes() != path.read_bytes():
