@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>ManagedCui</AssemblyName>
+    <RootNamespace>Cui.Managed</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <CuiVariant Condition="'$(CuiVariant)' == ''">Processed</CuiVariant>
+    <CuiProject Condition="'$(CuiProject)' == '' and '$(CuiVariant)' == 'Raw'">../../generated/TranslatedCui.Raw/TranslatedCui.csproj</CuiProject>
+    <CuiProject Condition="'$(CuiProject)' == ''">../../generated/TranslatedCui/TranslatedCui.csproj</CuiProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CuiProject)" />
+  </ItemGroup>
+</Project>
