@@ -21,7 +21,7 @@ internal partial class GalleryJsonContext : JsonSerializerContext { }
 
 // Calls the translated original gallery. Inputs travel through XTEST -> GLFW
 // -> translated app/widgets. State is observed, never synthesized for actions.
-internal static unsafe class Program
+internal static unsafe partial class Program
 {
     private static int assertions;
     private static readonly List<PageResult> pages = [];
@@ -31,6 +31,8 @@ internal static unsafe class Program
     private static int frees;
     private static readonly bool diagnosticInvisible = Environment.GetEnvironmentVariable("CUI_GALLERY_DIAGNOSTIC_INVISIBLE") == "1";
     private static int visibilityFailures;
+    private static readonly bool captureOnly = Environment.GetEnvironmentVariable("CUI_GALLERY_CAPTURE_ONLY") == "1";
+    private static readonly bool inputOnly = Environment.GetEnvironmentVariable("CUI_GALLERY_INPUT_ONLY") == "1";
 
     private static void VisibleCheck(bool condition, string name)
     {
@@ -67,17 +69,18 @@ internal static unsafe class Program
     private sealed class Session : IDisposable
     {
         internal readonly DesktopApplication App = new("CUI upstream gallery qualification", 1240, 820, continuous: true,
-            theme: cui_theme_mode.CUI_THEME_LIGHT, accent: cui_accent.CUI_ACCENT_NEUTRAL);
+            theme: (cui_theme_mode)GalleryClockFixture.ThemeIndex, accent: (cui_accent)GalleryClockFixture.AccentIndex);
         internal gallery State;
         internal int Frames;
         internal Session()
         {
             fixed (gallery* g = &State) gallery_init(g);
-            cui_set_theme(App.Ui, cui_theme_mode.CUI_THEME_LIGHT);
-            cui_set_accent(App.Ui, cui_accent.CUI_ACCENT_NEUTRAL);
-            Check(cui_get_theme_mode(App.Ui) == cui_theme_mode.CUI_THEME_LIGHT &&
-                cui_get_accent(App.Ui) == cui_accent.CUI_ACCENT_NEUTRAL && App.Ui->theme_t == 1,
-                "Gallery starts with settled light/neutral palette");
+            State.dark = GalleryClockFixture.ThemeIndex == 1; State.accent = GalleryClockFixture.AccentIndex;
+            cui_set_theme(App.Ui, (cui_theme_mode)GalleryClockFixture.ThemeIndex);
+            cui_set_accent(App.Ui, (cui_accent)GalleryClockFixture.AccentIndex);
+            Check(cui_get_theme_mode(App.Ui) == (cui_theme_mode)GalleryClockFixture.ThemeIndex &&
+                cui_get_accent(App.Ui) == (cui_accent)GalleryClockFixture.AccentIndex && App.Ui->theme_t == 1,
+                "Gallery starts with the selected settled palette");
             Watch(App);
         }
 
@@ -194,6 +197,7 @@ internal static unsafe class Program
             Check(contentHashes.Add(hash.ToString()), $"Page {page} has distinct main-content text");
             File.WriteAllBytes(Path.Combine(directory, $"page-{page:00}.rgba"), pixels);
             File.WriteAllText(Path.Combine(directory, $"page-{page:00}.text"), labels.ToString());
+            GalleryObservation.WriteLayout(Path.Combine(directory, $"page-{page:00}.layout"), ui);
             pages.Add(new PageResult(page, Name(page), ui->node_count, text, hash, different));
             Console.WriteLine($"PAGE\t{page}\t{Name(page)}\t{ui->node_count}\t{text}\t{hash}\t{different}");
         }
@@ -624,6 +628,8 @@ internal static unsafe class Program
         Check(s.State.newsletter == 0 && s.State.bluetooth != 0 && s.State.plan == 2 && s.State.volume > 75,
             "Selection state persists across pages");
         Check(StateName(s) == "Gallery test", "Edited text persists across pages");
+        ExtendedInteractions(s, input);
+        ResponsiveInteractions(s, input);
         input.Close();
         var deadline = Stopwatch.StartNew();
         while (s.Frame())
@@ -637,11 +643,13 @@ internal static unsafe class Program
     {
         try
         {
+            GalleryClockFixture.Validate();
             if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Gallery OS qualification currently executes Linux/X11 only; Windows remains unrun.");
             if (args.Length != 1) throw new ArgumentException("Expected capture/report directory");
             Directory.CreateDirectory(args[0]);
-            CapturePages(args[0]);
-            Interact(args[0]);
+            if (Environment.GetEnvironmentVariable("CUI_GALLERY_RESPONSIVE_ONLY") == "1") return ResponsiveOnly();
+            if (!inputOnly) CapturePages(args[0]);
+            if (!captureOnly) Interact(args[0]);
             Console.WriteLine($"EMOJI_VISIBILITY_SUMMARY\t{visibilityFailures}\t{(diagnosticInvisible ? "diagnostic" : "strict")}");
             // A fresh process-local lifecycle after every upstream page has run.
             using (var retry = new Session())
@@ -652,10 +660,10 @@ internal static unsafe class Program
                 Check(StateName(retry) == "Maya Okafor", "Reinitialized text has original upstream default");
             }
             File.WriteAllText(Path.Combine(args[0], "report.json"), JsonSerializer.Serialize(
-                new GalleryReport(diagnosticInvisible ? "diagnostic" : "passed", assertions, pages, actions, RuntimeInformation.OSDescription, RuntimeInformation.ProcessArchitecture.ToString(),
+                new GalleryReport(inputOnly ? "input-only" : captureOnly ? "captures-only" : diagnosticInvisible ? "diagnostic" : "passed", assertions, pages, actions, RuntimeInformation.OSDescription, RuntimeInformation.ProcessArchitecture.ToString(),
                     "unrun", "UI allocation freed once per lifecycle, GLFW context/display released, reinitialized"),
                 GalleryJsonContext.Default.GalleryReport));
-            Console.WriteLine($"{(diagnosticInvisible ? "DIAGNOSTIC" : "PASS")} translated upstream gallery: 27 captures, 27 OS selections, {actions.Count} state-asserted actions, cleanup; {assertions} assertions");
+            Console.WriteLine($"{(inputOnly ? "INPUT-ONLY" : captureOnly ? "CAPTURES-ONLY" : diagnosticInvisible ? "DIAGNOSTIC" : "PASS")} translated upstream gallery: {(inputOnly ? 0 : 27)} captures, {(captureOnly ? 0 : 27)} OS selections, {actions.Count} state-asserted actions, cleanup; {assertions} assertions");
             return 0;
         }
         catch (Exception e) { Console.Error.WriteLine(e); return 1; }

@@ -21,6 +21,16 @@ from stage import adapt_text_renderer, adapt_widgets
 
 GALLERY_FILES = ("gallery_ui.c", "gallery_ui.h", "gallery_more.c", "gallery_more.h")
 EMOJI_CORE_FILES = ("src/cui_text.c", "src/cui_textedit.c", "src/cui_emoji.c")
+FIXED_EPOCH = 1794398400  # 2026-11-11 12:00:00 UTC
+
+
+def fixed_clock_environment(env, library):
+    library = Path(library).resolve()
+    if not library.is_file():
+        raise RuntimeError(f'Missing caller-supplied libfaketime: {library}')
+    return dict(env, LD_PRELOAD=str(library), FAKETIME='2026-11-11 12:00:00',
+                FAKETIME_DONT_FAKE_MONOTONIC='1', NO_FAKE_STAT='1', TZ='UTC',
+                CUI_GALLERY_EXPECTED_EPOCH=str(FIXED_EPOCH))
 
 
 def sha256(path):
@@ -250,6 +260,7 @@ def main():
     parser.add_argument('--mode', choices=('jit', 'aot', 'all'), default='all')
     parser.add_argument('--xvfb', action='store_true')
     parser.add_argument('--native-only', action='store_true')
+    parser.add_argument('--faketime-library', type=Path, help='Optional qualification-only frozen wall-clock fixture; product dependencies are unchanged')
     parser.add_argument('--diagnostic-allow-invisible-emoji', action='store_true',
                         help='Retain all before-fix workflows/crops despite visibility failures; never qualifies as a passing run')
     parser.add_argument('--native-oracle', choices=('adapted', 'original'), default='adapted',
@@ -318,6 +329,9 @@ def main():
                 native / 'build.log', env)
         report['nativeBinarySha256'] = sha256(native / 'build/gallery-control')
         with display(work, env, args.xvfb) as (runtime_env, display_record):
+            if args.faketime_library:
+                runtime_env = fixed_clock_environment(runtime_env, args.faketime_library)
+                report['clockFixture'] = dict(epoch=FIXED_EPOCH, timezone='UTC', librarySha256=sha256(args.faketime_library))
             report['display'] = display_record
             execute(['xdotool', 'mousemove', '1439', '999'], native / 'pointer.log', runtime_env, 15)
             execute([native / 'build/gallery-control', native_capture], native / 'run.log', runtime_env, 180, fixture)

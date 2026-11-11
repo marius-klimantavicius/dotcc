@@ -42,7 +42,8 @@ and separately instrumented actual core allocator high water and retention.
 
 Gates reflect the intended small immediate-mode overhead: zero additional steady
 managed bytes, construction p95 overhead at most 0.5 microsecond per emitted
-node, and total median UI work at most twice direct CUI. The per-node gate limits
+node, and the sum of construction and layout/paint medians at most twice direct
+CUI. This sum is a comparison of phase medians, not a full-frame quantile. The per-node gate limits
 added work for the representative 200-node grid to 100 microseconds, below 1% of
 a 60 Hz frame budget. Relative and allocation gates avoid claiming a hardware-
 independent absolute frame rate. Core and wrapper retained storage must stabilize,

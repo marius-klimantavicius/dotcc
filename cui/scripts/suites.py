@@ -95,6 +95,20 @@ def gallery(ctx, suite):
     ctx.save()
 
 
+def managed(ctx, suite):
+    import json
+    for form in forms(ctx):
+        check_product(ctx, form)
+    directory = ctx.work / suite.name
+    arguments = [sys.executable, ctx.root / "tests" / suite.name / "run.py", "--work-root", directory,
+                 "--form", ctx.options.form, "--mode", ctx.options.mode]
+    if suite.name == "managed-gallery":
+        arguments += ["--source", source(ctx), "--xvfb"]
+    ctx.run(arguments, suite.name, timeout=suite.timeout)
+    ctx.receipt[suite.name.replace("-", "_") + "_qualification"] = json.loads((directory / "evidence.json").read_text())
+    ctx.save()
+
+
 def abi(ctx, suite):
     tools(ctx)
     ctx.run([sys.executable, "-B", "-m", "unittest", "discover", "-s", ctx.root / "tests/recipe", "-v"], "recipe-contracts")
@@ -140,8 +154,10 @@ def audit(ctx, suite):
         suffix = ".Raw" if form == "raw" else ""
         companion = ctx.root / f"generated/TranslatedCuiGallery{suffix}/TranslatedCuiGallery.csproj"
         sample = ctx.root / "samples/ManagedConsumer/ManagedConsumer.csproj"
+        wrapper = ctx.root / "src/ManagedCui/ManagedCui.csproj"
+        showcase = ctx.root / "samples/ManagedGallery/ManagedGallery.csproj"
         evaluated = {}
-        for name, project in (("core", product), ("gallery", companion), ("sample", sample)):
+        for name, project in (("core", product), ("gallery", companion), ("sample", sample), ("wrapper", wrapper), ("showcase", showcase)):
             if not project.is_file():
                 raise RuntimeError(f"Missing {name} project: {project}")
             for node in ET.parse(project).iter():
@@ -155,7 +171,7 @@ def audit(ctx, suite):
                     raise RuntimeError(f"Product reference leaves campaign or is missing: {value}")
             label = f"audit-{form}-{name}-references"
             arguments = ["dotnet", "msbuild", project, "-getItem:ProjectReference", "--nologo"]
-            if name == "sample":
+            if name in ("sample", "wrapper", "showcase"):
                 arguments.append("-p:CuiProject=" + str(product))
             ctx.run(arguments, label)
             data = json.loads((ctx.artifacts / (label + ".log")).read_text())
@@ -164,7 +180,7 @@ def audit(ctx, suite):
                 if not path.is_relative_to(ctx.root.resolve()) or not path.is_file():
                     raise RuntimeError(f"Evaluated {name} project reference leaves campaign or is missing: {path}")
             evaluated[name] = references
-            if name in ("core", "gallery"):
+            if name in ("core", "gallery", "wrapper", "showcase"):
                 for path in project.parent.glob("*.cs"):
                     text = path.read_text(encoding="utf-8")
                     if re.search(r'(?:DllImport|LibraryImport)\s*\(\s*"[^"\n]*(?:libcui|cui\.dll|glfw)', text, re.I):
@@ -173,6 +189,8 @@ def audit(ctx, suite):
             raise RuntimeError(f"Gallery does not reference the matching {form} core")
         if set(evaluated["sample"]) != {product.resolve(), companion.resolve()}:
             raise RuntimeError(f"Sample does not reference the matching {form} core and gallery")
+        if evaluated["wrapper"] != [product.resolve()] or evaluated["showcase"] != [wrapper.resolve()]:
+            raise RuntimeError(f"ManagedGallery must reference only the wrapper, and the wrapper only the matching {form} core")
         findings.append({"form": form, "references": "campaign-local and evaluated", "native_cui_glfw": False,
                          "gallery_core": "matching form", "sample": "ordinary core/gallery project references"})
     pin = json.loads((ctx.root / "config/glfw-source.json").read_text())
