@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --g++ -DPOS Test_name.c

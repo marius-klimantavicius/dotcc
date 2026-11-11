@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++17 --multi_trans_unit Test_name.c gnats20953-p2.C

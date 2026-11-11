@@ -1,5 +1,0 @@
-//type: fp
-//options: 
-// { dg-require-effective-target tls }
-
-__thread int i;

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --microsoft_version=1940 --ms_c++20 --no_ms_permissive Test_name.c

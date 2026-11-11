@@ -1,4 +1,0 @@
-./a.out
-green: -nan
-blue: 0xADDR
-blue again: 0xADDR

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --diag_error=2361 --c++11 --gnu_version=80300 --parse Test_name.c

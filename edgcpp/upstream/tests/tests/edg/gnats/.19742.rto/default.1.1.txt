@@ -1,1 +1,0 @@
-cpfe -DTEST_NUMBER=1 --ms_c++latest --microsoft_v 1914 Test_name.c

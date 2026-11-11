@@ -1,4 +1,0 @@
-./a.out
-W called
-B1 called, first arg: 10
-B1 called, first arg: 2

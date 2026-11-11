@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=4 -W --clang_version=40900 --c++11 Test_name.c

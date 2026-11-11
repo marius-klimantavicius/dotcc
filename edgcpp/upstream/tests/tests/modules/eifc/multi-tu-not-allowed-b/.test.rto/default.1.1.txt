@@ -1,5 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++20 --export --create_header_unit=test.h.rtmod test.h
-Command-line error: option "export" cannot be used in modes where C++ modules are enabled
-
-1 catastrophic error detected in this compilation.
-Compilation terminated.

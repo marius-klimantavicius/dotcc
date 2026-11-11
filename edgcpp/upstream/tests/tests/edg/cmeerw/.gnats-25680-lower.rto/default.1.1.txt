@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --il_display --c++17 --g++ Test_name.c

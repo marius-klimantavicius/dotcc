@@ -1,1 +1,0 @@
-cpfe -DTEST_NUMBER=2 -tused --microsoft_version 1700 Test_name.c

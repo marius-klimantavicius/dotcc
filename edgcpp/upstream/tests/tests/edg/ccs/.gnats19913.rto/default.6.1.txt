@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=6 --c++ --microsoft Test_name.c

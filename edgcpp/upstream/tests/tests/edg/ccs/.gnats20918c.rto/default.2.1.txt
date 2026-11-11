@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --c++14 --g++ Test_name.c

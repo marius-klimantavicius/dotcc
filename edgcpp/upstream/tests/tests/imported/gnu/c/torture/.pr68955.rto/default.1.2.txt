@@ -1,2 +1,0 @@
-./a.out
-ONE1ONE

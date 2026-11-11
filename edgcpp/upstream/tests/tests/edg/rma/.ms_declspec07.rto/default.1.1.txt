@@ -1,1 +1,0 @@
-cpfe -DTEST_NUMBER=1 -r -x -tused --microsoft -n Test_name.c

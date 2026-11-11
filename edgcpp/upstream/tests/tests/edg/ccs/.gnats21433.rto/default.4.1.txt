@@ -1,1 +1,0 @@
-cpfe -DTEST_NUMBER=4 --diag_suppress 177 --c++17 --g++ Test_name.c

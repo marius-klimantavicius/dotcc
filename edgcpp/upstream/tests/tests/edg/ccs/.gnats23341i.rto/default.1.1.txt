@@ -1,1 +1,0 @@
-eccp -DTEST_NUMBER=1 -x Test_name.c

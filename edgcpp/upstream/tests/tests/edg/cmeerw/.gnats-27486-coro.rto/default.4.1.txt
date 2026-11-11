@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=4 --c++ --gn 140100 --target linux_armv7 Test_name.c

@@ -1,5 +1,0 @@
-//type:fn
-//options_all:--c++20
-
-export module A;
-import A; // Interface dependency on itself

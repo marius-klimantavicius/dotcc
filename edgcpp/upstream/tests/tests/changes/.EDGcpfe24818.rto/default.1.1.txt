@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --gn 80300 Test_name.c

@@ -1,2 +1,0 @@
-# Start with the normal linux gcc release configuration
-import <linux-gcc-release/base>

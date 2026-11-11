@@ -1,5 +1,0 @@
-./a.out
-constructed
-pre static_cast
-post static_cast
-destroyed

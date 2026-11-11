@@ -1,5 +1,0 @@
-./a.out
-one!
-one!
-two!
-done!

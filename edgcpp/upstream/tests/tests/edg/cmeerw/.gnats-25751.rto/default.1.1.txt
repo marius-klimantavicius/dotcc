@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++14 --clang --il --no_il_lowering Test_name.c

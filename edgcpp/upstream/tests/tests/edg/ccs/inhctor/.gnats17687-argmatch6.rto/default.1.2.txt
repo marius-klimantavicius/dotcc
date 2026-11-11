@@ -1,3 +1,0 @@
-./a.out
-Calling B::B
-Calling B::B

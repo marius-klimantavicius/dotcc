@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++26 -A Test_name.c

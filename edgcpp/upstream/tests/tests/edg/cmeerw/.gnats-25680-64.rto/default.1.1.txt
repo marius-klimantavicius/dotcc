@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --clang --target linux_x86_64 --c++11 Test_name.c

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --c++23 --microsoft Test_name.c

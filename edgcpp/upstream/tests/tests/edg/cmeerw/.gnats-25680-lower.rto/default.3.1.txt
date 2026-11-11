@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=3 --il_display --c++17 --clang -DATOMIC Test_name.c

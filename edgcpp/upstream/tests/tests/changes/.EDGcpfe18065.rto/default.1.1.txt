@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --gnu_version 50200 --c++14 Test_name.c

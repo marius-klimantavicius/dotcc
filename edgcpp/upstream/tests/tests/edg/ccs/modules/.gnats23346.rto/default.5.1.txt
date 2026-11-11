@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=5 --modules Test_name.c

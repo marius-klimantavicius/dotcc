@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --strict --c23 Test_name.c

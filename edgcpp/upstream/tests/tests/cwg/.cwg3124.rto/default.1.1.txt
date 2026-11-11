@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 -A --c++26 --set_flag reflection Test_name.c

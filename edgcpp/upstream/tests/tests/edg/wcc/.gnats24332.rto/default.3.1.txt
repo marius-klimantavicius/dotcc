@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=3 -W --microsoft_version 1926 --c Test_name.c

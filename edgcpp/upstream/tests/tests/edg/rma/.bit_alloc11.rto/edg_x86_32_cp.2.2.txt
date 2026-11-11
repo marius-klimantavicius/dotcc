@@ -1,4 +1,0 @@
-./a.out
-offset of d = 1
-offset of e = 4
-sizeof(s) = 5

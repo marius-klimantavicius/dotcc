@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --c11 --gcc Test_name.c

@@ -1,1 +1,0 @@
-cpfe -DTEST_NUMBER=1 --g++ Test_name.c

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c --gnu_version 50400 --c99 --gcc Test_name.c

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=4 --ms_c++17 --target win64 Test_name.c

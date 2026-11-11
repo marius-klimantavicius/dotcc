@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=3 -tused --c++11 --clang_version 180100 Test_name.c

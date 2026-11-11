@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --c++14 --clear_flag=alias_templ_intrinsics Test_name.c

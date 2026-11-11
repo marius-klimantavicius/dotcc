@@ -1,4 +1,0 @@
-./a.out
-A::A(const AX&) called
-B::B(const BX&) called
-C::C(const CX&) called

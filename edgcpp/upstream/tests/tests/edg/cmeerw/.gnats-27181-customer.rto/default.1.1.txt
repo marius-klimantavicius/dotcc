@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 -w --ms_c++20 --target linux_aarch64 Test_name.c

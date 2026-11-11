@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=3 -w --c++14 --defer_parse_function_templates Test_name.c

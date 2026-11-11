@@ -1,1 +1,0 @@
-constexpr int f(){int total=0;for(int n=3;const int& v=n+0;n=v-1)total+=v;return total;} static_assert(f()==6);

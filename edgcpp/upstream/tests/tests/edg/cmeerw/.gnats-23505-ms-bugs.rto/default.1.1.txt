@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++ --microsoft_version=1300 Test_name.c

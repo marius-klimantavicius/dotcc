@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 -tused --no_defer --c++11 --clang Test_name.c

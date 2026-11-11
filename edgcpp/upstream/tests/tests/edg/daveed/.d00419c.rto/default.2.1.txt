@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --microsoft -DNEG Test_name.c

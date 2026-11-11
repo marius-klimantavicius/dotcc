@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --clang_v=40000 --c++11 Test_name.c

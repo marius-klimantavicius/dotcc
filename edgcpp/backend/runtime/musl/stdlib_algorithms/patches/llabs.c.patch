@@ -1,7 +1,0 @@
---- a/llabs.c
-+++ b/llabs.c
-@@ -1,3 +1,4 @@
-+#include "algorithms_compat.h"
- #include <stdlib.h>
- 
- long long llabs(long long a)

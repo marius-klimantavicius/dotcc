@@ -1,2 +1,0 @@
-./a.out
-C++ runtime abort: terminate() called by the exception handling mechanism

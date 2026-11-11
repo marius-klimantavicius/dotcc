@@ -1,1 +1,0 @@
-eccp -DTEST_NUMBER=1 --c++14 -tused -A Test_name.c

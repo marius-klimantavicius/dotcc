@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --set_flag coroutines -tused --microsoft Test_name.c

@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="src/EdgSharp/EdgSharp.csproj" />
-  <Project Path="tests/EdgSharp.Tests/EdgSharp.Tests.csproj" />
-</Solution>

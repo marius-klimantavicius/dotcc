@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --clang_version 60000 Test_name.c

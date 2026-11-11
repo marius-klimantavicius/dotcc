@@ -1,9 +1,0 @@
-//type: fn
-//options: 
-void
-f ()
-{
-  int i;
-  for (i--)	/* { dg-error "parse|syntax|expected" } */
-    ;
-}

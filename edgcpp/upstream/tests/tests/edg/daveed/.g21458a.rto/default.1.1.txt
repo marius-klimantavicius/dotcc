@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --gnu=80000 Test_name.c

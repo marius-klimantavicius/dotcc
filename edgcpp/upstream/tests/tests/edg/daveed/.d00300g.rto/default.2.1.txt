@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --c99 --embedded_c -DPOS Test_name.c

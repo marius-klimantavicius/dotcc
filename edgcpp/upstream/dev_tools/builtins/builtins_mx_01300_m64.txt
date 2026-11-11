@@ -1,2 +1,0 @@
-/* __annotation */ void __annotation(const wchar_t*,...);
-/* __debugbreak */ void __debugbreak(void);

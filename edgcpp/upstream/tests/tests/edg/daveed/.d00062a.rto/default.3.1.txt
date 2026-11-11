@@ -1,2 +1,0 @@
-fe_only -DTEST_NUMBER=3 fn Test_name.c
-eccp: unrecognizable argument: fn

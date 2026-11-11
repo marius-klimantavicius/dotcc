@@ -1,6 +1,0 @@
-./a.out
-foo()
-method()
-method()
-method()
-~foo()

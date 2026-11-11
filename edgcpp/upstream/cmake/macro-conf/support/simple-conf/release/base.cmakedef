@@ -1,5 +1,0 @@
-# Import Release Configuration
-import <support/build-type/release/base>
-
-# Enable Checking
-CHECKING=1

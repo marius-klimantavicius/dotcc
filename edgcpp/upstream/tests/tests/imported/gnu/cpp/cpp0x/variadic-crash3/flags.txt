@@ -1,1 +1,0 @@
-//require:SKIPTHISTEST test is negative, fails on gcc also

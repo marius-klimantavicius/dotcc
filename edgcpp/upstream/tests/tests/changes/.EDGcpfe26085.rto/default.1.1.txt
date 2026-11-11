@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 -W --c11 Test_name.c

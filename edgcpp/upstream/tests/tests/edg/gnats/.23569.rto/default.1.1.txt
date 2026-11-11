@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --microsoft_version=1928 --ms_std_preprocessor Test_name.c

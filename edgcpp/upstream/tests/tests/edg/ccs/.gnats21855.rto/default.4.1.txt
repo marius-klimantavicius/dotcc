@@ -1,1 +1,0 @@
-cpfe -DTEST_NUMBER=4 -W --g++ --c++17 Test_name.c

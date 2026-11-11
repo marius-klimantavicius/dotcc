@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=2 --ms_c++20 --microsoft_version 1936 Test_name.c

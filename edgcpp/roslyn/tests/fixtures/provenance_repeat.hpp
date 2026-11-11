@@ -1,1 +1,0 @@
-int PROVENANCE_NAME = __LINE__;

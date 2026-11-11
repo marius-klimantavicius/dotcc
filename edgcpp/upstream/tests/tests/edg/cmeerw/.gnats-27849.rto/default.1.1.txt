@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 -w --ms_c++20 --microsoft_version 1928 --target linux_armv7 Test_name.c

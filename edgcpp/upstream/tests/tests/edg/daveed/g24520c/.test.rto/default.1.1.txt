@@ -1,3 +1,0 @@
-eccp -DTEST_NUMBER=1 --microsoft_v=1930 Test_name.c n12b.c
-Test_name.c:
-n12b.c:

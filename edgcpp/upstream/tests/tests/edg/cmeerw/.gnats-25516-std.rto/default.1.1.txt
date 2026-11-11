@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++23 -A -tused -DPOS Test_name.c

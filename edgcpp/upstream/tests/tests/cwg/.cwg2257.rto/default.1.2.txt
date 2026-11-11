@@ -1,5 +1,0 @@
-./a.out
-in catch
-live: 1
-live: 1
-live: 0

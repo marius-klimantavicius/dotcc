@@ -1,2 +1,0 @@
-./a.out
-'ere I am JH

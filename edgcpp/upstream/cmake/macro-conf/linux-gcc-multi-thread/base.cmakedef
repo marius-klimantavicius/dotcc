@@ -1,2 +1,0 @@
-# Start with the normal linux gcc debug configuration
-import <linux-gcc/base>

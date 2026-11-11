@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --microsoft_v 1915 --no_ms_permissive Test_name.c

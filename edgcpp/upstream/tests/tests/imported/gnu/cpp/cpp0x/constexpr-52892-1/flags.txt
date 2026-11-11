@@ -1,1 +1,0 @@
-//require:SKIPTHISTEST BAD TEST Works properly for c++11 and c++14

@@ -1,2 +1,0 @@
-./a.out
-sizeof(a)=40

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 -tused --clang_version 220100 Test_name.c

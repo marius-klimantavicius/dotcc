@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=5 --microsoft -DPOS Test_name.c

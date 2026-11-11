@@ -1,6 +1,0 @@
-./a.out
-~A
-~A
-~BTemp
-~DTemp
-~BTemp

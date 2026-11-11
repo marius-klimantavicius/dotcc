@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --microsoft_v 1900 -tused -w Test_name.c

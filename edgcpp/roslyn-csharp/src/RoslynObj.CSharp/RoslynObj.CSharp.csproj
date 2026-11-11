@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Description>Public RoslynObj admission, inventory and unsafe C# translation.</Description>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="../../../roslyn/managed/RoslynObj/RoslynObj.csproj" />
-  </ItemGroup>
-</Project>

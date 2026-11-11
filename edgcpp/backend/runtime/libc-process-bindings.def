@@ -1,2 +1,0 @@
-/* Abnormal termination without CLR unwinding; signal delivery is a pending provider. */
-EDG_LIBC("abort", "void", "", "global::Edg.Runtime.LibcProcess.Abort")

@@ -1,1 +1,0 @@
-fe_only -DTEST_NUMBER=1 --c++17 -tused -w -A Test_name.c

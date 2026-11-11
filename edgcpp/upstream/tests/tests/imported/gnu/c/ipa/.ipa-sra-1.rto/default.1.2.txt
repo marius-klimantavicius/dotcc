@@ -1,4 +1,0 @@
-./a.out
-green: 0.000000
-blue: 0xADDR
-blue again: 0xADDR

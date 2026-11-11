@@ -1,3 +1,0 @@
-./a.out
-sizeof(int[0]) = 0
-sizeof(int[0]) = 0
