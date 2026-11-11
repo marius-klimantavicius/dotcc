@@ -99,8 +99,8 @@ policy and the reviewed guards during source reproduction.
 
 ## Text, resources and callbacks
 
-String overloads encode to a reusable stable frame arena without allocating
-temporary managed byte arrays. Every direct string input on `Ui` also accepts
+String overloads use scoped scratch/pool storage on audited synchronous paths
+and stable frame storage on retained paths. Every direct string input on `Ui` also accepts
 `ReadOnlySpan<byte>` or `TextBuffer`, including IDs, labels, file paths, scope
 titles and drawing calls. Multiple text arguments can mix all three forms.
 `PaintContext.DrawText` and `DrawIcon` have the same alternatives. `TextUtf8` and
@@ -117,15 +117,26 @@ ui.Input("editor"u8, code); // editor still uses owned mutable storage
 
 Text collections such as tab labels accept `ReadOnlySpan<ReadOnlyMemory<byte>>`
 or `ReadOnlySpan<TextBuffer>` in addition to `ReadOnlySpan<string>`. Keep the
-backing arrays/memories for reuse. These overloads copy validated UTF-8 directly
-to stable frame storage; they never decode to a managed string. Stack/array
-inputs can be changed after a call. Read-only buffer arguments are snapshots:
-later edits or disposal do not change already submitted labels. This copy is
-needed because upstream can retain text until layout, paint or a later redraw.
-It does not add an editable-buffer lease. Malformed UTF-8, embedded NUL,
+backing arrays/memories for reuse. UTF-8 inputs never decode to a managed string.
+For 206 audited entrypoints, scalar inputs use 256-byte stack scratch with a
+pooled fallback; explicitly NUL-terminated byte spans and `TextBuffer` storage
+are borrowed directly while CUI consumes or copies them. Ordinary unterminated
+spans still need a temporary terminator. Bounded drawing calls can borrow an
+unterminated span when given an explicit byte count. Node titles, dock icons and Markdown chat text retain stable wrapper storage,
+as do collections and option pointees. Plain chat text uses scoped storage.
+See the [input lifetime audit](UTF8-STORAGE-AUDIT.md) for the exact scope.
+All direct ID arguments are covered, including calls forwarding to hashing and
+ID-stack helpers; ID strings inside option records retain their existing policy.
+
+Stack/array inputs can be changed after a call. Read-only buffer arguments are
+snapshots: later edits or disposal do not change already submitted labels.
+Borrowing a buffer adds only a call-scoped read lease, not a frame-long editor
+lease. Malformed UTF-8, embedded NUL,
 disposed buffers and use from a different owner thread are rejected. Explicit
 text lengths remain **byte counts**. An empty span means empty text; null buffer
-arguments are invalid. With the additional reference-type overloads, callers
+arguments are invalid. Byte-span method inputs may include one trailing NUL
+(e.g. `"Save\0"u8`); it is not part of the text. Editable-buffer setters retain
+their NUL rejection. With the additional reference-type overloads, callers
 testing a null literal must disambiguate it, e.g. `(string)null!`.
 
 `TextBuffer` owns persistent UTF-8 edit storage, with capacity including the
@@ -199,6 +210,27 @@ nothing. See [qualification](../tests/managed/README.md) and the retained
 [library evidence](MANAGED-LIBRARY-VALIDATION.json) for measured scope and gates.
 
 ## API coverage and dependency boundary
+
+The editable code widget uses the same owned buffer model as text inputs. Keep
+the buffer for the lifetime of the editor, then dispose it before the UI context:
+
+```csharp
+// Create once, outside the frame loop.
+using var source = new TextBuffer(64 * 1024, "int value = 42;\n"u8);
+
+// During a frame:
+CodeEditorResult editor = ui.CodeEditor("source"u8, source,
+    new CodeEditorOpts { Lang = "c", Height = 320 });
+```
+
+The result exposes changes, focus, caret/selection, bracket matching and find
+counts. `Refused` means an insertion exceeded buffer capacity and was dropped
+whole. Offsets and length count UTF-8 bytes; line and column are one based.
+Options include read-only mode, tab policy, line numbers, placeholder and sorted
+`TextMark` ranges. The ID uses scoped UTF-8; native options are stack locals;
+the editable buffer uses a checked lease. Option pointees remain stable, notably
+the placeholder retained for deferred painting. Visible code and marks are copied
+by CUI. The ManagedGallery Code page demonstrates this API.
 
 [The contract](MANAGED-API-CONTRACT.md) maps every distinct call/type used by the
 upstream gallery to its typed wrapper. `Ui.Api.cs` and `Types.cs` are the exact

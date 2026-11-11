@@ -95,11 +95,11 @@ def main():
         raise RuntimeError('The native reference must use the same validated frozen wall-clock fixture.')
     fixture = native / 'files-fixture'
     report = dict(status='running', windows='unrun', variants=[], nativeReport=str(native / 'report.json'),
-                  comparison='Full-window RGBA, ordered main text and every node id/parent/rectangle/font: wrapper vs translated exact. Full-window adapted-native RGBA within established GL channel rounding bound 1; text exact. No visual masks or omitted pages.',
+                  comparison='Full-window RGBA, ordered main text and every node id/parent/rectangle/font: wrapper vs translated exact. Full-window adapted-native RGBA within established GL channel rounding bound 1; text exact. Original-layout captures exclude managed-only additions via IncludeManagedExamples=false; all 27 upstream pages still compare without masks. Default-gallery OS input also tests the editable code example.',
                   captureOnly=args.capture_only, palettes=args.palettes)
     try:
         with reference.display(work, env, args.xvfb) as (runtime, display):
-            capture_runtime = dict(reference.fixed_clock_environment(runtime, args.faketime_library), CUI_GALLERY_CAPTURE_ONLY='1')
+            capture_runtime = dict(reference.fixed_clock_environment(runtime, args.faketime_library), CUI_GALLERY_CAPTURE_ONLY='1', CUI_GALLERY_UPSTREAM_LAYOUT='1')
             report['clockFixture'] = dict(epoch=reference.FIXED_EPOCH, timezone='UTC', librarySha256=sha(args.faketime_library))
             report['display'] = display
             palettes = [(theme, accent) for theme in range(2) for accent in range(8)] if args.palettes == 'all' else [(0, 0)]
@@ -139,7 +139,7 @@ def main():
                             raise RuntimeError(f'{form}-{mode}/{label}: mismatched pages {failed}; inspect retained pixels/text/layout')
                     if not args.capture_only:
                         oracle_input = variant / 'translated-input'; wrapper_input = variant / 'wrapper-input'
-                        input_runtime = dict(runtime, CUI_GALLERY_INPUT_ONLY='1')
+                        input_runtime = dict(runtime, CUI_GALLERY_INPUT_ONLY='1', CUI_GALLERY_UPSTREAM_LAYOUT='0')
                         reference.execute([*original, oracle_input], variant / 'translated-input.log', input_runtime, 1200, fixture)
                         reference.execute([*wrapper, wrapper_input], variant / 'wrapper-input.log', input_runtime, 1200, fixture)
                         result['wrapperInputReport'] = json.loads((wrapper_input / 'report.json').read_text())

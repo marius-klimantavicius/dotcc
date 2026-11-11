@@ -2,11 +2,11 @@
   "schema": 1,
   "policy": "Stack for synchronous singleton arguments; frame/owned storage for retained pointees and state. No blanket pointer heuristic. See MANAGED-STORAGE-AUDIT.md.",
   "reviewed_outputs": {
-    "Types.cs": "e98039a8e7dade7d2cf824e344a0e401071445cf33182d40125454bd9db53b55",
-    "Ui.Api.cs": "6e5eed711ecab16837468c9885a413631925d4e811e02bc255f79df0015a1f09",
-    "Ui.Marshalling.cs": "7407a68d4f11b3fd294f9057cad7bd3107b9ea89a19ff913458ed8821df052e7",
-    "Ui.ScopeDispatch.cs": "8c9742a2d28bb809029b0337aa8e30908c6531f4454f523925744ff11464dddb",
-    "Ui.Utf8.g.cs": "47c4d7a051fdaeb36be3be0cb03bb63a5f0c3a3ef7d9da7e1a3523a2e6d2d3a6"
+    "Types.cs": "635bf864ac87403c9fcccffd29aa9f67901d508d8f753010aff4534c5929a4c2",
+    "Ui.Api.cs": "4e4887da43b5b20561f723a7cd602ed4066b059d3977ce992450d1c3aee04079",
+    "Ui.Marshalling.cs": "59ee488031a695cff720935e2c46533a9de7a04498aee4d47bf5ac9ba2aa7ea5",
+    "Ui.ScopeDispatch.cs": "a270d36256fcedde52614b253fb53566c83be46c8844e2cb44789d9d16644bc2",
+    "Ui.Utf8.g.cs": "db3aa01c54660977ec7b492a077257f233bdcd51d7072436f8c2f8c05f516db3"
   },
   "native_revision": "5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5",
   "native_version": "1.4.0",

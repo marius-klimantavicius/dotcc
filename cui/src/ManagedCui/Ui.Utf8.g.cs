@@ -16,10 +16,14 @@ public sealed unsafe partial class Ui
         title.ThrowIfNull(nameof(title));
         CheckBegin();
         CBool native_open = open;
-        var result = Raw.cui_accordion_begin(_ctx, Utf8(title), &native_open);
-        open = (native_open != 0);
-        SyncState();
-        return TrackScope(ScopeKind.Accordion, result != 0, result != 0 ? 1 : 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_accordion_begin(_ctx, __titlePointer, &native_open);
+            open = (native_open != 0);
+            SyncState();
+            return TrackScope(ScopeKind.Accordion, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public int ActivityRings(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> rings, int count, RingsOpts opts = default) => ActivityRingsUtf8Core(new Utf8Argument(id), rings, count, opts);
     public int ActivityRings(TextBuffer id, ReadOnlySpan<VizItem> rings, int count, RingsOpts opts = default) => ActivityRingsUtf8Core(new Utf8Argument(id), rings, count, opts);
@@ -30,9 +34,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, rings.Length, nameof(count));
         var native_rings = CopyVizItem(rings);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_activity_rings_ex(_ctx, Utf8(id), native_rings, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_activity_rings_ex(_ctx, __idPointer, native_rings, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int AgentPlan(ReadOnlySpan<byte> id, ReadOnlySpan<PlanStep> steps, int count, AgentPlanOpts opts = default) => AgentPlanUtf8Core(new Utf8Argument(id), steps, count, opts);
     public int AgentPlan(TextBuffer id, ReadOnlySpan<PlanStep> steps, int count, AgentPlanOpts opts = default) => AgentPlanUtf8Core(new Utf8Argument(id), steps, count, opts);
@@ -43,9 +51,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, steps.Length, nameof(count));
         var native_steps = CopyPlanStep(steps);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_agent_plan_ex(_ctx, Utf8(id), native_steps, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_agent_plan_ex(_ctx, __idPointer, native_steps, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void AgentStatus(ReadOnlySpan<byte> text, AgentStatusOpts opts = default) => AgentStatusUtf8Core(new Utf8Argument(text), opts);
     public void AgentStatus(TextBuffer text, AgentStatusOpts opts = default) => AgentStatusUtf8Core(new Utf8Argument(text), opts);
@@ -54,8 +66,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_agent_status_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_agent_status_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public bool Alert(ReadOnlySpan<byte> title, AlertOpts opts = default) => AlertUtf8Core(new Utf8Argument(title), opts);
     public bool Alert(TextBuffer title, AlertOpts opts = default) => AlertUtf8Core(new Utf8Argument(title), opts);
@@ -64,9 +80,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_alert_ex(_ctx, Utf8(title), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_alert_ex(_ctx, __titlePointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public ApiExplorerResult ApiExplorer(ReadOnlySpan<byte> id, ReadOnlySpan<ApiEndpoint> endpoints, int count, ApiExplorerOpts opts = default) => ApiExplorerUtf8Core(new Utf8Argument(id), endpoints, count, opts);
     public ApiExplorerResult ApiExplorer(TextBuffer id, ReadOnlySpan<ApiEndpoint> endpoints, int count, ApiExplorerOpts opts = default) => ApiExplorerUtf8Core(new Utf8Argument(id), endpoints, count, opts);
@@ -77,9 +97,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, endpoints.Length, nameof(count));
         var native_endpoints = CopyApiEndpoint(endpoints);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_api_explorer_ex(_ctx, Utf8(id), native_endpoints, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_api_explorer_ex(_ctx, __idPointer, native_endpoints, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void Avatar(ReadOnlySpan<byte> name, AvatarOpts opts = default) => AvatarUtf8Core(new Utf8Argument(name), opts);
     public void Avatar(TextBuffer name, AvatarOpts opts = default) => AvatarUtf8Core(new Utf8Argument(name), opts);
@@ -88,8 +112,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         name.ThrowIfNull(nameof(name));
         var native_opts = ToNative(opts);
-        Raw.cui_avatar_ex(_ctx, Utf8(name), &native_opts);
-        SyncState();
+        using var __nameUtf8 = new ScopedUtf8(name, stackalloc byte[256]);
+        fixed (byte* __namePointer = __nameUtf8.Bytes)
+        {
+            cui_avatar_ex(_ctx, __namePointer, &native_opts);
+            SyncState();
+        }
     }
     public void AvatarGroup(ReadOnlySpan<ReadOnlyMemory<byte>> names, int count, int max_visible, float size) => AvatarGroupUtf8Core(new Utf8Arguments(names), count, max_visible, size);
     public void AvatarGroup(ReadOnlySpan<TextBuffer> names, int count, int max_visible, float size) => AvatarGroupUtf8Core(new Utf8Arguments(names), count, max_visible, size);
@@ -97,7 +125,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         CheckLength(count, names.Length, nameof(count));
-        Raw.cui_avatar_group(_ctx, Strings(names), count, max_visible, size);
+        cui_avatar_group(_ctx, Strings(names), count, max_visible, size);
         SyncState();
     }
     public int AvatarUpload(string id, ReadOnlySpan<byte> name, ref Texture? image, float size) => AvatarUploadUtf8Core(new Utf8Argument(id), new Utf8Argument(name), ref image, size);
@@ -114,11 +142,25 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         name.ThrowIfNull(nameof(name));
         var native_image = Unwrap(image);
-        var result = Raw.cui_avatar_upload(_ctx, Utf8(id), Utf8(name), &native_image, size);
-        if (image != null && image.Value != native_image) { _textures.Remove(image.Value); _pendingTextures.Remove(image); image.Invalidate(); }
-        image = FindTexture(native_image);
-        SyncState();
-        return result;
+        using var __nameUtf8 = new ScopedUtf8(name, stackalloc byte[256]);
+        fixed (byte* __namePointer = __nameUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                var result = cui_avatar_upload(_ctx, __idPointer, __namePointer, &native_image, size);
+                if (image != null && image.Value != native_image)
+                {
+                    _textures.Remove(image.Value);
+                    _pendingTextures.Remove(image);
+                    image.Invalidate();
+                }
+
+                image = FindTexture(native_image);
+                SyncState();
+                return result;
+            }
+        }
     }
     public void Badge(ReadOnlySpan<byte> text, BadgeOpts opts = default) => BadgeUtf8Core(new Utf8Argument(text), opts);
     public void Badge(TextBuffer text, BadgeOpts opts = default) => BadgeUtf8Core(new Utf8Argument(text), opts);
@@ -127,8 +169,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_badge_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_badge_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public bool Banner(ReadOnlySpan<byte> text, ref bool open, BannerOpts opts = default) => BannerUtf8Core(new Utf8Argument(text), ref open, opts);
     public bool Banner(TextBuffer text, ref bool open, BannerOpts opts = default) => BannerUtf8Core(new Utf8Argument(text), ref open, opts);
@@ -138,10 +184,14 @@ public sealed unsafe partial class Ui
         text.ThrowIfNull(nameof(text));
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_banner_ex(_ctx, Utf8(text), &native_open, &native_opts);
-        open = (native_open != 0);
-        SyncState();
-        return (result != 0);
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            var result = cui_banner_ex(_ctx, __textPointer, &native_open, &native_opts);
+            open = (native_open != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void BarChart(ReadOnlySpan<byte> id, ReadOnlySpan<Series> series, int count, ChartOpts opts = default) => BarChartUtf8Core(new Utf8Argument(id), series, count, opts);
     public void BarChart(TextBuffer id, ReadOnlySpan<Series> series, int count, ChartOpts opts = default) => BarChartUtf8Core(new Utf8Argument(id), series, count, opts);
@@ -152,8 +202,12 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopySeries(series);
         var native_opts = ToNative(opts);
-        Raw.cui_bar_chart_ex(_ctx, Utf8(id), native_series, count, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_bar_chart_ex(_ctx, __idPointer, native_series, count, &native_opts);
+            SyncState();
+        }
     }
     public int BarList(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> items, int count, BarListOpts opts = default) => BarListUtf8Core(new Utf8Argument(id), items, count, opts);
     public int BarList(TextBuffer id, ReadOnlySpan<VizItem> items, int count, BarListOpts opts = default) => BarListUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -164,9 +218,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_bar_list_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_bar_list_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public BlameResult Blame(string id, ReadOnlySpan<ReadOnlyMemory<byte>> lines, ReadOnlySpan<int> line_commit, int line_count, ReadOnlySpan<BlameCommit> commits, int commit_count, BlameOpts opts = default) => BlameUtf8Core(new Utf8Argument(id), new Utf8Arguments(lines), line_commit, line_count, commits, commit_count, opts);
     public BlameResult Blame(string id, ReadOnlySpan<TextBuffer> lines, ReadOnlySpan<int> line_commit, int line_count, ReadOnlySpan<BlameCommit> commits, int commit_count, BlameOpts opts = default) => BlameUtf8Core(new Utf8Argument(id), new Utf8Arguments(lines), line_commit, line_count, commits, commit_count, opts);
@@ -180,15 +238,20 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        CheckLength(line_count, lines.Length, nameof(line_count)); CheckLength(line_count, line_commit.Length, nameof(line_count));
+        CheckLength(line_count, lines.Length, nameof(line_count));
+        CheckLength(line_count, line_commit.Length, nameof(line_count));
         CheckLength(commit_count, commits.Length, nameof(commit_count));
         CheckLength(line_count, lines.Length, nameof(line_count));
         var native_line_commit = CopyInt(line_commit);
         var native_commits = CopyBlameCommit(commits);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_blame_ex(_ctx, Utf8(id), Strings(lines), native_line_commit, line_count, native_commits, commit_count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_blame_ex(_ctx, __idPointer, Strings(lines), native_line_commit, line_count, native_commits, commit_count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public int Breadcrumb(ReadOnlySpan<ReadOnlyMemory<byte>> items, int count) => BreadcrumbUtf8Core(new Utf8Arguments(items), count);
     public int Breadcrumb(ReadOnlySpan<TextBuffer> items, int count) => BreadcrumbUtf8Core(new Utf8Arguments(items), count);
@@ -196,7 +259,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         CheckLength(count, items.Length, nameof(count));
-        var result = Raw.cui_breadcrumb(_ctx, Strings(items), count);
+        var result = cui_breadcrumb(_ctx, Strings(items), count);
         SyncState();
         return result;
     }
@@ -207,9 +270,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_button_ex(_ctx, Utf8(label), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_button_ex(_ctx, __labelPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public int CalendarHeatmap(ReadOnlySpan<byte> id, Date start, ReadOnlySpan<float> values, int days, CalendarHeatmapOpts opts = default) => CalendarHeatmapUtf8Core(new Utf8Argument(id), start, values, days, opts);
     public int CalendarHeatmap(TextBuffer id, Date start, ReadOnlySpan<float> values, int days, CalendarHeatmapOpts opts = default) => CalendarHeatmapUtf8Core(new Utf8Argument(id), start, values, days, opts);
@@ -220,9 +287,13 @@ public sealed unsafe partial class Ui
         CheckLength(days, values.Length, nameof(days));
         var native_values = CopyFloat(values);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_calendar_heatmap_ex(_ctx, Utf8(id), ToNative(start), native_values, days, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_calendar_heatmap_ex(_ctx, __idPointer, ToNative(start), native_values, days, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int Candlestick(ReadOnlySpan<byte> id, ReadOnlySpan<Candle> candles, int count, CandlestickOpts opts = default) => CandlestickUtf8Core(new Utf8Argument(id), candles, count, opts);
     public int Candlestick(TextBuffer id, ReadOnlySpan<Candle> candles, int count, CandlestickOpts opts = default) => CandlestickUtf8Core(new Utf8Argument(id), candles, count, opts);
@@ -234,9 +305,13 @@ public sealed unsafe partial class Ui
         CheckOptional(count, opts.Labels.Length, nameof(opts.Labels));
         var native_candles = CopyCandle(candles);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_candlestick_ex(_ctx, Utf8(id), native_candles, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_candlestick_ex(_ctx, __idPointer, native_candles, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public UiScope CardStackBegin(ReadOnlySpan<byte> id, int count, CardStackOpts opts = default) => CardStackBeginUtf8Core(new Utf8Argument(id), count, opts);
     public UiScope CardStackBegin(TextBuffer id, int count, CardStackOpts opts = default) => CardStackBeginUtf8Core(new Utf8Argument(id), count, opts);
@@ -246,9 +321,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        Raw.cui_card_stack_begin(_ctx, Utf8(id), count, &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.CardStack, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_card_stack_begin(_ctx, __idPointer, count, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.CardStack, true, 0);
+        }
     }
     public UiScope CarouselBegin(ReadOnlySpan<byte> id, int count, State<int> index, CarouselOpts opts = default) => CarouselBeginUtf8Core(new Utf8Argument(id), count, index, opts);
     public UiScope CarouselBegin(TextBuffer id, int count, State<int> index, CarouselOpts opts = default) => CarouselBeginUtf8Core(new Utf8Argument(id), count, index, opts);
@@ -258,11 +337,16 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
         ArgumentNullException.ThrowIfNull(index);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_carousel_begin(_ctx, Utf8(id), count, BindInt(index), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Carousel, true, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_carousel_begin(_ctx, __idPointer, count, BindInt(index), &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Carousel, true, result != 0 ? 1 : 0);
+        }
     }
     public int ChatComposer(ReadOnlySpan<byte> id, TextBuffer buf, ComposerOpts opts = default) => ChatComposerUtf8Core(new Utf8Argument(id), buf, opts);
     public int ChatComposer(TextBuffer id, TextBuffer buf, ComposerOpts opts = default) => ChatComposerUtf8Core(new Utf8Argument(id), buf, opts);
@@ -272,9 +356,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_chat_composer_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_chat_composer_ex(_ctx, __idPointer, Use(buf), (ulong)buf.Capacity, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void ChatDivider(ReadOnlySpan<byte> label) => ChatDividerUtf8Core(new Utf8Argument(label));
     public void ChatDivider(TextBuffer label) => ChatDividerUtf8Core(new Utf8Argument(label));
@@ -282,8 +370,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         label.ThrowIfNull(nameof(label));
-        Raw.cui_chat_divider(_ctx, Utf8(label));
-        SyncState();
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            cui_chat_divider(_ctx, __labelPointer);
+            SyncState();
+        }
     }
     public void ChatMessage(ReadOnlySpan<byte> text, ChatOpts opts = default) => ChatMessageUtf8Core(new Utf8Argument(text), opts);
     public void ChatMessage(TextBuffer text, ChatOpts opts = default) => ChatMessageUtf8Core(new Utf8Argument(text), opts);
@@ -292,8 +384,20 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_chat_message_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        // Markdown headings retain source slices in deferred paint segments.
+        if (opts.Markdown)
+        {
+            cui_chat_message_ex(_ctx, Utf8(text), &native_opts);
+            SyncState();
+            return;
+        }
+
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_chat_message_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public bool Checkbox(ReadOnlySpan<byte> label, ref bool value, CheckOpts opts = default) => CheckboxUtf8Core(new Utf8Argument(label), ref value, opts);
     public bool Checkbox(TextBuffer label, ref bool value, CheckOpts opts = default) => CheckboxUtf8Core(new Utf8Argument(label), ref value, opts);
@@ -303,10 +407,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_checkbox_ex(_ctx, Utf8(label), &native_value, &native_opts);
-        value = (native_value != 0);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_checkbox_ex(_ctx, __labelPointer, &native_value, &native_opts);
+            value = (native_value != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Checklist(ReadOnlySpan<byte> id, Span<CheckStep> steps, int count, ChecklistOpts opts = default) => ChecklistUtf8Core(new Utf8Argument(id), steps, count, opts);
     public int Checklist(TextBuffer id, Span<CheckStep> steps, int count, ChecklistOpts opts = default) => ChecklistUtf8Core(new Utf8Argument(id), steps, count, opts);
@@ -317,10 +425,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, steps.Length, nameof(count));
         var native_steps = CopyCheckStep(steps);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_checklist_ex(_ctx, Utf8(id), native_steps, count, &native_opts);
-        for (var i = 0; i < steps.Length; i++) steps[i] = FromNative(native_steps[i], steps[i]);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_checklist_ex(_ctx, __idPointer, native_steps, count, &native_opts);
+            for (var i = 0; i < steps.Length; i++) steps[i] = FromNative(native_steps[i], steps[i]);
+            SyncState();
+            return result;
+        }
     }
     public bool Chip(ReadOnlySpan<byte> label, ref bool selected, ChipOpts opts = default) => ChipUtf8Core(new Utf8Argument(label), ref selected, opts);
     public bool Chip(TextBuffer label, ref bool selected, ChipOpts opts = default) => ChipUtf8Core(new Utf8Argument(label), ref selected, opts);
@@ -330,10 +442,30 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_selected = selected;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_chip_ex(_ctx, Utf8(label), &native_selected, &native_opts);
-        selected = (native_selected != 0);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_chip_ex(_ctx, __labelPointer, &native_selected, &native_opts);
+            selected = (native_selected != 0);
+            SyncState();
+            return (result != 0);
+        }
+    }
+    public CodeEditorResult CodeEditor(ReadOnlySpan<byte> id, TextBuffer buffer, CodeEditorOpts opts = default) => CodeEditorUtf8Core(new Utf8Argument(id), buffer, opts);
+    public CodeEditorResult CodeEditor(TextBuffer id, TextBuffer buffer, CodeEditorOpts opts = default) => CodeEditorUtf8Core(new Utf8Argument(id), buffer, opts);
+    private CodeEditorResult CodeEditorUtf8Core(Utf8Argument id, TextBuffer buffer, CodeEditorOpts opts = default)
+    {
+        CheckFrame();
+        id.ThrowIfNull(nameof(id));
+        ArgumentNullException.ThrowIfNull(buffer);
+        var native_opts = ToNative(opts);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_code_editor_ex(_ctx, __idPointer, Use(buffer), (ulong)buffer.Capacity, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void CodeBlock(string id, ReadOnlySpan<byte> code, CodeOpts opts = default) => CodeBlockUtf8Core(new Utf8Argument(id), new Utf8Argument(code), opts);
     public void CodeBlock(string id, TextBuffer code, CodeOpts opts = default) => CodeBlockUtf8Core(new Utf8Argument(id), new Utf8Argument(code), opts);
@@ -349,8 +481,16 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         code.ThrowIfNull(nameof(code));
         var native_opts = ToNative(opts);
-        Raw.cui_code_block_ex(_ctx, Utf8(id), Utf8(code), &native_opts);
-        SyncState();
+        using var __codeUtf8 = new ScopedUtf8(code, stackalloc byte[256]);
+        fixed (byte* __codePointer = __codeUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                cui_code_block_ex(_ctx, __idPointer, __codePointer, &native_opts);
+                SyncState();
+            }
+        }
     }
     public bool ColorPicker(ReadOnlySpan<byte> id, ref Color value) => ColorPickerUtf8Core(new Utf8Argument(id), ref value);
     public bool ColorPicker(TextBuffer id, ref Color value) => ColorPickerUtf8Core(new Utf8Argument(id), ref value);
@@ -359,10 +499,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_value = ToNative(value);
-        var result = Raw.cui_color_picker(_ctx, Utf8(id), &native_value);
-        value = FromNative(native_value, value);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_color_picker(_ctx, __idPointer, &native_value);
+            value = FromNative(native_value, value);
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Comment(string id, string author, ReadOnlySpan<byte> text, CommentOpts opts = default) => CommentUtf8Core(new Utf8Argument(id), new Utf8Argument(author), new Utf8Argument(text), opts);
     public int Comment(string id, string author, TextBuffer text, CommentOpts opts = default) => CommentUtf8Core(new Utf8Argument(id), new Utf8Argument(author), new Utf8Argument(text), opts);
@@ -397,9 +541,19 @@ public sealed unsafe partial class Ui
         author.ThrowIfNull(nameof(author));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_comment_ex(_ctx, Utf8(id), Utf8(author), Utf8(text), &native_opts);
-        SyncState();
-        return result;
+        using var __authorUtf8 = new ScopedUtf8(author, stackalloc byte[256]);
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __authorPointer = __authorUtf8.Bytes)
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                var result = cui_comment_ex(_ctx, __idPointer, __authorPointer, __textPointer, &native_opts);
+                SyncState();
+                return result;
+            }
+        }
     }
     public CommitGraphResult CommitGraph(ReadOnlySpan<byte> id, ReadOnlySpan<Commit> commits, int count, CommitGraphOpts opts = default) => CommitGraphUtf8Core(new Utf8Argument(id), commits, count, opts);
     public CommitGraphResult CommitGraph(TextBuffer id, ReadOnlySpan<Commit> commits, int count, CommitGraphOpts opts = default) => CommitGraphUtf8Core(new Utf8Argument(id), commits, count, opts);
@@ -410,9 +564,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, commits.Length, nameof(count));
         var native_commits = CopyCommit(commits);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_commit_graph_ex(_ctx, Utf8(id), native_commits, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_commit_graph_ex(_ctx, __idPointer, native_commits, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool ConfirmButton(ReadOnlySpan<byte> label, ConfirmOpts opts = default) => ConfirmButtonUtf8Core(new Utf8Argument(label), opts);
     public bool ConfirmButton(TextBuffer label, ConfirmOpts opts = default) => ConfirmButtonUtf8Core(new Utf8Argument(label), opts);
@@ -421,9 +579,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_confirm_button_ex(_ctx, Utf8(label), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_confirm_button_ex(_ctx, __labelPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool ConfirmPopover(ReadOnlySpan<byte> id, ConfirmPopoverOpts opts = default) => ConfirmPopoverUtf8Core(new Utf8Argument(id), opts);
     public bool ConfirmPopover(TextBuffer id, ConfirmPopoverOpts opts = default) => ConfirmPopoverUtf8Core(new Utf8Argument(id), opts);
@@ -432,9 +594,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_confirm_popover_ex(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_confirm_popover_ex(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public UiScope ContextMenuBegin(ReadOnlySpan<byte> id) => ContextMenuBeginUtf8Core(new Utf8Argument(id));
     public UiScope ContextMenuBegin(TextBuffer id) => ContextMenuBeginUtf8Core(new Utf8Argument(id));
@@ -443,9 +609,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         CheckBegin();
-        var result = Raw.cui_context_menu_begin(_ctx, Utf8(id));
-        SyncState();
-        return TrackScope(ScopeKind.ContextMenu, result != 0, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_context_menu_begin(_ctx, __idPointer);
+            SyncState();
+            return TrackScope(ScopeKind.ContextMenu, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public void ContextMeter(ReadOnlySpan<byte> id, float used, float limit, ContextOpts opts = default) => ContextMeterUtf8Core(new Utf8Argument(id), used, limit, opts);
     public void ContextMeter(TextBuffer id, float used, float limit, ContextOpts opts = default) => ContextMeterUtf8Core(new Utf8Argument(id), used, limit, opts);
@@ -454,8 +624,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_context_meter_ex(_ctx, Utf8(id), used, limit, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_context_meter_ex(_ctx, __idPointer, used, limit, &native_opts);
+            SyncState();
+        }
     }
     public bool ControlTile(ReadOnlySpan<byte> label, ref bool on, TileOpts opts = default) => ControlTileUtf8Core(new Utf8Argument(label), ref on, opts);
     public bool ControlTile(TextBuffer label, ref bool on, TileOpts opts = default) => ControlTileUtf8Core(new Utf8Argument(label), ref on, opts);
@@ -465,10 +639,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_on = on;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_control_tile_ex(_ctx, Utf8(label), &native_on, &native_opts);
-        on = (native_on != 0);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_control_tile_ex(_ctx, __labelPointer, &native_on, &native_opts);
+            on = (native_on != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool CopyButton(string id, ReadOnlySpan<byte> text) => CopyButtonUtf8Core(new Utf8Argument(id), new Utf8Argument(text));
     public bool CopyButton(string id, TextBuffer text) => CopyButtonUtf8Core(new Utf8Argument(id), new Utf8Argument(text));
@@ -483,9 +661,17 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
-        var result = Raw.cui_copy_button(_ctx, Utf8(id), Utf8(text));
-        SyncState();
-        return (result != 0);
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                var result = cui_copy_button(_ctx, __idPointer, __textPointer);
+                SyncState();
+                return (result != 0);
+            }
+        }
     }
     public void Countdown(ReadOnlySpan<byte> id, double seconds_left, CountdownOpts opts = default) => CountdownUtf8Core(new Utf8Argument(id), seconds_left, opts);
     public void Countdown(TextBuffer id, double seconds_left, CountdownOpts opts = default) => CountdownUtf8Core(new Utf8Argument(id), seconds_left, opts);
@@ -494,8 +680,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_countdown_ex(_ctx, Utf8(id), seconds_left, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_countdown_ex(_ctx, __idPointer, seconds_left, &native_opts);
+            SyncState();
+        }
     }
     public void Counter(ReadOnlySpan<byte> id, double value, CounterOpts opts = default) => CounterUtf8Core(new Utf8Argument(id), value, opts);
     public void Counter(TextBuffer id, double value, CounterOpts opts = default) => CounterUtf8Core(new Utf8Argument(id), value, opts);
@@ -504,8 +694,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_counter_ex(_ctx, Utf8(id), value, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_counter_ex(_ctx, __idPointer, value, &native_opts);
+            SyncState();
+        }
     }
     public CoverageResult Coverage(ReadOnlySpan<byte> id, ReadOnlySpan<CoverageFile> files, int count, CoverageOpts opts = default) => CoverageUtf8Core(new Utf8Argument(id), files, count, opts);
     public CoverageResult Coverage(TextBuffer id, ReadOnlySpan<CoverageFile> files, int count, CoverageOpts opts = default) => CoverageUtf8Core(new Utf8Argument(id), files, count, opts);
@@ -516,9 +710,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, files.Length, nameof(count));
         var native_files = CopyCoverageFile(files);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_coverage_ex(_ctx, Utf8(id), native_files, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_coverage_ex(_ctx, __idPointer, native_files, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool Cropper(ReadOnlySpan<byte> id, Texture? tex, int image_w, int image_h, ref Rect crop, CropperOpts opts = default) => CropperUtf8Core(new Utf8Argument(id), tex, image_w, image_h, ref crop, opts);
     public bool Cropper(TextBuffer id, Texture? tex, int image_w, int image_h, ref Rect crop, CropperOpts opts = default) => CropperUtf8Core(new Utf8Argument(id), tex, image_w, image_h, ref crop, opts);
@@ -528,10 +726,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_crop = ToNative(crop);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_cropper_ex(_ctx, Utf8(id), Unwrap(tex), image_w, image_h, &native_crop, &native_opts);
-        crop = FromNative(native_crop, crop);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_cropper_ex(_ctx, __idPointer, Unwrap(tex), image_w, image_h, &native_crop, &native_opts);
+            crop = FromNative(native_crop, crop);
+            SyncState();
+            return (result != 0);
+        }
     }
     public UiScope DataGridBegin(ReadOnlySpan<byte> id, ReadOnlySpan<GridColumn> columns, int column_count, int row_count, ref int first, ref int last, GridOpts opts = default) => DataGridBeginUtf8Core(new Utf8Argument(id), columns, column_count, row_count, ref first, ref last, opts);
     public UiScope DataGridBegin(TextBuffer id, ReadOnlySpan<GridColumn> columns, int column_count, int row_count, ref int first, ref int last, GridOpts opts = default) => DataGridBeginUtf8Core(new Utf8Argument(id), columns, column_count, row_count, ref first, ref last, opts);
@@ -546,11 +748,15 @@ public sealed unsafe partial class Ui
         var native_first = first;
         var native_last = last;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_data_grid_begin_ex(_ctx, Utf8(id), native_columns, column_count, row_count, &native_first, &native_last, &native_opts);
-        first = native_first;
-        last = native_last;
-        SyncState();
-        return TrackScope(ScopeKind.DataGrid, true, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_data_grid_begin_ex(_ctx, __idPointer, native_columns, column_count, row_count, &native_first, &native_last, &native_opts);
+            first = native_first;
+            last = native_last;
+            SyncState();
+            return TrackScope(ScopeKind.DataGrid, true, result != 0 ? 1 : 0);
+        }
     }
     public void DataGridCellText(ReadOnlySpan<byte> text) => DataGridCellTextUtf8Core(new Utf8Argument(text));
     public void DataGridCellText(TextBuffer text) => DataGridCellTextUtf8Core(new Utf8Argument(text));
@@ -559,9 +765,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         if (_ctx->building.grid == null || _ctx->building.grid->in_row == 0)
             throw new InvalidOperationException("Build a grid row before its text cells.");
+
         text.ThrowIfNull(nameof(text));
-        Raw.cui_data_grid_cell_text(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_data_grid_cell_text(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public bool DatePicker(ReadOnlySpan<byte> id, ref Date value, DateOpts opts = default) => DatePickerUtf8Core(new Utf8Argument(id), ref value, opts);
     public bool DatePicker(TextBuffer id, ref Date value, DateOpts opts = default) => DatePickerUtf8Core(new Utf8Argument(id), ref value, opts);
@@ -571,10 +782,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = ToNative(value);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_date_picker_ex(_ctx, Utf8(id), &native_value, &native_opts);
-        value = FromNative(native_value, value);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_date_picker_ex(_ctx, __idPointer, &native_value, &native_opts);
+            value = FromNative(native_value, value);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool DateRangePicker(ReadOnlySpan<byte> id, ref DateRange range, DateRangeOpts opts = default) => DateRangePickerUtf8Core(new Utf8Argument(id), ref range, opts);
     public bool DateRangePicker(TextBuffer id, ref DateRange range, DateRangeOpts opts = default) => DateRangePickerUtf8Core(new Utf8Argument(id), ref range, opts);
@@ -584,10 +799,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_range = ToNative(range);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_date_range_picker_ex(_ctx, Utf8(id), &native_range, &native_opts);
-        range = FromNative(native_range, range);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_date_range_picker_ex(_ctx, __idPointer, &native_range, &native_opts);
+            range = FromNative(native_range, range);
+            SyncState();
+            return (result != 0);
+        }
     }
     public UiScope DialogBegin(ReadOnlySpan<byte> title, ref bool open, DialogOpts opts = default) => DialogBeginUtf8Core(new Utf8Argument(title), ref open, opts);
     public UiScope DialogBegin(TextBuffer title, ref bool open, DialogOpts opts = default) => DialogBeginUtf8Core(new Utf8Argument(title), ref open, opts);
@@ -598,10 +817,14 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dialog_begin(_ctx, Utf8(title), &native_open, &native_opts);
-        open = (native_open != 0);
-        SyncState();
-        return TrackScope(ScopeKind.Dialog, result != 0, result != 0 ? 1 : 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_dialog_begin(_ctx, __titlePointer, &native_open, &native_opts);
+            open = (native_open != 0);
+            SyncState();
+            return TrackScope(ScopeKind.Dialog, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public UiScope DockBegin(ReadOnlySpan<byte> id, DockOpts opts = default) => DockBeginUtf8Core(new Utf8Argument(id), opts);
     public UiScope DockBegin(TextBuffer id, DockOpts opts = default) => DockBeginUtf8Core(new Utf8Argument(id), opts);
@@ -611,9 +834,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        Raw.cui_dock_begin(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Dock, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_dock_begin(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Dock, true, 0);
+        }
     }
     public bool DockItem(string icon, ReadOnlySpan<byte> label, DockItemOpts opts = default) => DockItemUtf8Core(new Utf8Argument(icon), new Utf8Argument(label), opts);
     public bool DockItem(string icon, TextBuffer label, DockItemOpts opts = default) => DockItemUtf8Core(new Utf8Argument(icon), new Utf8Argument(label), opts);
@@ -629,9 +856,13 @@ public sealed unsafe partial class Ui
         icon.ThrowIfNull(nameof(icon));
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dock_item_ex(_ctx, Utf8(icon), Utf8(label), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_dock_item_ex(_ctx, Utf8(icon), __labelPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void DonutChart(string id, ReadOnlySpan<float> values, ReadOnlySpan<ReadOnlyMemory<byte>> labels, int count, ChartOpts opts = default) => DonutChartUtf8Core(new Utf8Argument(id), values, new Utf8Arguments(labels), count, opts);
     public void DonutChart(string id, ReadOnlySpan<float> values, ReadOnlySpan<TextBuffer> labels, int count, ChartOpts opts = default) => DonutChartUtf8Core(new Utf8Argument(id), values, new Utf8Arguments(labels), count, opts);
@@ -645,11 +876,16 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        CheckLength(count, values.Length, nameof(count)); CheckOptional(count, labels.Length, nameof(labels));
+        CheckLength(count, values.Length, nameof(count));
+        CheckOptional(count, labels.Length, nameof(labels));
         var native_values = CopyFloat(values);
         var native_opts = ToNative(opts);
-        Raw.cui_donut_chart_ex(_ctx, Utf8(id), native_values, Strings(labels), count, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_donut_chart_ex(_ctx, __idPointer, native_values, Strings(labels), count, &native_opts);
+            SyncState();
+        }
     }
     public DotChartResult DotChart(ReadOnlySpan<byte> id, ReadOnlySpan<DotSeries> series, int series_count, int count, DotChartOpts opts = default) => DotChartUtf8Core(new Utf8Argument(id), series, series_count, count, opts);
     public DotChartResult DotChart(TextBuffer id, ReadOnlySpan<DotSeries> series, int series_count, int count, DotChartOpts opts = default) => DotChartUtf8Core(new Utf8Argument(id), series, series_count, count, opts);
@@ -661,9 +897,13 @@ public sealed unsafe partial class Ui
         CheckLength(series_count, series.Length, nameof(series_count));
         var native_series = CopyDotSeries(series);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dot_chart_ex(_ctx, Utf8(id), native_series, series_count, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_dot_chart_ex(_ctx, __idPointer, native_series, series_count, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void DotDisplay(ReadOnlySpan<byte> text, DotDisplayOpts opts = default) => DotDisplayUtf8Core(new Utf8Argument(text), opts);
     public void DotDisplay(TextBuffer text, DotDisplayOpts opts = default) => DotDisplayUtf8Core(new Utf8Argument(text), opts);
@@ -672,8 +912,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_dot_display_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_dot_display_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public void DrawEmoji(ReadOnlySpan<byte> utf8, int len, Rect r) => DrawEmojiUtf8Core(new Utf8Argument(utf8), len, r);
     public void DrawEmoji(TextBuffer utf8, int len, Rect r) => DrawEmojiUtf8Core(new Utf8Argument(utf8), len, r);
@@ -682,8 +926,12 @@ public sealed unsafe partial class Ui
         CheckDraw();
         utf8.ThrowIfNull(nameof(utf8));
         CheckUtf8Length(utf8, len);
-        Raw.cui_draw_emoji(_ctx, Utf8(utf8), len, ToNative(r));
-        SyncState();
+        using var __utf8Utf8 = new ScopedUtf8(utf8, stackalloc byte[256], nullTerminated: len < 0);
+        fixed (byte* __utf8Pointer = __utf8Utf8.Bytes)
+        {
+            cui_draw_emoji(_ctx, __utf8Pointer, len, ToNative(r));
+            SyncState();
+        }
     }
     public void DrawIcon(ReadOnlySpan<byte> icon, Rect r, float size, Color color) => DrawIconUtf8Core(new Utf8Argument(icon), r, size, color);
     public void DrawIcon(TextBuffer icon, Rect r, float size, Color color) => DrawIconUtf8Core(new Utf8Argument(icon), r, size, color);
@@ -691,8 +939,12 @@ public sealed unsafe partial class Ui
     {
         CheckDraw();
         icon.ThrowIfNull(nameof(icon));
-        Raw.cui_draw_icon(_ctx, Utf8(icon), ToNative(r), size, ToNative(color));
-        SyncState();
+        using var __iconUtf8 = new ScopedUtf8(icon, stackalloc byte[256]);
+        fixed (byte* __iconPointer = __iconUtf8.Bytes)
+        {
+            cui_draw_icon(_ctx, __iconPointer, ToNative(r), size, ToNative(color));
+            SyncState();
+        }
     }
     public void DrawText(Font font, float size, Vec2 pos, Color color, ReadOnlySpan<byte> text, int len) => DrawTextUtf8Core(font, size, pos, color, new Utf8Argument(text), len);
     public void DrawText(Font font, float size, Vec2 pos, Color color, TextBuffer text, int len) => DrawTextUtf8Core(font, size, pos, color, new Utf8Argument(text), len);
@@ -701,8 +953,12 @@ public sealed unsafe partial class Ui
         CheckDraw();
         text.ThrowIfNull(nameof(text));
         CheckUtf8Length(text, len);
-        Raw.cui_draw_text(_ctx, (int)CheckEnum(font), size, ToNative(pos), ToNative(color), Utf8(text), len);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256], nullTerminated: len < 0);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_draw_text(_ctx, (int)CheckEnum(font), size, ToNative(pos), ToNative(color), __textPointer, len);
+            SyncState();
+        }
     }
     public int Dropzone(ReadOnlySpan<byte> id, DropzoneOpts opts = default) => DropzoneUtf8Core(new Utf8Argument(id), opts);
     public int Dropzone(TextBuffer id, DropzoneOpts opts = default) => DropzoneUtf8Core(new Utf8Argument(id), opts);
@@ -711,9 +967,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_dropzone_ex(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_dropzone_ex(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void Emoji(ReadOnlySpan<byte> utf8, float size) => EmojiUtf8Core(new Utf8Argument(utf8), size);
     public void Emoji(TextBuffer utf8, float size) => EmojiUtf8Core(new Utf8Argument(utf8), size);
@@ -721,8 +981,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         utf8.ThrowIfNull(nameof(utf8));
-        Raw.cui_emoji(_ctx, Utf8(utf8), size);
-        SyncState();
+        using var __utf8Utf8 = new ScopedUtf8(utf8, stackalloc byte[256]);
+        fixed (byte* __utf8Pointer = __utf8Utf8.Bytes)
+        {
+            cui_emoji(_ctx, __utf8Pointer, size);
+            SyncState();
+        }
     }
     public bool EmojiFontLoadFile(ReadOnlySpan<byte> path) => EmojiFontLoadFileUtf8Core(new Utf8Argument(path));
     public bool EmojiFontLoadFile(TextBuffer path) => EmojiFontLoadFileUtf8Core(new Utf8Argument(path));
@@ -730,9 +994,13 @@ public sealed unsafe partial class Ui
     {
         Check();
         path.ThrowIfNull(nameof(path));
-        var result = Raw.cui_emoji_font_load_file(_ctx, Utf8(path));
-        SyncState();
-        return (result != 0);
+        using var __pathUtf8 = new ScopedUtf8(path, stackalloc byte[256]);
+        fixed (byte* __pathPointer = __pathUtf8.Bytes)
+        {
+            var result = cui_emoji_font_load_file(_ctx, __pathPointer);
+            SyncState();
+            return (result != 0);
+        }
     }
     public string? EmojiPicker(ReadOnlySpan<byte> id, EmojiPickerOpts opts = default) => EmojiPickerUtf8Core(new Utf8Argument(id), opts);
     public string? EmojiPicker(TextBuffer id, EmojiPickerOpts opts = default) => EmojiPickerUtf8Core(new Utf8Argument(id), opts);
@@ -741,9 +1009,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_emoji_picker_ex(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return Decode(result);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_emoji_picker_ex(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return Decode(result);
+        }
     }
     public bool EmptyState(ReadOnlySpan<byte> title, EmptyOpts opts = default) => EmptyStateUtf8Core(new Utf8Argument(title), opts);
     public bool EmptyState(TextBuffer title, EmptyOpts opts = default) => EmptyStateUtf8Core(new Utf8Argument(title), opts);
@@ -752,9 +1024,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_empty_state_ex(_ctx, Utf8(title), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_empty_state_ex(_ctx, __titlePointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public EventTrackResult EventTrack(ReadOnlySpan<byte> id, Span<double> times, ref int count, int capacity, double min, double max, EventTrackOpts opts = default) => EventTrackUtf8Core(new Utf8Argument(id), times, ref count, capacity, min, max, opts);
     public EventTrackResult EventTrack(TextBuffer id, Span<double> times, ref int count, int capacity, double min, double max, EventTrackOpts opts = default) => EventTrackUtf8Core(new Utf8Argument(id), times, ref count, capacity, min, max, opts);
@@ -768,11 +1044,15 @@ public sealed unsafe partial class Ui
         var native_times = CopyDouble(times);
         var native_count = count;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_event_track_ex(_ctx, Utf8(id), native_times, &native_count, capacity, min, max, &native_opts);
-        for (var i = 0; i < times.Length; i++) times[i] = native_times[i];
-        count = native_count;
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_event_track_ex(_ctx, __idPointer, native_times, &native_count, capacity, min, max, &native_opts);
+            for (var i = 0; i < times.Length; i++) times[i] = native_times[i];
+            count = native_count;
+            SyncState();
+            return FromNative(result);
+        }
     }
     public UiScope ExpandableCardBegin(ReadOnlySpan<byte> title, ref bool open, ExpandableCardOpts opts = default) => ExpandableCardBeginUtf8Core(new Utf8Argument(title), ref open, opts);
     public UiScope ExpandableCardBegin(TextBuffer title, ref bool open, ExpandableCardOpts opts = default) => ExpandableCardBeginUtf8Core(new Utf8Argument(title), ref open, opts);
@@ -783,10 +1063,14 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_expandable_card_begin(_ctx, Utf8(title), &native_open, &native_opts);
-        open = (native_open != 0);
-        SyncState();
-        return TrackScope(ScopeKind.ExpandableCard, result != 0, result != 0 ? 1 : 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_expandable_card_begin(_ctx, __titlePointer, &native_open, &native_opts);
+            open = (native_open != 0);
+            SyncState();
+            return TrackScope(ScopeKind.ExpandableCard, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public bool ExpandableText(string id, ReadOnlySpan<byte> text, ExpandableTextOpts opts = default) => ExpandableTextUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
     public bool ExpandableText(string id, TextBuffer text, ExpandableTextOpts opts = default) => ExpandableTextUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
@@ -802,9 +1086,17 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_expandable_text_ex(_ctx, Utf8(id), Utf8(text), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                var result = cui_expandable_text_ex(_ctx, __idPointer, __textPointer, &native_opts);
+                SyncState();
+                return (result != 0);
+            }
+        }
     }
     public bool Fader(ReadOnlySpan<byte> id, ref float value, float min, float max, FaderOpts opts = default) => FaderUtf8Core(new Utf8Argument(id), ref value, min, max, opts);
     public bool Fader(TextBuffer id, ref float value, float min, float max, FaderOpts opts = default) => FaderUtf8Core(new Utf8Argument(id), ref value, min, max, opts);
@@ -815,10 +1107,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_fader_ex(_ctx, Utf8(id), &native_value, min, max, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_fader_ex(_ctx, __idPointer, &native_value, min, max, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public FeatureFlagsResult FeatureFlags(string id, Span<FeatureFlag> flags, int count, ReadOnlySpan<ReadOnlyMemory<byte>> envs, int env_count, FeatureFlagsOpts opts = default) => FeatureFlagsUtf8Core(new Utf8Argument(id), flags, count, new Utf8Arguments(envs), env_count, opts);
     public FeatureFlagsResult FeatureFlags(string id, Span<FeatureFlag> flags, int count, ReadOnlySpan<TextBuffer> envs, int env_count, FeatureFlagsOpts opts = default) => FeatureFlagsUtf8Core(new Utf8Argument(id), flags, count, new Utf8Arguments(envs), env_count, opts);
@@ -833,14 +1129,19 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         if ((uint)env_count > 8) throw new ArgumentOutOfRangeException(nameof(env_count));
+
         CheckLength(env_count, envs.Length, nameof(env_count));
         CheckLength(count, flags.Length, nameof(count));
         var native_flags = CopyFeatureFlag(flags);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_feature_flags_ex(_ctx, Utf8(id), native_flags, count, Strings(envs), env_count, &native_opts);
-        for (var i = 0; i < flags.Length; i++) flags[i] = FromNative(native_flags[i], flags[i]);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_feature_flags_ex(_ctx, __idPointer, native_flags, count, Strings(envs), env_count, &native_opts);
+            for (var i = 0; i < flags.Length; i++) flags[i] = FromNative(native_flags[i], flags[i]);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public FileBrowserResult FileBrowser(ReadOnlySpan<byte> id, TextBuffer path, FileBrowserOpts opts = default) => FileBrowserUtf8Core(new Utf8Argument(id), path, opts);
     public FileBrowserResult FileBrowser(TextBuffer id, TextBuffer path, FileBrowserOpts opts = default) => FileBrowserUtf8Core(new Utf8Argument(id), path, opts);
@@ -850,9 +1151,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(path);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_file_browser_ex(_ctx, Utf8(id), Use(path), (ulong)path.Capacity, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_file_browser_ex(_ctx, __idPointer, Use(path), (ulong)path.Capacity, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool FilePicker(ReadOnlySpan<byte> id, ref bool open, TextBuffer @out, FilePickerOpts opts = default) => FilePickerUtf8Core(new Utf8Argument(id), ref open, @out, opts);
     public bool FilePicker(TextBuffer id, ref bool open, TextBuffer @out, FilePickerOpts opts = default) => FilePickerUtf8Core(new Utf8Argument(id), ref open, @out, opts);
@@ -863,10 +1168,14 @@ public sealed unsafe partial class Ui
         CBool native_open = open;
         ArgumentNullException.ThrowIfNull(@out);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_file_picker_ex(_ctx, Utf8(id), &native_open, Use(@out), (ulong)@out.Capacity, &native_opts);
-        open = (native_open != 0);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_file_picker_ex(_ctx, __idPointer, &native_open, Use(@out), (ulong)@out.Capacity, &native_opts);
+            open = (native_open != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool FilterBar(ReadOnlySpan<byte> id, ReadOnlySpan<FilterField> fields, int count, Span<uint> selected, TextBuffer search) => FilterBarUtf8Core(new Utf8Argument(id), fields, count, selected, search);
     public bool FilterBar(TextBuffer id, ReadOnlySpan<FilterField> fields, int count, Span<uint> selected, TextBuffer search) => FilterBarUtf8Core(new Utf8Argument(id), fields, count, selected, search);
@@ -879,10 +1188,14 @@ public sealed unsafe partial class Ui
         var native_fields = CopyFilterField(fields);
         var native_selected = CopyUint32T(selected);
         ArgumentNullException.ThrowIfNull(search);
-        var result = Raw.cui_filter_bar(_ctx, Utf8(id), native_fields, count, native_selected, Use(search), (ulong)search.Capacity);
-        for (var i = 0; i < selected.Length; i++) selected[i] = native_selected[i];
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_filter_bar(_ctx, __idPointer, native_fields, count, native_selected, Use(search), (ulong)search.Capacity);
+            for (var i = 0; i < selected.Length; i++) selected[i] = native_selected[i];
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Funnel(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> stages, int count, FunnelOpts opts = default) => FunnelUtf8Core(new Utf8Argument(id), stages, count, opts);
     public int Funnel(TextBuffer id, ReadOnlySpan<VizItem> stages, int count, FunnelOpts opts = default) => FunnelUtf8Core(new Utf8Argument(id), stages, count, opts);
@@ -893,9 +1206,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, stages.Length, nameof(count));
         var native_stages = CopyVizItem(stages);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_funnel_ex(_ctx, Utf8(id), native_stages, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_funnel_ex(_ctx, __idPointer, native_stages, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int Gantt(ReadOnlySpan<byte> id, Span<GanttTask> tasks, int count, Date origin, int days, GanttOpts opts = default) => GanttUtf8Core(new Utf8Argument(id), tasks, count, origin, days, opts);
     public int Gantt(TextBuffer id, Span<GanttTask> tasks, int count, Date origin, int days, GanttOpts opts = default) => GanttUtf8Core(new Utf8Argument(id), tasks, count, origin, days, opts);
@@ -904,13 +1221,18 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         if (days < 0) throw new ArgumentOutOfRangeException(nameof(days));
+
         CheckLength(count, tasks.Length, nameof(count));
         var native_tasks = CopyGanttTask(tasks);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_gantt_ex(_ctx, Utf8(id), native_tasks, count, ToNative(origin), days, &native_opts);
-        for (var i = 0; i < tasks.Length; i++) tasks[i] = FromNative(native_tasks[i], tasks[i]);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_gantt_ex(_ctx, __idPointer, native_tasks, count, ToNative(origin), days, &native_opts);
+            for (var i = 0; i < tasks.Length; i++) tasks[i] = FromNative(native_tasks[i], tasks[i]);
+            SyncState();
+            return result;
+        }
     }
     public void Gauge(ReadOnlySpan<byte> label, float value, float size) => GaugeUtf8Core(new Utf8Argument(label), value, size);
     public void Gauge(TextBuffer label, float value, float size) => GaugeUtf8Core(new Utf8Argument(label), value, size);
@@ -918,8 +1240,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         label.ThrowIfNull(nameof(label));
-        Raw.cui_gauge(_ctx, Utf8(label), value, size);
-        SyncState();
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            cui_gauge(_ctx, __labelPointer, value, size);
+            SyncState();
+        }
     }
     public void GradientText(ReadOnlySpan<byte> text, GradientTextOpts opts = default) => GradientTextUtf8Core(new Utf8Argument(text), opts);
     public void GradientText(TextBuffer text, GradientTextOpts opts = default) => GradientTextUtf8Core(new Utf8Argument(text), opts);
@@ -928,8 +1254,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_gradient_text_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_gradient_text_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public GraphResult GraphView(ReadOnlySpan<byte> id, ReadOnlySpan<GraphNode> nodes, int node_count, ReadOnlySpan<GraphEdge> edges, int edge_count, GraphOpts opts = default) => GraphViewUtf8Core(new Utf8Argument(id), nodes, node_count, edges, edge_count, opts);
     public GraphResult GraphView(TextBuffer id, ReadOnlySpan<GraphNode> nodes, int node_count, ReadOnlySpan<GraphEdge> edges, int edge_count, GraphOpts opts = default) => GraphViewUtf8Core(new Utf8Argument(id), nodes, node_count, edges, edge_count, opts);
@@ -943,9 +1273,13 @@ public sealed unsafe partial class Ui
         var native_nodes = CopyGraphNode(nodes);
         var native_edges = CopyGraphEdge(edges);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_graph_view_ex(_ctx, Utf8(id), native_nodes, node_count, native_edges, edge_count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_graph_view_ex(_ctx, __idPointer, native_nodes, node_count, native_edges, edge_count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void Heading(ReadOnlySpan<byte> text, int level) => HeadingUtf8Core(new Utf8Argument(text), level);
     public void Heading(TextBuffer text, int level) => HeadingUtf8Core(new Utf8Argument(text), level);
@@ -953,8 +1287,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_heading(_ctx, Utf8(text), level);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_heading(_ctx, __textPointer, level);
+            SyncState();
+        }
     }
     public int Heatmap(ReadOnlySpan<byte> id, ReadOnlySpan<float> values, int rows, int cols, HeatmapOpts opts = default) => HeatmapUtf8Core(new Utf8Argument(id), values, rows, cols, opts);
     public int Heatmap(TextBuffer id, ReadOnlySpan<float> values, int rows, int cols, HeatmapOpts opts = default) => HeatmapUtf8Core(new Utf8Argument(id), values, rows, cols, opts);
@@ -966,9 +1304,13 @@ public sealed unsafe partial class Ui
         CheckLength(checked(rows * cols), values.Length, nameof(values));
         var native_values = CopyFloat(values);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_heatmap_ex(_ctx, Utf8(id), native_values, rows, cols, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_heatmap_ex(_ctx, __idPointer, native_values, rows, cols, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public bool HistogramSlider(ReadOnlySpan<byte> label, ReadOnlySpan<float> bins, int bin_count, ref float lo, ref float hi, float min, float max, HistogramOpts opts = default) => HistogramSliderUtf8Core(new Utf8Argument(label), bins, bin_count, ref lo, ref hi, min, max, opts);
     public bool HistogramSlider(TextBuffer label, ReadOnlySpan<float> bins, int bin_count, ref float lo, ref float hi, float min, float max, HistogramOpts opts = default) => HistogramSliderUtf8Core(new Utf8Argument(label), bins, bin_count, ref lo, ref hi, min, max, opts);
@@ -982,11 +1324,15 @@ public sealed unsafe partial class Ui
         var native_lo = lo;
         var native_hi = hi;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_histogram_slider_ex(_ctx, Utf8(label), native_bins, bin_count, &native_lo, &native_hi, min, max, &native_opts);
-        lo = native_lo;
-        hi = native_hi;
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_histogram_slider_ex(_ctx, __labelPointer, native_bins, bin_count, &native_lo, &native_hi, min, max, &native_opts);
+            lo = native_lo;
+            hi = native_hi;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool HoldButton(ReadOnlySpan<byte> label, HoldOpts opts = default) => HoldButtonUtf8Core(new Utf8Argument(label), opts);
     public bool HoldButton(TextBuffer label, HoldOpts opts = default) => HoldButtonUtf8Core(new Utf8Argument(label), opts);
@@ -995,9 +1341,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_hold_button_ex(_ctx, Utf8(label), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_hold_button_ex(_ctx, __labelPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public UiScope HoverCardBegin(ReadOnlySpan<byte> id, HoverCardOpts opts = default) => HoverCardBeginUtf8Core(new Utf8Argument(id), opts);
     public UiScope HoverCardBegin(TextBuffer id, HoverCardOpts opts = default) => HoverCardBeginUtf8Core(new Utf8Argument(id), opts);
@@ -1007,9 +1357,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_hover_card_begin(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.HoverCard, result != 0, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_hover_card_begin(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.HoverCard, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public void Icon(ReadOnlySpan<byte> icon, float size, Color color) => IconUtf8Core(new Utf8Argument(icon), size, color);
     public void Icon(TextBuffer icon, float size, Color color) => IconUtf8Core(new Utf8Argument(icon), size, color);
@@ -1017,8 +1371,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         icon.ThrowIfNull(nameof(icon));
-        Raw.cui_icon(_ctx, Utf8(icon), size, ToNative(color));
-        SyncState();
+        using var __iconUtf8 = new ScopedUtf8(icon, stackalloc byte[256]);
+        fixed (byte* __iconPointer = __iconUtf8.Bytes)
+        {
+            cui_icon(_ctx, __iconPointer, size, ToNative(color));
+            SyncState();
+        }
     }
     public bool IconButton(ReadOnlySpan<byte> icon, ButtonOpts opts = default) => IconButtonUtf8Core(new Utf8Argument(icon), opts);
     public bool IconButton(TextBuffer icon, ButtonOpts opts = default) => IconButtonUtf8Core(new Utf8Argument(icon), opts);
@@ -1027,9 +1385,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         icon.ThrowIfNull(nameof(icon));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_icon_button_ex(_ctx, Utf8(icon), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __iconUtf8 = new ScopedUtf8(icon, stackalloc byte[256]);
+        fixed (byte* __iconPointer = __iconUtf8.Bytes)
+        {
+            var result = cui_icon_button_ex(_ctx, __iconPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool ImageCompare(ReadOnlySpan<byte> id, Texture? before, Texture? after, ref float pos, CompareOpts opts = default) => ImageCompareUtf8Core(new Utf8Argument(id), before, after, ref pos, opts);
     public bool ImageCompare(TextBuffer id, Texture? before, Texture? after, ref float pos, CompareOpts opts = default) => ImageCompareUtf8Core(new Utf8Argument(id), before, after, ref pos, opts);
@@ -1039,10 +1401,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_pos = pos;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_image_compare_ex(_ctx, Utf8(id), Unwrap(before), Unwrap(after), &native_pos, &native_opts);
-        pos = native_pos;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_image_compare_ex(_ctx, __idPointer, Unwrap(before), Unwrap(after), &native_pos, &native_opts);
+            pos = native_pos;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool ImageViewer(ReadOnlySpan<byte> id, Texture? tex, int image_w, int image_h, ref ImageView view, ImageViewerOpts opts = default) => ImageViewerUtf8Core(new Utf8Argument(id), tex, image_w, image_h, ref view, opts);
     public bool ImageViewer(TextBuffer id, Texture? tex, int image_w, int image_h, ref ImageView view, ImageViewerOpts opts = default) => ImageViewerUtf8Core(new Utf8Argument(id), tex, image_w, image_h, ref view, opts);
@@ -1052,10 +1418,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_view = ToNative(view);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_image_viewer_ex(_ctx, Utf8(id), Unwrap(tex), image_w, image_h, &native_view, &native_opts);
-        view = FromNative(native_view, view);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_image_viewer_ex(_ctx, __idPointer, Unwrap(tex), image_w, image_h, &native_view, &native_opts);
+            view = FromNative(native_view, view);
+            SyncState();
+            return (result != 0);
+        }
     }
     public int InlineEdit(ReadOnlySpan<byte> id, TextBuffer buf, InlineEditOpts opts = default) => InlineEditUtf8Core(new Utf8Argument(id), buf, opts);
     public int InlineEdit(TextBuffer id, TextBuffer buf, InlineEditOpts opts = default) => InlineEditUtf8Core(new Utf8Argument(id), buf, opts);
@@ -1065,9 +1435,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_inline_edit_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_inline_edit_ex(_ctx, __idPointer, Use(buf), (ulong)buf.Capacity, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int Input(ReadOnlySpan<byte> id, TextBuffer buf, InputOpts opts = default) => InputUtf8Core(new Utf8Argument(id), buf, opts);
     public int Input(TextBuffer id, TextBuffer buf, InputOpts opts = default) => InputUtf8Core(new Utf8Argument(id), buf, opts);
@@ -1077,9 +1451,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_input_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_input_ex(_ctx, __idPointer, Use(buf), (ulong)buf.Capacity, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void InputFileDrop(ReadOnlySpan<ReadOnlyMemory<byte>> paths, int count, float x, float y) => InputFileDropUtf8Core(new Utf8Arguments(paths), count, x, y);
     public void InputFileDrop(ReadOnlySpan<TextBuffer> paths, int count, float x, float y) => InputFileDropUtf8Core(new Utf8Arguments(paths), count, x, y);
@@ -1087,7 +1465,7 @@ public sealed unsafe partial class Ui
     {
         Check();
         CheckLength(count, paths.Length, nameof(count));
-        Raw.cui_input_file_drop(_ctx, Strings(paths), count, x, y);
+        cui_input_file_drop(_ctx, Strings(paths), count, x, y);
         SyncState();
     }
     public void InputText(ReadOnlySpan<byte> utf8) => InputTextUtf8Core(new Utf8Argument(utf8));
@@ -1096,8 +1474,12 @@ public sealed unsafe partial class Ui
     {
         Check();
         utf8.ThrowIfNull(nameof(utf8));
-        Raw.cui_input_text(_ctx, Utf8(utf8));
-        SyncState();
+        using var __utf8Utf8 = new ScopedUtf8(utf8, stackalloc byte[256]);
+        fixed (byte* __utf8Pointer = __utf8Utf8.Bytes)
+        {
+            cui_input_text(_ctx, __utf8Pointer);
+            SyncState();
+        }
     }
     public bool JsonView(string id, ReadOnlySpan<byte> json, JsonOpts opts = default) => JsonViewUtf8Core(new Utf8Argument(id), new Utf8Argument(json), opts);
     public bool JsonView(string id, TextBuffer json, JsonOpts opts = default) => JsonViewUtf8Core(new Utf8Argument(id), new Utf8Argument(json), opts);
@@ -1113,9 +1495,17 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         json.ThrowIfNull(nameof(json));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_json_view_ex(_ctx, Utf8(id), Utf8(json), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __jsonUtf8 = new ScopedUtf8(json, stackalloc byte[256]);
+        fixed (byte* __jsonPointer = __jsonUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                var result = cui_json_view_ex(_ctx, __idPointer, __jsonPointer, &native_opts);
+                SyncState();
+                return (result != 0);
+            }
+        }
     }
     public UiScope KanbanBegin(ReadOnlySpan<byte> id) => KanbanBeginUtf8Core(new Utf8Argument(id));
     public UiScope KanbanBegin(TextBuffer id) => KanbanBeginUtf8Core(new Utf8Argument(id));
@@ -1124,9 +1514,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         CheckBegin();
-        Raw.cui_kanban_begin(_ctx, Utf8(id));
-        SyncState();
-        return TrackScope(ScopeKind.Kanban, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_kanban_begin(_ctx, __idPointer);
+            SyncState();
+            return TrackScope(ScopeKind.Kanban, true, 0);
+        }
     }
     public UiScope KanbanColumnBegin(ReadOnlySpan<byte> title, int card_count, KanbanColumnOpts opts = default) => KanbanColumnBeginUtf8Core(new Utf8Argument(title), card_count, opts);
     public UiScope KanbanColumnBegin(TextBuffer title, int card_count, KanbanColumnOpts opts = default) => KanbanColumnBeginUtf8Core(new Utf8Argument(title), card_count, opts);
@@ -1137,9 +1531,13 @@ public sealed unsafe partial class Ui
         CheckBegin();
         RequireScope(ScopeKind.Kanban);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_kanban_column_begin_ex(_ctx, Utf8(title), card_count, &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.KanbanColumn, true, result != 0 ? 1 : 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_kanban_column_begin_ex(_ctx, __titlePointer, card_count, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.KanbanColumn, true, result != 0 ? 1 : 0);
+        }
     }
     public KeymapResult Keymap(ReadOnlySpan<byte> id, ReadOnlySpan<KeymapBinding> bindings, int count, KeymapOpts opts = default) => KeymapUtf8Core(new Utf8Argument(id), bindings, count, opts);
     public KeymapResult Keymap(TextBuffer id, ReadOnlySpan<KeymapBinding> bindings, int count, KeymapOpts opts = default) => KeymapUtf8Core(new Utf8Argument(id), bindings, count, opts);
@@ -1150,9 +1548,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, bindings.Length, nameof(count));
         var native_bindings = CopyKeymapBinding(bindings);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_keymap_ex(_ctx, Utf8(id), native_bindings, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_keymap_ex(_ctx, __idPointer, native_bindings, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool Knob(ReadOnlySpan<byte> id, ref float value, float min, float max, KnobOpts opts = default) => KnobUtf8Core(new Utf8Argument(id), ref value, min, max, opts);
     public bool Knob(TextBuffer id, ref float value, float min, float max, KnobOpts opts = default) => KnobUtf8Core(new Utf8Argument(id), ref value, min, max, opts);
@@ -1163,10 +1565,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_knob_ex(_ctx, Utf8(id), &native_value, min, max, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_knob_ex(_ctx, __idPointer, &native_value, min, max, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool KvEditor(ReadOnlySpan<byte> id, Span<KvPair> pairs, ref int count, int capacity, KvEditorOpts opts = default) => KvEditorUtf8Core(new Utf8Argument(id), pairs, ref count, capacity, opts);
     public bool KvEditor(TextBuffer id, Span<KvPair> pairs, ref int count, int capacity, KvEditorOpts opts = default) => KvEditorUtf8Core(new Utf8Argument(id), pairs, ref count, capacity, opts);
@@ -1179,11 +1585,15 @@ public sealed unsafe partial class Ui
         var native_pairs = CopyKvPair(pairs);
         var native_count = count;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_kv_editor_ex(_ctx, Utf8(id), native_pairs, &native_count, capacity, &native_opts);
-        for (var i = 0; i < pairs.Length; i++) pairs[i] = FromNative(native_pairs[i], pairs[i]);
-        count = native_count;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_kv_editor_ex(_ctx, __idPointer, native_pairs, &native_count, capacity, &native_opts);
+            for (var i = 0; i < pairs.Length; i++) pairs[i] = FromNative(native_pairs[i], pairs[i]);
+            count = native_count;
+            SyncState();
+            return (result != 0);
+        }
     }
     public void Label(ReadOnlySpan<byte> text) => LabelUtf8Core(new Utf8Argument(text));
     public void Label(TextBuffer text) => LabelUtf8Core(new Utf8Argument(text));
@@ -1191,8 +1601,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_label(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_label(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public bool LevelMeter(ReadOnlySpan<byte> id, ReadOnlySpan<float> levels, int channels, LevelMeterOpts opts = default) => LevelMeterUtf8Core(new Utf8Argument(id), levels, channels, opts);
     public bool LevelMeter(TextBuffer id, ReadOnlySpan<float> levels, int channels, LevelMeterOpts opts = default) => LevelMeterUtf8Core(new Utf8Argument(id), levels, channels, opts);
@@ -1203,9 +1617,13 @@ public sealed unsafe partial class Ui
         CheckLength(channels, levels.Length, nameof(channels));
         var native_levels = CopyFloat(levels);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_level_meter_ex(_ctx, Utf8(id), native_levels, channels, &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_level_meter_ex(_ctx, __idPointer, native_levels, channels, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void LineChart(ReadOnlySpan<byte> id, ReadOnlySpan<Series> series, int count, ChartOpts opts = default) => LineChartUtf8Core(new Utf8Argument(id), series, count, opts);
     public void LineChart(TextBuffer id, ReadOnlySpan<Series> series, int count, ChartOpts opts = default) => LineChartUtf8Core(new Utf8Argument(id), series, count, opts);
@@ -1216,8 +1634,12 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopySeries(series);
         var native_opts = ToNative(opts);
-        Raw.cui_line_chart_ex(_ctx, Utf8(id), native_series, count, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_line_chart_ex(_ctx, __idPointer, native_series, count, &native_opts);
+            SyncState();
+        }
     }
     public bool Link(ReadOnlySpan<byte> text) => LinkUtf8Core(new Utf8Argument(text));
     public bool Link(TextBuffer text) => LinkUtf8Core(new Utf8Argument(text));
@@ -1225,9 +1647,13 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        var result = Raw.cui_link(_ctx, Utf8(text));
-        SyncState();
-        return (result != 0);
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            var result = cui_link(_ctx, __textPointer);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool ListItem(ReadOnlySpan<byte> title, ListItemOpts opts = default) => ListItemUtf8Core(new Utf8Argument(title), opts);
     public bool ListItem(TextBuffer title, ListItemOpts opts = default) => ListItemUtf8Core(new Utf8Argument(title), opts);
@@ -1236,9 +1662,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_list_item_ex(_ctx, Utf8(title), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_list_item_ex(_ctx, __titlePointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public Id MakeId(ReadOnlySpan<byte> str) => MakeIdUtf8Core(new Utf8Argument(str));
     public Id MakeId(TextBuffer str) => MakeIdUtf8Core(new Utf8Argument(str));
@@ -1246,9 +1676,13 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         str.ThrowIfNull(nameof(str));
-        var result = Raw.cui_make_id(_ctx, Utf8(str));
-        SyncState();
-        return new Id(this, result);
+        using var __strUtf8 = new ScopedUtf8(str, stackalloc byte[256]);
+        fixed (byte* __strPointer = __strUtf8.Bytes)
+        {
+            var result = cui_make_id(_ctx, __strPointer);
+            SyncState();
+            return new Id(this, result);
+        }
     }
     public UiScope MenuBegin(ReadOnlySpan<byte> label, MenuOpts opts = default) => MenuBeginUtf8Core(new Utf8Argument(label), opts);
     public UiScope MenuBegin(TextBuffer label, MenuOpts opts = default) => MenuBeginUtf8Core(new Utf8Argument(label), opts);
@@ -1258,9 +1692,13 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_menu_begin(_ctx, Utf8(label), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Menu, result != 0, result != 0 ? 1 : 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_menu_begin(_ctx, __labelPointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Menu, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public bool MenuItem(ReadOnlySpan<byte> label, MenuItemOpts opts = default) => MenuItemUtf8Core(new Utf8Argument(label), opts);
     public bool MenuItem(TextBuffer label, MenuItemOpts opts = default) => MenuItemUtf8Core(new Utf8Argument(label), opts);
@@ -1269,9 +1707,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_menu_item_ex(_ctx, Utf8(label), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_menu_item_ex(_ctx, __labelPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void MenuLabel(ReadOnlySpan<byte> text) => MenuLabelUtf8Core(new Utf8Argument(text));
     public void MenuLabel(TextBuffer text) => MenuLabelUtf8Core(new Utf8Argument(text));
@@ -1279,8 +1721,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_menu_label(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_menu_label(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public void Meter(string label, float used, float total, ReadOnlySpan<byte> unit) => MeterUtf8Core(new Utf8Argument(label), used, total, new Utf8Argument(unit));
     public void Meter(string label, float used, float total, TextBuffer unit) => MeterUtf8Core(new Utf8Argument(label), used, total, new Utf8Argument(unit));
@@ -1295,8 +1741,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         unit.ThrowIfNull(nameof(unit));
-        Raw.cui_meter(_ctx, Utf8(label), used, total, Utf8(unit));
-        SyncState();
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        using var __unitUtf8 = new ScopedUtf8(unit, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        fixed (byte* __unitPointer = __unitUtf8.Bytes)
+        {
+            cui_meter(_ctx, __labelPointer, used, total, __unitPointer);
+            SyncState();
+        }
     }
     public void Metric(string label, ReadOnlySpan<byte> value, MetricOpts opts = default) => MetricUtf8Core(new Utf8Argument(label), new Utf8Argument(value), opts);
     public void Metric(string label, TextBuffer value, MetricOpts opts = default) => MetricUtf8Core(new Utf8Argument(label), new Utf8Argument(value), opts);
@@ -1312,8 +1764,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         value.ThrowIfNull(nameof(value));
         var native_opts = ToNative(opts);
-        Raw.cui_metric_ex(_ctx, Utf8(label), Utf8(value), &native_opts);
-        SyncState();
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        using var __valueUtf8 = new ScopedUtf8(value, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        fixed (byte* __valuePointer = __valueUtf8.Bytes)
+        {
+            cui_metric_ex(_ctx, __labelPointer, __valuePointer, &native_opts);
+            SyncState();
+        }
     }
     public bool MoneyInput(ReadOnlySpan<byte> id, ref double value, MoneyOpts opts = default) => MoneyInputUtf8Core(new Utf8Argument(id), ref value, opts);
     public bool MoneyInput(TextBuffer id, ref double value, MoneyOpts opts = default) => MoneyInputUtf8Core(new Utf8Argument(id), ref value, opts);
@@ -1323,10 +1781,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_money_input_ex(_ctx, Utf8(id), &native_value, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_money_input_ex(_ctx, __idPointer, &native_value, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public MonthResult MonthCalendar(ReadOnlySpan<byte> id, ref Date month, ReadOnlySpan<MonthEvent> events, int count, MonthOpts opts = default) => MonthCalendarUtf8Core(new Utf8Argument(id), ref month, events, count, opts);
     public MonthResult MonthCalendar(TextBuffer id, ref Date month, ReadOnlySpan<MonthEvent> events, int count, MonthOpts opts = default) => MonthCalendarUtf8Core(new Utf8Argument(id), ref month, events, count, opts);
@@ -1338,10 +1800,14 @@ public sealed unsafe partial class Ui
         var native_month = ToNative(month);
         var native_events = CopyMonthEvent(events);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_month_calendar_ex(_ctx, Utf8(id), &native_month, native_events, count, &native_opts);
-        month = FromNative(native_month, month);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_month_calendar_ex(_ctx, __idPointer, &native_month, native_events, count, &native_opts);
+            month = FromNative(native_month, month);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool MultiSelect(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, selected, opts);
     public bool MultiSelect(string id, ReadOnlySpan<TextBuffer> items, int count, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, selected, opts);
@@ -1360,10 +1826,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_selected = CopyBool(selected);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_multi_select_ex(_ctx, Utf8(id), Strings(items), count, native_selected, &native_opts);
-        for (var i = 0; i < selected.Length; i++) selected[i] = (native_selected[i] != 0);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_multi_select_ex(_ctx, __idPointer, Strings(items), count, native_selected, &native_opts);
+            for (var i = 0; i < selected.Length; i++) selected[i] = (native_selected[i] != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void Muted(ReadOnlySpan<byte> text) => MutedUtf8Core(new Utf8Argument(text));
     public void Muted(TextBuffer text) => MutedUtf8Core(new Utf8Argument(text));
@@ -1371,8 +1841,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_muted(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_muted(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public bool NavItem(ReadOnlySpan<byte> label, NavOpts opts = default) => NavItemUtf8Core(new Utf8Argument(label), opts);
     public bool NavItem(TextBuffer label, NavOpts opts = default) => NavItemUtf8Core(new Utf8Argument(label), opts);
@@ -1381,9 +1855,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_nav_item_ex(_ctx, Utf8(label), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_nav_item_ex(_ctx, __labelPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void NavSection(ReadOnlySpan<byte> title) => NavSectionUtf8Core(new Utf8Argument(title));
     public void NavSection(TextBuffer title) => NavSectionUtf8Core(new Utf8Argument(title));
@@ -1391,8 +1869,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         title.ThrowIfNull(nameof(title));
-        Raw.cui_nav_section(_ctx, Utf8(title));
-        SyncState();
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            cui_nav_section(_ctx, __titlePointer);
+            SyncState();
+        }
     }
     public UiScope NodeBegin(int node_id, ref float x, ref float y, ReadOnlySpan<byte> title, NodeOpts opts = default) => NodeBeginUtf8Core(node_id, ref x, ref y, new Utf8Argument(title), opts);
     public UiScope NodeBegin(int node_id, ref float x, ref float y, TextBuffer title, NodeOpts opts = default) => NodeBeginUtf8Core(node_id, ref x, ref y, new Utf8Argument(title), opts);
@@ -1405,7 +1887,7 @@ public sealed unsafe partial class Ui
         var native_x = x;
         var native_y = y;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_node_begin_ex(_ctx, node_id, &native_x, &native_y, Utf8(title), &native_opts);
+        var result = cui_node_begin_ex(_ctx, node_id, &native_x, &native_y, Utf8(title), &native_opts);
         x = native_x;
         y = native_y;
         SyncState();
@@ -1420,9 +1902,13 @@ public sealed unsafe partial class Ui
         CheckBegin();
         ArgumentNullException.ThrowIfNull(view);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_node_editor_begin_ex(_ctx, Utf8(id), BindNodeView(view), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.NodeEditor, true, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_node_editor_begin_ex(_ctx, __idPointer, BindNodeView(view), &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.NodeEditor, true, result != 0 ? 1 : 0);
+        }
     }
     public int NowPlaying(ReadOnlySpan<byte> id, ref NowPlaying np, NowPlayingOpts opts = default) => NowPlayingUtf8Core(new Utf8Argument(id), ref np, opts);
     public int NowPlaying(TextBuffer id, ref NowPlaying np, NowPlayingOpts opts = default) => NowPlayingUtf8Core(new Utf8Argument(id), ref np, opts);
@@ -1432,10 +1918,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_np = ToNative(np);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_now_playing_ex(_ctx, Utf8(id), &native_np, &native_opts);
-        np = FromNative(native_np, np);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_now_playing_ex(_ctx, __idPointer, &native_np, &native_opts);
+            np = FromNative(native_np, np);
+            SyncState();
+            return result;
+        }
     }
     public bool Number(ReadOnlySpan<byte> id, ref double value, double min, double max, NumberOpts opts = default) => NumberUtf8Core(new Utf8Argument(id), ref value, min, max, opts);
     public bool Number(TextBuffer id, ref double value, double min, double max, NumberOpts opts = default) => NumberUtf8Core(new Utf8Argument(id), ref value, min, max, opts);
@@ -1446,10 +1936,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_number_ex(_ctx, Utf8(id), &native_value, min, max, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_number_ex(_ctx, __idPointer, &native_value, min, max, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool OtpInput(ReadOnlySpan<byte> id, TextBuffer code, int length) => OtpInputUtf8Core(new Utf8Argument(id), code, length);
     public bool OtpInput(TextBuffer id, TextBuffer code, int length) => OtpInputUtf8Core(new Utf8Argument(id), code, length);
@@ -1459,10 +1953,15 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(code);
         if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+
         CheckLength(checked(length + 1), code.Capacity, nameof(length));
-        var result = Raw.cui_otp_input(_ctx, Utf8(id), Use(code), length);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_otp_input(_ctx, __idPointer, Use(code), length);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool Pagination(ReadOnlySpan<byte> id, ref int page, int page_count) => PaginationUtf8Core(new Utf8Argument(id), ref page, page_count);
     public bool Pagination(TextBuffer id, ref int page, int page_count) => PaginationUtf8Core(new Utf8Argument(id), ref page, page_count);
@@ -1471,10 +1970,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_page = page;
-        var result = Raw.cui_pagination(_ctx, Utf8(id), &native_page, page_count);
-        page = native_page;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_pagination(_ctx, __idPointer, &native_page, page_count);
+            page = native_page;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int PasswordStrength(ReadOnlySpan<byte> password) => PasswordStrengthUtf8Core(new Utf8Argument(password));
     public int PasswordStrength(TextBuffer password) => PasswordStrengthUtf8Core(new Utf8Argument(password));
@@ -1482,9 +1985,13 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         password.ThrowIfNull(nameof(password));
-        var result = Raw.cui_password_strength(_ctx, Utf8(password));
-        SyncState();
-        return result;
+        using var __passwordUtf8 = new ScopedUtf8(password, stackalloc byte[256]);
+        fixed (byte* __passwordPointer = __passwordUtf8.Bytes)
+        {
+            var result = cui_password_strength(_ctx, __passwordPointer);
+            SyncState();
+            return result;
+        }
     }
     public PipelineResult Pipeline(string id, ReadOnlySpan<ReadOnlyMemory<byte>> stages, int stage_count, ReadOnlySpan<PipelineJob> jobs, int job_count, PipelineOpts opts = default) => PipelineUtf8Core(new Utf8Argument(id), new Utf8Arguments(stages), stage_count, jobs, job_count, opts);
     public PipelineResult Pipeline(string id, ReadOnlySpan<TextBuffer> stages, int stage_count, ReadOnlySpan<PipelineJob> jobs, int job_count, PipelineOpts opts = default) => PipelineUtf8Core(new Utf8Argument(id), new Utf8Arguments(stages), stage_count, jobs, job_count, opts);
@@ -1502,9 +2009,13 @@ public sealed unsafe partial class Ui
         CheckLength(stage_count, stages.Length, nameof(stage_count));
         var native_jobs = CopyPipelineJob(jobs);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_pipeline_ex(_ctx, Utf8(id), Strings(stages), stage_count, native_jobs, job_count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_pipeline_ex(_ctx, __idPointer, Strings(stages), stage_count, native_jobs, job_count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public UiScope PopoverBegin(ReadOnlySpan<byte> id, PopoverOpts opts = default) => PopoverBeginUtf8Core(new Utf8Argument(id), opts);
     public UiScope PopoverBegin(TextBuffer id, PopoverOpts opts = default) => PopoverBeginUtf8Core(new Utf8Argument(id), opts);
@@ -1514,9 +2025,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_popover_begin(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Popover, result != 0, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_popover_begin(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Popover, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public void PopoverClose(ReadOnlySpan<byte> id) => PopoverCloseUtf8Core(new Utf8Argument(id));
     public void PopoverClose(TextBuffer id) => PopoverCloseUtf8Core(new Utf8Argument(id));
@@ -1524,8 +2039,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        Raw.cui_popover_close(_ctx, Utf8(id));
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_popover_close(_ctx, __idPointer);
+            SyncState();
+        }
     }
     public bool PopoverIsOpen(ReadOnlySpan<byte> id) => PopoverIsOpenUtf8Core(new Utf8Argument(id));
     public bool PopoverIsOpen(TextBuffer id) => PopoverIsOpenUtf8Core(new Utf8Argument(id));
@@ -1533,9 +2052,13 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        var result = Raw.cui_popover_is_open(_ctx, Utf8(id));
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_popover_is_open(_ctx, __idPointer);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void PopoverOpen(ReadOnlySpan<byte> id) => PopoverOpenUtf8Core(new Utf8Argument(id));
     public void PopoverOpen(TextBuffer id) => PopoverOpenUtf8Core(new Utf8Argument(id));
@@ -1543,8 +2066,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        Raw.cui_popover_open(_ctx, Utf8(id));
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_popover_open(_ctx, __idPointer);
+            SyncState();
+        }
     }
     public void PopoverToggle(ReadOnlySpan<byte> id) => PopoverToggleUtf8Core(new Utf8Argument(id));
     public void PopoverToggle(TextBuffer id) => PopoverToggleUtf8Core(new Utf8Argument(id));
@@ -1552,8 +2079,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         id.ThrowIfNull(nameof(id));
-        Raw.cui_popover_toggle(_ctx, Utf8(id));
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_popover_toggle(_ctx, __idPointer);
+            SyncState();
+        }
     }
     public void Presence(ReadOnlySpan<byte> id, ReadOnlySpan<PresenceUser> users, int count, int max_visible, float size) => PresenceUtf8Core(new Utf8Argument(id), users, count, max_visible, size);
     public void Presence(TextBuffer id, ReadOnlySpan<PresenceUser> users, int count, int max_visible, float size) => PresenceUtf8Core(new Utf8Argument(id), users, count, max_visible, size);
@@ -1563,8 +2094,12 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, users.Length, nameof(count));
         var native_users = CopyPresenceUser(users);
-        Raw.cui_presence(_ctx, Utf8(id), native_users, count, max_visible, size);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_presence(_ctx, __idPointer, native_users, count, max_visible, size);
+            SyncState();
+        }
     }
     public ProblemsResult Problems(ReadOnlySpan<byte> id, ReadOnlySpan<Diagnostic> diags, int count, ProblemsOpts opts = default) => ProblemsUtf8Core(new Utf8Argument(id), diags, count, opts);
     public ProblemsResult Problems(TextBuffer id, ReadOnlySpan<Diagnostic> diags, int count, ProblemsOpts opts = default) => ProblemsUtf8Core(new Utf8Argument(id), diags, count, opts);
@@ -1575,9 +2110,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, diags.Length, nameof(count));
         var native_diags = CopyDiagnostic(diags);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_problems_ex(_ctx, Utf8(id), native_diags, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_problems_ex(_ctx, __idPointer, native_diags, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void ProgressRing(ReadOnlySpan<byte> label, float value, float size) => ProgressRingUtf8Core(new Utf8Argument(label), value, size);
     public void ProgressRing(TextBuffer label, float value, float size) => ProgressRingUtf8Core(new Utf8Argument(label), value, size);
@@ -1585,8 +2124,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         label.ThrowIfNull(nameof(label));
-        Raw.cui_progress_ring(_ctx, Utf8(label), value, size);
-        SyncState();
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            cui_progress_ring(_ctx, __labelPointer, value, size);
+            SyncState();
+        }
     }
     public int PromptSuggestions(ReadOnlySpan<byte> id, ReadOnlySpan<PromptSuggestion> items, int count, PromptSuggestionsOpts opts = default) => PromptSuggestionsUtf8Core(new Utf8Argument(id), items, count, opts);
     public int PromptSuggestions(TextBuffer id, ReadOnlySpan<PromptSuggestion> items, int count, PromptSuggestionsOpts opts = default) => PromptSuggestionsUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -1597,9 +2140,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyPromptSuggestion(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_prompt_suggestions_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_prompt_suggestions_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public UiScope PushId(ReadOnlySpan<byte> str) => PushIdUtf8Core(new Utf8Argument(str));
     public UiScope PushId(TextBuffer str) => PushIdUtf8Core(new Utf8Argument(str));
@@ -1608,9 +2155,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         str.ThrowIfNull(nameof(str));
         CheckBegin();
-        Raw.cui_push_id(_ctx, Utf8(str));
-        SyncState();
-        return TrackScope(ScopeKind.Id, true, 0);
+        using var __strUtf8 = new ScopedUtf8(str, stackalloc byte[256]);
+        fixed (byte* __strPointer = __strUtf8.Bytes)
+        {
+            cui_push_id(_ctx, __strPointer);
+            SyncState();
+            return TrackScope(ScopeKind.Id, true, 0);
+        }
     }
     public bool QueryBuilder(ReadOnlySpan<byte> id, ReadOnlySpan<QueryField> fields, int field_count, Span<QueryNode> nodes, ref int count, int capacity, QueryOpts opts = default) => QueryBuilderUtf8Core(new Utf8Argument(id), fields, field_count, nodes, ref count, capacity, opts);
     public bool QueryBuilder(TextBuffer id, ReadOnlySpan<QueryField> fields, int field_count, Span<QueryNode> nodes, ref int count, int capacity, QueryOpts opts = default) => QueryBuilderUtf8Core(new Utf8Argument(id), fields, field_count, nodes, ref count, capacity, opts);
@@ -1626,11 +2177,15 @@ public sealed unsafe partial class Ui
         var native_nodes = CopyQueryNode(nodes);
         var native_count = count;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_query_builder_ex(_ctx, Utf8(id), native_fields, field_count, native_nodes, &native_count, capacity, &native_opts);
-        for (var i = 0; i < nodes.Length; i++) nodes[i] = FromNative(native_nodes[i], nodes[i]);
-        count = native_count;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_query_builder_ex(_ctx, __idPointer, native_fields, field_count, native_nodes, &native_count, capacity, &native_opts);
+            for (var i = 0; i < nodes.Length; i++) nodes[i] = FromNative(native_nodes[i], nodes[i]);
+            count = native_count;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int RadarChart(string id, ReadOnlySpan<Series> series, int count, ReadOnlySpan<ReadOnlyMemory<byte>> axes, int axis_count, RadarOpts opts = default) => RadarChartUtf8Core(new Utf8Argument(id), series, count, new Utf8Arguments(axes), axis_count, opts);
     public int RadarChart(string id, ReadOnlySpan<Series> series, int count, ReadOnlySpan<TextBuffer> axes, int axis_count, RadarOpts opts = default) => RadarChartUtf8Core(new Utf8Argument(id), series, count, new Utf8Arguments(axes), axis_count, opts);
@@ -1648,9 +2203,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopySeries(series);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_radar_chart_ex(_ctx, Utf8(id), native_series, count, Strings(axes), axis_count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_radar_chart_ex(_ctx, __idPointer, native_series, count, Strings(axes), axis_count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void RadialGauge(ReadOnlySpan<byte> id, float value, float min, float max, RadialGaugeOpts opts = default) => RadialGaugeUtf8Core(new Utf8Argument(id), value, min, max, opts);
     public void RadialGauge(TextBuffer id, float value, float min, float max, RadialGaugeOpts opts = default) => RadialGaugeUtf8Core(new Utf8Argument(id), value, min, max, opts);
@@ -1660,8 +2219,12 @@ public sealed unsafe partial class Ui
         CheckRange(min, max);
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        Raw.cui_radial_gauge_ex(_ctx, Utf8(id), value, min, max, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_radial_gauge_ex(_ctx, __idPointer, value, min, max, &native_opts);
+            SyncState();
+        }
     }
     public bool RadioCards(ReadOnlySpan<byte> id, ReadOnlySpan<Choice> choices, int count, ref int index, RadioCardsOpts opts = default) => RadioCardsUtf8Core(new Utf8Argument(id), choices, count, ref index, opts);
     public bool RadioCards(TextBuffer id, ReadOnlySpan<Choice> choices, int count, ref int index, RadioCardsOpts opts = default) => RadioCardsUtf8Core(new Utf8Argument(id), choices, count, ref index, opts);
@@ -1673,10 +2236,14 @@ public sealed unsafe partial class Ui
         var native_choices = CopyChoice(choices);
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_radio_cards_ex(_ctx, Utf8(id), native_choices, count, &native_index, &native_opts);
-        index = native_index;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_radio_cards_ex(_ctx, __idPointer, native_choices, count, &native_index, &native_opts);
+            index = native_index;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool Radio(ReadOnlySpan<byte> label, ref int value, int option, CheckOpts opts = default) => RadioUtf8Core(new Utf8Argument(label), ref value, option, opts);
     public bool Radio(TextBuffer label, ref int value, int option, CheckOpts opts = default) => RadioUtf8Core(new Utf8Argument(label), ref value, option, opts);
@@ -1686,10 +2253,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_radio_ex(_ctx, Utf8(label), &native_value, option, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_radio_ex(_ctx, __labelPointer, &native_value, option, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool RangeCalendar(ReadOnlySpan<byte> id, ref DateRange range, int months) => RangeCalendarUtf8Core(new Utf8Argument(id), ref range, months);
     public bool RangeCalendar(TextBuffer id, ref DateRange range, int months) => RangeCalendarUtf8Core(new Utf8Argument(id), ref range, months);
@@ -1698,10 +2269,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_range = ToNative(range);
-        var result = Raw.cui_range_calendar(_ctx, Utf8(id), &native_range, months);
-        range = FromNative(native_range, range);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_range_calendar(_ctx, __idPointer, &native_range, months);
+            range = FromNative(native_range, range);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool RangeSlider(ReadOnlySpan<byte> label, ref float lo, ref float hi, float min, float max) => RangeSliderUtf8Core(new Utf8Argument(label), ref lo, ref hi, min, max);
     public bool RangeSlider(TextBuffer label, ref float lo, ref float hi, float min, float max) => RangeSliderUtf8Core(new Utf8Argument(label), ref lo, ref hi, min, max);
@@ -1712,11 +2287,15 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_lo = lo;
         var native_hi = hi;
-        var result = Raw.cui_range_slider(_ctx, Utf8(label), &native_lo, &native_hi, min, max);
-        lo = native_lo;
-        hi = native_hi;
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_range_slider(_ctx, __labelPointer, &native_lo, &native_hi, min, max);
+            lo = native_lo;
+            hi = native_hi;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool Rating(ReadOnlySpan<byte> id, ref int value, int max) => RatingUtf8Core(new Utf8Argument(id), ref value, max);
     public bool Rating(TextBuffer id, ref int value, int max) => RatingUtf8Core(new Utf8Argument(id), ref value, max);
@@ -1725,10 +2304,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_value = value;
-        var result = Raw.cui_rating(_ctx, Utf8(id), &native_value, max);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_rating(_ctx, __idPointer, &native_value, max);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Reactions(ReadOnlySpan<byte> id, Span<Reaction> items, int count) => ReactionsUtf8Core(new Utf8Argument(id), items, count);
     public int Reactions(TextBuffer id, Span<Reaction> items, int count) => ReactionsUtf8Core(new Utf8Argument(id), items, count);
@@ -1738,10 +2321,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyReaction(items);
-        var result = Raw.cui_reactions(_ctx, Utf8(id), native_items, count);
-        for (var i = 0; i < items.Length; i++) items[i] = FromNative(native_items[i], items[i]);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_reactions(_ctx, __idPointer, native_items, count);
+            for (var i = 0; i < items.Length; i++) items[i] = FromNative(native_items[i], items[i]);
+            SyncState();
+            return result;
+        }
     }
     public void Readout(string label, ReadOnlySpan<byte> value, ReadoutOpts opts = default) => ReadoutUtf8Core(new Utf8Argument(label), new Utf8Argument(value), opts);
     public void Readout(string label, TextBuffer value, ReadoutOpts opts = default) => ReadoutUtf8Core(new Utf8Argument(label), new Utf8Argument(value), opts);
@@ -1757,8 +2344,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         value.ThrowIfNull(nameof(value));
         var native_opts = ToNative(opts);
-        Raw.cui_readout_ex(_ctx, Utf8(label), Utf8(value), &native_opts);
-        SyncState();
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        using var __valueUtf8 = new ScopedUtf8(value, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        fixed (byte* __valuePointer = __valueUtf8.Bytes)
+        {
+            cui_readout_ex(_ctx, __labelPointer, __valuePointer, &native_opts);
+            SyncState();
+        }
     }
     public UiScope ReasoningBegin(ReadOnlySpan<byte> id, ReasoningOpts opts = default) => ReasoningBeginUtf8Core(new Utf8Argument(id), opts);
     public UiScope ReasoningBegin(TextBuffer id, ReasoningOpts opts = default) => ReasoningBeginUtf8Core(new Utf8Argument(id), opts);
@@ -1768,9 +2361,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_reasoning_begin(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Reasoning, result != 0, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_reasoning_begin(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Reasoning, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public RegexTesterResult RegexTester(ReadOnlySpan<byte> id, TextBuffer pattern, TextBuffer text, RegexTesterOpts opts = default) => RegexTesterUtf8Core(new Utf8Argument(id), pattern, text, opts);
     public RegexTesterResult RegexTester(TextBuffer id, TextBuffer pattern, TextBuffer text, RegexTesterOpts opts = default) => RegexTesterUtf8Core(new Utf8Argument(id), pattern, text, opts);
@@ -1781,9 +2378,13 @@ public sealed unsafe partial class Ui
         ArgumentNullException.ThrowIfNull(pattern);
         ArgumentNullException.ThrowIfNull(text);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_regex_tester_ex(_ctx, Utf8(id), Use(pattern), (ulong)pattern.Capacity, Use(text), (ulong)text.Capacity, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_regex_tester_ex(_ctx, __idPointer, Use(pattern), (ulong)pattern.Capacity, Use(text), (ulong)text.Capacity, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public UiScope ReorderBegin(ReadOnlySpan<byte> id, Memory<int> order, int count) => ReorderBeginUtf8Core(new Utf8Argument(id), order, count);
     public UiScope ReorderBegin(TextBuffer id, Memory<int> order, int count) => ReorderBeginUtf8Core(new Utf8Argument(id), order, count);
@@ -1797,9 +2398,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, order.Length, nameof(count));
         var native_order = CopyInt(order.Span);
         JournalInt(order, native_order);
-        Raw.cui_reorder_begin(_ctx, Utf8(id), native_order, count);
-        SyncState();
-        return TrackScope(ScopeKind.Reorder, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_reorder_begin(_ctx, __idPointer, native_order, count);
+            SyncState();
+            return TrackScope(ScopeKind.Reorder, true, 0);
+        }
     }
     public RequestBarResult RequestBar(ReadOnlySpan<byte> id, ref int method, TextBuffer url, RequestBarOpts opts = default) => RequestBarUtf8Core(new Utf8Argument(id), ref method, url, opts);
     public RequestBarResult RequestBar(TextBuffer id, ref int method, TextBuffer url, RequestBarOpts opts = default) => RequestBarUtf8Core(new Utf8Argument(id), ref method, url, opts);
@@ -1810,10 +2415,14 @@ public sealed unsafe partial class Ui
         var native_method = method;
         ArgumentNullException.ThrowIfNull(url);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_request_bar_ex(_ctx, Utf8(id), &native_method, Use(url), (ulong)url.Capacity, &native_opts);
-        method = native_method;
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_request_bar_ex(_ctx, __idPointer, &native_method, Use(url), (ulong)url.Capacity, &native_opts);
+            method = native_method;
+            SyncState();
+            return FromNative(result);
+        }
     }
     public int ResponseActions(ReadOnlySpan<byte> id, ResponseActionsOpts opts = default) => ResponseActionsUtf8Core(new Utf8Argument(id), opts);
     public int ResponseActions(TextBuffer id, ResponseActionsOpts opts = default) => ResponseActionsUtf8Core(new Utf8Argument(id), opts);
@@ -1822,9 +2431,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_response_actions_ex(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_response_actions_ex(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public bool RulerSlider(ReadOnlySpan<byte> label, ref float value, float min, float max, RulerOpts opts = default) => RulerSliderUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
     public bool RulerSlider(TextBuffer label, ref float value, float min, float max, RulerOpts opts = default) => RulerSliderUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
@@ -1835,10 +2448,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_ruler_slider_ex(_ctx, Utf8(label), &native_value, min, max, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_ruler_slider_ex(_ctx, __labelPointer, &native_value, min, max, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Sankey(string id, ReadOnlySpan<ReadOnlyMemory<byte>> nodes, int node_count, ReadOnlySpan<SankeyLink> links, int link_count, SankeyOpts opts = default) => SankeyUtf8Core(new Utf8Argument(id), new Utf8Arguments(nodes), node_count, links, link_count, opts);
     public int Sankey(string id, ReadOnlySpan<TextBuffer> nodes, int node_count, ReadOnlySpan<SankeyLink> links, int link_count, SankeyOpts opts = default) => SankeyUtf8Core(new Utf8Argument(id), new Utf8Arguments(nodes), node_count, links, link_count, opts);
@@ -1857,9 +2474,13 @@ public sealed unsafe partial class Ui
         CheckLength(node_count, nodes.Length, nameof(node_count));
         var native_links = CopySankeyLink(links);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_sankey_ex(_ctx, Utf8(id), Strings(nodes), node_count, native_links, link_count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_sankey_ex(_ctx, __idPointer, Strings(nodes), node_count, native_links, link_count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int ScatterChart(ReadOnlySpan<byte> id, ReadOnlySpan<ScatterSeries> series, int count, ScatterOpts opts = default) => ScatterChartUtf8Core(new Utf8Argument(id), series, count, opts);
     public int ScatterChart(TextBuffer id, ReadOnlySpan<ScatterSeries> series, int count, ScatterOpts opts = default) => ScatterChartUtf8Core(new Utf8Argument(id), series, count, opts);
@@ -1870,9 +2491,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, series.Length, nameof(count));
         var native_series = CopyScatterSeries(series);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_scatter_chart_ex(_ctx, Utf8(id), native_series, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_scatter_chart_ex(_ctx, __idPointer, native_series, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public ScheduleResult SchedulePicker(ReadOnlySpan<byte> id, TextBuffer cron, ScheduleOpts opts = default) => SchedulePickerUtf8Core(new Utf8Argument(id), cron, opts);
     public ScheduleResult SchedulePicker(TextBuffer id, TextBuffer cron, ScheduleOpts opts = default) => SchedulePickerUtf8Core(new Utf8Argument(id), cron, opts);
@@ -1882,9 +2507,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(cron);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_schedule_picker_ex(_ctx, Utf8(id), Use(cron), (ulong)cron.Capacity, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_schedule_picker_ex(_ctx, __idPointer, Use(cron), (ulong)cron.Capacity, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void ScrollTo(ReadOnlySpan<byte> scroll_id, float y) => ScrollToUtf8Core(new Utf8Argument(scroll_id), y);
     public void ScrollTo(TextBuffer scroll_id, float y) => ScrollToUtf8Core(new Utf8Argument(scroll_id), y);
@@ -1892,8 +2521,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         scroll_id.ThrowIfNull(nameof(scroll_id));
-        Raw.cui_scroll_to(_ctx, Utf8(scroll_id), y);
-        SyncState();
+        using var __scroll_idUtf8 = new ScopedUtf8(scroll_id, stackalloc byte[256]);
+        fixed (byte* __scroll_idPointer = __scroll_idUtf8.Bytes)
+        {
+            cui_scroll_to(_ctx, __scroll_idPointer, y);
+            SyncState();
+        }
     }
     public bool Scrub(ReadOnlySpan<byte> label, ref float value, float min, float max, ScrubOpts opts = default) => ScrubUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
     public bool Scrub(TextBuffer label, ref float value, float min, float max, ScrubOpts opts = default) => ScrubUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
@@ -1904,10 +2537,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_scrub_ex(_ctx, Utf8(label), &native_value, min, max, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_scrub_ex(_ctx, __labelPointer, &native_value, min, max, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Search(ReadOnlySpan<byte> id, TextBuffer buf, InputOpts opts = default) => SearchUtf8Core(new Utf8Argument(id), buf, opts);
     public int Search(TextBuffer id, TextBuffer buf, InputOpts opts = default) => SearchUtf8Core(new Utf8Argument(id), buf, opts);
@@ -1917,9 +2554,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_search_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_search_ex(_ctx, __idPointer, Use(buf), (ulong)buf.Capacity, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void Secondary(ReadOnlySpan<byte> text) => SecondaryUtf8Core(new Utf8Argument(text));
     public void Secondary(TextBuffer text) => SecondaryUtf8Core(new Utf8Argument(text));
@@ -1927,8 +2568,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_secondary(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_secondary(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public bool Segmented(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, ref int index, SegmentedOpts opts = default) => SegmentedUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
     public bool Segmented(string id, ReadOnlySpan<TextBuffer> items, int count, ref int index, SegmentedOpts opts = default) => SegmentedUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
@@ -1946,10 +2591,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_segmented_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
-        index = native_index;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_segmented_ex(_ctx, __idPointer, Strings(items), count, &native_index, &native_opts);
+            index = native_index;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool Select(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, ref int index, SelectOpts opts = default) => SelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
     public bool Select(string id, ReadOnlySpan<TextBuffer> items, int count, ref int index, SelectOpts opts = default) => SelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
@@ -1967,10 +2616,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_select_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
-        index = native_index;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_select_ex(_ctx, __idPointer, Strings(items), count, &native_index, &native_opts);
+            index = native_index;
+            SyncState();
+            return (result != 0);
+        }
     }
     public UiScope SheetBegin(ReadOnlySpan<byte> title, ref bool open, SheetOpts opts = default) => SheetBeginUtf8Core(new Utf8Argument(title), ref open, opts);
     public UiScope SheetBegin(TextBuffer title, ref bool open, SheetOpts opts = default) => SheetBeginUtf8Core(new Utf8Argument(title), ref open, opts);
@@ -1981,10 +2634,14 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_sheet_begin(_ctx, Utf8(title), &native_open, &native_opts);
-        open = (native_open != 0);
-        SyncState();
-        return TrackScope(ScopeKind.Sheet, result != 0, result != 0 ? 1 : 0);
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_sheet_begin(_ctx, __titlePointer, &native_open, &native_opts);
+            open = (native_open != 0);
+            SyncState();
+            return TrackScope(ScopeKind.Sheet, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public void ShimmerText(ReadOnlySpan<byte> text, TextFxOpts opts = default) => ShimmerTextUtf8Core(new Utf8Argument(text), opts);
     public void ShimmerText(TextBuffer text, TextFxOpts opts = default) => ShimmerTextUtf8Core(new Utf8Argument(text), opts);
@@ -1993,8 +2650,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_shimmer_text_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_shimmer_text_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public bool ShortcutRecorder(ReadOnlySpan<byte> id, ref KeyCombo combo, ShortcutRecorderOpts opts = default) => ShortcutRecorderUtf8Core(new Utf8Argument(id), ref combo, opts);
     public bool ShortcutRecorder(TextBuffer id, ref KeyCombo combo, ShortcutRecorderOpts opts = default) => ShortcutRecorderUtf8Core(new Utf8Argument(id), ref combo, opts);
@@ -2004,10 +2665,14 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_combo = ToNative(combo);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_shortcut_recorder_ex(_ctx, Utf8(id), &native_combo, &native_opts);
-        combo = FromNative(native_combo, combo);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_shortcut_recorder_ex(_ctx, __idPointer, &native_combo, &native_opts);
+            combo = FromNative(native_combo, combo);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool SignaturePad(ReadOnlySpan<byte> id, SignatureOpts opts = default) => SignaturePadUtf8Core(new Utf8Argument(id), opts);
     public bool SignaturePad(TextBuffer id, SignatureOpts opts = default) => SignaturePadUtf8Core(new Utf8Argument(id), opts);
@@ -2016,9 +2681,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_signature_pad_ex(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_signature_pad_ex(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool Slider(ReadOnlySpan<byte> label, ref float value, float min, float max, SliderOpts opts = default) => SliderUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
     public bool Slider(TextBuffer label, ref float value, float min, float max, SliderOpts opts = default) => SliderUtf8Core(new Utf8Argument(label), ref value, min, max, opts);
@@ -2029,10 +2698,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         var native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_slider_ex(_ctx, Utf8(label), &native_value, min, max, &native_opts);
-        value = native_value;
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_slider_ex(_ctx, __labelPointer, &native_value, min, max, &native_opts);
+            value = native_value;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int SourceList(ReadOnlySpan<byte> id, ReadOnlySpan<Source> sources, int count) => SourceListUtf8Core(new Utf8Argument(id), sources, count);
     public int SourceList(TextBuffer id, ReadOnlySpan<Source> sources, int count) => SourceListUtf8Core(new Utf8Argument(id), sources, count);
@@ -2042,9 +2715,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, sources.Length, nameof(count));
         var native_sources = CopySource(sources);
-        var result = Raw.cui_source_list(_ctx, Utf8(id), native_sources, count);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_source_list(_ctx, __idPointer, native_sources, count);
+            SyncState();
+            return result;
+        }
     }
     public int SpeedDial(ReadOnlySpan<byte> id, ReadOnlySpan<SpeedAction> actions, int count, SpeedDialOpts opts = default) => SpeedDialUtf8Core(new Utf8Argument(id), actions, count, opts);
     public int SpeedDial(TextBuffer id, ReadOnlySpan<SpeedAction> actions, int count, SpeedDialOpts opts = default) => SpeedDialUtf8Core(new Utf8Argument(id), actions, count, opts);
@@ -2055,9 +2732,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, actions.Length, nameof(count));
         var native_actions = CopySpeedAction(actions);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_speed_dial_ex(_ctx, Utf8(id), native_actions, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_speed_dial_ex(_ctx, __idPointer, native_actions, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int SplitBar(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> items, int count, SplitBarOpts opts = default) => SplitBarUtf8Core(new Utf8Argument(id), items, count, opts);
     public int SplitBar(TextBuffer id, ReadOnlySpan<VizItem> items, int count, SplitBarOpts opts = default) => SplitBarUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -2068,9 +2749,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_split_bar_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_split_bar_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int SplitButton(string label, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, SplitButtonOpts opts = default) => SplitButtonUtf8Core(new Utf8Argument(label), new Utf8Arguments(items), count, opts);
     public int SplitButton(string label, ReadOnlySpan<TextBuffer> items, int count, SplitButtonOpts opts = default) => SplitButtonUtf8Core(new Utf8Argument(label), new Utf8Arguments(items), count, opts);
@@ -2087,9 +2772,13 @@ public sealed unsafe partial class Ui
         CheckOptional(count, opts.ItemIcons.Length, nameof(opts.ItemIcons));
         CheckLength(count, items.Length, nameof(count));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_split_button_ex(_ctx, Utf8(label), Strings(items), count, &native_opts);
-        SyncState();
-        return result;
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_split_button_ex(_ctx, __labelPointer, Strings(items), count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public UiScope SpotlightBegin(ReadOnlySpan<byte> id, SpotlightOpts opts = default) => SpotlightBeginUtf8Core(new Utf8Argument(id), opts);
     public UiScope SpotlightBegin(TextBuffer id, SpotlightOpts opts = default) => SpotlightBeginUtf8Core(new Utf8Argument(id), opts);
@@ -2099,9 +2788,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckBegin();
         var native_opts = ToNative(opts);
-        Raw.cui_spotlight_begin(_ctx, Utf8(id), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Spotlight, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_spotlight_begin(_ctx, __idPointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Spotlight, true, 0);
+        }
     }
     public StackTraceResult StackTrace(ReadOnlySpan<byte> id, ReadOnlySpan<StackFrame> frames, int count, StackTraceOpts opts = default) => StackTraceUtf8Core(new Utf8Argument(id), frames, count, opts);
     public StackTraceResult StackTrace(TextBuffer id, ReadOnlySpan<StackFrame> frames, int count, StackTraceOpts opts = default) => StackTraceUtf8Core(new Utf8Argument(id), frames, count, opts);
@@ -2112,9 +2805,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, frames.Length, nameof(count));
         var native_frames = CopyStackFrame(frames);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_stack_trace_ex(_ctx, Utf8(id), native_frames, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_stack_trace_ex(_ctx, __idPointer, native_frames, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool StatusButton(ReadOnlySpan<byte> label, Status status, StatusButtonOpts opts = default) => StatusButtonUtf8Core(new Utf8Argument(label), status, opts);
     public bool StatusButton(TextBuffer label, Status status, StatusButtonOpts opts = default) => StatusButtonUtf8Core(new Utf8Argument(label), status, opts);
@@ -2123,9 +2820,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         label.ThrowIfNull(nameof(label));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_status_button_ex(_ctx, Utf8(label), (cui_status)CheckEnum(status), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_status_button_ex(_ctx, __labelPointer, (cui_status)CheckEnum(status), &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void Stepper(ReadOnlySpan<ReadOnlyMemory<byte>> steps, int count, int current) => StepperUtf8Core(new Utf8Arguments(steps), count, current);
     public void Stepper(ReadOnlySpan<TextBuffer> steps, int count, int current) => StepperUtf8Core(new Utf8Arguments(steps), count, current);
@@ -2133,7 +2834,7 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         CheckLength(count, steps.Length, nameof(count));
-        Raw.cui_stepper(_ctx, Strings(steps), count, current);
+        cui_stepper(_ctx, Strings(steps), count, current);
         SyncState();
     }
     public UiScope SwipeItemBegin(ReadOnlySpan<byte> id, ReadOnlySpan<SwipeAction> left, int left_count, ReadOnlySpan<SwipeAction> right, int right_count) => SwipeItemBeginUtf8Core(new Utf8Argument(id), left, left_count, right, right_count);
@@ -2147,9 +2848,13 @@ public sealed unsafe partial class Ui
         CheckLength(left_count, left.Length, nameof(left_count));
         var native_left = CopySwipeAction(left);
         var native_right = CopySwipeAction(right);
-        Raw.cui_swipe_item_begin(_ctx, Utf8(id), native_left, left_count, native_right, right_count);
-        SyncState();
-        return TrackScope(ScopeKind.SwipeItem, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_swipe_item_begin(_ctx, __idPointer, native_left, left_count, native_right, right_count);
+            SyncState();
+            return TrackScope(ScopeKind.SwipeItem, true, 0);
+        }
     }
     public bool Switch(ReadOnlySpan<byte> label, ref bool value, CheckOpts opts = default) => SwitchUtf8Core(new Utf8Argument(label), ref value, opts);
     public bool Switch(TextBuffer label, ref bool value, CheckOpts opts = default) => SwitchUtf8Core(new Utf8Argument(label), ref value, opts);
@@ -2159,10 +2864,14 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         CBool native_value = value;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_switch_ex(_ctx, Utf8(label), &native_value, &native_opts);
-        value = (native_value != 0);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_switch_ex(_ctx, __labelPointer, &native_value, &native_opts);
+            value = (native_value != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool TabBar(ReadOnlySpan<byte> id, ReadOnlySpan<TabBarItem> items, int count, ref int selected, TabBarOpts opts = default) => TabBarUtf8Core(new Utf8Argument(id), items, count, ref selected, opts);
     public bool TabBar(TextBuffer id, ReadOnlySpan<TabBarItem> items, int count, ref int selected, TabBarOpts opts = default) => TabBarUtf8Core(new Utf8Argument(id), items, count, ref selected, opts);
@@ -2174,10 +2883,14 @@ public sealed unsafe partial class Ui
         var native_items = CopyTabBarItem(items);
         var native_selected = selected;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tab_bar_ex(_ctx, Utf8(id), native_items, count, &native_selected, &native_opts);
-        selected = native_selected;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_tab_bar_ex(_ctx, __idPointer, native_items, count, &native_selected, &native_opts);
+            selected = native_selected;
+            SyncState();
+            return (result != 0);
+        }
     }
     public UiScope TableBegin(ReadOnlySpan<byte> id, ReadOnlySpan<TableColumn> columns, int column_count, TableOpts opts = default) => TableBeginUtf8Core(new Utf8Argument(id), columns, column_count, opts);
     public UiScope TableBegin(TextBuffer id, ReadOnlySpan<TableColumn> columns, int column_count, TableOpts opts = default) => TableBeginUtf8Core(new Utf8Argument(id), columns, column_count, opts);
@@ -2189,9 +2902,13 @@ public sealed unsafe partial class Ui
         CheckLength(column_count, columns.Length, nameof(column_count));
         var native_columns = CopyTableColumn(columns);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_table_begin_ex(_ctx, Utf8(id), native_columns, column_count, &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.Table, true, result != 0 ? 1 : 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_table_begin_ex(_ctx, __idPointer, native_columns, column_count, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.Table, true, result != 0 ? 1 : 0);
+        }
     }
     public void TableCellText(ReadOnlySpan<byte> text) => TableCellTextUtf8Core(new Utf8Argument(text));
     public void TableCellText(TextBuffer text) => TableCellTextUtf8Core(new Utf8Argument(text));
@@ -2200,9 +2917,14 @@ public sealed unsafe partial class Ui
         CheckFrame();
         if (_ctx->building.table == null || _ctx->building.table->in_row == 0)
             throw new InvalidOperationException("Build a table row before its text cells.");
+
         text.ThrowIfNull(nameof(text));
-        Raw.cui_table_cell_text(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_table_cell_text(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public bool Tabs(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, ref int index, TabsOpts opts = default) => TabsUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
     public bool Tabs(string id, ReadOnlySpan<TextBuffer> items, int count, ref int index, TabsOpts opts = default) => TabsUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
@@ -2220,10 +2942,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tabs_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
-        index = native_index;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_tabs_ex(_ctx, __idPointer, Strings(items), count, &native_index, &native_opts);
+            index = native_index;
+            SyncState();
+            return (result != 0);
+        }
     }
     public bool TagInput(ReadOnlySpan<byte> id, TextBuffer buf, TagOpts opts = default) => TagInputUtf8Core(new Utf8Argument(id), buf, opts);
     public bool TagInput(TextBuffer id, TextBuffer buf, TagOpts opts = default) => TagInputUtf8Core(new Utf8Argument(id), buf, opts);
@@ -2233,9 +2959,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tag_input_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_tag_input_ex(_ctx, __idPointer, Use(buf), (ulong)buf.Capacity, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public TestExplorerResult TestExplorer(ReadOnlySpan<byte> id, ReadOnlySpan<TestItem> items, int count, TestExplorerOpts opts = default) => TestExplorerUtf8Core(new Utf8Argument(id), items, count, opts);
     public TestExplorerResult TestExplorer(TextBuffer id, ReadOnlySpan<TestItem> items, int count, TestExplorerOpts opts = default) => TestExplorerUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -2246,9 +2976,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyTestItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_test_explorer_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_test_explorer_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public void Text(ReadOnlySpan<byte> text, TextOpts opts = default) => TextUtf8Core(new Utf8Argument(text), opts);
     public void Text(TextBuffer text, TextOpts opts = default) => TextUtf8Core(new Utf8Argument(text), opts);
@@ -2257,8 +2991,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_text_ex(_ctx, Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_text_ex(_ctx, __textPointer, &native_opts);
+            SyncState();
+        }
     }
     public void TextReveal(string id, ReadOnlySpan<byte> text, TextFxOpts opts = default) => TextRevealUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
     public void TextReveal(string id, TextBuffer text, TextFxOpts opts = default) => TextRevealUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
@@ -2274,8 +3012,16 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        Raw.cui_text_reveal_ex(_ctx, Utf8(id), Utf8(text), &native_opts);
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                cui_text_reveal_ex(_ctx, __idPointer, __textPointer, &native_opts);
+                SyncState();
+            }
+        }
     }
     public int Textarea(ReadOnlySpan<byte> id, TextBuffer buf, InputOpts opts = default) => TextareaUtf8Core(new Utf8Argument(id), buf, opts);
     public int Textarea(TextBuffer id, TextBuffer buf, InputOpts opts = default) => TextareaUtf8Core(new Utf8Argument(id), buf, opts);
@@ -2285,9 +3031,13 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         ArgumentNullException.ThrowIfNull(buf);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_textarea_ex(_ctx, Utf8(id), Use(buf), (ulong)buf.Capacity, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_textarea_ex(_ctx, __idPointer, Use(buf), (ulong)buf.Capacity, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public void Ticker(ReadOnlySpan<byte> id, ReadOnlySpan<TickerItem> items, int count, TickerOpts opts = default) => TickerUtf8Core(new Utf8Argument(id), items, count, opts);
     public void Ticker(TextBuffer id, ReadOnlySpan<TickerItem> items, int count, TickerOpts opts = default) => TickerUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -2298,8 +3048,12 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyTickerItem(items);
         var native_opts = ToNative(opts);
-        Raw.cui_ticker_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_ticker_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+        }
     }
     public bool TimeDial(ReadOnlySpan<byte> id, ref int hour, ref int minute, float size) => TimeDialUtf8Core(new Utf8Argument(id), ref hour, ref minute, size);
     public bool TimeDial(TextBuffer id, ref int hour, ref int minute, float size) => TimeDialUtf8Core(new Utf8Argument(id), ref hour, ref minute, size);
@@ -2309,11 +3063,15 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         var native_hour = hour;
         var native_minute = minute;
-        var result = Raw.cui_time_dial(_ctx, Utf8(id), &native_hour, &native_minute, size);
-        hour = native_hour;
-        minute = native_minute;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_time_dial(_ctx, __idPointer, &native_hour, &native_minute, size);
+            hour = native_hour;
+            minute = native_minute;
+            SyncState();
+            return (result != 0);
+        }
     }
     public TimeHistogramResult TimeHistogram(ReadOnlySpan<byte> id, double start, double bucket_seconds, int buckets, ReadOnlySpan<HistogramSeries> series, int series_count, ref double sel_start, ref double sel_end, TimeHistogramOpts opts = default) => TimeHistogramUtf8Core(new Utf8Argument(id), start, bucket_seconds, buckets, series, series_count, ref sel_start, ref sel_end, opts);
     public TimeHistogramResult TimeHistogram(TextBuffer id, double start, double bucket_seconds, int buckets, ReadOnlySpan<HistogramSeries> series, int series_count, ref double sel_start, ref double sel_end, TimeHistogramOpts opts = default) => TimeHistogramUtf8Core(new Utf8Argument(id), start, bucket_seconds, buckets, series, series_count, ref sel_start, ref sel_end, opts);
@@ -2327,11 +3085,15 @@ public sealed unsafe partial class Ui
         var native_sel_start = sel_start;
         var native_sel_end = sel_end;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_time_histogram_ex(_ctx, Utf8(id), start, bucket_seconds, buckets, native_series, series_count, &native_sel_start, &native_sel_end, &native_opts);
-        sel_start = native_sel_start;
-        sel_end = native_sel_end;
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_time_histogram_ex(_ctx, __idPointer, start, bucket_seconds, buckets, native_series, series_count, &native_sel_start, &native_sel_end, &native_opts);
+            sel_start = native_sel_start;
+            sel_end = native_sel_end;
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool TimePicker(ReadOnlySpan<byte> id, ref int hour, ref int minute, TimeOpts opts = default) => TimePickerUtf8Core(new Utf8Argument(id), ref hour, ref minute, opts);
     public bool TimePicker(TextBuffer id, ref int hour, ref int minute, TimeOpts opts = default) => TimePickerUtf8Core(new Utf8Argument(id), ref hour, ref minute, opts);
@@ -2342,11 +3104,15 @@ public sealed unsafe partial class Ui
         var native_hour = hour;
         var native_minute = minute;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_time_picker_ex(_ctx, Utf8(id), &native_hour, &native_minute, &native_opts);
-        hour = native_hour;
-        minute = native_minute;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_time_picker_ex(_ctx, __idPointer, &native_hour, &native_minute, &native_opts);
+            hour = native_hour;
+            minute = native_minute;
+            SyncState();
+            return (result != 0);
+        }
     }
     public void TimelineItem(ReadOnlySpan<byte> title, TimelineOpts opts = default) => TimelineItemUtf8Core(new Utf8Argument(title), opts);
     public void TimelineItem(TextBuffer title, TimelineOpts opts = default) => TimelineItemUtf8Core(new Utf8Argument(title), opts);
@@ -2355,8 +3121,12 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        Raw.cui_timeline_item_ex(_ctx, Utf8(title), &native_opts);
-        SyncState();
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            cui_timeline_item_ex(_ctx, __titlePointer, &native_opts);
+            SyncState();
+        }
     }
     public int Toast(ReadOnlySpan<byte> title, ToastOpts opts = default) => ToastUtf8Core(new Utf8Argument(title), opts);
     public int Toast(TextBuffer title, ToastOpts opts = default) => ToastUtf8Core(new Utf8Argument(title), opts);
@@ -2365,9 +3135,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         title.ThrowIfNull(nameof(title));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_toast_ex(_ctx, Utf8(title), &native_opts);
-        SyncState();
-        return result;
+        using var __titleUtf8 = new ScopedUtf8(title, stackalloc byte[256]);
+        fixed (byte* __titlePointer = __titleUtf8.Bytes)
+        {
+            var result = cui_toast_ex(_ctx, __titlePointer, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public int Toc(ReadOnlySpan<byte> scroll_id, ReadOnlySpan<TocItem> items, int count) => TocUtf8Core(new Utf8Argument(scroll_id), items, count);
     public int Toc(TextBuffer scroll_id, ReadOnlySpan<TocItem> items, int count) => TocUtf8Core(new Utf8Argument(scroll_id), items, count);
@@ -2377,9 +3151,13 @@ public sealed unsafe partial class Ui
         scroll_id.ThrowIfNull(nameof(scroll_id));
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyTocItem(items);
-        var result = Raw.cui_toc(_ctx, Utf8(scroll_id), native_items, count);
-        SyncState();
-        return result;
+        using var __scroll_idUtf8 = new ScopedUtf8(scroll_id, stackalloc byte[256]);
+        fixed (byte* __scroll_idPointer = __scroll_idUtf8.Bytes)
+        {
+            var result = cui_toc(_ctx, __scroll_idPointer, native_items, count);
+            SyncState();
+            return result;
+        }
     }
     public void TocAnchor(ReadOnlySpan<byte> anchor) => TocAnchorUtf8Core(new Utf8Argument(anchor));
     public void TocAnchor(TextBuffer anchor) => TocAnchorUtf8Core(new Utf8Argument(anchor));
@@ -2387,8 +3165,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         anchor.ThrowIfNull(nameof(anchor));
-        Raw.cui_toc_anchor(_ctx, Utf8(anchor));
-        SyncState();
+        using var __anchorUtf8 = new ScopedUtf8(anchor, stackalloc byte[256]);
+        fixed (byte* __anchorPointer = __anchorUtf8.Bytes)
+        {
+            cui_toc_anchor(_ctx, __anchorPointer);
+            SyncState();
+        }
     }
     public bool ToggleGroup(string id, ReadOnlySpan<ReadOnlyMemory<byte>> labels, int count, Span<bool> values, ToggleGroupOpts opts = default) => ToggleGroupUtf8Core(new Utf8Argument(id), new Utf8Arguments(labels), count, values, opts);
     public bool ToggleGroup(string id, ReadOnlySpan<TextBuffer> labels, int count, Span<bool> values, ToggleGroupOpts opts = default) => ToggleGroupUtf8Core(new Utf8Argument(id), new Utf8Arguments(labels), count, values, opts);
@@ -2407,10 +3189,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, labels.Length, nameof(count));
         var native_values = CopyBool(values);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_toggle_group_ex(_ctx, Utf8(id), Strings(labels), count, native_values, &native_opts);
-        for (var i = 0; i < values.Length; i++) values[i] = (native_values[i] != 0);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_toggle_group_ex(_ctx, __idPointer, Strings(labels), count, native_values, &native_opts);
+            for (var i = 0; i < values.Length; i++) values[i] = (native_values[i] != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public void ToolCall(string id, ReadOnlySpan<byte> name, ToolCallOpts opts = default) => ToolCallUtf8Core(new Utf8Argument(id), new Utf8Argument(name), opts);
     public void ToolCall(string id, TextBuffer name, ToolCallOpts opts = default) => ToolCallUtf8Core(new Utf8Argument(id), new Utf8Argument(name), opts);
@@ -2426,8 +3212,16 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         name.ThrowIfNull(nameof(name));
         var native_opts = ToNative(opts);
-        Raw.cui_tool_call_ex(_ctx, Utf8(id), Utf8(name), &native_opts);
-        SyncState();
+        using var __nameUtf8 = new ScopedUtf8(name, stackalloc byte[256]);
+        fixed (byte* __namePointer = __nameUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                cui_tool_call_ex(_ctx, __idPointer, __namePointer, &native_opts);
+                SyncState();
+            }
+        }
     }
     public void Tooltip(ReadOnlySpan<byte> text) => TooltipUtf8Core(new Utf8Argument(text));
     public void Tooltip(TextBuffer text) => TooltipUtf8Core(new Utf8Argument(text));
@@ -2435,8 +3229,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         text.ThrowIfNull(nameof(text));
-        Raw.cui_tooltip(_ctx, Utf8(text));
-        SyncState();
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            cui_tooltip(_ctx, __textPointer);
+            SyncState();
+        }
     }
     public int Tour(ReadOnlySpan<byte> id, ReadOnlySpan<TourStep> steps, int count, ref int step, TourOpts opts = default) => TourUtf8Core(new Utf8Argument(id), steps, count, ref step, opts);
     public int Tour(TextBuffer id, ReadOnlySpan<TourStep> steps, int count, ref int step, TourOpts opts = default) => TourUtf8Core(new Utf8Argument(id), steps, count, ref step, opts);
@@ -2448,10 +3246,14 @@ public sealed unsafe partial class Ui
         var native_steps = CopyTourStep(steps);
         var native_step = step;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tour_ex(_ctx, Utf8(id), native_steps, count, &native_step, &native_opts);
-        step = native_step;
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_tour_ex(_ctx, __idPointer, native_steps, count, &native_step, &native_opts);
+            step = native_step;
+            SyncState();
+            return result;
+        }
     }
     public TraceResult TraceView(ReadOnlySpan<byte> id, Span<TraceTrack> tracks, int track_count, ReadOnlySpan<TraceSpan> spans, int span_count, ref TraceView view, ref int selected, TraceOpts opts = default) => TraceViewUtf8Core(new Utf8Argument(id), tracks, track_count, spans, span_count, ref view, ref selected, opts);
     public TraceResult TraceView(TextBuffer id, Span<TraceTrack> tracks, int track_count, ReadOnlySpan<TraceSpan> spans, int span_count, ref TraceView view, ref int selected, TraceOpts opts = default) => TraceViewUtf8Core(new Utf8Argument(id), tracks, track_count, spans, span_count, ref view, ref selected, opts);
@@ -2467,12 +3269,16 @@ public sealed unsafe partial class Ui
         var native_view = ToNative(view);
         var native_selected = selected;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_trace_view_ex(_ctx, Utf8(id), native_tracks, track_count, native_spans, span_count, &native_view, &native_selected, &native_opts);
-        for (var i = 0; i < tracks.Length; i++) tracks[i] = FromNative(native_tracks[i], tracks[i]);
-        view = FromNative(native_view, view);
-        selected = native_selected;
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_trace_view_ex(_ctx, __idPointer, native_tracks, track_count, native_spans, span_count, &native_view, &native_selected, &native_opts);
+            for (var i = 0; i < tracks.Length; i++) tracks[i] = FromNative(native_tracks[i], tracks[i]);
+            view = FromNative(native_view, view);
+            selected = native_selected;
+            SyncState();
+            return FromNative(result);
+        }
     }
     public UiScope TreeBegin(ReadOnlySpan<byte> label, ref bool open, TreeOpts opts = default) => TreeBeginUtf8Core(new Utf8Argument(label), ref open, opts);
     public UiScope TreeBegin(TextBuffer label, ref bool open, TreeOpts opts = default) => TreeBeginUtf8Core(new Utf8Argument(label), ref open, opts);
@@ -2483,10 +3289,14 @@ public sealed unsafe partial class Ui
         CheckBegin();
         CBool native_open = open;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_tree_begin(_ctx, Utf8(label), &native_open, &native_opts);
-        open = (native_open != 0);
-        SyncState();
-        return TrackScope(ScopeKind.Tree, result != 0, result != 0 ? 1 : 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var result = cui_tree_begin(_ctx, __labelPointer, &native_open, &native_opts);
+            open = (native_open != 0);
+            SyncState();
+            return TrackScope(ScopeKind.Tree, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public bool TreeCell(string label, int depth, bool has_children, ref bool open, ReadOnlySpan<byte> icon) => TreeCellUtf8Core(new Utf8Argument(label), depth, has_children, ref open, new Utf8Argument(icon));
     public bool TreeCell(string label, int depth, bool has_children, ref bool open, TextBuffer icon) => TreeCellUtf8Core(new Utf8Argument(label), depth, has_children, ref open, new Utf8Argument(icon));
@@ -2502,10 +3312,16 @@ public sealed unsafe partial class Ui
         label.ThrowIfNull(nameof(label));
         icon.ThrowIfNull(nameof(icon));
         CBool native_open = open;
-        var result = Raw.cui_tree_cell(_ctx, Utf8(label), depth, has_children, &native_open, Utf8(icon));
-        open = (native_open != 0);
-        SyncState();
-        return (result != 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        using var __iconUtf8 = new ScopedUtf8(icon, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        fixed (byte* __iconPointer = __iconUtf8.Bytes)
+        {
+            var result = cui_tree_cell(_ctx, __labelPointer, depth, has_children, &native_open, __iconPointer);
+            open = (native_open != 0);
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Treemap(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> items, int count, TreemapOpts opts = default) => TreemapUtf8Core(new Utf8Argument(id), items, count, opts);
     public int Treemap(TextBuffer id, ReadOnlySpan<VizItem> items, int count, TreemapOpts opts = default) => TreemapUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -2516,9 +3332,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_treemap_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_treemap_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public bool Typewriter(string id, ReadOnlySpan<byte> text, TextFxOpts opts = default) => TypewriterUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
     public bool Typewriter(string id, TextBuffer text, TextFxOpts opts = default) => TypewriterUtf8Core(new Utf8Argument(id), new Utf8Argument(text), opts);
@@ -2534,9 +3354,17 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         text.ThrowIfNull(nameof(text));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_typewriter_ex(_ctx, Utf8(id), Utf8(text), &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __textUtf8 = new ScopedUtf8(text, stackalloc byte[256]);
+        fixed (byte* __textPointer = __textUtf8.Bytes)
+        {
+            using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+            fixed (byte* __idPointer = __idUtf8.Bytes)
+            {
+                var result = cui_typewriter_ex(_ctx, __idPointer, __textPointer, &native_opts);
+                SyncState();
+                return (result != 0);
+            }
+        }
     }
     public void TypingIndicator(ReadOnlySpan<byte> name) => TypingIndicatorUtf8Core(new Utf8Argument(name));
     public void TypingIndicator(TextBuffer name) => TypingIndicatorUtf8Core(new Utf8Argument(name));
@@ -2544,8 +3372,12 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         name.ThrowIfNull(nameof(name));
-        Raw.cui_typing_indicator(_ctx, Utf8(name));
-        SyncState();
+        using var __nameUtf8 = new ScopedUtf8(name, stackalloc byte[256]);
+        fixed (byte* __namePointer = __nameUtf8.Bytes)
+        {
+            cui_typing_indicator(_ctx, __namePointer);
+            SyncState();
+        }
     }
     public UptimeResult Uptime(ReadOnlySpan<byte> id, ReadOnlySpan<UptimeService> services, int count, UptimeOpts opts = default) => UptimeUtf8Core(new Utf8Argument(id), services, count, opts);
     public UptimeResult Uptime(TextBuffer id, ReadOnlySpan<UptimeService> services, int count, UptimeOpts opts = default) => UptimeUtf8Core(new Utf8Argument(id), services, count, opts);
@@ -2556,9 +3388,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, services.Length, nameof(count));
         var native_services = CopyUptimeService(services);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_uptime_ex(_ctx, Utf8(id), native_services, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_uptime_ex(_ctx, __idPointer, native_services, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public UiScope UserMenuBegin(ReadOnlySpan<byte> name, UserMenuOpts opts = default) => UserMenuBeginUtf8Core(new Utf8Argument(name), opts);
     public UiScope UserMenuBegin(TextBuffer name, UserMenuOpts opts = default) => UserMenuBeginUtf8Core(new Utf8Argument(name), opts);
@@ -2568,9 +3404,13 @@ public sealed unsafe partial class Ui
         name.ThrowIfNull(nameof(name));
         CheckBegin();
         var native_opts = ToNative(opts);
-        var result = Raw.cui_user_menu_begin(_ctx, Utf8(name), &native_opts);
-        SyncState();
-        return TrackScope(ScopeKind.UserMenu, result != 0, result != 0 ? 1 : 0);
+        using var __nameUtf8 = new ScopedUtf8(name, stackalloc byte[256]);
+        fixed (byte* __namePointer = __nameUtf8.Bytes)
+        {
+            var result = cui_user_menu_begin(_ctx, __namePointer, &native_opts);
+            SyncState();
+            return TrackScope(ScopeKind.UserMenu, result != 0, result != 0 ? 1 : 0);
+        }
     }
     public UiScope VirtualListBegin(ReadOnlySpan<byte> id, int count, float row_height, Size height, ref int first, ref int last) => VirtualListBeginUtf8Core(new Utf8Argument(id), count, row_height, height, ref first, ref last);
     public UiScope VirtualListBegin(TextBuffer id, int count, float row_height, Size height, ref int first, ref int last) => VirtualListBeginUtf8Core(new Utf8Argument(id), count, row_height, height, ref first, ref last);
@@ -2581,11 +3421,15 @@ public sealed unsafe partial class Ui
         CheckBegin();
         var native_first = first;
         var native_last = last;
-        Raw.cui_virtual_list_begin(_ctx, Utf8(id), count, row_height, ToNative(height), &native_first, &native_last);
-        first = native_first;
-        last = native_last;
-        SyncState();
-        return TrackScope(ScopeKind.VirtualList, true, 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_virtual_list_begin(_ctx, __idPointer, count, row_height, ToNative(height), &native_first, &native_last);
+            first = native_first;
+            last = native_last;
+            SyncState();
+            return TrackScope(ScopeKind.VirtualList, true, 0);
+        }
     }
     public bool VoiceOrb(ReadOnlySpan<byte> id, VoiceState state, float level, VoiceOrbOpts opts = default) => VoiceOrbUtf8Core(new Utf8Argument(id), state, level, opts);
     public bool VoiceOrb(TextBuffer id, VoiceState state, float level, VoiceOrbOpts opts = default) => VoiceOrbUtf8Core(new Utf8Argument(id), state, level, opts);
@@ -2594,9 +3438,13 @@ public sealed unsafe partial class Ui
         CheckFrame();
         id.ThrowIfNull(nameof(id));
         var native_opts = ToNative(opts);
-        var result = Raw.cui_voice_orb_ex(_ctx, Utf8(id), (cui_voice_state)CheckEnum(state), level, &native_opts);
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_voice_orb_ex(_ctx, __idPointer, (cui_voice_state)CheckEnum(state), level, &native_opts);
+            SyncState();
+            return (result != 0);
+        }
     }
     public int Waffle(ReadOnlySpan<byte> id, ReadOnlySpan<VizItem> items, int count, WaffleOpts opts = default) => WaffleUtf8Core(new Utf8Argument(id), items, count, opts);
     public int Waffle(TextBuffer id, ReadOnlySpan<VizItem> items, int count, WaffleOpts opts = default) => WaffleUtf8Core(new Utf8Argument(id), items, count, opts);
@@ -2607,9 +3455,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_items = CopyVizItem(items);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_waffle_ex(_ctx, Utf8(id), native_items, count, &native_opts);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_waffle_ex(_ctx, __idPointer, native_items, count, &native_opts);
+            SyncState();
+            return result;
+        }
     }
     public WaterfallResult Waterfall(ReadOnlySpan<byte> id, ReadOnlySpan<NetRequest> requests, int count, WaterfallOpts opts = default) => WaterfallUtf8Core(new Utf8Argument(id), requests, count, opts);
     public WaterfallResult Waterfall(TextBuffer id, ReadOnlySpan<NetRequest> requests, int count, WaterfallOpts opts = default) => WaterfallUtf8Core(new Utf8Argument(id), requests, count, opts);
@@ -2620,9 +3472,13 @@ public sealed unsafe partial class Ui
         CheckLength(count, requests.Length, nameof(count));
         var native_requests = CopyNetRequest(requests);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_waterfall_ex(_ctx, Utf8(id), native_requests, count, &native_opts);
-        SyncState();
-        return FromNative(result, default);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_waterfall_ex(_ctx, __idPointer, native_requests, count, &native_opts);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public bool Waveform(ReadOnlySpan<byte> id, ReadOnlySpan<float> peaks, int count, ref float progress, WaveformOpts opts = default) => WaveformUtf8Core(new Utf8Argument(id), peaks, count, ref progress, opts);
     public bool Waveform(TextBuffer id, ReadOnlySpan<float> peaks, int count, ref float progress, WaveformOpts opts = default) => WaveformUtf8Core(new Utf8Argument(id), peaks, count, ref progress, opts);
@@ -2634,10 +3490,14 @@ public sealed unsafe partial class Ui
         var native_peaks = CopyFloat(peaks);
         var native_progress = progress;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_waveform_ex(_ctx, Utf8(id), native_peaks, count, &native_progress, &native_opts);
-        progress = native_progress;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_waveform_ex(_ctx, __idPointer, native_peaks, count, &native_progress, &native_opts);
+            progress = native_progress;
+            SyncState();
+            return (result != 0);
+        }
     }
     public int WeekCalendar(ReadOnlySpan<byte> id, Date week_start, Span<CalEvent> events, int count, WeekOpts opts = default) => WeekCalendarUtf8Core(new Utf8Argument(id), week_start, events, count, opts);
     public int WeekCalendar(TextBuffer id, Date week_start, Span<CalEvent> events, int count, WeekOpts opts = default) => WeekCalendarUtf8Core(new Utf8Argument(id), week_start, events, count, opts);
@@ -2648,10 +3508,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, events.Length, nameof(count));
         var native_events = CopyCalEvent(events);
         var native_opts = ToNative(opts);
-        var result = Raw.cui_week_calendar_ex(_ctx, Utf8(id), ToNative(week_start), native_events, count, &native_opts);
-        for (var i = 0; i < events.Length; i++) events[i] = FromNative(native_events[i], events[i]);
-        SyncState();
-        return result;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_week_calendar_ex(_ctx, __idPointer, ToNative(week_start), native_events, count, &native_opts);
+            for (var i = 0; i < events.Length; i++) events[i] = FromNative(native_events[i], events[i]);
+            SyncState();
+            return result;
+        }
     }
     public bool WheelPicker(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, int count, ref int index, WheelOpts opts = default) => WheelPickerUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
     public bool WheelPicker(string id, ReadOnlySpan<TextBuffer> items, int count, ref int index, WheelOpts opts = default) => WheelPickerUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), count, ref index, opts);
@@ -2668,10 +3532,14 @@ public sealed unsafe partial class Ui
         CheckLength(count, items.Length, nameof(count));
         var native_index = index;
         var native_opts = ToNative(opts);
-        var result = Raw.cui_wheel_picker_ex(_ctx, Utf8(id), Strings(items), count, &native_index, &native_opts);
-        index = native_index;
-        SyncState();
-        return (result != 0);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_wheel_picker_ex(_ctx, __idPointer, Strings(items), count, &native_index, &native_opts);
+            index = native_index;
+            SyncState();
+            return (result != 0);
+        }
     }
     public void WordRotate(string id, ReadOnlySpan<ReadOnlyMemory<byte>> words, int count, float interval, TextFxOpts opts = default) => WordRotateUtf8Core(new Utf8Argument(id), new Utf8Arguments(words), count, interval, opts);
     public void WordRotate(string id, ReadOnlySpan<TextBuffer> words, int count, float interval, TextFxOpts opts = default) => WordRotateUtf8Core(new Utf8Argument(id), new Utf8Arguments(words), count, interval, opts);
@@ -2687,8 +3555,12 @@ public sealed unsafe partial class Ui
         id.ThrowIfNull(nameof(id));
         CheckLength(count, words.Length, nameof(count));
         var native_opts = ToNative(opts);
-        Raw.cui_word_rotate_ex(_ctx, Utf8(id), Strings(words), count, interval, &native_opts);
-        SyncState();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_word_rotate_ex(_ctx, __idPointer, Strings(words), count, interval, &native_opts);
+            SyncState();
+        }
     }
     public UiScope Accordion(ReadOnlySpan<byte> title, ref bool open) => AccordionUtf8Core(new Utf8Argument(title), ref open);
     public UiScope Accordion(TextBuffer title, ref bool open) => AccordionUtf8Core(new Utf8Argument(title), ref open);
@@ -2698,10 +3570,17 @@ public sealed unsafe partial class Ui
     public UiScope TreeBegin(TextBuffer label, TreeOpts opts = default) => TreeBeginUtf8Core(new Utf8Argument(label), opts);
     private UiScope TreeBeginUtf8Core(Utf8Argument label, TreeOpts opts = default)
     {
-        CheckFrame(); CheckBegin(); label.ThrowIfNull(nameof(label));
+        CheckFrame();
+        CheckBegin();
+        label.ThrowIfNull(nameof(label));
         var native = ToNative(opts);
-        var opened = Raw.cui_tree_begin(_ctx, Utf8(label), null, &native) != 0;
-        SyncState(); return TrackScope(ScopeKind.Tree, opened, opened ? 1 : 0);
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        {
+            var opened = cui_tree_begin(_ctx, __labelPointer, null, &native) != 0;
+            SyncState();
+            return TrackScope(ScopeKind.Tree, opened, opened ? 1 : 0);
+        }
     }
     public UiScope Tree(ReadOnlySpan<byte> label, TreeOpts opts = default) => TreeUtf8Core(new Utf8Argument(label), opts);
     public UiScope Tree(TextBuffer label, TreeOpts opts = default) => TreeUtf8Core(new Utf8Argument(label), opts);
@@ -2717,9 +3596,18 @@ public sealed unsafe partial class Ui
     public bool TreeCell(TextBuffer label, int depth, bool hasChildren, TextBuffer icon) => TreeCellUtf8Core(new Utf8Argument(label), depth, hasChildren, new Utf8Argument(icon));
     private bool TreeCellUtf8Core(Utf8Argument label, int depth, bool hasChildren, Utf8Argument icon)
     {
-        CheckFrame(); label.ThrowIfNull(nameof(label)); icon.ThrowIfNull(nameof(icon));
-        var result = Raw.cui_tree_cell(_ctx, Utf8(label), depth, hasChildren, null, Utf8(icon)) != 0;
-        SyncState(); return result;
+        CheckFrame();
+        label.ThrowIfNull(nameof(label));
+        icon.ThrowIfNull(nameof(icon));
+        using var __labelUtf8 = new ScopedUtf8(label, stackalloc byte[256]);
+        using var __iconUtf8 = new ScopedUtf8(icon, stackalloc byte[256]);
+        fixed (byte* __labelPointer = __labelUtf8.Bytes)
+        fixed (byte* __iconPointer = __iconUtf8.Bytes)
+        {
+            var result = cui_tree_cell(_ctx, __labelPointer, depth, hasChildren, null, __iconPointer) != 0;
+            SyncState();
+            return result;
+        }
     }
     public UiScope Tree(ReadOnlySpan<byte> label, ref bool open, TreeOpts opts = default) => TreeUtf8Core(new Utf8Argument(label), ref open, opts);
     public UiScope Tree(TextBuffer label, ref bool open, TreeOpts opts = default) => TreeUtf8Core(new Utf8Argument(label), ref open, opts);
@@ -2779,8 +3667,14 @@ public sealed unsafe partial class Ui
     {
         CheckFrame();
         var state = index;
-        var changed = Raw.cui_radio_group(_ctx, Utf8Required(id), Strings(items), items.Length, &state) != 0;
-        index = state; SyncState(); return changed;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var changed = cui_radio_group(_ctx, __idPointer, Strings(items), items.Length, &state) != 0;
+            index = state;
+            SyncState();
+            return changed;
+        }
     }
     public bool MultiSelect(string id, ReadOnlySpan<ReadOnlyMemory<byte>> items, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), selected, opts);
     public bool MultiSelect(string id, ReadOnlySpan<TextBuffer> items, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelectUtf8Core(new Utf8Argument(id), new Utf8Arguments(items), selected, opts);
@@ -2944,18 +3838,33 @@ public sealed unsafe partial class Ui
     public int SignaturePoints(TextBuffer id, Span<Vec2> points, Span<int> strokeEnds, out int strokeCount) => SignaturePointsUtf8Core(new Utf8Argument(id), points, strokeEnds, out strokeCount);
     private int SignaturePointsUtf8Core(Utf8Argument id, Span<Vec2> points, Span<int> strokeEnds, out int strokeCount)
     {
-        CheckFrame(); cui_vec2* rawPoints; int* rawEnds; int strokes;
-        var count = Raw.cui_signature_points(_ctx, Utf8Required(id), &rawPoints, &rawEnds, &strokes);
-        strokeCount = strokes;
-        CheckLength(count, points.Length, nameof(points)); CheckLength(strokes, strokeEnds.Length, nameof(strokeEnds));
-        for (var i = 0; i < count; i++) points[i] = FromNative(rawPoints[i]);
-        for (var i = 0; i < strokes; i++) strokeEnds[i] = rawEnds[i];
-        return count;
+        CheckFrame();
+        cui_vec2* rawPoints;
+        int* rawEnds;
+        int strokes;
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var count = cui_signature_points(_ctx, __idPointer, &rawPoints, &rawEnds, &strokes);
+            strokeCount = strokes;
+            CheckLength(count, points.Length, nameof(points));
+            CheckLength(strokes, strokeEnds.Length, nameof(strokeEnds));
+            for (var i = 0; i < count; i++) points[i] = FromNative(rawPoints[i]);
+            for (var i = 0; i < strokes; i++) strokeEnds[i] = rawEnds[i];
+            return count;
+        }
     }
     public void SignatureClear(ReadOnlySpan<byte> id) => SignatureClearUtf8Core(new Utf8Argument(id));
     public void SignatureClear(TextBuffer id) => SignatureClearUtf8Core(new Utf8Argument(id));
     private void SignatureClearUtf8Core(Utf8Argument id)
-    { CheckFrame(); Raw.cui_signature_clear(_ctx, Utf8Required(id)); }
+    {
+        CheckFrame();
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            cui_signature_clear(_ctx, __idPointer);
+        }
+    }
     public UiScope Menu(ReadOnlySpan<byte> label, MenuOpts opts = default) => MenuUtf8Core(new Utf8Argument(label), opts);
     public UiScope Menu(TextBuffer label, MenuOpts opts = default) => MenuUtf8Core(new Utf8Argument(label), opts);
     private UiScope MenuUtf8Core(Utf8Argument label, MenuOpts opts = default)
@@ -2984,54 +3893,93 @@ public sealed unsafe partial class Ui
     public Texture ImageLoad(TextBuffer path, out int width, out int height) => ImageLoadUtf8Core(new Utf8Argument(path), out width, out height);
     private Texture ImageLoadUtf8Core(Utf8Argument path, out int width, out int height)
     {
-        Check(); path.ThrowIfNull(nameof(path)); int w, h;
-        var value = Raw.cui_image_load(_ctx, Utf8(path), &w, &h); width = w; height = h;
-        if (value == 0) throw new InvalidOperationException("CUI image loading failed.");
-        return FindTexture(value)!;
+        Check();
+        path.ThrowIfNull(nameof(path));
+        int w, h;
+        using var __pathUtf8 = new ScopedUtf8(path, stackalloc byte[256]);
+        fixed (byte* __pathPointer = __pathUtf8.Bytes)
+        {
+            var value = cui_image_load(_ctx, __pathPointer, &w, &h);
+            width = w;
+            height = h;
+            if (value == 0) throw new InvalidOperationException("CUI image loading failed.");
+
+            return FindTexture(value)!;
+        }
     }
     public TerminalResult Terminal(ReadOnlySpan<byte> id, TerminalBuffer terminal, TerminalOpts opts = default) => TerminalUtf8Core(new Utf8Argument(id), terminal, opts);
     public TerminalResult Terminal(TextBuffer id, TerminalBuffer terminal, TerminalOpts opts = default) => TerminalUtf8Core(new Utf8Argument(id), terminal, opts);
     private TerminalResult TerminalUtf8Core(Utf8Argument id, TerminalBuffer terminal, TerminalOpts opts = default)
     {
-        CheckFrame(); ArgumentNullException.ThrowIfNull(terminal);
-        terminal.Acquire(this); _terminals.Add(terminal);
+        CheckFrame();
+        ArgumentNullException.ThrowIfNull(terminal);
+        terminal.Acquire(this);
+        _terminals.Add(terminal);
         var native = ToNative(opts);
-        var result = Raw.cui_terminal_ex(_ctx, Utf8(id), terminal.Pointer, &native);
-        SyncState(); return FromNative(result);
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            var result = cui_terminal_ex(_ctx, __idPointer, terminal.Pointer, &native);
+            SyncState();
+            return FromNative(result);
+        }
     }
     public int FsList(ReadOnlySpan<byte> path, Span<FileEntry> entries, bool hidden = false, int nameBytes = 65536) => FsListUtf8Core(new Utf8Argument(path), entries, hidden, nameBytes);
     public int FsList(TextBuffer path, Span<FileEntry> entries, bool hidden = false, int nameBytes = 65536) => FsListUtf8Core(new Utf8Argument(path), entries, hidden, nameBytes);
     private int FsListUtf8Core(Utf8Argument path, Span<FileEntry> entries, bool hidden = false, int nameBytes = 65536)
     {
-        Check(); path.ThrowIfNull(nameof(path));
+        Check();
+        path.ThrowIfNull(nameof(path));
         if (nameBytes < 1) throw new ArgumentOutOfRangeException(nameof(nameBytes));
+
         var output = (cui_file_entry*)_arena.Allocate(checked(entries.Length * sizeof(cui_file_entry)));
         var names = (byte*)_arena.Allocate(nameBytes);
-        var count = Raw.cui_fs_list(null, Utf8(path), output, entries.Length, names, (ulong)nameBytes, hidden);
-        if (count > entries.Length) throw new InvalidOperationException("Invalid CUI filesystem result.");
-        for (var i = 0; i < count; i++) entries[i] = FromNative(output[i], entries[i]);
-        return count;
+        using var __pathUtf8 = new ScopedUtf8(path, stackalloc byte[256]);
+        fixed (byte* __pathPointer = __pathUtf8.Bytes)
+        {
+            var count = cui_fs_list(null, __pathPointer, output, entries.Length, names, (ulong)nameBytes, hidden);
+            if (count > entries.Length) throw new InvalidOperationException("Invalid CUI filesystem result.");
+
+            for (var i = 0; i < count; i++) entries[i] = FromNative(output[i], entries[i]);
+            return count;
+        }
     }
     public int UrlParams(ReadOnlySpan<byte> url, Span<KvPair> pairs) => UrlParamsUtf8Core(new Utf8Argument(url), pairs);
     public int UrlParams(TextBuffer url, Span<KvPair> pairs) => UrlParamsUtf8Core(new Utf8Argument(url), pairs);
     private int UrlParamsUtf8Core(Utf8Argument url, Span<KvPair> pairs)
     {
-        Check(); var native = CopyKvPair(pairs); var result = Raw.cui_url_params(Utf8Required(url), native, pairs.Length);
-        for (var i = 0; i < Math.Min(result, pairs.Length); i++) pairs[i] = FromNative(native[i], pairs[i]); return result;
+        Check();
+        var native = CopyKvPair(pairs);
+        using var __urlUtf8 = new ScopedUtf8(url, stackalloc byte[256]);
+        fixed (byte* __urlPointer = __urlUtf8.Bytes)
+        {
+            var result = cui_url_params(__urlPointer, native, pairs.Length);
+            for (var i = 0; i < Math.Min(result, pairs.Length); i++) pairs[i] = FromNative(native[i], pairs[i]);
+            return result;
+        }
     }
     public CanvasResult Canvas(ReadOnlySpan<byte> id, Size width, Size height, CanvasPainter painter) => CanvasUtf8Core(new Utf8Argument(id), width, height, painter);
     public CanvasResult Canvas(TextBuffer id, Size width, Size height, CanvasPainter painter) => CanvasUtf8Core(new Utf8Argument(id), width, height, painter);
     private CanvasResult CanvasUtf8Core(Utf8Argument id, Size width, Size height, CanvasPainter painter)
     {
-        CheckFrame(); ArgumentNullException.ThrowIfNull(painter);
+        CheckFrame();
+        ArgumentNullException.ThrowIfNull(painter);
         if (painter.Owner != this) throw new ArgumentException("Painter belongs to another context.");
+
         ObjectDisposedException.ThrowIf(painter.Callback == null, painter);
         if (_selfRoot == 0)
         {
-            var root = GCHandle.Alloc(this); _callbackRoots.Add(root); _selfRoot = GCHandle.ToIntPtr(root);
+            var root = GCHandle.Alloc(this);
+            _callbackRoots.Add(root);
+            _selfRoot = GCHandle.ToIntPtr(root);
         }
+
         // CUI copies user bytes into its frame arena, retaining the stable root/key values.
-        CanvasUser user = new CanvasUser { Context = _selfRoot, Key = painter.Key };
-        return FromNative(Raw.cui_canvas(_ctx, Utf8Required(id), ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
+        var user = new CanvasUser { Context = _selfRoot, Key = painter.Key };
+        using var __idUtf8 = new ScopedUtf8(id, stackalloc byte[256]);
+        fixed (byte* __idPointer = __idUtf8.Bytes)
+        {
+            return FromNative(cui_canvas(_ctx, __idPointer, ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
+        }
     }
 }

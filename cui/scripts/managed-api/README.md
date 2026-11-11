@@ -12,8 +12,15 @@ callback sources. It adds span/buffer alternatives for every scalar string and
 string collection input, including mixed argument combinations. Private
 stack-only argument carriers share each copied implementation. Native calls,
 scope/lifecycle checks and state synchronization remain those of the source
-method; the only new marshalling copies already encoded text into stable frame
-storage. The generator does not infer native pointer retention from headers.
+method. Collections and the three explicitly retained scalar paths (node titles,
+dock icons, Markdown chat text) copy into stable frame storage. The generator
+rejects other scalar arena fallbacks, including plain chat text outside its
+Markdown branch. Audited scalar paths preserve the source method's `ScopedUtf8`, 256-byte scratch and `fixed` scope. Their native evidence
+is recorded in `utf8-lifetimes.json` and checked with `--native-root`. The
+generator does not infer native pointer retention from headers.
+All direct ID arguments are audited through their native helper chains. The
+generator rejects `Utf8(id)`/`Utf8Required(id)` (also scroll IDs and TOC anchors)
+to prevent these paths from silently returning to frame-arena marshalling.
 Edit the source method rather than the derived file. Generation/checking covers
 all five outputs. `ManagedCui.Tests --utf8` checks overload completeness,
 pixel equivalence, UTF-8 rejection, input lifetime and warmed allocation behavior.

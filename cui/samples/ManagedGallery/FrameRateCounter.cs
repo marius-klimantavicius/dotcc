@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Buffers.Text;
 using System.Diagnostics;
 
@@ -15,24 +16,25 @@ internal sealed class FrameRateCounter
 
     public ReadOnlySpan<byte> NextFrame()
     {
-        long now = Stopwatch.GetTimestamp();
+        var now = Stopwatch.GetTimestamp();
         if (previous != 0)
         {
-            long elapsed = now - previous;
+            var elapsed = now - previous;
             total += elapsed - intervals[next];
             intervals[next] = elapsed;
             next = (next + 1) % intervals.Length;
             count = Math.Min(count + 1, intervals.Length);
             if (total > 0 && (count == 1 || now - lastRefresh >= Stopwatch.Frequency / 4))
             {
-                double fps = (double)count * Stopwatch.Frequency / total;
-                Utf8Formatter.TryFormat(fps, label, out int written, new('F', 1));
+                var fps = (double)count * Stopwatch.Frequency / total;
+                Utf8Formatter.TryFormat(fps, label, out var written, new StandardFormat('F', 1));
                 " FPS"u8.CopyTo(label.AsSpan(written));
                 length = written + 4;
                 lastRefresh = now;
             }
         }
         else lastRefresh = now;
+
         previous = now;
         return label.AsSpan(0, length);
     }

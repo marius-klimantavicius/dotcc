@@ -27,6 +27,7 @@ internal static unsafe partial class Program
         {
             if (args.Contains("--surface-audit")) SurfaceAudit();
             else if (args.Contains("--utf8")) Utf8Inputs();
+            else if (args.Contains("--code-editor")) CodeEditorInputs();
             else if (args.Contains("--benchmark")) Benchmark();
             else Safety();
             Console.WriteLine($"PASS assertions={assertions} runtime={System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription} arch={System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}");

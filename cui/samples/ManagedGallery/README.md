@@ -1,7 +1,7 @@
 # ManagedGallery
 
-An authored safe C# gallery using `Cui.Managed` for the same 27-page workload as
-the pinned upstream gallery. The project explicitly disables unsafe blocks and
+An authored safe C# gallery using `Cui.Managed`, with the pinned upstream gallery's
+27 pages and additional managed examples. The project explicitly disables unsafe blocks and
 references only the ManagedCui wrapper. The translated original companion is an
 independent oracle, not an implementation dependency of this application.
 
@@ -21,6 +21,19 @@ Use `--list-pages`, `--page INDEX|NAME`, `--gallery-smoke`, `--capture PATH`, or
 `--help`. Captures are raw RGBA. `--gallery-smoke` visits every page; full
 differential, interaction and safety qualification use the test suites rather
 than treating a smoke run as acceptance.
+
+The **Code** page starts with an editable, syntax-highlighted C sample. It uses a
+persistent 64 KiB `TextBuffer`, with line numbers, cursor/size status and **Reset
+code**. Tab/Shift+Tab indent, Ctrl+Z undoes, Ctrl+F finds, and Ctrl+G goes to a
+line. Edits survive page navigation. The original read-only code blocks and JSON
+viewers follow the editor. Open it directly with `--page Code`.
+
+Upstream differential captures use `GalleryDemo.IncludeManagedExamples = false`
+(`CUI_GALLERY_UPSTREAM_LAYOUT=1` in the qualification harness) so all 27 original
+layouts still compare exactly. Interactive runs and the OS-input suite include
+the editable example by default. The focused OS check uses
+`CUI_GALLERY_CODE_EDITOR_ONLY=1`; it exercises editing, indentation, undo, find,
+go-to-line, navigation persistence, reset and context cleanup.
 
 Interactive runs show FPS in the sidebar (or the header at narrow widths).
 The counter averages the last 120 frame intervals and refreshes at most four

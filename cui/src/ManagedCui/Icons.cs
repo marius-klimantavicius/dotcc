@@ -1,5 +1,7 @@
 // Lucide icon glyphs from the pinned upstream CUI icon header.
+
 namespace Cui.Managed;
+
 public static class Icons
 {
     public const string Check = "";

@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace Cui.Managed;
 
 public sealed unsafe partial class Ui

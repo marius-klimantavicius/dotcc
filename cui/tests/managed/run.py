@@ -66,8 +66,11 @@ def main():
                 launch = [binary] if mode == 'aot' else ['dotnet', binary]
                 gallery_runner.execute([*launch, '--surface-audit'], variant / 'surface.log', env)
                 gallery_runner.execute([*launch, '--safety'], variant / 'safety.log', env)
+                gallery_runner.execute([*launch, '--utf8'], variant / 'utf8.log', env)
+                gallery_runner.execute([*launch, '--code-editor'], variant / 'code-editor.log', env)
                 row = dict(form=form, mode=mode, status='running', binarySha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
-                           surfaceLog=str(variant / 'surface.log'), safetyLog=str(variant / 'safety.log'), benchmarks=[])
+                           surfaceLog=str(variant / 'surface.log'), safetyLog=str(variant / 'safety.log'),
+                           utf8Log=str(variant / 'utf8.log'), codeEditorLog=str(variant / 'code-editor.log'), benchmarks=[])
                 report['variants'].append(row)
                 for repetition in range(args.repetitions):
                     log = variant / f'benchmark-{repetition}.log'

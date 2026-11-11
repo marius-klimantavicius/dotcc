@@ -69,6 +69,10 @@ def main():
             raise ValueError(f"{name}.in: singleton arena allocation needs a retention audit")
         outputs[name] = data
     outputs["Ui.Utf8.g.cs"] = generate_utf8(wrapper, outputs)
+    text_lifetimes = json.loads((HERE / "utf8-lifetimes.json").read_text())
+    for item in text_lifetimes["managed_evidence"]:
+        if sha((args.repo_root.resolve() / item["file"]).read_bytes()) != item["sha256"]:
+            raise ValueError(f"UTF-8 host lifetime evidence changed: {item['file']}; re-audit synchronous input consumption")
     if args.native_root is not None:
         native = args.native_root.resolve()
         if sha((native / "include/cui/cui.h").read_bytes()) != manifest["native_header_sha256"]:
@@ -78,6 +82,11 @@ def main():
             if sha(function_source(source, item["symbol"]).encode()) != item["sha256"]:
                 raise ValueError(f"Native definition changed: {item['symbol']}; re-audit retention")
         print(f"Native evidence: {len(manifest['native_evidence'])} definitions and public header match")
+        for item in text_lifetimes["entries"] + text_lifetimes["helpers"]:
+            source = (native / "src" / item["file"]).read_text()
+            if sha(function_source(source, item["symbol"]).encode()) != item["sha256"]:
+                raise ValueError(f"UTF-8 input lifetime evidence changed: {item['symbol']}; re-audit before using temporary storage")
+        print(f"UTF-8 lifetime evidence: {len(text_lifetimes['entries'])} entrypoints and {len(text_lifetimes['helpers'])} supporting definitions match")
     destination = args.output_dir.resolve() if args.output_dir else wrapper
     # Preflight every file before any write. Preserve coordinator/handwritten fixes.
     errors = []

@@ -1,7 +1,8 @@
-using Raw = global::Managed.Forms.Cui;
 using static global::Managed.Forms.Cui;
 using CBool = global::Managed.Forms.Cui.CBool;
+
 namespace Cui.Managed;
+
 public sealed unsafe partial class Ui
 {
     private cui_agent_plan_opts ToNative(AgentPlanOpts v)
@@ -10,12 +11,14 @@ public sealed unsafe partial class Ui
         r.title = Utf8(v.Title);
         return r;
     }
+
     private AgentPlanOpts FromNative(cui_agent_plan_opts r, AgentPlanOpts old = default)
     {
         var v = old;
         v.Title = Decode(r.title, old.Title);
         return v;
     }
+
     private cui_agent_status_opts ToNative(AgentStatusOpts v)
     {
         cui_agent_status_opts r = default;
@@ -24,6 +27,7 @@ public sealed unsafe partial class Ui
         r.icon = Utf8(v.Icon);
         return r;
     }
+
     private AgentStatusOpts FromNative(cui_agent_status_opts r, AgentStatusOpts old = default)
     {
         var v = old;
@@ -32,6 +36,7 @@ public sealed unsafe partial class Ui
         v.Icon = Decode(r.icon, old.Icon);
         return v;
     }
+
     private cui_alert_opts ToNative(AlertOpts v)
     {
         cui_alert_opts r = default;
@@ -41,6 +46,7 @@ public sealed unsafe partial class Ui
         r.dismissible = v.Dismissible;
         return r;
     }
+
     private AlertOpts FromNative(cui_alert_opts r, AlertOpts old = default)
     {
         var v = old;
@@ -50,6 +56,7 @@ public sealed unsafe partial class Ui
         v.Dismissible = (r.dismissible != 0);
         return v;
     }
+
     private cui_api_endpoint ToNative(ApiEndpoint v)
     {
         cui_api_endpoint r = default;
@@ -59,9 +66,10 @@ public sealed unsafe partial class Ui
         r.tag = Utf8(v.Tag);
         r.deprecated = v.Deprecated;
         r.@params = CopyApiParam(v.Params.Span);
-        r.param_count = (int)v.Params.Length;
+        r.param_count = v.Params.Length;
         return r;
     }
+
     private ApiEndpoint FromNative(cui_api_endpoint r, ApiEndpoint old = default)
     {
         var v = old;
@@ -72,6 +80,7 @@ public sealed unsafe partial class Ui
         v.Deprecated = (r.deprecated != 0);
         return v;
     }
+
     private cui_api_explorer_opts ToNative(ApiExplorerOpts v)
     {
         cui_api_explorer_opts r = default;
@@ -80,6 +89,7 @@ public sealed unsafe partial class Ui
         r.selected = BindInt(v.Selected);
         return r;
     }
+
     private ApiExplorerOpts FromNative(cui_api_explorer_opts r, ApiExplorerOpts old = default)
     {
         var v = old;
@@ -87,6 +97,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_api_explorer_result ToNative(ApiExplorerResult v)
     {
         cui_api_explorer_result r = default;
@@ -94,6 +105,7 @@ public sealed unsafe partial class Ui
         r.try_it = v.TryIt;
         return r;
     }
+
     private ApiExplorerResult FromNative(cui_api_explorer_result r, ApiExplorerResult old = default)
     {
         var v = old;
@@ -101,6 +113,7 @@ public sealed unsafe partial class Ui
         v.TryIt = r.try_it;
         return v;
     }
+
     private cui_api_param ToNative(ApiParam v)
     {
         cui_api_param r = default;
@@ -111,6 +124,7 @@ public sealed unsafe partial class Ui
         r.description = Utf8(v.Description);
         return r;
     }
+
     private ApiParam FromNative(cui_api_param r, ApiParam old = default)
     {
         var v = old;
@@ -121,6 +135,7 @@ public sealed unsafe partial class Ui
         v.Description = Decode(r.description, old.Description);
         return v;
     }
+
     private cui_avatar_opts ToNative(AvatarOpts v)
     {
         cui_avatar_opts r = default;
@@ -130,6 +145,7 @@ public sealed unsafe partial class Ui
         r.square = v.Square;
         return r;
     }
+
     private AvatarOpts FromNative(cui_avatar_opts r, AvatarOpts old = default)
     {
         var v = old;
@@ -139,6 +155,7 @@ public sealed unsafe partial class Ui
         v.Square = (r.square != 0);
         return v;
     }
+
     private cui_badge_opts ToNative(BadgeOpts v)
     {
         cui_badge_opts r = default;
@@ -149,6 +166,7 @@ public sealed unsafe partial class Ui
         r.size = (cui_control_size)CheckEnum(v.Size);
         return r;
     }
+
     private BadgeOpts FromNative(cui_badge_opts r, BadgeOpts old = default)
     {
         var v = old;
@@ -159,6 +177,7 @@ public sealed unsafe partial class Ui
         v.Size = (ControlSize)r.size;
         return v;
     }
+
     private cui_banner_opts ToNative(BannerOpts v)
     {
         cui_banner_opts r = default;
@@ -168,6 +187,7 @@ public sealed unsafe partial class Ui
         r.dismissible = v.Dismissible;
         return r;
     }
+
     private BannerOpts FromNative(cui_banner_opts r, BannerOpts old = default)
     {
         var v = old;
@@ -177,6 +197,7 @@ public sealed unsafe partial class Ui
         v.Dismissible = (r.dismissible != 0);
         return v;
     }
+
     private cui_bar_list_opts ToNative(BarListOpts v)
     {
         cui_bar_list_opts r = default;
@@ -187,6 +208,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private BarListOpts FromNative(cui_bar_list_opts r, BarListOpts old = default)
     {
         var v = old;
@@ -197,6 +219,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_blame_commit ToNative(BlameCommit v)
     {
         cui_blame_commit r = default;
@@ -206,6 +229,7 @@ public sealed unsafe partial class Ui
         r.time = v.Time;
         return r;
     }
+
     private BlameCommit FromNative(cui_blame_commit r, BlameCommit old = default)
     {
         var v = old;
@@ -215,6 +239,7 @@ public sealed unsafe partial class Ui
         v.Time = r.time;
         return v;
     }
+
     private cui_blame_opts ToNative(BlameOpts v)
     {
         cui_blame_opts r = default;
@@ -225,6 +250,7 @@ public sealed unsafe partial class Ui
         r.first_line = v.FirstLine;
         return r;
     }
+
     private BlameOpts FromNative(cui_blame_opts r, BlameOpts old = default)
     {
         var v = old;
@@ -235,6 +261,7 @@ public sealed unsafe partial class Ui
         v.FirstLine = r.first_line;
         return v;
     }
+
     private cui_blame_result ToNative(BlameResult v)
     {
         cui_blame_result r = default;
@@ -242,6 +269,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private BlameResult FromNative(cui_blame_result r, BlameResult old = default)
     {
         var v = old;
@@ -249,6 +277,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_box ToNative(Box v)
     {
         cui_box r = default;
@@ -289,6 +318,7 @@ public sealed unsafe partial class Ui
         r.direction = (cui_direction)CheckEnum(v.Direction);
         return r;
     }
+
     private Box FromNative(cui_box r, Box old = default)
     {
         var v = old;
@@ -329,6 +359,7 @@ public sealed unsafe partial class Ui
         v.Direction = (Direction)r.direction;
         return v;
     }
+
     private cui_button_opts ToNative(ButtonOpts v)
     {
         cui_button_opts r = default;
@@ -346,6 +377,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private ButtonOpts FromNative(cui_button_opts r, ButtonOpts old = default)
     {
         var v = old;
@@ -363,6 +395,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_cal_event ToNative(CalEvent v)
     {
         cui_cal_event r = default;
@@ -374,6 +407,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private CalEvent FromNative(cui_cal_event r, CalEvent old = default)
     {
         var v = old;
@@ -385,6 +419,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_calendar_heatmap_opts ToNative(CalendarHeatmapOpts v)
     {
         cui_calendar_heatmap_opts r = default;
@@ -394,6 +429,7 @@ public sealed unsafe partial class Ui
         r.unit = Utf8(v.Unit);
         return r;
     }
+
     private CalendarHeatmapOpts FromNative(cui_calendar_heatmap_opts r, CalendarHeatmapOpts old = default)
     {
         var v = old;
@@ -403,6 +439,7 @@ public sealed unsafe partial class Ui
         v.Unit = Decode(r.unit, old.Unit);
         return v;
     }
+
     private cui_candle ToNative(Candle v)
     {
         cui_candle r = default;
@@ -413,6 +450,7 @@ public sealed unsafe partial class Ui
         r.volume = v.Volume;
         return r;
     }
+
     private Candle FromNative(cui_candle r, Candle old = default)
     {
         var v = old;
@@ -423,6 +461,7 @@ public sealed unsafe partial class Ui
         v.Volume = r.volume;
         return v;
     }
+
     private cui_candlestick_opts ToNative(CandlestickOpts v)
     {
         cui_candlestick_opts r = default;
@@ -431,13 +470,14 @@ public sealed unsafe partial class Ui
         r.labels = Strings(v.Labels.Span);
         r.format = Utf8(CheckFormat(v.Format, 1));
         r.overlays = CopySeries(v.Overlays.Span);
-        r.overlay_count = (int)v.Overlays.Length;
+        r.overlay_count = v.Overlays.Length;
         r.no_volume = v.NoVolume;
         r.ohlc = v.Ohlc;
         r.up = ToNative(v.Up);
         r.down = ToNative(v.Down);
         return r;
     }
+
     private CandlestickOpts FromNative(cui_candlestick_opts r, CandlestickOpts old = default)
     {
         var v = old;
@@ -450,6 +490,7 @@ public sealed unsafe partial class Ui
         v.Down = FromNative(r.down, old.Down);
         return v;
     }
+
     private cui_canvas_result ToNative(CanvasResult v)
     {
         cui_canvas_result r = default;
@@ -460,6 +501,7 @@ public sealed unsafe partial class Ui
         r.mouse = ToNative(v.Mouse);
         return r;
     }
+
     private CanvasResult FromNative(cui_canvas_result r, CanvasResult old = default)
     {
         var v = old;
@@ -470,6 +512,7 @@ public sealed unsafe partial class Ui
         v.Mouse = FromNative(r.mouse, old.Mouse);
         return v;
     }
+
     private cui_card_opts ToNative(CardOpts v)
     {
         cui_card_opts r = default;
@@ -490,6 +533,7 @@ public sealed unsafe partial class Ui
         r.selected = v.Selected;
         return r;
     }
+
     private CardOpts FromNative(cui_card_opts r, CardOpts old = default)
     {
         var v = old;
@@ -510,6 +554,7 @@ public sealed unsafe partial class Ui
         v.Selected = (r.selected != 0);
         return v;
     }
+
     private cui_card_stack_opts ToNative(CardStackOpts v)
     {
         cui_card_stack_opts r = default;
@@ -518,6 +563,7 @@ public sealed unsafe partial class Ui
         r.visible = v.Visible;
         return r;
     }
+
     private CardStackOpts FromNative(cui_card_stack_opts r, CardStackOpts old = default)
     {
         var v = old;
@@ -526,6 +572,7 @@ public sealed unsafe partial class Ui
         v.Visible = r.visible;
         return v;
     }
+
     private cui_carousel_opts ToNative(CarouselOpts v)
     {
         cui_carousel_opts r = default;
@@ -537,6 +584,7 @@ public sealed unsafe partial class Ui
         r.loop = v.Loop;
         return r;
     }
+
     private CarouselOpts FromNative(cui_carousel_opts r, CarouselOpts old = default)
     {
         var v = old;
@@ -548,6 +596,7 @@ public sealed unsafe partial class Ui
         v.Loop = (r.loop != 0);
         return v;
     }
+
     private cui_chart_annotation ToNative(ChartAnnotation v)
     {
         cui_chart_annotation r = default;
@@ -559,6 +608,7 @@ public sealed unsafe partial class Ui
         r.accent = v.Accent;
         return r;
     }
+
     private ChartAnnotation FromNative(cui_chart_annotation r, ChartAnnotation old = default)
     {
         var v = old;
@@ -570,13 +620,14 @@ public sealed unsafe partial class Ui
         v.Accent = (r.accent != 0);
         return v;
     }
+
     private cui_chart_opts ToNative(ChartOpts v)
     {
         cui_chart_opts r = default;
         r.width = ToNative(v.Width);
         r.height = v.Height;
         r.labels = Strings(v.Labels.Span);
-        r.label_count = (int)v.Labels.Length;
+        r.label_count = v.Labels.Length;
         r.area = v.Area;
         r.no_grid = v.NoGrid;
         r.no_legend = v.NoLegend;
@@ -586,9 +637,10 @@ public sealed unsafe partial class Ui
         r.min = v.Min;
         r.max = v.Max;
         r.annotations = CopyChartAnnotation(v.Annotations.Span);
-        r.annotation_count = (int)v.Annotations.Length;
+        r.annotation_count = v.Annotations.Length;
         return r;
     }
+
     private ChartOpts FromNative(cui_chart_opts r, ChartOpts old = default)
     {
         var v = old;
@@ -604,6 +656,7 @@ public sealed unsafe partial class Ui
         v.Max = r.max;
         return v;
     }
+
     private cui_chat_opts ToNative(ChatOpts v)
     {
         cui_chat_opts r = default;
@@ -618,6 +671,7 @@ public sealed unsafe partial class Ui
         r.markdown_result = BindMarkdownResult(v.MarkdownResult);
         return r;
     }
+
     private ChatOpts FromNative(cui_chat_opts r, ChatOpts old = default)
     {
         var v = old;
@@ -631,6 +685,7 @@ public sealed unsafe partial class Ui
         v.Markdown = (r.markdown != 0);
         return v;
     }
+
     private cui_check_opts ToNative(CheckOpts v)
     {
         cui_check_opts r = default;
@@ -639,6 +694,7 @@ public sealed unsafe partial class Ui
         r.indeterminate = v.Indeterminate;
         return r;
     }
+
     private CheckOpts FromNative(cui_check_opts r, CheckOpts old = default)
     {
         var v = old;
@@ -647,6 +703,7 @@ public sealed unsafe partial class Ui
         v.Indeterminate = (r.indeterminate != 0);
         return v;
     }
+
     private cui_check_step ToNative(CheckStep v)
     {
         cui_check_step r = default;
@@ -656,6 +713,7 @@ public sealed unsafe partial class Ui
         r.done = v.Done;
         return r;
     }
+
     private CheckStep FromNative(cui_check_step r, CheckStep old = default)
     {
         var v = old;
@@ -665,6 +723,7 @@ public sealed unsafe partial class Ui
         v.Done = (r.done != 0);
         return v;
     }
+
     private cui_checklist_opts ToNative(ChecklistOpts v)
     {
         cui_checklist_opts r = default;
@@ -672,6 +731,7 @@ public sealed unsafe partial class Ui
         r.description = Utf8(v.Description);
         return r;
     }
+
     private ChecklistOpts FromNative(cui_checklist_opts r, ChecklistOpts old = default)
     {
         var v = old;
@@ -679,6 +739,7 @@ public sealed unsafe partial class Ui
         v.Description = Decode(r.description, old.Description);
         return v;
     }
+
     private cui_chip_opts ToNative(ChipOpts v)
     {
         cui_chip_opts r = default;
@@ -686,6 +747,7 @@ public sealed unsafe partial class Ui
         r.disabled = v.Disabled;
         return r;
     }
+
     private ChipOpts FromNative(cui_chip_opts r, ChipOpts old = default)
     {
         var v = old;
@@ -693,6 +755,7 @@ public sealed unsafe partial class Ui
         v.Disabled = (r.disabled != 0);
         return v;
     }
+
     private cui_choice ToNative(Choice v)
     {
         cui_choice r = default;
@@ -702,6 +765,7 @@ public sealed unsafe partial class Ui
         r.badge = Utf8(v.Badge);
         return r;
     }
+
     private Choice FromNative(cui_choice r, Choice old = default)
     {
         var v = old;
@@ -711,6 +775,37 @@ public sealed unsafe partial class Ui
         v.Badge = Decode(r.badge, old.Badge);
         return v;
     }
+
+    private cui_code_editor_opts ToNative(CodeEditorOpts v)
+    {
+        var marks = v.Marks.Span;
+        var previous = -1;
+        foreach (var mark in marks)
+        {
+            if (mark.Start < 0 || mark.Start < previous || mark.End < mark.Start || (uint)mark.Color > 6)
+                throw new ArgumentException("Code marks must be sorted nonnegative byte ranges with colors from 0 through 6.", nameof(v));
+            previous = mark.Start;
+        }
+        var nativeMarks = marks.IsEmpty ? null : (cui_text_mark*)_arena.Allocate(checked(marks.Length * sizeof(cui_text_mark)));
+        for (var i = 0; i < marks.Length; i++)
+            nativeMarks[i] = new cui_text_mark { start = marks[i].Start, end = marks[i].End, color = marks[i].Color };
+        return new cui_code_editor_opts
+        {
+            lang = Utf8(v.Lang), width = ToNative(v.Width), height = v.Height, size = v.Size,
+            tab_size = v.TabSize, use_tabs = v.UseTabs, read_only = v.ReadOnly,
+            no_line_numbers = v.NoLineNumbers, autofocus = v.Autofocus,
+            placeholder = Utf8(v.Placeholder), marks = nativeMarks, mark_count = marks.Length
+        };
+    }
+
+    private static CodeEditorResult FromNative(cui_code_editor_result r) => new()
+    {
+        Changed = r.changed != 0, Refused = r.refused != 0, Focused = r.focused != 0,
+        Cursor = r.cursor, Anchor = r.anchor, Line = r.line, Column = r.column,
+        LineCount = r.line_count, Length = r.length, Bracket = r.bracket, BracketMatch = r.bracket_match,
+        FindMatches = r.find_matches, FindIndex = r.find_index
+    };
+
     private cui_code_opts ToNative(CodeOpts v)
     {
         cui_code_opts r = default;
@@ -724,6 +819,7 @@ public sealed unsafe partial class Ui
         r.no_header = v.NoHeader;
         return r;
     }
+
     private CodeOpts FromNative(cui_code_opts r, CodeOpts old = default)
     {
         var v = old;
@@ -737,6 +833,7 @@ public sealed unsafe partial class Ui
         v.NoHeader = (r.no_header != 0);
         return v;
     }
+
     private cui_color ToNative(Color v)
     {
         cui_color r = default;
@@ -746,6 +843,7 @@ public sealed unsafe partial class Ui
         r.a = v.A;
         return r;
     }
+
     private Color FromNative(cui_color r, Color old = default)
     {
         var v = old;
@@ -755,6 +853,7 @@ public sealed unsafe partial class Ui
         v.A = r.a;
         return v;
     }
+
     private cui_command ToNative(Command v)
     {
         cui_command r = default;
@@ -764,6 +863,7 @@ public sealed unsafe partial class Ui
         r.shortcut = Utf8(v.Shortcut);
         return r;
     }
+
     private Command FromNative(cui_command r, Command old = default)
     {
         var v = old;
@@ -773,6 +873,7 @@ public sealed unsafe partial class Ui
         v.Shortcut = Decode(r.shortcut, old.Shortcut);
         return v;
     }
+
     private cui_comment_opts ToNative(CommentOpts v)
     {
         cui_comment_opts r = default;
@@ -784,6 +885,7 @@ public sealed unsafe partial class Ui
         r.badge = Utf8(v.Badge);
         return r;
     }
+
     private CommentOpts FromNative(cui_comment_opts r, CommentOpts old = default)
     {
         var v = old;
@@ -793,6 +895,7 @@ public sealed unsafe partial class Ui
         v.Badge = Decode(r.badge, old.Badge);
         return v;
     }
+
     private cui_commit ToNative(Commit v)
     {
         cui_commit r = default;
@@ -802,9 +905,11 @@ public sealed unsafe partial class Ui
         r.date = Utf8(v.Date);
         r.refs = Utf8(v.Refs);
         if (!v.Parent.IsEmpty && v.Parent.Length != 2) throw new ArgumentException("Commit.Parent requires 2 elements.");
+
         for (var i = 0; i < v.Parent.Length; i++) r.parent[i] = v.Parent.Span[i];
         return r;
     }
+
     private Commit FromNative(cui_commit r, Commit old = default)
     {
         var v = old;
@@ -817,6 +922,7 @@ public sealed unsafe partial class Ui
         for (var i = 0; i < 2; i++) v.Parent.Span[i] = r.parent[i];
         return v;
     }
+
     private cui_commit_graph_opts ToNative(CommitGraphOpts v)
     {
         cui_commit_graph_opts r = default;
@@ -825,6 +931,7 @@ public sealed unsafe partial class Ui
         r.selected = BindInt(v.Selected);
         return r;
     }
+
     private CommitGraphOpts FromNative(cui_commit_graph_opts r, CommitGraphOpts old = default)
     {
         var v = old;
@@ -832,6 +939,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_commit_graph_result ToNative(CommitGraphResult v)
     {
         cui_commit_graph_result r = default;
@@ -840,6 +948,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private CommitGraphResult FromNative(cui_commit_graph_result r, CommitGraphResult old = default)
     {
         var v = old;
@@ -848,6 +957,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_compare_opts ToNative(CompareOpts v)
     {
         cui_compare_opts r = default;
@@ -858,6 +968,7 @@ public sealed unsafe partial class Ui
         r.aspect = v.Aspect;
         return r;
     }
+
     private CompareOpts FromNative(cui_compare_opts r, CompareOpts old = default)
     {
         var v = old;
@@ -868,21 +979,23 @@ public sealed unsafe partial class Ui
         v.Aspect = r.aspect;
         return v;
     }
+
     private cui_composer_opts ToNative(ComposerOpts v)
     {
         cui_composer_opts r = default;
         r.placeholder = Utf8(v.Placeholder);
         r.busy = v.Busy;
         r.attachments = Strings(v.Attachments.Span);
-        r.attachment_count = (int)v.Attachments.Length;
+        r.attachment_count = v.Attachments.Length;
         r.removed = BindInt(v.Removed);
         r.models = CopyModel(v.Models.Span);
-        r.model_count = (int)v.Models.Length;
+        r.model_count = v.Models.Length;
         r.model = BindInt(v.Model);
         r.max_lines = v.MaxLines;
         r.width = ToNative(v.Width);
         return r;
     }
+
     private ComposerOpts FromNative(cui_composer_opts r, ComposerOpts old = default)
     {
         var v = old;
@@ -892,6 +1005,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_confirm_opts ToNative(ConfirmOpts v)
     {
         cui_confirm_opts r = default;
@@ -902,6 +1016,7 @@ public sealed unsafe partial class Ui
         r.timeout = v.Timeout;
         return r;
     }
+
     private ConfirmOpts FromNative(cui_confirm_opts r, ConfirmOpts old = default)
     {
         var v = old;
@@ -912,6 +1027,7 @@ public sealed unsafe partial class Ui
         v.Timeout = r.timeout;
         return v;
     }
+
     private cui_confirm_popover_opts ToNative(ConfirmPopoverOpts v)
     {
         cui_confirm_popover_opts r = default;
@@ -923,6 +1039,7 @@ public sealed unsafe partial class Ui
         r.placement = (cui_placement)CheckEnum(v.Placement);
         return r;
     }
+
     private ConfirmPopoverOpts FromNative(cui_confirm_popover_opts r, ConfirmPopoverOpts old = default)
     {
         var v = old;
@@ -934,20 +1051,23 @@ public sealed unsafe partial class Ui
         v.Placement = (Placement)r.placement;
         return v;
     }
+
     private cui_context_opts ToNative(ContextOpts v)
     {
         cui_context_opts r = default;
         r.parts = CopyVizItem(v.Parts.Span);
-        r.part_count = (int)v.Parts.Length;
+        r.part_count = v.Parts.Length;
         r.unit = Utf8(v.Unit);
         return r;
     }
+
     private ContextOpts FromNative(cui_context_opts r, ContextOpts old = default)
     {
         var v = old;
         v.Unit = Decode(r.unit, old.Unit);
         return v;
     }
+
     private cui_corners ToNative(Corners v)
     {
         cui_corners r = default;
@@ -957,6 +1077,7 @@ public sealed unsafe partial class Ui
         r.bl = v.Bl;
         return r;
     }
+
     private Corners FromNative(cui_corners r, Corners old = default)
     {
         var v = old;
@@ -966,6 +1087,7 @@ public sealed unsafe partial class Ui
         v.Bl = r.bl;
         return v;
     }
+
     private cui_countdown_opts ToNative(CountdownOpts v)
     {
         cui_countdown_opts r = default;
@@ -973,6 +1095,7 @@ public sealed unsafe partial class Ui
         r.compact = v.Compact;
         return r;
     }
+
     private CountdownOpts FromNative(cui_countdown_opts r, CountdownOpts old = default)
     {
         var v = old;
@@ -980,6 +1103,7 @@ public sealed unsafe partial class Ui
         v.Compact = (r.compact != 0);
         return v;
     }
+
     private cui_counter_opts ToNative(CounterOpts v)
     {
         cui_counter_opts r = default;
@@ -990,6 +1114,7 @@ public sealed unsafe partial class Ui
         r.group_thousands = v.GroupThousands;
         return r;
     }
+
     private CounterOpts FromNative(cui_counter_opts r, CounterOpts old = default)
     {
         var v = old;
@@ -1000,6 +1125,7 @@ public sealed unsafe partial class Ui
         v.GroupThousands = (r.group_thousands != 0);
         return v;
     }
+
     private cui_coverage_file ToNative(CoverageFile v)
     {
         cui_coverage_file r = default;
@@ -1012,6 +1138,7 @@ public sealed unsafe partial class Ui
         r.functions_hit = v.FunctionsHit;
         return r;
     }
+
     private CoverageFile FromNative(cui_coverage_file r, CoverageFile old = default)
     {
         var v = old;
@@ -1024,6 +1151,7 @@ public sealed unsafe partial class Ui
         v.FunctionsHit = r.functions_hit;
         return v;
     }
+
     private cui_coverage_opts ToNative(CoverageOpts v)
     {
         cui_coverage_opts r = default;
@@ -1033,6 +1161,7 @@ public sealed unsafe partial class Ui
         r.high = v.High;
         return r;
     }
+
     private CoverageOpts FromNative(cui_coverage_opts r, CoverageOpts old = default)
     {
         var v = old;
@@ -1042,6 +1171,7 @@ public sealed unsafe partial class Ui
         v.High = r.high;
         return v;
     }
+
     private cui_coverage_result ToNative(CoverageResult v)
     {
         cui_coverage_result r = default;
@@ -1049,6 +1179,7 @@ public sealed unsafe partial class Ui
         r.lines = v.Lines;
         return r;
     }
+
     private CoverageResult FromNative(cui_coverage_result r, CoverageResult old = default)
     {
         var v = old;
@@ -1056,6 +1187,7 @@ public sealed unsafe partial class Ui
         v.Lines = r.lines;
         return v;
     }
+
     private cui_cropper_opts ToNative(CropperOpts v)
     {
         cui_cropper_opts r = default;
@@ -1066,6 +1198,7 @@ public sealed unsafe partial class Ui
         r.min_size = v.MinSize;
         return r;
     }
+
     private CropperOpts FromNative(cui_cropper_opts r, CropperOpts old = default)
     {
         var v = old;
@@ -1076,6 +1209,7 @@ public sealed unsafe partial class Ui
         v.MinSize = r.min_size;
         return v;
     }
+
     private cui_date ToNative(Date v)
     {
         Validate(v);
@@ -1085,6 +1219,7 @@ public sealed unsafe partial class Ui
         r.day = v.Day;
         return r;
     }
+
     private Date FromNative(cui_date r, Date old = default)
     {
         var v = old;
@@ -1093,6 +1228,7 @@ public sealed unsafe partial class Ui
         v.Day = r.day;
         return v;
     }
+
     private cui_date_opts ToNative(DateOpts v)
     {
         cui_date_opts r = default;
@@ -1101,6 +1237,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private DateOpts FromNative(cui_date_opts r, DateOpts old = default)
     {
         var v = old;
@@ -1109,6 +1246,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_date_range ToNative(DateRange v)
     {
         cui_date_range r = default;
@@ -1116,6 +1254,7 @@ public sealed unsafe partial class Ui
         r.end = ToNative(v.End);
         return r;
     }
+
     private DateRange FromNative(cui_date_range r, DateRange old = default)
     {
         var v = old;
@@ -1123,6 +1262,7 @@ public sealed unsafe partial class Ui
         v.End = FromNative(r.end, old.End);
         return v;
     }
+
     private cui_date_range_opts ToNative(DateRangeOpts v)
     {
         cui_date_range_opts r = default;
@@ -1132,6 +1272,7 @@ public sealed unsafe partial class Ui
         r.no_presets = v.NoPresets;
         return r;
     }
+
     private DateRangeOpts FromNative(cui_date_range_opts r, DateRangeOpts old = default)
     {
         var v = old;
@@ -1141,6 +1282,7 @@ public sealed unsafe partial class Ui
         v.NoPresets = (r.no_presets != 0);
         return v;
     }
+
     private cui_diagnostic ToNative(Diagnostic v)
     {
         cui_diagnostic r = default;
@@ -1153,6 +1295,7 @@ public sealed unsafe partial class Ui
         r.code = Utf8(v.Code);
         return r;
     }
+
     private Diagnostic FromNative(cui_diagnostic r, Diagnostic old = default)
     {
         var v = old;
@@ -1165,6 +1308,7 @@ public sealed unsafe partial class Ui
         v.Code = Decode(r.code, old.Code);
         return v;
     }
+
     private cui_dialog_opts ToNative(DialogOpts v)
     {
         cui_dialog_opts r = default;
@@ -1174,6 +1318,7 @@ public sealed unsafe partial class Ui
         r.persistent = v.Persistent;
         return r;
     }
+
     private DialogOpts FromNative(cui_dialog_opts r, DialogOpts old = default)
     {
         var v = old;
@@ -1183,6 +1328,7 @@ public sealed unsafe partial class Ui
         v.Persistent = (r.persistent != 0);
         return v;
     }
+
     private cui_dock_item_opts ToNative(DockItemOpts v)
     {
         cui_dock_item_opts r = default;
@@ -1191,6 +1337,7 @@ public sealed unsafe partial class Ui
         r.badge = v.Badge;
         return r;
     }
+
     private DockItemOpts FromNative(cui_dock_item_opts r, DockItemOpts old = default)
     {
         var v = old;
@@ -1199,6 +1346,7 @@ public sealed unsafe partial class Ui
         v.Badge = r.badge;
         return v;
     }
+
     private cui_dock_opts ToNative(DockOpts v)
     {
         cui_dock_opts r = default;
@@ -1206,6 +1354,7 @@ public sealed unsafe partial class Ui
         r.magnify = v.Magnify;
         return r;
     }
+
     private DockOpts FromNative(cui_dock_opts r, DockOpts old = default)
     {
         var v = old;
@@ -1213,6 +1362,7 @@ public sealed unsafe partial class Ui
         v.Magnify = r.magnify;
         return v;
     }
+
     private cui_dot_chart_opts ToNative(DotChartOpts v)
     {
         cui_dot_chart_opts r = default;
@@ -1232,9 +1382,10 @@ public sealed unsafe partial class Ui
         r.no_axis = v.NoAxis;
         r.no_readout = v.NoReadout;
         r.annotations = CopyChartAnnotation(v.Annotations.Span);
-        r.annotation_count = (int)v.Annotations.Length;
+        r.annotation_count = v.Annotations.Length;
         return r;
     }
+
     private DotChartOpts FromNative(cui_dot_chart_opts r, DotChartOpts old = default)
     {
         var v = old;
@@ -1255,6 +1406,7 @@ public sealed unsafe partial class Ui
         v.NoReadout = (r.no_readout != 0);
         return v;
     }
+
     private cui_dot_chart_result ToNative(DotChartResult v)
     {
         cui_dot_chart_result r = default;
@@ -1264,6 +1416,7 @@ public sealed unsafe partial class Ui
         r.clicked = v.Clicked;
         return r;
     }
+
     private DotChartResult FromNative(cui_dot_chart_result r, DotChartResult old = default)
     {
         var v = old;
@@ -1273,6 +1426,7 @@ public sealed unsafe partial class Ui
         v.Clicked = (r.clicked != 0);
         return v;
     }
+
     private cui_dot_display_opts ToNative(DotDisplayOpts v)
     {
         cui_dot_display_opts r = default;
@@ -1285,6 +1439,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private DotDisplayOpts FromNative(cui_dot_display_opts r, DotDisplayOpts old = default)
     {
         var v = old;
@@ -1297,6 +1452,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_dot_series ToNative(DotSeries v)
     {
         cui_dot_series r = default;
@@ -1305,6 +1461,7 @@ public sealed unsafe partial class Ui
         r.accent = v.Accent;
         return r;
     }
+
     private DotSeries FromNative(cui_dot_series r, DotSeries old = default)
     {
         var v = old;
@@ -1312,6 +1469,7 @@ public sealed unsafe partial class Ui
         v.Accent = (r.accent != 0);
         return v;
     }
+
     private cui_dropzone_opts ToNative(DropzoneOpts v)
     {
         cui_dropzone_opts r = default;
@@ -1324,6 +1482,7 @@ public sealed unsafe partial class Ui
         r.compact = v.Compact;
         return r;
     }
+
     private DropzoneOpts FromNative(cui_dropzone_opts r, DropzoneOpts old = default)
     {
         var v = old;
@@ -1336,6 +1495,7 @@ public sealed unsafe partial class Ui
         v.Compact = (r.compact != 0);
         return v;
     }
+
     private cui_emoji_picker_opts ToNative(EmojiPickerOpts v)
     {
         Validate(v);
@@ -1355,6 +1515,7 @@ public sealed unsafe partial class Ui
         r.no_tone = v.NoTone;
         return r;
     }
+
     private EmojiPickerOpts FromNative(cui_emoji_picker_opts r, EmojiPickerOpts old = default)
     {
         var v = old;
@@ -1369,6 +1530,7 @@ public sealed unsafe partial class Ui
         v.NoTone = (r.no_tone != 0);
         return v;
     }
+
     private cui_empty_opts ToNative(EmptyOpts v)
     {
         cui_empty_opts r = default;
@@ -1377,6 +1539,7 @@ public sealed unsafe partial class Ui
         r.action = Utf8(v.Action);
         return r;
     }
+
     private EmptyOpts FromNative(cui_empty_opts r, EmptyOpts old = default)
     {
         var v = old;
@@ -1385,6 +1548,7 @@ public sealed unsafe partial class Ui
         v.Action = Decode(r.action, old.Action);
         return v;
     }
+
     private cui_event_track_opts ToNative(EventTrackOpts v)
     {
         cui_event_track_opts r = default;
@@ -1399,6 +1563,7 @@ public sealed unsafe partial class Ui
         r.no_axis = v.NoAxis;
         return r;
     }
+
     private EventTrackOpts FromNative(cui_event_track_opts r, EventTrackOpts old = default)
     {
         var v = old;
@@ -1412,6 +1577,7 @@ public sealed unsafe partial class Ui
         v.NoAxis = (r.no_axis != 0);
         return v;
     }
+
     private cui_event_track_result ToNative(EventTrackResult v)
     {
         cui_event_track_result r = default;
@@ -1422,6 +1588,7 @@ public sealed unsafe partial class Ui
         r.dragging = v.Dragging;
         return r;
     }
+
     private EventTrackResult FromNative(cui_event_track_result r, EventTrackResult old = default)
     {
         var v = old;
@@ -1432,6 +1599,7 @@ public sealed unsafe partial class Ui
         v.Dragging = (r.dragging != 0);
         return v;
     }
+
     private cui_expandable_card_opts ToNative(ExpandableCardOpts v)
     {
         cui_expandable_card_opts r = default;
@@ -1441,6 +1609,7 @@ public sealed unsafe partial class Ui
         r.badge_tone = (cui_tone)CheckEnum(v.BadgeTone);
         return r;
     }
+
     private ExpandableCardOpts FromNative(cui_expandable_card_opts r, ExpandableCardOpts old = default)
     {
         var v = old;
@@ -1450,6 +1619,7 @@ public sealed unsafe partial class Ui
         v.BadgeTone = (Tone)r.badge_tone;
         return v;
     }
+
     private cui_expandable_text_opts ToNative(ExpandableTextOpts v)
     {
         cui_expandable_text_opts r = default;
@@ -1459,6 +1629,7 @@ public sealed unsafe partial class Ui
         r.fade_to = ToNative(v.FadeTo);
         return r;
     }
+
     private ExpandableTextOpts FromNative(cui_expandable_text_opts r, ExpandableTextOpts old = default)
     {
         var v = old;
@@ -1468,6 +1639,7 @@ public sealed unsafe partial class Ui
         v.FadeTo = FromNative(r.fade_to, old.FadeTo);
         return v;
     }
+
     private cui_fader_opts ToNative(FaderOpts v)
     {
         cui_fader_opts r = default;
@@ -1479,13 +1651,14 @@ public sealed unsafe partial class Ui
         r.step = v.Step;
         r.reset = v.Reset;
         r.ticks = CopyFloat(v.Ticks.Span);
-        r.tick_count = (int)v.Ticks.Length;
+        r.tick_count = v.Ticks.Length;
         r.meter = CopyFloat(v.Meter.Span);
-        r.meter_channels = (int)v.Meter.Length;
+        r.meter_channels = v.Meter.Length;
         r.hide_value = v.HideValue;
         r.disabled = v.Disabled;
         return r;
     }
+
     private FaderOpts FromNative(cui_fader_opts r, FaderOpts old = default)
     {
         var v = old;
@@ -1500,17 +1673,21 @@ public sealed unsafe partial class Ui
         v.Disabled = (r.disabled != 0);
         return v;
     }
+
     private cui_feature_flag ToNative(FeatureFlag v)
     {
         cui_feature_flag r = default;
         r.key = Utf8(v.Key);
         r.description = Utf8(v.Description);
         if (!v.On.IsEmpty && v.On.Length != CUI_FLAG_ENVS) throw new ArgumentException("FeatureFlag.On requires CUI_FLAG_ENVS elements.");
+
         for (var i = 0; i < v.On.Length; i++) r.on[i] = v.On.Span[i];
         if (!v.Rollout.IsEmpty && v.Rollout.Length != CUI_FLAG_ENVS) throw new ArgumentException("FeatureFlag.Rollout requires CUI_FLAG_ENVS elements.");
+
         for (var i = 0; i < v.Rollout.Length; i++) r.rollout[i] = v.Rollout.Span[i];
         return r;
     }
+
     private FeatureFlag FromNative(cui_feature_flag r, FeatureFlag old = default)
     {
         var v = old;
@@ -1522,6 +1699,7 @@ public sealed unsafe partial class Ui
         for (var i = 0; i < CUI_FLAG_ENVS; i++) v.Rollout.Span[i] = r.rollout[i];
         return v;
     }
+
     private cui_feature_flags_opts ToNative(FeatureFlagsOpts v)
     {
         cui_feature_flags_opts r = default;
@@ -1529,6 +1707,7 @@ public sealed unsafe partial class Ui
         r.height = v.Height;
         return r;
     }
+
     private FeatureFlagsOpts FromNative(cui_feature_flags_opts r, FeatureFlagsOpts old = default)
     {
         var v = old;
@@ -1536,6 +1715,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_feature_flags_result ToNative(FeatureFlagsResult v)
     {
         cui_feature_flags_result r = default;
@@ -1543,6 +1723,7 @@ public sealed unsafe partial class Ui
         r.env = v.Env;
         return r;
     }
+
     private FeatureFlagsResult FromNative(cui_feature_flags_result r, FeatureFlagsResult old = default)
     {
         var v = old;
@@ -1550,6 +1731,7 @@ public sealed unsafe partial class Ui
         v.Env = r.env;
         return v;
     }
+
     private cui_file_browser_opts ToNative(FileBrowserOpts v)
     {
         Validate(v);
@@ -1561,11 +1743,17 @@ public sealed unsafe partial class Ui
         r.hidden = v.Hidden;
         r.no_places = v.NoPlaces;
         r.places = Strings(v.Places.Span);
-        r.place_count = (int)v.Places.Length;
-        if (v.List is not null) { r.list = &FileListThunk; r.list_user = RootFileList(v.List); }
+        r.place_count = v.Places.Length;
+        if (v.List is not null)
+        {
+            r.list = &FileListThunk;
+            r.list_user = RootFileList(v.List);
+        }
+
         r.max_entries = v.MaxEntries;
         return r;
     }
+
     private FileBrowserOpts FromNative(cui_file_browser_opts r, FileBrowserOpts old = default)
     {
         var v = old;
@@ -1578,6 +1766,7 @@ public sealed unsafe partial class Ui
         v.MaxEntries = r.max_entries;
         return v;
     }
+
     private cui_file_browser_result ToNative(FileBrowserResult v)
     {
         cui_file_browser_result r = default;
@@ -1587,6 +1776,7 @@ public sealed unsafe partial class Ui
         r.error = v.Error;
         return r;
     }
+
     private FileBrowserResult FromNative(cui_file_browser_result r, FileBrowserResult old = default)
     {
         var v = old;
@@ -1596,6 +1786,7 @@ public sealed unsafe partial class Ui
         v.Error = (r.error != 0);
         return v;
     }
+
     private cui_file_entry ToNative(FileEntry v)
     {
         cui_file_entry r = default;
@@ -1605,6 +1796,7 @@ public sealed unsafe partial class Ui
         r.modified = v.Modified;
         return r;
     }
+
     private FileEntry FromNative(cui_file_entry r, FileEntry old = default)
     {
         var v = old;
@@ -1614,6 +1806,7 @@ public sealed unsafe partial class Ui
         v.Modified = r.modified;
         return v;
     }
+
     private cui_file_picker_opts ToNative(FilePickerOpts v)
     {
         cui_file_picker_opts r = default;
@@ -1624,9 +1817,15 @@ public sealed unsafe partial class Ui
         r.name = Utf8(v.Name);
         r.filter = Utf8(v.Filter);
         r.filter_label = Utf8(v.FilterLabel);
-        if (v.List is not null) { r.list = &FileListThunk; r.list_user = RootFileList(v.List); }
+        if (v.List is not null)
+        {
+            r.list = &FileListThunk;
+            r.list_user = RootFileList(v.List);
+        }
+
         return r;
     }
+
     private FilePickerOpts FromNative(cui_file_picker_opts r, FilePickerOpts old = default)
     {
         var v = old;
@@ -1639,15 +1838,17 @@ public sealed unsafe partial class Ui
         v.FilterLabel = Decode(r.filter_label, old.FilterLabel);
         return v;
     }
+
     private cui_filter_field ToNative(FilterField v)
     {
         cui_filter_field r = default;
         r.name = Utf8(v.Name);
         r.icon = Utf8(v.Icon);
         r.options = Strings(v.Options.Span);
-        r.option_count = (int)v.Options.Length;
+        r.option_count = v.Options.Length;
         return r;
     }
+
     private FilterField FromNative(cui_filter_field r, FilterField old = default)
     {
         var v = old;
@@ -1655,6 +1856,7 @@ public sealed unsafe partial class Ui
         v.Icon = Decode(r.icon, old.Icon);
         return v;
     }
+
     private cui_funnel_opts ToNative(FunnelOpts v)
     {
         cui_funnel_opts r = default;
@@ -1664,6 +1866,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private FunnelOpts FromNative(cui_funnel_opts r, FunnelOpts old = default)
     {
         var v = old;
@@ -1673,6 +1876,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_gantt_opts ToNative(GanttOpts v)
     {
         cui_gantt_opts r = default;
@@ -1683,6 +1887,7 @@ public sealed unsafe partial class Ui
         r.read_only = v.ReadOnly;
         return r;
     }
+
     private GanttOpts FromNative(cui_gantt_opts r, GanttOpts old = default)
     {
         var v = old;
@@ -1693,6 +1898,7 @@ public sealed unsafe partial class Ui
         v.ReadOnly = (r.read_only != 0);
         return v;
     }
+
     private cui_gantt_task ToNative(GanttTask v)
     {
         cui_gantt_task r = default;
@@ -1706,6 +1912,7 @@ public sealed unsafe partial class Ui
         r.milestone = v.Milestone;
         return r;
     }
+
     private GanttTask FromNative(cui_gantt_task r, GanttTask old = default)
     {
         var v = old;
@@ -1719,6 +1926,7 @@ public sealed unsafe partial class Ui
         v.Milestone = (r.milestone != 0);
         return v;
     }
+
     private cui_gauge_band ToNative(GaugeBand v)
     {
         cui_gauge_band r = default;
@@ -1726,6 +1934,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private GaugeBand FromNative(cui_gauge_band r, GaugeBand old = default)
     {
         var v = old;
@@ -1733,6 +1942,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_gradient_text_opts ToNative(GradientTextOpts v)
     {
         cui_gradient_text_opts r = default;
@@ -1744,6 +1954,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private GradientTextOpts FromNative(cui_gradient_text_opts r, GradientTextOpts old = default)
     {
         var v = old;
@@ -1755,6 +1966,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_graph_edge ToNative(GraphEdge v)
     {
         cui_graph_edge r = default;
@@ -1762,6 +1974,7 @@ public sealed unsafe partial class Ui
         r.to = v.To;
         return r;
     }
+
     private GraphEdge FromNative(cui_graph_edge r, GraphEdge old = default)
     {
         var v = old;
@@ -1769,6 +1982,7 @@ public sealed unsafe partial class Ui
         v.To = r.to;
         return v;
     }
+
     private cui_graph_node ToNative(GraphNode v)
     {
         cui_graph_node r = default;
@@ -1777,6 +1991,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private GraphNode FromNative(cui_graph_node r, GraphNode old = default)
     {
         var v = old;
@@ -1785,6 +2000,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_graph_opts ToNative(GraphOpts v)
     {
         cui_graph_opts r = default;
@@ -1794,6 +2010,7 @@ public sealed unsafe partial class Ui
         r.selected = BindInt(v.Selected);
         return r;
     }
+
     private GraphOpts FromNative(cui_graph_opts r, GraphOpts old = default)
     {
         var v = old;
@@ -1802,6 +2019,7 @@ public sealed unsafe partial class Ui
         v.TopDown = (r.top_down != 0);
         return v;
     }
+
     private cui_graph_result ToNative(GraphResult v)
     {
         cui_graph_result r = default;
@@ -1810,6 +2028,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private GraphResult FromNative(cui_graph_result r, GraphResult old = default)
     {
         var v = old;
@@ -1818,6 +2037,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_grid_column ToNative(GridColumn v)
     {
         cui_grid_column r = default;
@@ -1829,6 +2049,7 @@ public sealed unsafe partial class Ui
         r.priority = v.Priority;
         return r;
     }
+
     private GridColumn FromNative(cui_grid_column r, GridColumn old = default)
     {
         var v = old;
@@ -1840,6 +2061,7 @@ public sealed unsafe partial class Ui
         v.Priority = r.priority;
         return v;
     }
+
     private cui_grid_opts ToNative(GridOpts v)
     {
         cui_grid_opts r = default;
@@ -1855,6 +2077,7 @@ public sealed unsafe partial class Ui
         r.anchor = BindInt(v.Anchor);
         return r;
     }
+
     private GridOpts FromNative(cui_grid_opts r, GridOpts old = default)
     {
         var v = old;
@@ -1865,6 +2088,7 @@ public sealed unsafe partial class Ui
         v.HideCheckboxes = (r.hide_checkboxes != 0);
         return v;
     }
+
     private cui_heatmap_opts ToNative(HeatmapOpts v)
     {
         cui_heatmap_opts r = default;
@@ -1878,6 +2102,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private HeatmapOpts FromNative(cui_heatmap_opts r, HeatmapOpts old = default)
     {
         var v = old;
@@ -1889,6 +2114,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_histogram_opts ToNative(HistogramOpts v)
     {
         cui_histogram_opts r = default;
@@ -1896,6 +2122,7 @@ public sealed unsafe partial class Ui
         r.format = Utf8(CheckFormat(v.Format, 1));
         return r;
     }
+
     private HistogramOpts FromNative(cui_histogram_opts r, HistogramOpts old = default)
     {
         var v = old;
@@ -1903,6 +2130,7 @@ public sealed unsafe partial class Ui
         v.Format = Decode(r.format, old.Format);
         return v;
     }
+
     private cui_histogram_series ToNative(HistogramSeries v)
     {
         cui_histogram_series r = default;
@@ -1911,6 +2139,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private HistogramSeries FromNative(cui_histogram_series r, HistogramSeries old = default)
     {
         var v = old;
@@ -1918,6 +2147,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_hold_opts ToNative(HoldOpts v)
     {
         cui_hold_opts r = default;
@@ -1926,6 +2156,7 @@ public sealed unsafe partial class Ui
         r.variant = (cui_button_variant)CheckEnum(v.Variant);
         return r;
     }
+
     private HoldOpts FromNative(cui_hold_opts r, HoldOpts old = default)
     {
         var v = old;
@@ -1934,6 +2165,7 @@ public sealed unsafe partial class Ui
         v.Variant = (ButtonVariant)r.variant;
         return v;
     }
+
     private cui_hover_card_opts ToNative(HoverCardOpts v)
     {
         cui_hover_card_opts r = default;
@@ -1942,6 +2174,7 @@ public sealed unsafe partial class Ui
         r.delay = v.Delay;
         return r;
     }
+
     private HoverCardOpts FromNative(cui_hover_card_opts r, HoverCardOpts old = default)
     {
         var v = old;
@@ -1950,6 +2183,7 @@ public sealed unsafe partial class Ui
         v.Delay = r.delay;
         return v;
     }
+
     private cui_image_opts ToNative(ImageOpts v)
     {
         cui_image_opts r = default;
@@ -1959,6 +2193,7 @@ public sealed unsafe partial class Ui
         r.tint = ToNative(v.Tint);
         return r;
     }
+
     private ImageOpts FromNative(cui_image_opts r, ImageOpts old = default)
     {
         var v = old;
@@ -1968,6 +2203,7 @@ public sealed unsafe partial class Ui
         v.Tint = FromNative(r.tint, old.Tint);
         return v;
     }
+
     private cui_image_view ToNative(ImageView v)
     {
         cui_image_view r = default;
@@ -1976,6 +2212,7 @@ public sealed unsafe partial class Ui
         r.cy = v.Cy;
         return r;
     }
+
     private ImageView FromNative(cui_image_view r, ImageView old = default)
     {
         var v = old;
@@ -1984,6 +2221,7 @@ public sealed unsafe partial class Ui
         v.Cy = r.cy;
         return v;
     }
+
     private cui_image_viewer_opts ToNative(ImageViewerOpts v)
     {
         cui_image_viewer_opts r = default;
@@ -1994,6 +2232,7 @@ public sealed unsafe partial class Ui
         r.checkerboard = v.Checkerboard;
         return r;
     }
+
     private ImageViewerOpts FromNative(cui_image_viewer_opts r, ImageViewerOpts old = default)
     {
         var v = old;
@@ -2004,6 +2243,7 @@ public sealed unsafe partial class Ui
         v.Checkerboard = (r.checkerboard != 0);
         return v;
     }
+
     private cui_inline_edit_opts ToNative(InlineEditOpts v)
     {
         cui_inline_edit_opts r = default;
@@ -2013,6 +2253,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private InlineEditOpts FromNative(cui_inline_edit_opts r, InlineEditOpts old = default)
     {
         var v = old;
@@ -2022,6 +2263,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_input_opts ToNative(InputOpts v)
     {
         cui_input_opts r = default;
@@ -2042,6 +2284,7 @@ public sealed unsafe partial class Ui
         r.suffix = Utf8(v.Suffix);
         return r;
     }
+
     private InputOpts FromNative(cui_input_opts r, InputOpts old = default)
     {
         var v = old;
@@ -2062,6 +2305,7 @@ public sealed unsafe partial class Ui
         v.Suffix = Decode(r.suffix, old.Suffix);
         return v;
     }
+
     private cui_json_opts ToNative(JsonOpts v)
     {
         cui_json_opts r = default;
@@ -2069,6 +2313,7 @@ public sealed unsafe partial class Ui
         r.max_height = v.MaxHeight;
         return r;
     }
+
     private JsonOpts FromNative(cui_json_opts r, JsonOpts old = default)
     {
         var v = old;
@@ -2076,6 +2321,7 @@ public sealed unsafe partial class Ui
         v.MaxHeight = r.max_height;
         return v;
     }
+
     private cui_kanban_column_opts ToNative(KanbanColumnOpts v)
     {
         cui_kanban_column_opts r = default;
@@ -2084,6 +2330,7 @@ public sealed unsafe partial class Ui
         r.width = v.Width;
         return r;
     }
+
     private KanbanColumnOpts FromNative(cui_kanban_column_opts r, KanbanColumnOpts old = default)
     {
         var v = old;
@@ -2092,6 +2339,7 @@ public sealed unsafe partial class Ui
         v.Width = r.width;
         return v;
     }
+
     private cui_kanban_move ToNative(KanbanMove v)
     {
         cui_kanban_move r = default;
@@ -2101,6 +2349,7 @@ public sealed unsafe partial class Ui
         r.to_index = v.ToIndex;
         return r;
     }
+
     private KanbanMove FromNative(cui_kanban_move r, KanbanMove old = default)
     {
         var v = old;
@@ -2110,6 +2359,7 @@ public sealed unsafe partial class Ui
         v.ToIndex = r.to_index;
         return v;
     }
+
     private cui_key_combo ToNative(KeyCombo v)
     {
         cui_key_combo r = default;
@@ -2117,6 +2367,7 @@ public sealed unsafe partial class Ui
         r.key = (cui_key)CheckEnum(v.Key);
         return r;
     }
+
     private KeyCombo FromNative(cui_key_combo r, KeyCombo old = default)
     {
         var v = old;
@@ -2124,6 +2375,7 @@ public sealed unsafe partial class Ui
         v.Key = (Key)r.key;
         return v;
     }
+
     private cui_keymap_binding ToNative(KeymapBinding v)
     {
         cui_keymap_binding r = default;
@@ -2132,6 +2384,7 @@ public sealed unsafe partial class Ui
         r.category = v.Category;
         return r;
     }
+
     private KeymapBinding FromNative(cui_keymap_binding r, KeymapBinding old = default)
     {
         var v = old;
@@ -2140,16 +2393,18 @@ public sealed unsafe partial class Ui
         v.Category = r.category;
         return v;
     }
+
     private cui_keymap_opts ToNative(KeymapOpts v)
     {
         cui_keymap_opts r = default;
         r.width = ToNative(v.Width);
         r.categories = Strings(v.Categories.Span);
-        r.category_count = (int)v.Categories.Length;
+        r.category_count = v.Categories.Length;
         r.mods = BindInt(v.Mods);
         r.no_function_row = v.NoFunctionRow;
         return r;
     }
+
     private KeymapOpts FromNative(cui_keymap_opts r, KeymapOpts old = default)
     {
         var v = old;
@@ -2157,6 +2412,7 @@ public sealed unsafe partial class Ui
         v.NoFunctionRow = (r.no_function_row != 0);
         return v;
     }
+
     private cui_keymap_result ToNative(KeymapResult v)
     {
         cui_keymap_result r = default;
@@ -2164,6 +2420,7 @@ public sealed unsafe partial class Ui
         r.conflicts = v.Conflicts;
         return r;
     }
+
     private KeymapResult FromNative(cui_keymap_result r, KeymapResult old = default)
     {
         var v = old;
@@ -2171,6 +2428,7 @@ public sealed unsafe partial class Ui
         v.Conflicts = r.conflicts;
         return v;
     }
+
     private cui_knob_opts ToNative(KnobOpts v)
     {
         cui_knob_opts r = default;
@@ -2187,6 +2445,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private KnobOpts FromNative(cui_knob_opts r, KnobOpts old = default)
     {
         var v = old;
@@ -2203,6 +2462,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_kv_editor_opts ToNative(KvEditorOpts v)
     {
         cui_kv_editor_opts r = default;
@@ -2214,6 +2474,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private KvEditorOpts FromNative(cui_kv_editor_opts r, KvEditorOpts old = default)
     {
         var v = old;
@@ -2225,6 +2486,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_kv_pair ToNative(KvPair v)
     {
         cui_kv_pair r = default;
@@ -2234,6 +2496,7 @@ public sealed unsafe partial class Ui
         r.secret = v.Secret;
         return r;
     }
+
     private KvPair FromNative(cui_kv_pair r, KvPair old = default)
     {
         var v = old;
@@ -2243,6 +2506,7 @@ public sealed unsafe partial class Ui
         v.Secret = (r.secret != 0);
         return v;
     }
+
     private cui_level_meter_opts ToNative(LevelMeterOpts v)
     {
         cui_level_meter_opts r = default;
@@ -2257,6 +2521,7 @@ public sealed unsafe partial class Ui
         r.decay = v.Decay;
         return r;
     }
+
     private LevelMeterOpts FromNative(cui_level_meter_opts r, LevelMeterOpts old = default)
     {
         var v = old;
@@ -2271,6 +2536,7 @@ public sealed unsafe partial class Ui
         v.Decay = r.decay;
         return v;
     }
+
     private cui_list_item_opts ToNative(ListItemOpts v)
     {
         cui_list_item_opts r = default;
@@ -2281,6 +2547,7 @@ public sealed unsafe partial class Ui
         r.avatar = Utf8(v.Avatar);
         return r;
     }
+
     private ListItemOpts FromNative(cui_list_item_opts r, ListItemOpts old = default)
     {
         var v = old;
@@ -2291,6 +2558,7 @@ public sealed unsafe partial class Ui
         v.Avatar = Decode(r.avatar, old.Avatar);
         return v;
     }
+
     private cui_loader_opts ToNative(LoaderOpts v)
     {
         cui_loader_opts r = default;
@@ -2299,6 +2567,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private LoaderOpts FromNative(cui_loader_opts r, LoaderOpts old = default)
     {
         var v = old;
@@ -2307,6 +2576,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_markdown_result ToNative(MarkdownResult v)
     {
         cui_markdown_result r = default;
@@ -2318,6 +2588,7 @@ public sealed unsafe partial class Ui
         r.height = v.Height;
         return r;
     }
+
     private MarkdownResult FromNative(cui_markdown_result r, MarkdownResult old = default)
     {
         var v = old;
@@ -2329,6 +2600,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_menu_item_opts ToNative(MenuItemOpts v)
     {
         cui_menu_item_opts r = default;
@@ -2339,6 +2611,7 @@ public sealed unsafe partial class Ui
         r.@checked = v.Checked;
         return r;
     }
+
     private MenuItemOpts FromNative(cui_menu_item_opts r, MenuItemOpts old = default)
     {
         var v = old;
@@ -2349,6 +2622,7 @@ public sealed unsafe partial class Ui
         v.Checked = (r.@checked != 0);
         return v;
     }
+
     private cui_menu_opts ToNative(MenuOpts v)
     {
         cui_menu_opts r = default;
@@ -2359,6 +2633,7 @@ public sealed unsafe partial class Ui
         r.icon_only = v.IconOnly;
         return r;
     }
+
     private MenuOpts FromNative(cui_menu_opts r, MenuOpts old = default)
     {
         var v = old;
@@ -2369,18 +2644,20 @@ public sealed unsafe partial class Ui
         v.IconOnly = (r.icon_only != 0);
         return v;
     }
+
     private cui_metric_opts ToNative(MetricOpts v)
     {
         cui_metric_opts r = default;
         r.delta = v.Delta;
         r.delta_label = Utf8(v.DeltaLabel);
         r.spark = CopyFloat(v.Spark.Span);
-        r.spark_count = (int)v.Spark.Length;
+        r.spark_count = v.Spark.Length;
         r.icon = Utf8(v.Icon);
         r.width = ToNative(v.Width);
         r.lower_is_better = v.LowerIsBetter;
         return r;
     }
+
     private MetricOpts FromNative(cui_metric_opts r, MetricOpts old = default)
     {
         var v = old;
@@ -2391,6 +2668,7 @@ public sealed unsafe partial class Ui
         v.LowerIsBetter = (r.lower_is_better != 0);
         return v;
     }
+
     private cui_model ToNative(Model v)
     {
         cui_model r = default;
@@ -2400,6 +2678,7 @@ public sealed unsafe partial class Ui
         r.icon = Utf8(v.Icon);
         return r;
     }
+
     private Model FromNative(cui_model r, Model old = default)
     {
         var v = old;
@@ -2409,6 +2688,7 @@ public sealed unsafe partial class Ui
         v.Icon = Decode(r.icon, old.Icon);
         return v;
     }
+
     private cui_money_opts ToNative(MoneyOpts v)
     {
         cui_money_opts r = default;
@@ -2420,6 +2700,7 @@ public sealed unsafe partial class Ui
         r.hint = Utf8(v.Hint);
         return r;
     }
+
     private MoneyOpts FromNative(cui_money_opts r, MoneyOpts old = default)
     {
         var v = old;
@@ -2431,6 +2712,7 @@ public sealed unsafe partial class Ui
         v.Hint = Decode(r.hint, old.Hint);
         return v;
     }
+
     private cui_month_event ToNative(MonthEvent v)
     {
         cui_month_event r = default;
@@ -2442,6 +2724,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private MonthEvent FromNative(cui_month_event r, MonthEvent old = default)
     {
         var v = old;
@@ -2453,6 +2736,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_month_opts ToNative(MonthOpts v)
     {
         Validate(v);
@@ -2466,6 +2750,7 @@ public sealed unsafe partial class Ui
         r.today = ToNative(v.Today);
         return r;
     }
+
     private MonthOpts FromNative(cui_month_opts r, MonthOpts old = default)
     {
         var v = old;
@@ -2475,6 +2760,7 @@ public sealed unsafe partial class Ui
         v.Today = FromNative(r.today, old.Today);
         return v;
     }
+
     private cui_month_result ToNative(MonthResult v)
     {
         cui_month_result r = default;
@@ -2484,6 +2770,7 @@ public sealed unsafe partial class Ui
         r.month_changed = v.MonthChanged;
         return r;
     }
+
     private MonthResult FromNative(cui_month_result r, MonthResult old = default)
     {
         var v = old;
@@ -2493,6 +2780,7 @@ public sealed unsafe partial class Ui
         v.MonthChanged = (r.month_changed != 0);
         return v;
     }
+
     private cui_multi_select_opts ToNative(MultiSelectOpts v)
     {
         cui_multi_select_opts r = default;
@@ -2504,6 +2792,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private MultiSelectOpts FromNative(cui_multi_select_opts r, MultiSelectOpts old = default)
     {
         var v = old;
@@ -2514,6 +2803,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_nav_opts ToNative(NavOpts v)
     {
         cui_nav_opts r = default;
@@ -2523,6 +2813,7 @@ public sealed unsafe partial class Ui
         r.group = Utf8(v.Group);
         return r;
     }
+
     private NavOpts FromNative(cui_nav_opts r, NavOpts old = default)
     {
         var v = old;
@@ -2532,6 +2823,7 @@ public sealed unsafe partial class Ui
         v.Group = Decode(r.group, old.Group);
         return v;
     }
+
     private cui_net_request ToNative(NetRequest v)
     {
         cui_net_request r = default;
@@ -2542,9 +2834,11 @@ public sealed unsafe partial class Ui
         r.size = v.Size;
         r.start = v.Start;
         if (!v.Timing.IsEmpty && v.Timing.Length != 6) throw new ArgumentException("NetRequest.Timing requires 6 elements.");
+
         for (var i = 0; i < v.Timing.Length; i++) r.timing[i] = v.Timing.Span[i];
         return r;
     }
+
     private NetRequest FromNative(cui_net_request r, NetRequest old = default)
     {
         var v = old;
@@ -2558,6 +2852,7 @@ public sealed unsafe partial class Ui
         for (var i = 0; i < 6; i++) v.Timing.Span[i] = r.timing[i];
         return v;
     }
+
     private cui_node_editor_opts ToNative(NodeEditorOpts v)
     {
         cui_node_editor_opts r = default;
@@ -2569,6 +2864,7 @@ public sealed unsafe partial class Ui
         r.minimap = v.Minimap;
         return r;
     }
+
     private NodeEditorOpts FromNative(cui_node_editor_opts r, NodeEditorOpts old = default)
     {
         var v = old;
@@ -2580,6 +2876,7 @@ public sealed unsafe partial class Ui
         v.Minimap = (r.minimap != 0);
         return v;
     }
+
     private cui_node_opts ToNative(NodeOpts v)
     {
         cui_node_opts r = default;
@@ -2587,6 +2884,7 @@ public sealed unsafe partial class Ui
         r.icon = Utf8(v.Icon);
         return r;
     }
+
     private NodeOpts FromNative(cui_node_opts r, NodeOpts old = default)
     {
         var v = old;
@@ -2594,6 +2892,7 @@ public sealed unsafe partial class Ui
         v.Icon = Decode(r.icon, old.Icon);
         return v;
     }
+
     private cui_node_view ToNative(NodeView v)
     {
         cui_node_view r = default;
@@ -2602,6 +2901,7 @@ public sealed unsafe partial class Ui
         r.zoom = v.Zoom;
         return r;
     }
+
     private NodeView FromNative(cui_node_view r, NodeView old = default)
     {
         var v = old;
@@ -2610,6 +2910,7 @@ public sealed unsafe partial class Ui
         v.Zoom = r.zoom;
         return v;
     }
+
     private cui_now_playing ToNative(NowPlaying v)
     {
         cui_now_playing r = default;
@@ -2622,6 +2923,7 @@ public sealed unsafe partial class Ui
         r.playing = v.Playing;
         return r;
     }
+
     private NowPlaying FromNative(cui_now_playing r, NowPlaying old = default)
     {
         var v = old;
@@ -2634,6 +2936,7 @@ public sealed unsafe partial class Ui
         v.Playing = (r.playing != 0);
         return v;
     }
+
     private cui_now_playing_opts ToNative(NowPlayingOpts v)
     {
         cui_now_playing_opts r = default;
@@ -2641,6 +2944,7 @@ public sealed unsafe partial class Ui
         r.compact = v.Compact;
         return r;
     }
+
     private NowPlayingOpts FromNative(cui_now_playing_opts r, NowPlayingOpts old = default)
     {
         var v = old;
@@ -2648,6 +2952,7 @@ public sealed unsafe partial class Ui
         v.Compact = (r.compact != 0);
         return v;
     }
+
     private cui_number_opts ToNative(NumberOpts v)
     {
         cui_number_opts r = default;
@@ -2659,6 +2964,7 @@ public sealed unsafe partial class Ui
         r.suffix = Utf8(v.Suffix);
         return r;
     }
+
     private NumberOpts FromNative(cui_number_opts r, NumberOpts old = default)
     {
         var v = old;
@@ -2670,6 +2976,7 @@ public sealed unsafe partial class Ui
         v.Suffix = Decode(r.suffix, old.Suffix);
         return v;
     }
+
     private cui_pipeline_job ToNative(PipelineJob v)
     {
         cui_pipeline_job r = default;
@@ -2680,6 +2987,7 @@ public sealed unsafe partial class Ui
         r.allow_failure = v.AllowFailure;
         return r;
     }
+
     private PipelineJob FromNative(cui_pipeline_job r, PipelineJob old = default)
     {
         var v = old;
@@ -2690,6 +2998,7 @@ public sealed unsafe partial class Ui
         v.AllowFailure = (r.allow_failure != 0);
         return v;
     }
+
     private cui_pipeline_opts ToNative(PipelineOpts v)
     {
         cui_pipeline_opts r = default;
@@ -2697,12 +3006,14 @@ public sealed unsafe partial class Ui
         r.selected = BindInt(v.Selected);
         return r;
     }
+
     private PipelineOpts FromNative(cui_pipeline_opts r, PipelineOpts old = default)
     {
         var v = old;
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_pipeline_result ToNative(PipelineResult v)
     {
         cui_pipeline_result r = default;
@@ -2710,6 +3021,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private PipelineResult FromNative(cui_pipeline_result r, PipelineResult old = default)
     {
         var v = old;
@@ -2717,6 +3029,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_plan_step ToNative(PlanStep v)
     {
         cui_plan_step r = default;
@@ -2725,6 +3038,7 @@ public sealed unsafe partial class Ui
         r.status = (cui_task_status)CheckEnum(v.Status);
         return r;
     }
+
     private PlanStep FromNative(cui_plan_step r, PlanStep old = default)
     {
         var v = old;
@@ -2733,6 +3047,7 @@ public sealed unsafe partial class Ui
         v.Status = (TaskStatus)r.status;
         return v;
     }
+
     private cui_popover_opts ToNative(PopoverOpts v)
     {
         cui_popover_opts r = default;
@@ -2742,6 +3057,7 @@ public sealed unsafe partial class Ui
         r.gap = v.Gap;
         return r;
     }
+
     private PopoverOpts FromNative(cui_popover_opts r, PopoverOpts old = default)
     {
         var v = old;
@@ -2751,6 +3067,7 @@ public sealed unsafe partial class Ui
         v.Gap = r.gap;
         return v;
     }
+
     private cui_presence_user ToNative(PresenceUser v)
     {
         cui_presence_user r = default;
@@ -2760,6 +3077,7 @@ public sealed unsafe partial class Ui
         r.idle = v.Idle;
         return r;
     }
+
     private PresenceUser FromNative(cui_presence_user r, PresenceUser old = default)
     {
         var v = old;
@@ -2769,6 +3087,7 @@ public sealed unsafe partial class Ui
         v.Idle = (r.idle != 0);
         return v;
     }
+
     private cui_problems_opts ToNative(ProblemsOpts v)
     {
         cui_problems_opts r = default;
@@ -2777,6 +3096,7 @@ public sealed unsafe partial class Ui
         r.no_toolbar = v.NoToolbar;
         return r;
     }
+
     private ProblemsOpts FromNative(cui_problems_opts r, ProblemsOpts old = default)
     {
         var v = old;
@@ -2785,6 +3105,7 @@ public sealed unsafe partial class Ui
         v.NoToolbar = (r.no_toolbar != 0);
         return v;
     }
+
     private cui_problems_result ToNative(ProblemsResult v)
     {
         cui_problems_result r = default;
@@ -2793,6 +3114,7 @@ public sealed unsafe partial class Ui
         r.shown = v.Shown;
         return r;
     }
+
     private ProblemsResult FromNative(cui_problems_result r, ProblemsResult old = default)
     {
         var v = old;
@@ -2801,6 +3123,7 @@ public sealed unsafe partial class Ui
         v.Shown = r.shown;
         return v;
     }
+
     private cui_progress_opts ToNative(ProgressOpts v)
     {
         cui_progress_opts r = default;
@@ -2812,6 +3135,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private ProgressOpts FromNative(cui_progress_opts r, ProgressOpts old = default)
     {
         var v = old;
@@ -2823,6 +3147,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_prompt_suggestion ToNative(PromptSuggestion v)
     {
         cui_prompt_suggestion r = default;
@@ -2831,6 +3156,7 @@ public sealed unsafe partial class Ui
         r.detail = Utf8(v.Detail);
         return r;
     }
+
     private PromptSuggestion FromNative(cui_prompt_suggestion r, PromptSuggestion old = default)
     {
         var v = old;
@@ -2839,27 +3165,31 @@ public sealed unsafe partial class Ui
         v.Detail = Decode(r.detail, old.Detail);
         return v;
     }
+
     private cui_prompt_suggestions_opts ToNative(PromptSuggestionsOpts v)
     {
         cui_prompt_suggestions_opts r = default;
         r.columns = v.Columns;
         return r;
     }
+
     private PromptSuggestionsOpts FromNative(cui_prompt_suggestions_opts r, PromptSuggestionsOpts old = default)
     {
         var v = old;
         v.Columns = r.columns;
         return v;
     }
+
     private cui_query_field ToNative(QueryField v)
     {
         cui_query_field r = default;
         r.name = Utf8(v.Name);
         r.@type = (cui_query_type)CheckEnum(v.Type);
         r.choices = Strings(v.Choices.Span);
-        r.choice_count = (int)v.Choices.Length;
+        r.choice_count = v.Choices.Length;
         return r;
     }
+
     private QueryField FromNative(cui_query_field r, QueryField old = default)
     {
         var v = old;
@@ -2867,6 +3197,7 @@ public sealed unsafe partial class Ui
         v.Type = (QueryType)r.@type;
         return v;
     }
+
     private cui_query_node ToNative(QueryNode v)
     {
         cui_query_node r = default;
@@ -2878,6 +3209,7 @@ public sealed unsafe partial class Ui
         WriteInline(v.Value, r.value, 64);
         return r;
     }
+
     private QueryNode FromNative(cui_query_node r, QueryNode old = default)
     {
         var v = old;
@@ -2889,6 +3221,7 @@ public sealed unsafe partial class Ui
         v.Value = Decode(r.value, old.Value, 64);
         return v;
     }
+
     private cui_query_opts ToNative(QueryOpts v)
     {
         cui_query_opts r = default;
@@ -2897,6 +3230,7 @@ public sealed unsafe partial class Ui
         r.read_only = v.ReadOnly;
         return r;
     }
+
     private QueryOpts FromNative(cui_query_opts r, QueryOpts old = default)
     {
         var v = old;
@@ -2905,6 +3239,7 @@ public sealed unsafe partial class Ui
         v.ReadOnly = (r.read_only != 0);
         return v;
     }
+
     private cui_radar_opts ToNative(RadarOpts v)
     {
         cui_radar_opts r = default;
@@ -2914,6 +3249,7 @@ public sealed unsafe partial class Ui
         r.no_legend = v.NoLegend;
         return r;
     }
+
     private RadarOpts FromNative(cui_radar_opts r, RadarOpts old = default)
     {
         var v = old;
@@ -2923,6 +3259,7 @@ public sealed unsafe partial class Ui
         v.NoLegend = (r.no_legend != 0);
         return v;
     }
+
     private cui_radial_gauge_opts ToNative(RadialGaugeOpts v)
     {
         cui_radial_gauge_opts r = default;
@@ -2932,13 +3269,14 @@ public sealed unsafe partial class Ui
         r.size = v.Size;
         r.sweep = v.Sweep;
         r.bands = CopyGaugeBand(v.Bands.Span);
-        r.band_count = (int)v.Bands.Length;
+        r.band_count = v.Bands.Length;
         r.ticks = v.Ticks;
         r.target = v.Target;
         r.show_target = v.ShowTarget;
         r.no_needle = v.NoNeedle;
         return r;
     }
+
     private RadialGaugeOpts FromNative(cui_radial_gauge_opts r, RadialGaugeOpts old = default)
     {
         var v = old;
@@ -2953,18 +3291,21 @@ public sealed unsafe partial class Ui
         v.NoNeedle = (r.no_needle != 0);
         return v;
     }
+
     private cui_radio_cards_opts ToNative(RadioCardsOpts v)
     {
         cui_radio_cards_opts r = default;
         r.columns = v.Columns;
         return r;
     }
+
     private RadioCardsOpts FromNative(cui_radio_cards_opts r, RadioCardsOpts old = default)
     {
         var v = old;
         v.Columns = r.columns;
         return v;
     }
+
     private cui_reaction ToNative(Reaction v)
     {
         cui_reaction r = default;
@@ -2973,6 +3314,7 @@ public sealed unsafe partial class Ui
         r.active = v.Active;
         return r;
     }
+
     private Reaction FromNative(cui_reaction r, Reaction old = default)
     {
         var v = old;
@@ -2981,6 +3323,7 @@ public sealed unsafe partial class Ui
         v.Active = (r.active != 0);
         return v;
     }
+
     private cui_readout_opts ToNative(ReadoutOpts v)
     {
         cui_readout_opts r = default;
@@ -2993,6 +3336,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private ReadoutOpts FromNative(cui_readout_opts r, ReadoutOpts old = default)
     {
         var v = old;
@@ -3005,6 +3349,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_reasoning_opts ToNative(ReasoningOpts v)
     {
         cui_reasoning_opts r = default;
@@ -3013,6 +3358,7 @@ public sealed unsafe partial class Ui
         r.title = Utf8(v.Title);
         return r;
     }
+
     private ReasoningOpts FromNative(cui_reasoning_opts r, ReasoningOpts old = default)
     {
         var v = old;
@@ -3021,6 +3367,7 @@ public sealed unsafe partial class Ui
         v.Title = Decode(r.title, old.Title);
         return v;
     }
+
     private cui_rect ToNative(Rect v)
     {
         cui_rect r = default;
@@ -3030,6 +3377,7 @@ public sealed unsafe partial class Ui
         r.h = v.H;
         return r;
     }
+
     private Rect FromNative(cui_rect r, Rect old = default)
     {
         var v = old;
@@ -3039,6 +3387,7 @@ public sealed unsafe partial class Ui
         v.H = r.h;
         return v;
     }
+
     private cui_regex_tester_opts ToNative(RegexTesterOpts v)
     {
         cui_regex_tester_opts r = default;
@@ -3047,6 +3396,7 @@ public sealed unsafe partial class Ui
         r.flags = BindInt(v.Flags);
         return r;
     }
+
     private RegexTesterOpts FromNative(cui_regex_tester_opts r, RegexTesterOpts old = default)
     {
         var v = old;
@@ -3054,6 +3404,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_regex_tester_result ToNative(RegexTesterResult v)
     {
         cui_regex_tester_result r = default;
@@ -3062,6 +3413,7 @@ public sealed unsafe partial class Ui
         r.error = Utf8(v.Error);
         return r;
     }
+
     private RegexTesterResult FromNative(cui_regex_tester_result r, RegexTesterResult old = default)
     {
         var v = old;
@@ -3070,6 +3422,7 @@ public sealed unsafe partial class Ui
         v.Error = Decode(r.error, old.Error);
         return v;
     }
+
     private cui_request_bar_opts ToNative(RequestBarOpts v)
     {
         cui_request_bar_opts r = default;
@@ -3078,6 +3431,7 @@ public sealed unsafe partial class Ui
         r.placeholder = Utf8(v.Placeholder);
         return r;
     }
+
     private RequestBarOpts FromNative(cui_request_bar_opts r, RequestBarOpts old = default)
     {
         var v = old;
@@ -3086,6 +3440,7 @@ public sealed unsafe partial class Ui
         v.Placeholder = Decode(r.placeholder, old.Placeholder);
         return v;
     }
+
     private cui_request_bar_result ToNative(RequestBarResult v)
     {
         cui_request_bar_result r = default;
@@ -3094,6 +3449,7 @@ public sealed unsafe partial class Ui
         r.changed = v.Changed;
         return r;
     }
+
     private RequestBarResult FromNative(cui_request_bar_result r, RequestBarResult old = default)
     {
         var v = old;
@@ -3102,6 +3458,7 @@ public sealed unsafe partial class Ui
         v.Changed = (r.changed != 0);
         return v;
     }
+
     private cui_response_actions_opts ToNative(ResponseActionsOpts v)
     {
         cui_response_actions_opts r = default;
@@ -3111,6 +3468,7 @@ public sealed unsafe partial class Ui
         r.no_share = v.NoShare;
         return r;
     }
+
     private ResponseActionsOpts FromNative(cui_response_actions_opts r, ResponseActionsOpts old = default)
     {
         var v = old;
@@ -3119,6 +3477,7 @@ public sealed unsafe partial class Ui
         v.NoShare = (r.no_share != 0);
         return v;
     }
+
     private cui_rings_opts ToNative(RingsOpts v)
     {
         cui_rings_opts r = default;
@@ -3129,6 +3488,7 @@ public sealed unsafe partial class Ui
         r.legend = v.Legend;
         return r;
     }
+
     private RingsOpts FromNative(cui_rings_opts r, RingsOpts old = default)
     {
         var v = old;
@@ -3139,6 +3499,7 @@ public sealed unsafe partial class Ui
         v.Legend = (r.legend != 0);
         return v;
     }
+
     private cui_ruler_opts ToNative(RulerOpts v)
     {
         cui_ruler_opts r = default;
@@ -3150,6 +3511,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private RulerOpts FromNative(cui_ruler_opts r, RulerOpts old = default)
     {
         var v = old;
@@ -3161,6 +3523,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_sankey_link ToNative(SankeyLink v)
     {
         cui_sankey_link r = default;
@@ -3169,6 +3532,7 @@ public sealed unsafe partial class Ui
         r.value = v.Value;
         return r;
     }
+
     private SankeyLink FromNative(cui_sankey_link r, SankeyLink old = default)
     {
         var v = old;
@@ -3177,6 +3541,7 @@ public sealed unsafe partial class Ui
         v.Value = r.value;
         return v;
     }
+
     private cui_sankey_opts ToNative(SankeyOpts v)
     {
         cui_sankey_opts r = default;
@@ -3186,6 +3551,7 @@ public sealed unsafe partial class Ui
         r.node_width = v.NodeWidth;
         return r;
     }
+
     private SankeyOpts FromNative(cui_sankey_opts r, SankeyOpts old = default)
     {
         var v = old;
@@ -3195,6 +3561,7 @@ public sealed unsafe partial class Ui
         v.NodeWidth = r.node_width;
         return v;
     }
+
     private cui_scatter_opts ToNative(ScatterOpts v)
     {
         cui_scatter_opts r = default;
@@ -3207,6 +3574,7 @@ public sealed unsafe partial class Ui
         r.no_legend = v.NoLegend;
         return r;
     }
+
     private ScatterOpts FromNative(cui_scatter_opts r, ScatterOpts old = default)
     {
         var v = old;
@@ -3219,6 +3587,7 @@ public sealed unsafe partial class Ui
         v.NoLegend = (r.no_legend != 0);
         return v;
     }
+
     private cui_scatter_series ToNative(ScatterSeries v)
     {
         Validate(v);
@@ -3226,10 +3595,11 @@ public sealed unsafe partial class Ui
         r.name = Utf8(v.Name);
         r.points = CopyVec2(v.Points.Span);
         r.sizes = CopyFloat(v.Sizes.Span);
-        r.count = (int)v.Points.Length;
+        r.count = v.Points.Length;
         r.color = ToNative(v.Color);
         return r;
     }
+
     private ScatterSeries FromNative(cui_scatter_series r, ScatterSeries old = default)
     {
         var v = old;
@@ -3237,6 +3607,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_schedule_opts ToNative(ScheduleOpts v)
     {
         cui_schedule_opts r = default;
@@ -3246,6 +3617,7 @@ public sealed unsafe partial class Ui
         r.next_count = v.NextCount;
         return r;
     }
+
     private ScheduleOpts FromNative(cui_schedule_opts r, ScheduleOpts old = default)
     {
         var v = old;
@@ -3255,6 +3627,7 @@ public sealed unsafe partial class Ui
         v.NextCount = r.next_count;
         return v;
     }
+
     private cui_schedule_result ToNative(ScheduleResult v)
     {
         cui_schedule_result r = default;
@@ -3263,6 +3636,7 @@ public sealed unsafe partial class Ui
         r.next = v.Next;
         return r;
     }
+
     private ScheduleResult FromNative(cui_schedule_result r, ScheduleResult old = default)
     {
         var v = old;
@@ -3271,6 +3645,7 @@ public sealed unsafe partial class Ui
         v.Next = r.next;
         return v;
     }
+
     private cui_scroll_opts ToNative(ScrollOpts v)
     {
         cui_scroll_opts r = default;
@@ -3284,6 +3659,7 @@ public sealed unsafe partial class Ui
         r.fade_color = ToNative(v.FadeColor);
         return r;
     }
+
     private ScrollOpts FromNative(cui_scroll_opts r, ScrollOpts old = default)
     {
         var v = old;
@@ -3297,6 +3673,7 @@ public sealed unsafe partial class Ui
         v.FadeColor = FromNative(r.fade_color, old.FadeColor);
         return v;
     }
+
     private cui_scrub_opts ToNative(ScrubOpts v)
     {
         cui_scrub_opts r = default;
@@ -3307,6 +3684,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private ScrubOpts FromNative(cui_scrub_opts r, ScrubOpts old = default)
     {
         var v = old;
@@ -3317,6 +3695,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_segmented_opts ToNative(SegmentedOpts v)
     {
         cui_segmented_opts r = default;
@@ -3325,6 +3704,7 @@ public sealed unsafe partial class Ui
         r.icons = Strings(v.Icons.Span);
         return r;
     }
+
     private SegmentedOpts FromNative(cui_segmented_opts r, SegmentedOpts old = default)
     {
         var v = old;
@@ -3332,6 +3712,7 @@ public sealed unsafe partial class Ui
         v.FullWidth = (r.full_width != 0);
         return v;
     }
+
     private cui_select_opts ToNative(SelectOpts v)
     {
         cui_select_opts r = default;
@@ -3343,6 +3724,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private SelectOpts FromNative(cui_select_opts r, SelectOpts old = default)
     {
         var v = old;
@@ -3353,15 +3735,17 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_series ToNative(Series v)
     {
         cui_series r = default;
         r.name = Utf8(v.Name);
         r.values = CopyFloat(v.Values.Span);
-        r.count = (int)v.Values.Length;
+        r.count = v.Values.Length;
         r.color = ToNative(v.Color);
         return r;
     }
+
     private Series FromNative(cui_series r, Series old = default)
     {
         var v = old;
@@ -3369,6 +3753,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_sheet_opts ToNative(SheetOpts v)
     {
         cui_sheet_opts r = default;
@@ -3377,6 +3762,7 @@ public sealed unsafe partial class Ui
         r.description = Utf8(v.Description);
         return r;
     }
+
     private SheetOpts FromNative(cui_sheet_opts r, SheetOpts old = default)
     {
         var v = old;
@@ -3385,6 +3771,7 @@ public sealed unsafe partial class Ui
         v.Description = Decode(r.description, old.Description);
         return v;
     }
+
     private cui_shortcut_recorder_opts ToNative(ShortcutRecorderOpts v)
     {
         cui_shortcut_recorder_opts r = default;
@@ -3392,6 +3779,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private ShortcutRecorderOpts FromNative(cui_shortcut_recorder_opts r, ShortcutRecorderOpts old = default)
     {
         var v = old;
@@ -3399,6 +3787,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_signature_opts ToNative(SignatureOpts v)
     {
         cui_signature_opts r = default;
@@ -3408,6 +3797,7 @@ public sealed unsafe partial class Ui
         r.ink = ToNative(v.Ink);
         return r;
     }
+
     private SignatureOpts FromNative(cui_signature_opts r, SignatureOpts old = default)
     {
         var v = old;
@@ -3417,6 +3807,7 @@ public sealed unsafe partial class Ui
         v.Ink = FromNative(r.ink, old.Ink);
         return v;
     }
+
     private cui_size ToNative(Size v)
     {
         Validate(v);
@@ -3425,6 +3816,7 @@ public sealed unsafe partial class Ui
         r.value = v.Value;
         return r;
     }
+
     private Size FromNative(cui_size r, Size old = default)
     {
         var v = old;
@@ -3432,6 +3824,7 @@ public sealed unsafe partial class Ui
         v.Value = r.value;
         return v;
     }
+
     private cui_slider_opts ToNative(SliderOpts v)
     {
         cui_slider_opts r = default;
@@ -3442,6 +3835,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private SliderOpts FromNative(cui_slider_opts r, SliderOpts old = default)
     {
         var v = old;
@@ -3452,6 +3846,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_source ToNative(Source v)
     {
         cui_source r = default;
@@ -3460,6 +3855,7 @@ public sealed unsafe partial class Ui
         r.snippet = Utf8(v.Snippet);
         return r;
     }
+
     private Source FromNative(cui_source r, Source old = default)
     {
         var v = old;
@@ -3468,6 +3864,7 @@ public sealed unsafe partial class Ui
         v.Snippet = Decode(r.snippet, old.Snippet);
         return v;
     }
+
     private cui_speed_action ToNative(SpeedAction v)
     {
         cui_speed_action r = default;
@@ -3475,6 +3872,7 @@ public sealed unsafe partial class Ui
         r.label = Utf8(v.Label);
         return r;
     }
+
     private SpeedAction FromNative(cui_speed_action r, SpeedAction old = default)
     {
         var v = old;
@@ -3482,6 +3880,7 @@ public sealed unsafe partial class Ui
         v.Label = Decode(r.label, old.Label);
         return v;
     }
+
     private cui_speed_dial_opts ToNative(SpeedDialOpts v)
     {
         cui_speed_dial_opts r = default;
@@ -3490,6 +3889,7 @@ public sealed unsafe partial class Ui
         r.tooltip = Utf8(v.Tooltip);
         return r;
     }
+
     private SpeedDialOpts FromNative(cui_speed_dial_opts r, SpeedDialOpts old = default)
     {
         var v = old;
@@ -3498,6 +3898,7 @@ public sealed unsafe partial class Ui
         v.Tooltip = Decode(r.tooltip, old.Tooltip);
         return v;
     }
+
     private cui_split_bar_opts ToNative(SplitBarOpts v)
     {
         cui_split_bar_opts r = default;
@@ -3507,6 +3908,7 @@ public sealed unsafe partial class Ui
         r.no_legend = v.NoLegend;
         return r;
     }
+
     private SplitBarOpts FromNative(cui_split_bar_opts r, SplitBarOpts old = default)
     {
         var v = old;
@@ -3516,6 +3918,7 @@ public sealed unsafe partial class Ui
         v.NoLegend = (r.no_legend != 0);
         return v;
     }
+
     private cui_split_button_opts ToNative(SplitButtonOpts v)
     {
         cui_split_button_opts r = default;
@@ -3526,6 +3929,7 @@ public sealed unsafe partial class Ui
         r.disabled = v.Disabled;
         return r;
     }
+
     private SplitButtonOpts FromNative(cui_split_button_opts r, SplitButtonOpts old = default)
     {
         var v = old;
@@ -3535,6 +3939,7 @@ public sealed unsafe partial class Ui
         v.Disabled = (r.disabled != 0);
         return v;
     }
+
     private cui_spotlight_opts ToNative(SpotlightOpts v)
     {
         cui_spotlight_opts r = default;
@@ -3546,6 +3951,7 @@ public sealed unsafe partial class Ui
         r.beam = v.Beam;
         return r;
     }
+
     private SpotlightOpts FromNative(cui_spotlight_opts r, SpotlightOpts old = default)
     {
         var v = old;
@@ -3557,6 +3963,7 @@ public sealed unsafe partial class Ui
         v.Beam = (r.beam != 0);
         return v;
     }
+
     private cui_stack_frame ToNative(StackFrame v)
     {
         cui_stack_frame r = default;
@@ -3566,10 +3973,11 @@ public sealed unsafe partial class Ui
         r.column = v.Column;
         r.external = v.External;
         r.source = Strings(v.Source.Span);
-        r.source_count = (int)v.Source.Length;
+        r.source_count = v.Source.Length;
         r.source_first = v.SourceFirst;
         return r;
     }
+
     private StackFrame FromNative(cui_stack_frame r, StackFrame old = default)
     {
         var v = old;
@@ -3581,6 +3989,7 @@ public sealed unsafe partial class Ui
         v.SourceFirst = r.source_first;
         return v;
     }
+
     private cui_stack_trace_opts ToNative(StackTraceOpts v)
     {
         cui_stack_trace_opts r = default;
@@ -3590,6 +3999,7 @@ public sealed unsafe partial class Ui
         r.lang = Utf8(v.Lang);
         return r;
     }
+
     private StackTraceOpts FromNative(cui_stack_trace_opts r, StackTraceOpts old = default)
     {
         var v = old;
@@ -3599,18 +4009,21 @@ public sealed unsafe partial class Ui
         v.Lang = Decode(r.lang, old.Lang);
         return v;
     }
+
     private cui_stack_trace_result ToNative(StackTraceResult v)
     {
         cui_stack_trace_result r = default;
         r.clicked = v.Clicked;
         return r;
     }
+
     private StackTraceResult FromNative(cui_stack_trace_result r, StackTraceResult old = default)
     {
         var v = old;
         v.Clicked = r.clicked;
         return v;
     }
+
     private cui_status_button_opts ToNative(StatusButtonOpts v)
     {
         cui_status_button_opts r = default;
@@ -3622,6 +4035,7 @@ public sealed unsafe partial class Ui
         r.size = (cui_control_size)CheckEnum(v.Size);
         return r;
     }
+
     private StatusButtonOpts FromNative(cui_status_button_opts r, StatusButtonOpts old = default)
     {
         var v = old;
@@ -3633,6 +4047,7 @@ public sealed unsafe partial class Ui
         v.Size = (ControlSize)r.size;
         return v;
     }
+
     private cui_swipe_action ToNative(SwipeAction v)
     {
         cui_swipe_action r = default;
@@ -3641,6 +4056,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private SwipeAction FromNative(cui_swipe_action r, SwipeAction old = default)
     {
         var v = old;
@@ -3649,6 +4065,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_tab_bar_item ToNative(TabBarItem v)
     {
         cui_tab_bar_item r = default;
@@ -3657,6 +4074,7 @@ public sealed unsafe partial class Ui
         r.badge = v.Badge;
         return r;
     }
+
     private TabBarItem FromNative(cui_tab_bar_item r, TabBarItem old = default)
     {
         var v = old;
@@ -3665,6 +4083,7 @@ public sealed unsafe partial class Ui
         v.Badge = r.badge;
         return v;
     }
+
     private cui_tab_bar_opts ToNative(TabBarOpts v)
     {
         cui_tab_bar_opts r = default;
@@ -3672,6 +4091,7 @@ public sealed unsafe partial class Ui
         r.labels_on_selected_only = v.LabelsOnSelectedOnly;
         return r;
     }
+
     private TabBarOpts FromNative(cui_tab_bar_opts r, TabBarOpts old = default)
     {
         var v = old;
@@ -3679,6 +4099,7 @@ public sealed unsafe partial class Ui
         v.LabelsOnSelectedOnly = (r.labels_on_selected_only != 0);
         return v;
     }
+
     private cui_table_column ToNative(TableColumn v)
     {
         cui_table_column r = default;
@@ -3688,6 +4109,7 @@ public sealed unsafe partial class Ui
         r.sortable = v.Sortable;
         return r;
     }
+
     private TableColumn FromNative(cui_table_column r, TableColumn old = default)
     {
         var v = old;
@@ -3697,6 +4119,7 @@ public sealed unsafe partial class Ui
         v.Sortable = (r.sortable != 0);
         return v;
     }
+
     private cui_table_opts ToNative(TableOpts v)
     {
         cui_table_opts r = default;
@@ -3707,6 +4130,7 @@ public sealed unsafe partial class Ui
         r.selectable = v.Selectable;
         return r;
     }
+
     private TableOpts FromNative(cui_table_opts r, TableOpts old = default)
     {
         var v = old;
@@ -3716,6 +4140,7 @@ public sealed unsafe partial class Ui
         v.Selectable = (r.selectable != 0);
         return v;
     }
+
     private cui_table_sort ToNative(TableSort v)
     {
         cui_table_sort r = default;
@@ -3723,6 +4148,7 @@ public sealed unsafe partial class Ui
         r.descending = v.Descending;
         return r;
     }
+
     private TableSort FromNative(cui_table_sort r, TableSort old = default)
     {
         var v = old;
@@ -3730,6 +4156,7 @@ public sealed unsafe partial class Ui
         v.Descending = (r.descending != 0);
         return v;
     }
+
     private cui_tabs_opts ToNative(TabsOpts v)
     {
         cui_tabs_opts r = default;
@@ -3738,6 +4165,7 @@ public sealed unsafe partial class Ui
         r.full_width = v.FullWidth;
         return r;
     }
+
     private TabsOpts FromNative(cui_tabs_opts r, TabsOpts old = default)
     {
         var v = old;
@@ -3745,6 +4173,7 @@ public sealed unsafe partial class Ui
         v.FullWidth = (r.full_width != 0);
         return v;
     }
+
     private cui_tag_opts ToNative(TagOpts v)
     {
         cui_tag_opts r = default;
@@ -3754,6 +4183,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private TagOpts FromNative(cui_tag_opts r, TagOpts old = default)
     {
         var v = old;
@@ -3763,6 +4193,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_terminal_line ToNative(TerminalLine v)
     {
         cui_terminal_line r = default;
@@ -3771,6 +4202,7 @@ public sealed unsafe partial class Ui
         r.cols = v.Cols;
         return r;
     }
+
     private TerminalLine FromNative(cui_terminal_line r, TerminalLine old = default)
     {
         var v = old;
@@ -3779,6 +4211,7 @@ public sealed unsafe partial class Ui
         v.Cols = r.cols;
         return v;
     }
+
     private cui_terminal_opts ToNative(TerminalOpts v)
     {
         cui_terminal_opts r = default;
@@ -3789,6 +4222,7 @@ public sealed unsafe partial class Ui
         r.no_input = v.NoInput;
         return r;
     }
+
     private TerminalOpts FromNative(cui_terminal_opts r, TerminalOpts old = default)
     {
         var v = old;
@@ -3799,6 +4233,7 @@ public sealed unsafe partial class Ui
         v.NoInput = (r.no_input != 0);
         return v;
     }
+
     private cui_terminal_result ToNative(TerminalResult v)
     {
         cui_terminal_result r = default;
@@ -3806,6 +4241,7 @@ public sealed unsafe partial class Ui
         r.interrupt = v.Interrupt;
         return r;
     }
+
     private TerminalResult FromNative(cui_terminal_result r, TerminalResult old = default)
     {
         var v = old;
@@ -3813,6 +4249,7 @@ public sealed unsafe partial class Ui
         v.Interrupt = (r.interrupt != 0);
         return v;
     }
+
     private cui_test_explorer_opts ToNative(TestExplorerOpts v)
     {
         cui_test_explorer_opts r = default;
@@ -3820,6 +4257,7 @@ public sealed unsafe partial class Ui
         r.height = v.Height;
         return r;
     }
+
     private TestExplorerOpts FromNative(cui_test_explorer_opts r, TestExplorerOpts old = default)
     {
         var v = old;
@@ -3827,6 +4265,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_test_explorer_result ToNative(TestExplorerResult v)
     {
         cui_test_explorer_result r = default;
@@ -3840,6 +4279,7 @@ public sealed unsafe partial class Ui
         r.total = v.Total;
         return r;
     }
+
     private TestExplorerResult FromNative(cui_test_explorer_result r, TestExplorerResult old = default)
     {
         var v = old;
@@ -3853,6 +4293,7 @@ public sealed unsafe partial class Ui
         v.Total = r.total;
         return v;
     }
+
     private cui_test_item ToNative(TestItem v)
     {
         cui_test_item r = default;
@@ -3863,6 +4304,7 @@ public sealed unsafe partial class Ui
         r.message = Utf8(v.Message);
         return r;
     }
+
     private TestItem FromNative(cui_test_item r, TestItem old = default)
     {
         var v = old;
@@ -3873,6 +4315,7 @@ public sealed unsafe partial class Ui
         v.Message = Decode(r.message, old.Message);
         return v;
     }
+
     private cui_text_fx_opts ToNative(TextFxOpts v)
     {
         cui_text_fx_opts r = default;
@@ -3886,6 +4329,7 @@ public sealed unsafe partial class Ui
         r.caret = v.Caret;
         return r;
     }
+
     private TextFxOpts FromNative(cui_text_fx_opts r, TextFxOpts old = default)
     {
         var v = old;
@@ -3899,6 +4343,7 @@ public sealed unsafe partial class Ui
         v.Caret = (r.caret != 0);
         return v;
     }
+
     private cui_text_opts ToNative(TextOpts v)
     {
         cui_text_opts r = default;
@@ -3914,6 +4359,7 @@ public sealed unsafe partial class Ui
         r.direction = (cui_direction)CheckEnum(v.Direction);
         return r;
     }
+
     private TextOpts FromNative(cui_text_opts r, TextOpts old = default)
     {
         var v = old;
@@ -3929,6 +4375,7 @@ public sealed unsafe partial class Ui
         v.Direction = (Direction)r.direction;
         return v;
     }
+
     private cui_ticker_item ToNative(TickerItem v)
     {
         cui_ticker_item r = default;
@@ -3938,6 +4385,7 @@ public sealed unsafe partial class Ui
         r.lower_is_better = v.LowerIsBetter;
         return r;
     }
+
     private TickerItem FromNative(cui_ticker_item r, TickerItem old = default)
     {
         var v = old;
@@ -3947,6 +4395,7 @@ public sealed unsafe partial class Ui
         v.LowerIsBetter = (r.lower_is_better != 0);
         return v;
     }
+
     private cui_ticker_opts ToNative(TickerOpts v)
     {
         cui_ticker_opts r = default;
@@ -3954,6 +4403,7 @@ public sealed unsafe partial class Ui
         r.height = v.Height;
         return r;
     }
+
     private TickerOpts FromNative(cui_ticker_opts r, TickerOpts old = default)
     {
         var v = old;
@@ -3961,6 +4411,7 @@ public sealed unsafe partial class Ui
         v.Height = r.height;
         return v;
     }
+
     private cui_tile_opts ToNative(TileOpts v)
     {
         cui_tile_opts r = default;
@@ -3971,6 +4422,7 @@ public sealed unsafe partial class Ui
         r.wide = v.Wide;
         return r;
     }
+
     private TileOpts FromNative(cui_tile_opts r, TileOpts old = default)
     {
         var v = old;
@@ -3981,6 +4433,7 @@ public sealed unsafe partial class Ui
         v.Wide = (r.wide != 0);
         return v;
     }
+
     private cui_time_histogram_opts ToNative(TimeHistogramOpts v)
     {
         cui_time_histogram_opts r = default;
@@ -3989,6 +4442,7 @@ public sealed unsafe partial class Ui
         r.utc = v.Utc;
         return r;
     }
+
     private TimeHistogramOpts FromNative(cui_time_histogram_opts r, TimeHistogramOpts old = default)
     {
         var v = old;
@@ -3997,6 +4451,7 @@ public sealed unsafe partial class Ui
         v.Utc = (r.utc != 0);
         return v;
     }
+
     private cui_time_histogram_result ToNative(TimeHistogramResult v)
     {
         cui_time_histogram_result r = default;
@@ -4004,6 +4459,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private TimeHistogramResult FromNative(cui_time_histogram_result r, TimeHistogramResult old = default)
     {
         var v = old;
@@ -4011,6 +4467,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_time_opts ToNative(TimeOpts v)
     {
         cui_time_opts r = default;
@@ -4020,6 +4477,7 @@ public sealed unsafe partial class Ui
         r.width = ToNative(v.Width);
         return r;
     }
+
     private TimeOpts FromNative(cui_time_opts r, TimeOpts old = default)
     {
         var v = old;
@@ -4029,6 +4487,7 @@ public sealed unsafe partial class Ui
         v.Width = FromNative(r.width, old.Width);
         return v;
     }
+
     private cui_timeline_opts ToNative(TimelineOpts v)
     {
         cui_timeline_opts r = default;
@@ -4039,6 +4498,7 @@ public sealed unsafe partial class Ui
         r.last = v.Last;
         return r;
     }
+
     private TimelineOpts FromNative(cui_timeline_opts r, TimelineOpts old = default)
     {
         var v = old;
@@ -4049,6 +4509,7 @@ public sealed unsafe partial class Ui
         v.Last = (r.last != 0);
         return v;
     }
+
     private cui_toast_opts ToNative(ToastOpts v)
     {
         cui_toast_opts r = default;
@@ -4059,6 +4520,7 @@ public sealed unsafe partial class Ui
         r.show_timer = v.ShowTimer;
         return r;
     }
+
     private ToastOpts FromNative(cui_toast_opts r, ToastOpts old = default)
     {
         var v = old;
@@ -4069,6 +4531,7 @@ public sealed unsafe partial class Ui
         v.ShowTimer = (r.show_timer != 0);
         return v;
     }
+
     private cui_toc_item ToNative(TocItem v)
     {
         cui_toc_item r = default;
@@ -4077,6 +4540,7 @@ public sealed unsafe partial class Ui
         r.level = v.Level;
         return r;
     }
+
     private TocItem FromNative(cui_toc_item r, TocItem old = default)
     {
         var v = old;
@@ -4085,6 +4549,7 @@ public sealed unsafe partial class Ui
         v.Level = r.level;
         return v;
     }
+
     private cui_toggle_group_opts ToNative(ToggleGroupOpts v)
     {
         cui_toggle_group_opts r = default;
@@ -4094,6 +4559,7 @@ public sealed unsafe partial class Ui
         r.size = (cui_control_size)CheckEnum(v.Size);
         return r;
     }
+
     private ToggleGroupOpts FromNative(cui_toggle_group_opts r, ToggleGroupOpts old = default)
     {
         var v = old;
@@ -4102,6 +4568,7 @@ public sealed unsafe partial class Ui
         v.Size = (ControlSize)r.size;
         return v;
     }
+
     private cui_tool_call_opts ToNative(ToolCallOpts v)
     {
         cui_tool_call_opts r = default;
@@ -4113,6 +4580,7 @@ public sealed unsafe partial class Ui
         r.seconds = v.Seconds;
         return r;
     }
+
     private ToolCallOpts FromNative(cui_tool_call_opts r, ToolCallOpts old = default)
     {
         var v = old;
@@ -4124,6 +4592,7 @@ public sealed unsafe partial class Ui
         v.Seconds = r.seconds;
         return v;
     }
+
     private cui_tour_opts ToNative(TourOpts v)
     {
         cui_tour_opts r = default;
@@ -4136,6 +4605,7 @@ public sealed unsafe partial class Ui
         r.count_format = Utf8(CheckFormat(v.CountFormat, 2));
         return r;
     }
+
     private TourOpts FromNative(cui_tour_opts r, TourOpts old = default)
     {
         var v = old;
@@ -4148,6 +4618,7 @@ public sealed unsafe partial class Ui
         v.CountFormat = Decode(r.count_format, old.CountFormat);
         return v;
     }
+
     private cui_tour_step ToNative(TourStep v)
     {
         cui_tour_step r = default;
@@ -4157,6 +4628,7 @@ public sealed unsafe partial class Ui
         r.placement = (cui_placement)CheckEnum(v.Placement);
         return r;
     }
+
     private TourStep FromNative(cui_tour_step r, TourStep old = default)
     {
         var v = old;
@@ -4166,6 +4638,7 @@ public sealed unsafe partial class Ui
         v.Placement = (Placement)r.placement;
         return v;
     }
+
     private cui_trace_marker ToNative(TraceMarker v)
     {
         cui_trace_marker r = default;
@@ -4174,6 +4647,7 @@ public sealed unsafe partial class Ui
         r.tone = (cui_tone)CheckEnum(v.Tone);
         return r;
     }
+
     private TraceMarker FromNative(cui_trace_marker r, TraceMarker old = default)
     {
         var v = old;
@@ -4182,6 +4656,7 @@ public sealed unsafe partial class Ui
         v.Tone = (Tone)r.tone;
         return v;
     }
+
     private cui_trace_opts ToNative(TraceOpts v)
     {
         cui_trace_opts r = default;
@@ -4189,9 +4664,10 @@ public sealed unsafe partial class Ui
         r.height = v.Height;
         r.row_height = v.RowHeight;
         r.markers = CopyTraceMarker(v.Markers.Span);
-        r.marker_count = (int)v.Markers.Length;
+        r.marker_count = v.Markers.Length;
         return r;
     }
+
     private TraceOpts FromNative(cui_trace_opts r, TraceOpts old = default)
     {
         var v = old;
@@ -4200,6 +4676,7 @@ public sealed unsafe partial class Ui
         v.RowHeight = r.row_height;
         return v;
     }
+
     private cui_trace_result ToNative(TraceResult v)
     {
         cui_trace_result r = default;
@@ -4208,6 +4685,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private TraceResult FromNative(cui_trace_result r, TraceResult old = default)
     {
         var v = old;
@@ -4216,6 +4694,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_trace_span ToNative(TraceSpan v)
     {
         cui_trace_span r = default;
@@ -4227,6 +4706,7 @@ public sealed unsafe partial class Ui
         r.color_key = v.ColorKey;
         return r;
     }
+
     private TraceSpan FromNative(cui_trace_span r, TraceSpan old = default)
     {
         var v = old;
@@ -4238,6 +4718,7 @@ public sealed unsafe partial class Ui
         v.ColorKey = r.color_key;
         return v;
     }
+
     private cui_trace_track ToNative(TraceTrack v)
     {
         cui_trace_track r = default;
@@ -4245,6 +4726,7 @@ public sealed unsafe partial class Ui
         r.collapsed = v.Collapsed;
         return r;
     }
+
     private TraceTrack FromNative(cui_trace_track r, TraceTrack old = default)
     {
         var v = old;
@@ -4252,6 +4734,7 @@ public sealed unsafe partial class Ui
         v.Collapsed = (r.collapsed != 0);
         return v;
     }
+
     private cui_trace_view ToNative(TraceView v)
     {
         cui_trace_view r = default;
@@ -4262,6 +4745,7 @@ public sealed unsafe partial class Ui
         r.mark_end = v.MarkEnd;
         return r;
     }
+
     private TraceView FromNative(cui_trace_view r, TraceView old = default)
     {
         var v = old;
@@ -4272,6 +4756,7 @@ public sealed unsafe partial class Ui
         v.MarkEnd = r.mark_end;
         return v;
     }
+
     private cui_tree_opts ToNative(TreeOpts v)
     {
         cui_tree_opts r = default;
@@ -4280,6 +4765,7 @@ public sealed unsafe partial class Ui
         r.selected = v.Selected;
         return r;
     }
+
     private TreeOpts FromNative(cui_tree_opts r, TreeOpts old = default)
     {
         var v = old;
@@ -4288,6 +4774,7 @@ public sealed unsafe partial class Ui
         v.Selected = (r.selected != 0);
         return v;
     }
+
     private cui_treemap_opts ToNative(TreemapOpts v)
     {
         cui_treemap_opts r = default;
@@ -4296,6 +4783,7 @@ public sealed unsafe partial class Ui
         r.format = Utf8(CheckFormat(v.Format, 1));
         return r;
     }
+
     private TreemapOpts FromNative(cui_treemap_opts r, TreemapOpts old = default)
     {
         var v = old;
@@ -4304,6 +4792,7 @@ public sealed unsafe partial class Ui
         v.Format = Decode(r.format, old.Format);
         return v;
     }
+
     private cui_uptime_opts ToNative(UptimeOpts v)
     {
         cui_uptime_opts r = default;
@@ -4311,6 +4800,7 @@ public sealed unsafe partial class Ui
         r.last_day = ToNative(v.LastDay);
         return r;
     }
+
     private UptimeOpts FromNative(cui_uptime_opts r, UptimeOpts old = default)
     {
         var v = old;
@@ -4318,6 +4808,7 @@ public sealed unsafe partial class Ui
         v.LastDay = FromNative(r.last_day, old.LastDay);
         return v;
     }
+
     private cui_uptime_result ToNative(UptimeResult v)
     {
         cui_uptime_result r = default;
@@ -4325,6 +4816,7 @@ public sealed unsafe partial class Ui
         r.day = v.Day;
         return r;
     }
+
     private UptimeResult FromNative(cui_uptime_result r, UptimeResult old = default)
     {
         var v = old;
@@ -4332,20 +4824,23 @@ public sealed unsafe partial class Ui
         v.Day = r.day;
         return v;
     }
+
     private cui_uptime_service ToNative(UptimeService v)
     {
         cui_uptime_service r = default;
         r.name = Utf8(v.Name);
         r.days = CopyFloat(v.Days.Span);
-        r.day_count = (int)v.Days.Length;
+        r.day_count = v.Days.Length;
         return r;
     }
+
     private UptimeService FromNative(cui_uptime_service r, UptimeService old = default)
     {
         var v = old;
         v.Name = Decode(r.name, old.Name);
         return v;
     }
+
     private cui_user_menu_opts ToNative(UserMenuOpts v)
     {
         cui_user_menu_opts r = default;
@@ -4357,6 +4852,7 @@ public sealed unsafe partial class Ui
         r.width = v.Width;
         return r;
     }
+
     private UserMenuOpts FromNative(cui_user_menu_opts r, UserMenuOpts old = default)
     {
         var v = old;
@@ -4368,6 +4864,7 @@ public sealed unsafe partial class Ui
         v.Width = r.width;
         return v;
     }
+
     private cui_vec2 ToNative(Vec2 v)
     {
         cui_vec2 r = default;
@@ -4375,6 +4872,7 @@ public sealed unsafe partial class Ui
         r.y = v.Y;
         return r;
     }
+
     private Vec2 FromNative(cui_vec2 r, Vec2 old = default)
     {
         var v = old;
@@ -4382,6 +4880,7 @@ public sealed unsafe partial class Ui
         v.Y = r.y;
         return v;
     }
+
     private cui_viz_item ToNative(VizItem v)
     {
         cui_viz_item r = default;
@@ -4390,6 +4889,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private VizItem FromNative(cui_viz_item r, VizItem old = default)
     {
         var v = old;
@@ -4398,6 +4898,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_voice_orb_opts ToNative(VoiceOrbOpts v)
     {
         cui_voice_orb_opts r = default;
@@ -4405,6 +4906,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private VoiceOrbOpts FromNative(cui_voice_orb_opts r, VoiceOrbOpts old = default)
     {
         var v = old;
@@ -4412,6 +4914,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_waffle_opts ToNative(WaffleOpts v)
     {
         cui_waffle_opts r = default;
@@ -4421,6 +4924,7 @@ public sealed unsafe partial class Ui
         r.format = Utf8(CheckFormat(v.Format, 1));
         return r;
     }
+
     private WaffleOpts FromNative(cui_waffle_opts r, WaffleOpts old = default)
     {
         var v = old;
@@ -4430,6 +4934,7 @@ public sealed unsafe partial class Ui
         v.Format = Decode(r.format, old.Format);
         return v;
     }
+
     private cui_waterfall_opts ToNative(WaterfallOpts v)
     {
         cui_waterfall_opts r = default;
@@ -4440,6 +4945,7 @@ public sealed unsafe partial class Ui
         r.loaded = v.Loaded;
         return r;
     }
+
     private WaterfallOpts FromNative(cui_waterfall_opts r, WaterfallOpts old = default)
     {
         var v = old;
@@ -4449,6 +4955,7 @@ public sealed unsafe partial class Ui
         v.Loaded = r.loaded;
         return v;
     }
+
     private cui_waterfall_result ToNative(WaterfallResult v)
     {
         cui_waterfall_result r = default;
@@ -4457,6 +4964,7 @@ public sealed unsafe partial class Ui
         r.hovered = v.Hovered;
         return r;
     }
+
     private WaterfallResult FromNative(cui_waterfall_result r, WaterfallResult old = default)
     {
         var v = old;
@@ -4465,6 +4973,7 @@ public sealed unsafe partial class Ui
         v.Hovered = r.hovered;
         return v;
     }
+
     private cui_waveform_opts ToNative(WaveformOpts v)
     {
         cui_waveform_opts r = default;
@@ -4475,6 +4984,7 @@ public sealed unsafe partial class Ui
         r.color = ToNative(v.Color);
         return r;
     }
+
     private WaveformOpts FromNative(cui_waveform_opts r, WaveformOpts old = default)
     {
         var v = old;
@@ -4485,6 +4995,7 @@ public sealed unsafe partial class Ui
         v.Color = FromNative(r.color, old.Color);
         return v;
     }
+
     private cui_week_opts ToNative(WeekOpts v)
     {
         cui_week_opts r = default;
@@ -4495,6 +5006,7 @@ public sealed unsafe partial class Ui
         r.read_only = v.ReadOnly;
         return r;
     }
+
     private WeekOpts FromNative(cui_week_opts r, WeekOpts old = default)
     {
         var v = old;
@@ -4505,6 +5017,7 @@ public sealed unsafe partial class Ui
         v.ReadOnly = (r.read_only != 0);
         return v;
     }
+
     private cui_wheel_opts ToNative(WheelOpts v)
     {
         cui_wheel_opts r = default;
@@ -4515,6 +5028,7 @@ public sealed unsafe partial class Ui
         r.join_right = v.JoinRight;
         return r;
     }
+
     private WheelOpts FromNative(cui_wheel_opts r, WheelOpts old = default)
     {
         var v = old;
@@ -4525,14 +5039,22 @@ public sealed unsafe partial class Ui
         v.JoinRight = (r.join_right != 0);
         return v;
     }
+
     private CBool* CopyBool(ReadOnlySpan<bool> values)
     {
         var p = (CBool*)_arena.Allocate(checked(values.Length * sizeof(CBool)));
         for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
+
     private readonly List<(Memory<bool> Memory, nuint Pointer)> _journalBool = new List<(Memory<bool> Memory, UIntPtr Pointer)>();
-    private void JournalBool(Memory<bool> memory, CBool* pointer) { _journalBool.Add((memory, (nuint)pointer)); _arraysDirty = true; }
+
+    private void JournalBool(Memory<bool> memory, CBool* pointer)
+    {
+        _journalBool.Add((memory, (nuint)pointer));
+        _arraysDirty = true;
+    }
+
     private void SyncBool()
     {
         foreach (var entry in _journalBool)
@@ -4542,14 +5064,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = (p[i] != 0);
         }
     }
+
     private cui_api_endpoint* CopyApiEndpoint(ReadOnlySpan<ApiEndpoint> values)
     {
         var p = (cui_api_endpoint*)_arena.Allocate(checked(values.Length * sizeof(cui_api_endpoint)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<ApiEndpoint> Memory, nuint Pointer)> _journalApiEndpoint = new List<(Memory<ApiEndpoint> Memory, UIntPtr Pointer)>();
     private void JournalApiEndpoint(Memory<ApiEndpoint> memory, cui_api_endpoint* pointer) => _journalApiEndpoint.Add((memory, (nuint)pointer));
+
     private void SyncApiEndpoint()
     {
         foreach (var entry in _journalApiEndpoint)
@@ -4559,14 +5084,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_api_param* CopyApiParam(ReadOnlySpan<ApiParam> values)
     {
         var p = (cui_api_param*)_arena.Allocate(checked(values.Length * sizeof(cui_api_param)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<ApiParam> Memory, nuint Pointer)> _journalApiParam = new List<(Memory<ApiParam> Memory, UIntPtr Pointer)>();
     private void JournalApiParam(Memory<ApiParam> memory, cui_api_param* pointer) => _journalApiParam.Add((memory, (nuint)pointer));
+
     private void SyncApiParam()
     {
         foreach (var entry in _journalApiParam)
@@ -4576,14 +5104,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_blame_commit* CopyBlameCommit(ReadOnlySpan<BlameCommit> values)
     {
         var p = (cui_blame_commit*)_arena.Allocate(checked(values.Length * sizeof(cui_blame_commit)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<BlameCommit> Memory, nuint Pointer)> _journalBlameCommit = new List<(Memory<BlameCommit> Memory, UIntPtr Pointer)>();
     private void JournalBlameCommit(Memory<BlameCommit> memory, cui_blame_commit* pointer) => _journalBlameCommit.Add((memory, (nuint)pointer));
+
     private void SyncBlameCommit()
     {
         foreach (var entry in _journalBlameCommit)
@@ -4593,14 +5124,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_cal_event* CopyCalEvent(ReadOnlySpan<CalEvent> values)
     {
         var p = (cui_cal_event*)_arena.Allocate(checked(values.Length * sizeof(cui_cal_event)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<CalEvent> Memory, nuint Pointer)> _journalCalEvent = new List<(Memory<CalEvent> Memory, UIntPtr Pointer)>();
     private void JournalCalEvent(Memory<CalEvent> memory, cui_cal_event* pointer) => _journalCalEvent.Add((memory, (nuint)pointer));
+
     private void SyncCalEvent()
     {
         foreach (var entry in _journalCalEvent)
@@ -4610,14 +5144,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_candle* CopyCandle(ReadOnlySpan<Candle> values)
     {
         var p = (cui_candle*)_arena.Allocate(checked(values.Length * sizeof(cui_candle)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Candle> Memory, nuint Pointer)> _journalCandle = new List<(Memory<Candle> Memory, UIntPtr Pointer)>();
     private void JournalCandle(Memory<Candle> memory, cui_candle* pointer) => _journalCandle.Add((memory, (nuint)pointer));
+
     private void SyncCandle()
     {
         foreach (var entry in _journalCandle)
@@ -4627,14 +5164,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_chart_annotation* CopyChartAnnotation(ReadOnlySpan<ChartAnnotation> values)
     {
         var p = (cui_chart_annotation*)_arena.Allocate(checked(values.Length * sizeof(cui_chart_annotation)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<ChartAnnotation> Memory, nuint Pointer)> _journalChartAnnotation = new List<(Memory<ChartAnnotation> Memory, UIntPtr Pointer)>();
     private void JournalChartAnnotation(Memory<ChartAnnotation> memory, cui_chart_annotation* pointer) => _journalChartAnnotation.Add((memory, (nuint)pointer));
+
     private void SyncChartAnnotation()
     {
         foreach (var entry in _journalChartAnnotation)
@@ -4644,14 +5184,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_check_step* CopyCheckStep(ReadOnlySpan<CheckStep> values)
     {
         var p = (cui_check_step*)_arena.Allocate(checked(values.Length * sizeof(cui_check_step)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<CheckStep> Memory, nuint Pointer)> _journalCheckStep = new List<(Memory<CheckStep> Memory, UIntPtr Pointer)>();
     private void JournalCheckStep(Memory<CheckStep> memory, cui_check_step* pointer) => _journalCheckStep.Add((memory, (nuint)pointer));
+
     private void SyncCheckStep()
     {
         foreach (var entry in _journalCheckStep)
@@ -4661,14 +5204,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_choice* CopyChoice(ReadOnlySpan<Choice> values)
     {
         var p = (cui_choice*)_arena.Allocate(checked(values.Length * sizeof(cui_choice)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Choice> Memory, nuint Pointer)> _journalChoice = new List<(Memory<Choice> Memory, UIntPtr Pointer)>();
     private void JournalChoice(Memory<Choice> memory, cui_choice* pointer) => _journalChoice.Add((memory, (nuint)pointer));
+
     private void SyncChoice()
     {
         foreach (var entry in _journalChoice)
@@ -4678,14 +5224,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_command* CopyCommand(ReadOnlySpan<Command> values)
     {
         var p = (cui_command*)_arena.Allocate(checked(values.Length * sizeof(cui_command)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Command> Memory, nuint Pointer)> _journalCommand = new List<(Memory<Command> Memory, UIntPtr Pointer)>();
     private void JournalCommand(Memory<Command> memory, cui_command* pointer) => _journalCommand.Add((memory, (nuint)pointer));
+
     private void SyncCommand()
     {
         foreach (var entry in _journalCommand)
@@ -4695,14 +5244,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_commit* CopyCommit(ReadOnlySpan<Commit> values)
     {
         var p = (cui_commit*)_arena.Allocate(checked(values.Length * sizeof(cui_commit)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Commit> Memory, nuint Pointer)> _journalCommit = new List<(Memory<Commit> Memory, UIntPtr Pointer)>();
     private void JournalCommit(Memory<Commit> memory, cui_commit* pointer) => _journalCommit.Add((memory, (nuint)pointer));
+
     private void SyncCommit()
     {
         foreach (var entry in _journalCommit)
@@ -4712,14 +5264,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_coverage_file* CopyCoverageFile(ReadOnlySpan<CoverageFile> values)
     {
         var p = (cui_coverage_file*)_arena.Allocate(checked(values.Length * sizeof(cui_coverage_file)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<CoverageFile> Memory, nuint Pointer)> _journalCoverageFile = new List<(Memory<CoverageFile> Memory, UIntPtr Pointer)>();
     private void JournalCoverageFile(Memory<CoverageFile> memory, cui_coverage_file* pointer) => _journalCoverageFile.Add((memory, (nuint)pointer));
+
     private void SyncCoverageFile()
     {
         foreach (var entry in _journalCoverageFile)
@@ -4729,14 +5284,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_diagnostic* CopyDiagnostic(ReadOnlySpan<Diagnostic> values)
     {
         var p = (cui_diagnostic*)_arena.Allocate(checked(values.Length * sizeof(cui_diagnostic)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Diagnostic> Memory, nuint Pointer)> _journalDiagnostic = new List<(Memory<Diagnostic> Memory, UIntPtr Pointer)>();
     private void JournalDiagnostic(Memory<Diagnostic> memory, cui_diagnostic* pointer) => _journalDiagnostic.Add((memory, (nuint)pointer));
+
     private void SyncDiagnostic()
     {
         foreach (var entry in _journalDiagnostic)
@@ -4746,14 +5304,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_dot_series* CopyDotSeries(ReadOnlySpan<DotSeries> values)
     {
         var p = (cui_dot_series*)_arena.Allocate(checked(values.Length * sizeof(cui_dot_series)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<DotSeries> Memory, nuint Pointer)> _journalDotSeries = new List<(Memory<DotSeries> Memory, UIntPtr Pointer)>();
     private void JournalDotSeries(Memory<DotSeries> memory, cui_dot_series* pointer) => _journalDotSeries.Add((memory, (nuint)pointer));
+
     private void SyncDotSeries()
     {
         foreach (var entry in _journalDotSeries)
@@ -4763,14 +5324,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_feature_flag* CopyFeatureFlag(ReadOnlySpan<FeatureFlag> values)
     {
         var p = (cui_feature_flag*)_arena.Allocate(checked(values.Length * sizeof(cui_feature_flag)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<FeatureFlag> Memory, nuint Pointer)> _journalFeatureFlag = new List<(Memory<FeatureFlag> Memory, UIntPtr Pointer)>();
     private void JournalFeatureFlag(Memory<FeatureFlag> memory, cui_feature_flag* pointer) => _journalFeatureFlag.Add((memory, (nuint)pointer));
+
     private void SyncFeatureFlag()
     {
         foreach (var entry in _journalFeatureFlag)
@@ -4780,14 +5344,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_filter_field* CopyFilterField(ReadOnlySpan<FilterField> values)
     {
         var p = (cui_filter_field*)_arena.Allocate(checked(values.Length * sizeof(cui_filter_field)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<FilterField> Memory, nuint Pointer)> _journalFilterField = new List<(Memory<FilterField> Memory, UIntPtr Pointer)>();
     private void JournalFilterField(Memory<FilterField> memory, cui_filter_field* pointer) => _journalFilterField.Add((memory, (nuint)pointer));
+
     private void SyncFilterField()
     {
         foreach (var entry in _journalFilterField)
@@ -4797,14 +5364,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_gantt_task* CopyGanttTask(ReadOnlySpan<GanttTask> values)
     {
         var p = (cui_gantt_task*)_arena.Allocate(checked(values.Length * sizeof(cui_gantt_task)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<GanttTask> Memory, nuint Pointer)> _journalGanttTask = new List<(Memory<GanttTask> Memory, UIntPtr Pointer)>();
     private void JournalGanttTask(Memory<GanttTask> memory, cui_gantt_task* pointer) => _journalGanttTask.Add((memory, (nuint)pointer));
+
     private void SyncGanttTask()
     {
         foreach (var entry in _journalGanttTask)
@@ -4814,14 +5384,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_gauge_band* CopyGaugeBand(ReadOnlySpan<GaugeBand> values)
     {
         var p = (cui_gauge_band*)_arena.Allocate(checked(values.Length * sizeof(cui_gauge_band)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<GaugeBand> Memory, nuint Pointer)> _journalGaugeBand = new List<(Memory<GaugeBand> Memory, UIntPtr Pointer)>();
     private void JournalGaugeBand(Memory<GaugeBand> memory, cui_gauge_band* pointer) => _journalGaugeBand.Add((memory, (nuint)pointer));
+
     private void SyncGaugeBand()
     {
         foreach (var entry in _journalGaugeBand)
@@ -4831,14 +5404,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_graph_edge* CopyGraphEdge(ReadOnlySpan<GraphEdge> values)
     {
         var p = (cui_graph_edge*)_arena.Allocate(checked(values.Length * sizeof(cui_graph_edge)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<GraphEdge> Memory, nuint Pointer)> _journalGraphEdge = new List<(Memory<GraphEdge> Memory, UIntPtr Pointer)>();
     private void JournalGraphEdge(Memory<GraphEdge> memory, cui_graph_edge* pointer) => _journalGraphEdge.Add((memory, (nuint)pointer));
+
     private void SyncGraphEdge()
     {
         foreach (var entry in _journalGraphEdge)
@@ -4848,14 +5424,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_graph_node* CopyGraphNode(ReadOnlySpan<GraphNode> values)
     {
         var p = (cui_graph_node*)_arena.Allocate(checked(values.Length * sizeof(cui_graph_node)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<GraphNode> Memory, nuint Pointer)> _journalGraphNode = new List<(Memory<GraphNode> Memory, UIntPtr Pointer)>();
     private void JournalGraphNode(Memory<GraphNode> memory, cui_graph_node* pointer) => _journalGraphNode.Add((memory, (nuint)pointer));
+
     private void SyncGraphNode()
     {
         foreach (var entry in _journalGraphNode)
@@ -4865,14 +5444,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_grid_column* CopyGridColumn(ReadOnlySpan<GridColumn> values)
     {
         var p = (cui_grid_column*)_arena.Allocate(checked(values.Length * sizeof(cui_grid_column)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<GridColumn> Memory, nuint Pointer)> _journalGridColumn = new List<(Memory<GridColumn> Memory, UIntPtr Pointer)>();
     private void JournalGridColumn(Memory<GridColumn> memory, cui_grid_column* pointer) => _journalGridColumn.Add((memory, (nuint)pointer));
+
     private void SyncGridColumn()
     {
         foreach (var entry in _journalGridColumn)
@@ -4882,14 +5464,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_histogram_series* CopyHistogramSeries(ReadOnlySpan<HistogramSeries> values)
     {
         var p = (cui_histogram_series*)_arena.Allocate(checked(values.Length * sizeof(cui_histogram_series)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<HistogramSeries> Memory, nuint Pointer)> _journalHistogramSeries = new List<(Memory<HistogramSeries> Memory, UIntPtr Pointer)>();
     private void JournalHistogramSeries(Memory<HistogramSeries> memory, cui_histogram_series* pointer) => _journalHistogramSeries.Add((memory, (nuint)pointer));
+
     private void SyncHistogramSeries()
     {
         foreach (var entry in _journalHistogramSeries)
@@ -4899,14 +5484,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_keymap_binding* CopyKeymapBinding(ReadOnlySpan<KeymapBinding> values)
     {
         var p = (cui_keymap_binding*)_arena.Allocate(checked(values.Length * sizeof(cui_keymap_binding)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<KeymapBinding> Memory, nuint Pointer)> _journalKeymapBinding = new List<(Memory<KeymapBinding> Memory, UIntPtr Pointer)>();
     private void JournalKeymapBinding(Memory<KeymapBinding> memory, cui_keymap_binding* pointer) => _journalKeymapBinding.Add((memory, (nuint)pointer));
+
     private void SyncKeymapBinding()
     {
         foreach (var entry in _journalKeymapBinding)
@@ -4916,14 +5504,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_kv_pair* CopyKvPair(ReadOnlySpan<KvPair> values)
     {
         var p = (cui_kv_pair*)_arena.Allocate(checked(values.Length * sizeof(cui_kv_pair)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<KvPair> Memory, nuint Pointer)> _journalKvPair = new List<(Memory<KvPair> Memory, UIntPtr Pointer)>();
     private void JournalKvPair(Memory<KvPair> memory, cui_kv_pair* pointer) => _journalKvPair.Add((memory, (nuint)pointer));
+
     private void SyncKvPair()
     {
         foreach (var entry in _journalKvPair)
@@ -4933,14 +5524,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_model* CopyModel(ReadOnlySpan<Model> values)
     {
         var p = (cui_model*)_arena.Allocate(checked(values.Length * sizeof(cui_model)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Model> Memory, nuint Pointer)> _journalModel = new List<(Memory<Model> Memory, UIntPtr Pointer)>();
     private void JournalModel(Memory<Model> memory, cui_model* pointer) => _journalModel.Add((memory, (nuint)pointer));
+
     private void SyncModel()
     {
         foreach (var entry in _journalModel)
@@ -4950,14 +5544,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_month_event* CopyMonthEvent(ReadOnlySpan<MonthEvent> values)
     {
         var p = (cui_month_event*)_arena.Allocate(checked(values.Length * sizeof(cui_month_event)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<MonthEvent> Memory, nuint Pointer)> _journalMonthEvent = new List<(Memory<MonthEvent> Memory, UIntPtr Pointer)>();
     private void JournalMonthEvent(Memory<MonthEvent> memory, cui_month_event* pointer) => _journalMonthEvent.Add((memory, (nuint)pointer));
+
     private void SyncMonthEvent()
     {
         foreach (var entry in _journalMonthEvent)
@@ -4967,14 +5564,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_net_request* CopyNetRequest(ReadOnlySpan<NetRequest> values)
     {
         var p = (cui_net_request*)_arena.Allocate(checked(values.Length * sizeof(cui_net_request)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<NetRequest> Memory, nuint Pointer)> _journalNetRequest = new List<(Memory<NetRequest> Memory, UIntPtr Pointer)>();
     private void JournalNetRequest(Memory<NetRequest> memory, cui_net_request* pointer) => _journalNetRequest.Add((memory, (nuint)pointer));
+
     private void SyncNetRequest()
     {
         foreach (var entry in _journalNetRequest)
@@ -4984,14 +5584,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_pipeline_job* CopyPipelineJob(ReadOnlySpan<PipelineJob> values)
     {
         var p = (cui_pipeline_job*)_arena.Allocate(checked(values.Length * sizeof(cui_pipeline_job)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<PipelineJob> Memory, nuint Pointer)> _journalPipelineJob = new List<(Memory<PipelineJob> Memory, UIntPtr Pointer)>();
     private void JournalPipelineJob(Memory<PipelineJob> memory, cui_pipeline_job* pointer) => _journalPipelineJob.Add((memory, (nuint)pointer));
+
     private void SyncPipelineJob()
     {
         foreach (var entry in _journalPipelineJob)
@@ -5001,14 +5604,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_plan_step* CopyPlanStep(ReadOnlySpan<PlanStep> values)
     {
         var p = (cui_plan_step*)_arena.Allocate(checked(values.Length * sizeof(cui_plan_step)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<PlanStep> Memory, nuint Pointer)> _journalPlanStep = new List<(Memory<PlanStep> Memory, UIntPtr Pointer)>();
     private void JournalPlanStep(Memory<PlanStep> memory, cui_plan_step* pointer) => _journalPlanStep.Add((memory, (nuint)pointer));
+
     private void SyncPlanStep()
     {
         foreach (var entry in _journalPlanStep)
@@ -5018,14 +5624,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_presence_user* CopyPresenceUser(ReadOnlySpan<PresenceUser> values)
     {
         var p = (cui_presence_user*)_arena.Allocate(checked(values.Length * sizeof(cui_presence_user)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<PresenceUser> Memory, nuint Pointer)> _journalPresenceUser = new List<(Memory<PresenceUser> Memory, UIntPtr Pointer)>();
     private void JournalPresenceUser(Memory<PresenceUser> memory, cui_presence_user* pointer) => _journalPresenceUser.Add((memory, (nuint)pointer));
+
     private void SyncPresenceUser()
     {
         foreach (var entry in _journalPresenceUser)
@@ -5035,14 +5644,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_prompt_suggestion* CopyPromptSuggestion(ReadOnlySpan<PromptSuggestion> values)
     {
         var p = (cui_prompt_suggestion*)_arena.Allocate(checked(values.Length * sizeof(cui_prompt_suggestion)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<PromptSuggestion> Memory, nuint Pointer)> _journalPromptSuggestion = new List<(Memory<PromptSuggestion> Memory, UIntPtr Pointer)>();
     private void JournalPromptSuggestion(Memory<PromptSuggestion> memory, cui_prompt_suggestion* pointer) => _journalPromptSuggestion.Add((memory, (nuint)pointer));
+
     private void SyncPromptSuggestion()
     {
         foreach (var entry in _journalPromptSuggestion)
@@ -5052,14 +5664,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_query_field* CopyQueryField(ReadOnlySpan<QueryField> values)
     {
         var p = (cui_query_field*)_arena.Allocate(checked(values.Length * sizeof(cui_query_field)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<QueryField> Memory, nuint Pointer)> _journalQueryField = new List<(Memory<QueryField> Memory, UIntPtr Pointer)>();
     private void JournalQueryField(Memory<QueryField> memory, cui_query_field* pointer) => _journalQueryField.Add((memory, (nuint)pointer));
+
     private void SyncQueryField()
     {
         foreach (var entry in _journalQueryField)
@@ -5069,14 +5684,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_query_node* CopyQueryNode(ReadOnlySpan<QueryNode> values)
     {
         var p = (cui_query_node*)_arena.Allocate(checked(values.Length * sizeof(cui_query_node)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<QueryNode> Memory, nuint Pointer)> _journalQueryNode = new List<(Memory<QueryNode> Memory, UIntPtr Pointer)>();
     private void JournalQueryNode(Memory<QueryNode> memory, cui_query_node* pointer) => _journalQueryNode.Add((memory, (nuint)pointer));
+
     private void SyncQueryNode()
     {
         foreach (var entry in _journalQueryNode)
@@ -5086,14 +5704,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_reaction* CopyReaction(ReadOnlySpan<Reaction> values)
     {
         var p = (cui_reaction*)_arena.Allocate(checked(values.Length * sizeof(cui_reaction)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Reaction> Memory, nuint Pointer)> _journalReaction = new List<(Memory<Reaction> Memory, UIntPtr Pointer)>();
     private void JournalReaction(Memory<Reaction> memory, cui_reaction* pointer) => _journalReaction.Add((memory, (nuint)pointer));
+
     private void SyncReaction()
     {
         foreach (var entry in _journalReaction)
@@ -5103,14 +5724,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_sankey_link* CopySankeyLink(ReadOnlySpan<SankeyLink> values)
     {
         var p = (cui_sankey_link*)_arena.Allocate(checked(values.Length * sizeof(cui_sankey_link)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<SankeyLink> Memory, nuint Pointer)> _journalSankeyLink = new List<(Memory<SankeyLink> Memory, UIntPtr Pointer)>();
     private void JournalSankeyLink(Memory<SankeyLink> memory, cui_sankey_link* pointer) => _journalSankeyLink.Add((memory, (nuint)pointer));
+
     private void SyncSankeyLink()
     {
         foreach (var entry in _journalSankeyLink)
@@ -5120,14 +5744,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_scatter_series* CopyScatterSeries(ReadOnlySpan<ScatterSeries> values)
     {
         var p = (cui_scatter_series*)_arena.Allocate(checked(values.Length * sizeof(cui_scatter_series)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<ScatterSeries> Memory, nuint Pointer)> _journalScatterSeries = new List<(Memory<ScatterSeries> Memory, UIntPtr Pointer)>();
     private void JournalScatterSeries(Memory<ScatterSeries> memory, cui_scatter_series* pointer) => _journalScatterSeries.Add((memory, (nuint)pointer));
+
     private void SyncScatterSeries()
     {
         foreach (var entry in _journalScatterSeries)
@@ -5137,14 +5764,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_series* CopySeries(ReadOnlySpan<Series> values)
     {
         var p = (cui_series*)_arena.Allocate(checked(values.Length * sizeof(cui_series)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Series> Memory, nuint Pointer)> _journalSeries = new List<(Memory<Series> Memory, UIntPtr Pointer)>();
     private void JournalSeries(Memory<Series> memory, cui_series* pointer) => _journalSeries.Add((memory, (nuint)pointer));
+
     private void SyncSeries()
     {
         foreach (var entry in _journalSeries)
@@ -5154,14 +5784,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_source* CopySource(ReadOnlySpan<Source> values)
     {
         var p = (cui_source*)_arena.Allocate(checked(values.Length * sizeof(cui_source)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Source> Memory, nuint Pointer)> _journalSource = new List<(Memory<Source> Memory, UIntPtr Pointer)>();
     private void JournalSource(Memory<Source> memory, cui_source* pointer) => _journalSource.Add((memory, (nuint)pointer));
+
     private void SyncSource()
     {
         foreach (var entry in _journalSource)
@@ -5171,14 +5804,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_speed_action* CopySpeedAction(ReadOnlySpan<SpeedAction> values)
     {
         var p = (cui_speed_action*)_arena.Allocate(checked(values.Length * sizeof(cui_speed_action)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<SpeedAction> Memory, nuint Pointer)> _journalSpeedAction = new List<(Memory<SpeedAction> Memory, UIntPtr Pointer)>();
     private void JournalSpeedAction(Memory<SpeedAction> memory, cui_speed_action* pointer) => _journalSpeedAction.Add((memory, (nuint)pointer));
+
     private void SyncSpeedAction()
     {
         foreach (var entry in _journalSpeedAction)
@@ -5188,14 +5824,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_stack_frame* CopyStackFrame(ReadOnlySpan<StackFrame> values)
     {
         var p = (cui_stack_frame*)_arena.Allocate(checked(values.Length * sizeof(cui_stack_frame)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<StackFrame> Memory, nuint Pointer)> _journalStackFrame = new List<(Memory<StackFrame> Memory, UIntPtr Pointer)>();
     private void JournalStackFrame(Memory<StackFrame> memory, cui_stack_frame* pointer) => _journalStackFrame.Add((memory, (nuint)pointer));
+
     private void SyncStackFrame()
     {
         foreach (var entry in _journalStackFrame)
@@ -5205,14 +5844,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_swipe_action* CopySwipeAction(ReadOnlySpan<SwipeAction> values)
     {
         var p = (cui_swipe_action*)_arena.Allocate(checked(values.Length * sizeof(cui_swipe_action)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<SwipeAction> Memory, nuint Pointer)> _journalSwipeAction = new List<(Memory<SwipeAction> Memory, UIntPtr Pointer)>();
     private void JournalSwipeAction(Memory<SwipeAction> memory, cui_swipe_action* pointer) => _journalSwipeAction.Add((memory, (nuint)pointer));
+
     private void SyncSwipeAction()
     {
         foreach (var entry in _journalSwipeAction)
@@ -5222,14 +5864,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_tab_bar_item* CopyTabBarItem(ReadOnlySpan<TabBarItem> values)
     {
         var p = (cui_tab_bar_item*)_arena.Allocate(checked(values.Length * sizeof(cui_tab_bar_item)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TabBarItem> Memory, nuint Pointer)> _journalTabBarItem = new List<(Memory<TabBarItem> Memory, UIntPtr Pointer)>();
     private void JournalTabBarItem(Memory<TabBarItem> memory, cui_tab_bar_item* pointer) => _journalTabBarItem.Add((memory, (nuint)pointer));
+
     private void SyncTabBarItem()
     {
         foreach (var entry in _journalTabBarItem)
@@ -5239,14 +5884,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_table_column* CopyTableColumn(ReadOnlySpan<TableColumn> values)
     {
         var p = (cui_table_column*)_arena.Allocate(checked(values.Length * sizeof(cui_table_column)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TableColumn> Memory, nuint Pointer)> _journalTableColumn = new List<(Memory<TableColumn> Memory, UIntPtr Pointer)>();
     private void JournalTableColumn(Memory<TableColumn> memory, cui_table_column* pointer) => _journalTableColumn.Add((memory, (nuint)pointer));
+
     private void SyncTableColumn()
     {
         foreach (var entry in _journalTableColumn)
@@ -5256,14 +5904,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_test_item* CopyTestItem(ReadOnlySpan<TestItem> values)
     {
         var p = (cui_test_item*)_arena.Allocate(checked(values.Length * sizeof(cui_test_item)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TestItem> Memory, nuint Pointer)> _journalTestItem = new List<(Memory<TestItem> Memory, UIntPtr Pointer)>();
     private void JournalTestItem(Memory<TestItem> memory, cui_test_item* pointer) => _journalTestItem.Add((memory, (nuint)pointer));
+
     private void SyncTestItem()
     {
         foreach (var entry in _journalTestItem)
@@ -5273,14 +5924,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_ticker_item* CopyTickerItem(ReadOnlySpan<TickerItem> values)
     {
         var p = (cui_ticker_item*)_arena.Allocate(checked(values.Length * sizeof(cui_ticker_item)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TickerItem> Memory, nuint Pointer)> _journalTickerItem = new List<(Memory<TickerItem> Memory, UIntPtr Pointer)>();
     private void JournalTickerItem(Memory<TickerItem> memory, cui_ticker_item* pointer) => _journalTickerItem.Add((memory, (nuint)pointer));
+
     private void SyncTickerItem()
     {
         foreach (var entry in _journalTickerItem)
@@ -5290,14 +5944,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_toc_item* CopyTocItem(ReadOnlySpan<TocItem> values)
     {
         var p = (cui_toc_item*)_arena.Allocate(checked(values.Length * sizeof(cui_toc_item)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TocItem> Memory, nuint Pointer)> _journalTocItem = new List<(Memory<TocItem> Memory, UIntPtr Pointer)>();
     private void JournalTocItem(Memory<TocItem> memory, cui_toc_item* pointer) => _journalTocItem.Add((memory, (nuint)pointer));
+
     private void SyncTocItem()
     {
         foreach (var entry in _journalTocItem)
@@ -5307,14 +5964,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_tour_step* CopyTourStep(ReadOnlySpan<TourStep> values)
     {
         var p = (cui_tour_step*)_arena.Allocate(checked(values.Length * sizeof(cui_tour_step)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TourStep> Memory, nuint Pointer)> _journalTourStep = new List<(Memory<TourStep> Memory, UIntPtr Pointer)>();
     private void JournalTourStep(Memory<TourStep> memory, cui_tour_step* pointer) => _journalTourStep.Add((memory, (nuint)pointer));
+
     private void SyncTourStep()
     {
         foreach (var entry in _journalTourStep)
@@ -5324,14 +5984,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_trace_marker* CopyTraceMarker(ReadOnlySpan<TraceMarker> values)
     {
         var p = (cui_trace_marker*)_arena.Allocate(checked(values.Length * sizeof(cui_trace_marker)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TraceMarker> Memory, nuint Pointer)> _journalTraceMarker = new List<(Memory<TraceMarker> Memory, UIntPtr Pointer)>();
     private void JournalTraceMarker(Memory<TraceMarker> memory, cui_trace_marker* pointer) => _journalTraceMarker.Add((memory, (nuint)pointer));
+
     private void SyncTraceMarker()
     {
         foreach (var entry in _journalTraceMarker)
@@ -5341,14 +6004,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_trace_span* CopyTraceSpan(ReadOnlySpan<TraceSpan> values)
     {
         var p = (cui_trace_span*)_arena.Allocate(checked(values.Length * sizeof(cui_trace_span)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TraceSpan> Memory, nuint Pointer)> _journalTraceSpan = new List<(Memory<TraceSpan> Memory, UIntPtr Pointer)>();
     private void JournalTraceSpan(Memory<TraceSpan> memory, cui_trace_span* pointer) => _journalTraceSpan.Add((memory, (nuint)pointer));
+
     private void SyncTraceSpan()
     {
         foreach (var entry in _journalTraceSpan)
@@ -5358,14 +6024,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_trace_track* CopyTraceTrack(ReadOnlySpan<TraceTrack> values)
     {
         var p = (cui_trace_track*)_arena.Allocate(checked(values.Length * sizeof(cui_trace_track)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<TraceTrack> Memory, nuint Pointer)> _journalTraceTrack = new List<(Memory<TraceTrack> Memory, UIntPtr Pointer)>();
     private void JournalTraceTrack(Memory<TraceTrack> memory, cui_trace_track* pointer) => _journalTraceTrack.Add((memory, (nuint)pointer));
+
     private void SyncTraceTrack()
     {
         foreach (var entry in _journalTraceTrack)
@@ -5375,14 +6044,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_uptime_service* CopyUptimeService(ReadOnlySpan<UptimeService> values)
     {
         var p = (cui_uptime_service*)_arena.Allocate(checked(values.Length * sizeof(cui_uptime_service)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<UptimeService> Memory, nuint Pointer)> _journalUptimeService = new List<(Memory<UptimeService> Memory, UIntPtr Pointer)>();
     private void JournalUptimeService(Memory<UptimeService> memory, cui_uptime_service* pointer) => _journalUptimeService.Add((memory, (nuint)pointer));
+
     private void SyncUptimeService()
     {
         foreach (var entry in _journalUptimeService)
@@ -5392,14 +6064,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_vec2* CopyVec2(ReadOnlySpan<Vec2> values)
     {
         var p = (cui_vec2*)_arena.Allocate(checked(values.Length * sizeof(cui_vec2)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<Vec2> Memory, nuint Pointer)> _journalVec2 = new List<(Memory<Vec2> Memory, UIntPtr Pointer)>();
     private void JournalVec2(Memory<Vec2> memory, cui_vec2* pointer) => _journalVec2.Add((memory, (nuint)pointer));
+
     private void SyncVec2()
     {
         foreach (var entry in _journalVec2)
@@ -5409,14 +6084,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private cui_viz_item* CopyVizItem(ReadOnlySpan<VizItem> values)
     {
         var p = (cui_viz_item*)_arena.Allocate(checked(values.Length * sizeof(cui_viz_item)));
         for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
+
     private readonly List<(Memory<VizItem> Memory, nuint Pointer)> _journalVizItem = new List<(Memory<VizItem> Memory, UIntPtr Pointer)>();
     private void JournalVizItem(Memory<VizItem> memory, cui_viz_item* pointer) => _journalVizItem.Add((memory, (nuint)pointer));
+
     private void SyncVizItem()
     {
         foreach (var entry in _journalVizItem)
@@ -5426,14 +6104,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
+
     private double* CopyDouble(ReadOnlySpan<double> values)
     {
         var p = (double*)_arena.Allocate(checked(values.Length * sizeof(double)));
         for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
+
     private readonly List<(Memory<double> Memory, nuint Pointer)> _journalDouble = new List<(Memory<double> Memory, UIntPtr Pointer)>();
     private void JournalDouble(Memory<double> memory, double* pointer) => _journalDouble.Add((memory, (nuint)pointer));
+
     private void SyncDouble()
     {
         foreach (var entry in _journalDouble)
@@ -5443,14 +6124,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
+
     private float* CopyFloat(ReadOnlySpan<float> values)
     {
         var p = (float*)_arena.Allocate(checked(values.Length * sizeof(float)));
         for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
+
     private readonly List<(Memory<float> Memory, nuint Pointer)> _journalFloat = new List<(Memory<float> Memory, UIntPtr Pointer)>();
     private void JournalFloat(Memory<float> memory, float* pointer) => _journalFloat.Add((memory, (nuint)pointer));
+
     private void SyncFloat()
     {
         foreach (var entry in _journalFloat)
@@ -5460,14 +6144,22 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
+
     private int* CopyInt(ReadOnlySpan<int> values)
     {
         var p = (int*)_arena.Allocate(checked(values.Length * sizeof(int)));
         for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
+
     private readonly List<(Memory<int> Memory, nuint Pointer)> _journalInt = new List<(Memory<int> Memory, UIntPtr Pointer)>();
-    private void JournalInt(Memory<int> memory, int* pointer) { _journalInt.Add((memory, (nuint)pointer)); _arraysDirty = true; }
+
+    private void JournalInt(Memory<int> memory, int* pointer)
+    {
+        _journalInt.Add((memory, (nuint)pointer));
+        _arraysDirty = true;
+    }
+
     private void SyncInt()
     {
         foreach (var entry in _journalInt)
@@ -5477,14 +6169,17 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
+
     private uint* CopyUint32T(ReadOnlySpan<uint> values)
     {
         var p = (uint*)_arena.Allocate(checked(values.Length * sizeof(uint)));
         for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
+
     private readonly List<(Memory<uint> Memory, nuint Pointer)> _journalUint32T = new List<(Memory<uint> Memory, UIntPtr Pointer)>();
     private void JournalUint32T(Memory<uint> memory, uint* pointer) => _journalUint32T.Add((memory, (nuint)pointer));
+
     private void SyncUint32T()
     {
         foreach (var entry in _journalUint32T)
@@ -5494,24 +6189,145 @@ public sealed unsafe partial class Ui
             for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
-    private CBool* BindBool(State<bool>? value) => Bind<bool, CBool>(value, &EncodeBool, &DecodeBool);
+
+    private CBool* BindBool(State<bool>? value) => Bind(value, &EncodeBool, &DecodeBool);
     private static CBool EncodeBool(Ui ui, bool value) => value;
     private static bool DecodeBool(Ui ui, CBool value, bool old) => (value != 0);
-    private cui_date* BindDate(State<Date>? value) => Bind<Date, cui_date>(value, &EncodeDate, &DecodeDate);
+    private cui_date* BindDate(State<Date>? value) => Bind(value, &EncodeDate, &DecodeDate);
     private static cui_date EncodeDate(Ui ui, Date value) => ui.ToNative(value);
     private static Date DecodeDate(Ui ui, cui_date value, Date old) => ui.FromNative(value, old);
-    private cui_markdown_result* BindMarkdownResult(State<MarkdownResult>? value) => Bind<MarkdownResult, cui_markdown_result>(value, &EncodeMarkdownResult, &DecodeMarkdownResult);
+    private cui_markdown_result* BindMarkdownResult(State<MarkdownResult>? value) => Bind(value, &EncodeMarkdownResult, &DecodeMarkdownResult);
     private static cui_markdown_result EncodeMarkdownResult(Ui ui, MarkdownResult value) => ui.ToNative(value);
     private static MarkdownResult DecodeMarkdownResult(Ui ui, cui_markdown_result value, MarkdownResult old) => ui.FromNative(value, old);
-    private cui_node_view* BindNodeView(State<NodeView>? value) => Bind<NodeView, cui_node_view>(value, &EncodeNodeView, &DecodeNodeView);
+    private cui_node_view* BindNodeView(State<NodeView>? value) => Bind(value, &EncodeNodeView, &DecodeNodeView);
     private static cui_node_view EncodeNodeView(Ui ui, NodeView value) => ui.ToNative(value);
     private static NodeView DecodeNodeView(Ui ui, cui_node_view value, NodeView old) => ui.FromNative(value, old);
-    private cui_table_sort* BindTableSort(State<TableSort>? value) => Bind<TableSort, cui_table_sort>(value, &EncodeTableSort, &DecodeTableSort);
+    private cui_table_sort* BindTableSort(State<TableSort>? value) => Bind(value, &EncodeTableSort, &DecodeTableSort);
     private static cui_table_sort EncodeTableSort(Ui ui, TableSort value) => ui.ToNative(value);
     private static TableSort DecodeTableSort(Ui ui, cui_table_sort value, TableSort old) => ui.FromNative(value, old);
-    private int* BindInt(State<int>? value) => Bind<int, int>(value, &EncodeInt, &DecodeInt);
+    private int* BindInt(State<int>? value) => Bind(value, &EncodeInt, &DecodeInt);
     private static int EncodeInt(Ui ui, int value) => value;
     private static int DecodeInt(Ui ui, int value, int old) => value;
-    private void SyncArrays() { SyncBool(); SyncApiEndpoint(); SyncApiParam(); SyncBlameCommit(); SyncCalEvent(); SyncCandle(); SyncChartAnnotation(); SyncCheckStep(); SyncChoice(); SyncCommand(); SyncCommit(); SyncCoverageFile(); SyncDiagnostic(); SyncDotSeries(); SyncFeatureFlag(); SyncFilterField(); SyncGanttTask(); SyncGaugeBand(); SyncGraphEdge(); SyncGraphNode(); SyncGridColumn(); SyncHistogramSeries(); SyncKeymapBinding(); SyncKvPair(); SyncModel(); SyncMonthEvent(); SyncNetRequest(); SyncPipelineJob(); SyncPlanStep(); SyncPresenceUser(); SyncPromptSuggestion(); SyncQueryField(); SyncQueryNode(); SyncReaction(); SyncSankeyLink(); SyncScatterSeries(); SyncSeries(); SyncSource(); SyncSpeedAction(); SyncStackFrame(); SyncSwipeAction(); SyncTabBarItem(); SyncTableColumn(); SyncTestItem(); SyncTickerItem(); SyncTocItem(); SyncTourStep(); SyncTraceMarker(); SyncTraceSpan(); SyncTraceTrack(); SyncUptimeService(); SyncVec2(); SyncVizItem(); SyncDouble(); SyncFloat(); SyncInt(); SyncUint32T(); }
-    private void ClearArrays() { _journalBool.Clear(); _journalApiEndpoint.Clear(); _journalApiParam.Clear(); _journalBlameCommit.Clear(); _journalCalEvent.Clear(); _journalCandle.Clear(); _journalChartAnnotation.Clear(); _journalCheckStep.Clear(); _journalChoice.Clear(); _journalCommand.Clear(); _journalCommit.Clear(); _journalCoverageFile.Clear(); _journalDiagnostic.Clear(); _journalDotSeries.Clear(); _journalFeatureFlag.Clear(); _journalFilterField.Clear(); _journalGanttTask.Clear(); _journalGaugeBand.Clear(); _journalGraphEdge.Clear(); _journalGraphNode.Clear(); _journalGridColumn.Clear(); _journalHistogramSeries.Clear(); _journalKeymapBinding.Clear(); _journalKvPair.Clear(); _journalModel.Clear(); _journalMonthEvent.Clear(); _journalNetRequest.Clear(); _journalPipelineJob.Clear(); _journalPlanStep.Clear(); _journalPresenceUser.Clear(); _journalPromptSuggestion.Clear(); _journalQueryField.Clear(); _journalQueryNode.Clear(); _journalReaction.Clear(); _journalSankeyLink.Clear(); _journalScatterSeries.Clear(); _journalSeries.Clear(); _journalSource.Clear(); _journalSpeedAction.Clear(); _journalStackFrame.Clear(); _journalSwipeAction.Clear(); _journalTabBarItem.Clear(); _journalTableColumn.Clear(); _journalTestItem.Clear(); _journalTickerItem.Clear(); _journalTocItem.Clear(); _journalTourStep.Clear(); _journalTraceMarker.Clear(); _journalTraceSpan.Clear(); _journalTraceTrack.Clear(); _journalUptimeService.Clear(); _journalVec2.Clear(); _journalVizItem.Clear(); _journalDouble.Clear(); _journalFloat.Clear(); _journalInt.Clear(); _journalUint32T.Clear(); }
+
+    private void SyncArrays()
+    {
+        SyncBool();
+        SyncApiEndpoint();
+        SyncApiParam();
+        SyncBlameCommit();
+        SyncCalEvent();
+        SyncCandle();
+        SyncChartAnnotation();
+        SyncCheckStep();
+        SyncChoice();
+        SyncCommand();
+        SyncCommit();
+        SyncCoverageFile();
+        SyncDiagnostic();
+        SyncDotSeries();
+        SyncFeatureFlag();
+        SyncFilterField();
+        SyncGanttTask();
+        SyncGaugeBand();
+        SyncGraphEdge();
+        SyncGraphNode();
+        SyncGridColumn();
+        SyncHistogramSeries();
+        SyncKeymapBinding();
+        SyncKvPair();
+        SyncModel();
+        SyncMonthEvent();
+        SyncNetRequest();
+        SyncPipelineJob();
+        SyncPlanStep();
+        SyncPresenceUser();
+        SyncPromptSuggestion();
+        SyncQueryField();
+        SyncQueryNode();
+        SyncReaction();
+        SyncSankeyLink();
+        SyncScatterSeries();
+        SyncSeries();
+        SyncSource();
+        SyncSpeedAction();
+        SyncStackFrame();
+        SyncSwipeAction();
+        SyncTabBarItem();
+        SyncTableColumn();
+        SyncTestItem();
+        SyncTickerItem();
+        SyncTocItem();
+        SyncTourStep();
+        SyncTraceMarker();
+        SyncTraceSpan();
+        SyncTraceTrack();
+        SyncUptimeService();
+        SyncVec2();
+        SyncVizItem();
+        SyncDouble();
+        SyncFloat();
+        SyncInt();
+        SyncUint32T();
+    }
+
+    private void ClearArrays()
+    {
+        _journalBool.Clear();
+        _journalApiEndpoint.Clear();
+        _journalApiParam.Clear();
+        _journalBlameCommit.Clear();
+        _journalCalEvent.Clear();
+        _journalCandle.Clear();
+        _journalChartAnnotation.Clear();
+        _journalCheckStep.Clear();
+        _journalChoice.Clear();
+        _journalCommand.Clear();
+        _journalCommit.Clear();
+        _journalCoverageFile.Clear();
+        _journalDiagnostic.Clear();
+        _journalDotSeries.Clear();
+        _journalFeatureFlag.Clear();
+        _journalFilterField.Clear();
+        _journalGanttTask.Clear();
+        _journalGaugeBand.Clear();
+        _journalGraphEdge.Clear();
+        _journalGraphNode.Clear();
+        _journalGridColumn.Clear();
+        _journalHistogramSeries.Clear();
+        _journalKeymapBinding.Clear();
+        _journalKvPair.Clear();
+        _journalModel.Clear();
+        _journalMonthEvent.Clear();
+        _journalNetRequest.Clear();
+        _journalPipelineJob.Clear();
+        _journalPlanStep.Clear();
+        _journalPresenceUser.Clear();
+        _journalPromptSuggestion.Clear();
+        _journalQueryField.Clear();
+        _journalQueryNode.Clear();
+        _journalReaction.Clear();
+        _journalSankeyLink.Clear();
+        _journalScatterSeries.Clear();
+        _journalSeries.Clear();
+        _journalSource.Clear();
+        _journalSpeedAction.Clear();
+        _journalStackFrame.Clear();
+        _journalSwipeAction.Clear();
+        _journalTabBarItem.Clear();
+        _journalTableColumn.Clear();
+        _journalTestItem.Clear();
+        _journalTickerItem.Clear();
+        _journalTocItem.Clear();
+        _journalTourStep.Clear();
+        _journalTraceMarker.Clear();
+        _journalTraceSpan.Clear();
+        _journalTraceTrack.Clear();
+        _journalUptimeService.Clear();
+        _journalVec2.Clear();
+        _journalVizItem.Clear();
+        _journalDouble.Clear();
+        _journalFloat.Clear();
+        _journalInt.Clear();
+        _journalUint32T.Clear();
+    }
 }

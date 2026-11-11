@@ -1,0 +1,2416 @@
+{
+  "native_revision": "5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5",
+  "policy": "All direct scalar text arguments use scoped UTF-8 except the explicitly retained paths below. Collections and option pointees retain stable storage.",
+  "entries": [
+    {
+      "method": "ActivityRings",
+      "symbol": "cui_activity_rings_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "4c98a452e6cbdd0864d736bd8bfd154381afa311915176d610bdb44dd030c3cf"
+    },
+    {
+      "method": "Avatar",
+      "symbol": "cui_avatar_ex",
+      "params": [
+        "name"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "72f6ac8524791ba9ea58308cf5d2f565c13f02d5c48c56cc0862c4b56e1335ba"
+    },
+    {
+      "method": "Badge",
+      "symbol": "cui_badge_ex",
+      "params": [
+        "text"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "796a86bf060dce61f0c18d7ce401ad6f3fcbdd0ad340ff592d9789394ea0e65c"
+    },
+    {
+      "method": "BarList",
+      "symbol": "cui_bar_list_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "358646bdd7b02a92bb16ad10e657cfc8029506ec4e1b71bca6487e6a82cfb264"
+    },
+    {
+      "method": "Button",
+      "symbol": "cui_button_ex",
+      "params": [
+        "label"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "a30ed9471b100f57b3e3e16635e02ad373a8d7693f7c6f30724535083447a3c7"
+    },
+    {
+      "method": "CalendarHeatmap",
+      "symbol": "cui_calendar_heatmap_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "0cad7e9e23472f41fbc95a971c9f53dd953b617f3bde019600468bc0a54f4752"
+    },
+    {
+      "method": "Candlestick",
+      "symbol": "cui_candlestick_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "c3a715aa5764e87f8a59f8714e0b0ba538aae5a7344211112f7c1d20c645db1e"
+    },
+    {
+      "method": "CardStackBegin",
+      "symbol": "cui_card_stack_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_media.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "5c09a66f8b12dc0e57c4bf5b34a2a6a46b0b3b5e5e15f9fcfca0269ec84fe4df"
+    },
+    {
+      "method": "CarouselBegin",
+      "symbol": "cui_carousel_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_media.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "bf4779795daad19b720aa0d80126b0ff57ca9c5561c1f2cadd485a525a84677d"
+    },
+    {
+      "method": "ColorPicker",
+      "symbol": "cui_color_picker",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "a55856781e6ac4e90ae05298075db137016a0d9657dc227982eaacaa93fe491f"
+    },
+    {
+      "method": "ContextMenuBegin",
+      "symbol": "cui_context_menu_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "167c680f5262e4f4b11c178417e4da61d5ed0bb2159a02f64afcc016a7ca6f23"
+    },
+    {
+      "method": "Cropper",
+      "symbol": "cui_cropper_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_photo.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "7f7eea0b8bf75f26fb8ed7299dc436b7aa0e07f238208732ac3938b80b09d6f5"
+    },
+    {
+      "method": "DataGridCellText",
+      "symbol": "cui_data_grid_cell_text",
+      "params": [
+        "text"
+      ],
+      "file": "cui_grid.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "0e8d4158cef3b25c176d6173b8b59f734df5f32482e16b9ad336130f83de5b84"
+    },
+    {
+      "method": "DatePicker",
+      "symbol": "cui_date_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "a448e94002a36dc5b847c73012f054b07603d9845b7d8ecaf8484473905b900a"
+    },
+    {
+      "method": "DateRangePicker",
+      "symbol": "cui_date_range_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "088f42b8fcfa6d226b465c0ec659dcf553d96c0f830198b9c3c27828e8790874"
+    },
+    {
+      "method": "DonutChart",
+      "symbol": "cui_donut_chart_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_charts.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "7a3869f26258ec304742305719b0cf49c38ce3d27516e7496d8c3393e4741f25"
+    },
+    {
+      "method": "DotChart",
+      "symbol": "cui_dot_chart_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_instrument.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "bf584809481590844456a9037efb635291aeece352c280607b27b40c1ead4be8"
+    },
+    {
+      "method": "DrawEmoji",
+      "symbol": "cui_draw_emoji",
+      "params": [
+        "utf8"
+      ],
+      "file": "cui_emoji.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "50ce89987f566a11fe6889ad68f5a10fbcc0e7ade5041780ce109daf145bbeb7"
+    },
+    {
+      "method": "DrawIcon",
+      "symbol": "cui_draw_icon",
+      "params": [
+        "icon"
+      ],
+      "file": "cui_text.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "8e5fc2e32edd0e9f11cdc50855d5607cc2fde2eff79bc1b4fe3165f52f64bd38"
+    },
+    {
+      "method": "DrawText",
+      "symbol": "cui_draw_text",
+      "params": [
+        "text"
+      ],
+      "file": "cui_text.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "b0eb7b1f8fb7ee29c4b1074bae93538dcc385c8c09c666d31f0e09f0873a06c6"
+    },
+    {
+      "method": "Dropzone",
+      "symbol": "cui_dropzone_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "2de37312c5aa612bc4169bb332353e144a5ffa20ec8fe2aab86fb61a9a968438"
+    },
+    {
+      "method": "Emoji",
+      "symbol": "cui_emoji",
+      "params": [
+        "utf8"
+      ],
+      "file": "cui_emoji.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "504d8fd63d26d16ebff42f0b594167485139fa3b70562f107aab9137f11ae295"
+    },
+    {
+      "method": "EventTrack",
+      "symbol": "cui_event_track_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_instrument.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "6212ec042a2645e0e1f4f3ca6bd825e3bca79ee3d9cdd28a428a59a76dbc9a84"
+    },
+    {
+      "method": "Funnel",
+      "symbol": "cui_funnel_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "2cb8ee5054349bebe46f12f9037aaa8e684a0bc912dcfd5e16d9091f0609a69c"
+    },
+    {
+      "method": "GraphView",
+      "symbol": "cui_graph_view_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_graph.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "f34171c3cd19f7296abc9772401980c64ddc8e820d9c0b594cb66abe9a0c6957"
+    },
+    {
+      "method": "Heading",
+      "symbol": "cui_heading",
+      "params": [
+        "text"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "492973e67eec807044c2bd69bc4b599994bd975606ff4746610fe562f53be78d"
+    },
+    {
+      "method": "Heatmap",
+      "symbol": "cui_heatmap_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "0d5c64057c919339fd722c69bbe408893c65c4a5df01614c284cd28d479ec129"
+    },
+    {
+      "method": "HoverCardBegin",
+      "symbol": "cui_hover_card_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "aefdd922bc26cd9310a810cbe9e71763d2f6009db66e97b2466347030178ac61"
+    },
+    {
+      "method": "IconButton",
+      "symbol": "cui_icon_button_ex",
+      "params": [
+        "icon"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "080943f498247e00f078d9063df4519c06a965654f3a828314077e9171e15302"
+    },
+    {
+      "method": "ImageCompare",
+      "symbol": "cui_image_compare_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_media.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "fa3e2bcb7e6e0394001970d358543eef86e5f8dc31c1d45e95763c10fc44459a"
+    },
+    {
+      "method": "InlineEdit",
+      "symbol": "cui_inline_edit_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "65b83c5e8707c2c4712c1b044ce457c4cd4ce9c83715c57430fd1d4fd59f759c"
+    },
+    {
+      "method": "Input",
+      "symbol": "cui_input_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_textedit.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "75c0933af69da145de75e4f8190f2be389dfc11237e44b72ab34cf82abd281ef"
+    },
+    {
+      "method": "Label",
+      "symbol": "cui_label",
+      "params": [
+        "text"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "f4666e94bae41a27efafab2b65eaaba004581c08a202d031fb4d78d986ff16bc"
+    },
+    {
+      "method": "LevelMeter",
+      "symbol": "cui_level_meter_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_dials.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "381a9474bef793e2f382af46367a02f3f9135ff93f1844d84cb11638f0521ec8"
+    },
+    {
+      "method": "MakeId",
+      "symbol": "cui_make_id",
+      "params": [
+        "str"
+      ],
+      "file": "cui_core.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "fddcbe0c4707cbc02e1cd23d027fad509eb8ceca1ccc646d7f7bc384222bf142"
+    },
+    {
+      "method": "MoneyInput",
+      "symbol": "cui_money_input_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "25a1650bbef8b835037ccc737376344143eb5f1c1068a27b17a9da425772ead1"
+    },
+    {
+      "method": "Muted",
+      "symbol": "cui_muted",
+      "params": [
+        "text"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "5fcf4637491059a0a573125eeb68751cd3a0b8e0143da4dbffbf7de93581d77a"
+    },
+    {
+      "method": "Pipeline",
+      "symbol": "cui_pipeline_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "a5dcfa03ba6bb2fa2faa13f4daab7938d7f2beb00ac43e0fbf4d31d74d232520"
+    },
+    {
+      "method": "PopoverBegin",
+      "symbol": "cui_popover_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "7695a57d1970bcd6700cef39fb01bb46201fd6fffa9d0caddbf6d205a3a2c3cc"
+    },
+    {
+      "method": "PopoverClose",
+      "symbol": "cui_popover_close",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "40c0fafd98c157e08589bd19964a3fbe80439d9dfea01a84168e09612c3168fe"
+    },
+    {
+      "method": "PopoverIsOpen",
+      "symbol": "cui_popover_is_open",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "d18ab97f02ed9a8e38f7e58aaa7bf50c2fefaebc6c40f51c35ce8429edb00e9a"
+    },
+    {
+      "method": "PopoverOpen",
+      "symbol": "cui_popover_open",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "9e1fe18038e71b2492340b186a0eab658588b6ae0e7d4b39361fde4855c88a83"
+    },
+    {
+      "method": "PopoverToggle",
+      "symbol": "cui_popover_toggle",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "f88625d167e83acd3271a1def53f9b43d83654bca2c396b5db7beecfd29dd23b"
+    },
+    {
+      "method": "Presence",
+      "symbol": "cui_presence",
+      "params": [
+        "id"
+      ],
+      "file": "cui_social.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "a9e720e3b5b43be37183c3a3ec4fbf79d4d6bb725072edc158ff8f51216fbb3f"
+    },
+    {
+      "method": "PromptSuggestions",
+      "symbol": "cui_prompt_suggestions_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "72ab0e037956c41655fa75c41095f3cc1c02a6dd64dd79d15d02d485ae729926"
+    },
+    {
+      "method": "PushId",
+      "symbol": "cui_push_id",
+      "params": [
+        "str"
+      ],
+      "file": "cui_core.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "5c450a1ba1b5018c690c1b5ee01ab7811ac7a851c3cb5c409d3c32c3daa7e84c"
+    },
+    {
+      "method": "RadarChart",
+      "symbol": "cui_radar_chart_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "5d7895a8dcc760084ec29fc9e67ab1bd525bfa8845659f047eb2cdd79951e535"
+    },
+    {
+      "method": "RadialGauge",
+      "symbol": "cui_radial_gauge_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "210040f039d3aa309632ee78ededa9d768738a4f99425d96f390c0d27e4364dc"
+    },
+    {
+      "method": "Rating",
+      "symbol": "cui_rating",
+      "params": [
+        "id"
+      ],
+      "file": "cui_controls.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "13710ef872db71d97ed3d8eee55f4b817d2e070de7b075b0b91932de42353663"
+    },
+    {
+      "method": "Reactions",
+      "symbol": "cui_reactions",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "d9e68b9fb73960e4d62c44c289591860f52f19fd62e0387d61e79df610a51f28"
+    },
+    {
+      "method": "ReorderBegin",
+      "symbol": "cui_reorder_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_extras.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "c846d5c9d12f71e155ef129cd098ee4d4892c2289bb2500c981c328b233ae42e"
+    },
+    {
+      "method": "Sankey",
+      "symbol": "cui_sankey_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "fbe68e07f8287e953f839592cb5e4b5640a34d344407f6115e79229fcf7de91c"
+    },
+    {
+      "method": "ScatterChart",
+      "symbol": "cui_scatter_chart_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "69b4e5db50388c45f1f227cae5b6f9924b62f0fcde7b1530fd04dda8498b0d5d"
+    },
+    {
+      "method": "ScrollTo",
+      "symbol": "cui_scroll_to",
+      "params": [
+        "scroll_id"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "c31d4093e8d12bb56671d44da877b35249f3139de48152fa687b57793e504e99"
+    },
+    {
+      "method": "Search",
+      "symbol": "cui_search_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_textedit.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "fd4b3a1c9422ea0661c7e7c9e87a59351d02e3ee668127f4ccc9ed56d8c99b46"
+    },
+    {
+      "method": "Secondary",
+      "symbol": "cui_secondary",
+      "params": [
+        "text"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "57dca68c58eb4c02f98e2b7bfd88ef6ff83345932adafc3c05e2c2d756a2a844"
+    },
+    {
+      "method": "Select",
+      "symbol": "cui_select_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_overlay.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "1a2272e557d365eed0b8fc9999ae4319700aea7de3aceed62f37a7e41e84578a"
+    },
+    {
+      "method": "SourceList",
+      "symbol": "cui_source_list",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "b81997467ad436c1313cbc2f74eaaca895c797448a3fc98e0eda7a412063cf7b"
+    },
+    {
+      "method": "SpeedDial",
+      "symbol": "cui_speed_dial_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "cb54761ec0ea40aa66fc382abc3fcb9ad37c217dbd5a3b09efe9b60e2d0db77f"
+    },
+    {
+      "method": "SplitBar",
+      "symbol": "cui_split_bar_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "086216fe9836c2dbf8fa3213ef16452d4c56038da048cec87ba39a1bd930f49e"
+    },
+    {
+      "method": "SpotlightBegin",
+      "symbol": "cui_spotlight_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_motion.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "ad886a3bb40c6bbc9215bc1a95e9972a6db3c7a56f016903668b2d88bd2c6913"
+    },
+    {
+      "method": "TableCellText",
+      "symbol": "cui_table_cell_text",
+      "params": [
+        "text"
+      ],
+      "file": "cui_data.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "1251861da5ed2dee9225e9fbe64f77e8479846b853af0fc8b3c5dcd9c0c77b6f"
+    },
+    {
+      "method": "Text",
+      "symbol": "cui_text_ex",
+      "params": [
+        "text"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Synchronous consumption or native-owned text copy; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "6292ac177b7584dae24be0503dea2eaaca15424ab59c584efc7996da6bb360c5"
+    },
+    {
+      "method": "Textarea",
+      "symbol": "cui_textarea_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_textedit.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "beb44f4dfb4def2eb8e2f41113918cd091ae2966a07169ff52371c2b1117bb3f"
+    },
+    {
+      "method": "Ticker",
+      "symbol": "cui_ticker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_media.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "c9172e6c17fbd9f2c248a4f1367f59f2aee100393b3ccf026e87d9eb60e130a6"
+    },
+    {
+      "method": "TimeHistogram",
+      "symbol": "cui_time_histogram_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devviews.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "0aff1f300695cab4890a5ad9c4d315ef9ab5f6bb6c02b310b58e8bc6c6d37249"
+    },
+    {
+      "method": "TimePicker",
+      "symbol": "cui_time_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "64933b7fedf99f956426883667fba53c849183135735bb2920d65c2976953a54"
+    },
+    {
+      "method": "ToggleGroup",
+      "symbol": "cui_toggle_group_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "122ed4ad6b6b936a59f313a9f930c4d0a33123c2537c2b7a1d764e5fcbace1b8"
+    },
+    {
+      "method": "TraceView",
+      "symbol": "cui_trace_view_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_flame.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "d9e23daa2ac4ad4734339d7fe2434d3d6f730f20ec10fe3fc8113b12c5087caa"
+    },
+    {
+      "method": "Treemap",
+      "symbol": "cui_treemap_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "d7346e1e879cd97a24221c6e99012bb4b1aaea189cecf9acd3378fde041723ef"
+    },
+    {
+      "method": "VirtualListBegin",
+      "symbol": "cui_virtual_list_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_data.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "864b2581520fd01f404831f4799ed115cddabdf9cb4839e6d91174987ec9a602"
+    },
+    {
+      "method": "VoiceOrb",
+      "symbol": "cui_voice_orb_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "7aaf5dcdcd98d5e35c7372e3a609cc689b6b9546b81d2a51a002af3ed2f3f420"
+    },
+    {
+      "method": "Waffle",
+      "symbol": "cui_waffle_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_viz.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "75232a12b0d70119683367523cf3a9336fbab1cf4741a8d4294804eca48fbe15"
+    },
+    {
+      "method": "Waveform",
+      "symbol": "cui_waveform_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_motion.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "f37babb91e7748688dacaf0dd559c6b8ebaece596b263c0bc2b614c81c76c4cd"
+    },
+    {
+      "method": "WheelPicker",
+      "symbol": "cui_wheel_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "fac4359eeebc9060c69ffc036b9d99dcd1d91150e6dd351e3275f9d9fd6ca1d9"
+    },
+    {
+      "method": "WordRotate",
+      "symbol": "cui_word_rotate_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_motion.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "73ecfdececada73001431bc4b3e777982cdf0438c6f6d6020b14100ec03fa2db"
+    },
+    {
+      "method": "SignaturePoints",
+      "symbol": "cui_signature_points",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "7ea2de99c198d2337f0f9608dabad9e0525f40391e9a44d31dd9f9707f00ef0d"
+    },
+    {
+      "method": "SignatureClear",
+      "symbol": "cui_signature_clear",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Native id is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "e11ff9bad326469d5282cf3656b2502fb3ae65213260cc5e7de99015c8e75fe5"
+    },
+    {
+      "method": "Canvas",
+      "symbol": "cui_canvas",
+      "params": [
+        "id"
+      ],
+      "file": "cui_widgets.c",
+      "reason": "Native id_str is read only inside cui_make_id; no caller text pointer is retained.",
+      "sha256": "546f7a8ed2149ba9424b9ed97b709685cbd44b3758a02c602f9863cb428424bd"
+    },
+    {
+      "method": "AgentPlan",
+      "symbol": "cui_agent_plan_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "b1f1ec1815efa89dbbd1c909a7fffd2425d685bb068adeca7cd18946899c540f"
+    },
+    {
+      "method": "ApiExplorer",
+      "symbol": "cui_api_explorer_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devpanels.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "02b8a3f0a74500460bac0a787c7ea6af70ea7d36351349f693876b6df47ec128"
+    },
+    {
+      "method": "AvatarUpload",
+      "symbol": "cui_avatar_upload",
+      "params": [
+        "id",
+        "name"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "a8f16cd6160dfd7d94df56189fc393969b8d6af89f5a9e4d76fd1a4e7418c243"
+    },
+    {
+      "method": "BarChart",
+      "symbol": "cui_bar_chart_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_charts.c",
+      "reason": "Followed through cui__xy_chart: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "f36f86392aab761acd828c47add0a8035099dbd6724574c31dd07a58cd61295d"
+    },
+    {
+      "method": "Blame",
+      "symbol": "cui_blame_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devviews.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "c713ff0962f0044dab75b4c43059f6e64e5fb4b23c639ede9b2b7d2a7dbe9d62"
+    },
+    {
+      "method": "ChatComposer",
+      "symbol": "cui_chat_composer_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "e3a45db3388f5c2c9fb179c12b2ac564ec93e5f49e0f0bfd07f41b83c6b89a80"
+    },
+    {
+      "method": "Checklist",
+      "symbol": "cui_checklist_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "ID is hashed; the derived progress-ring ID is formatted into CUI-owned frame storage before use.",
+      "sha256": "76140ba8486ff5fe999082d312dcd2135819794319462c4703e1f1bf40c39a0c"
+    },
+    {
+      "method": "CodeBlock",
+      "symbol": "cui_code_block_ex",
+      "params": [
+        "id",
+        "code"
+      ],
+      "file": "cui_code.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "89d32a10305b20159842f2ff55c584c75d9c6c8a474085cdecc669346d7283c9"
+    },
+    {
+      "method": "Comment",
+      "symbol": "cui_comment_ex",
+      "params": [
+        "id",
+        "author",
+        "text"
+      ],
+      "file": "cui_social.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "fbb0e1406d963aab9d5dea4c9a03002e3ac571defb910b8dfe2ea2fb66f50724"
+    },
+    {
+      "method": "CommitGraph",
+      "symbol": "cui_commit_graph_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_graph.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "f34864fb52ad15c9f6fcf3d0e92a4d18ec14ac615717d4b5a687267a9cdffe3c"
+    },
+    {
+      "method": "ConfirmPopover",
+      "symbol": "cui_confirm_popover_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "Followed through cui_popover_begin: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "08b6653a2c3d016524a44a499eaa8a7e981212e94f9c1917f646c15b67ca1eb8"
+    },
+    {
+      "method": "ContextMeter",
+      "symbol": "cui_context_meter_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "Followed through cui_hover_card_begin: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "b423f20b73229958232f063d6494bb4c99ad0f74ba83f404489124ae6bc1f114"
+    },
+    {
+      "method": "CopyButton",
+      "symbol": "cui_copy_button",
+      "params": [
+        "id",
+        "text"
+      ],
+      "file": "cui_extras.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "7f3107b98434e121138fb3dc080400646a1a4d75acafcfe78ba2f1abb1081f43"
+    },
+    {
+      "method": "Countdown",
+      "symbol": "cui_countdown_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "Followed through cui__countdown_ex_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "eac5bf802ca295ea2126d153c4bca0a6d3a5e140bdc17b30ff22e888aa233f25"
+    },
+    {
+      "method": "Counter",
+      "symbol": "cui_counter_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_media.c",
+      "reason": "Followed through cui__counter_ex_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "3b92752346b8411782cac9b3051de40a46ea651f5f6f871db0e7be4138ab6f6b"
+    },
+    {
+      "method": "Coverage",
+      "symbol": "cui_coverage_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devviews.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "038130853849c8ffc2b7ff7dd9d87cecfc0b4fd796a5e6a7de7838e78d25c4ea"
+    },
+    {
+      "method": "DataGridBegin",
+      "symbol": "cui_data_grid_begin_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_grid.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "e222153c2a409017de0120e486875e6c5901aead8944cdfa58176c09ce42168f"
+    },
+    {
+      "method": "DockBegin",
+      "symbol": "cui_dock_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_motion.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "63af8c50ab81ce29e13245e59ef523c72cfe68c903855a30879f40b9ac153804"
+    },
+    {
+      "method": "EmojiPicker",
+      "symbol": "cui_emoji_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_emoji.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "845e264b0450a7e80a05a77781358aaedf56e319769dd1e53056775da753c1b3"
+    },
+    {
+      "method": "ExpandableText",
+      "symbol": "cui_expandable_text_ex",
+      "params": [
+        "id",
+        "text"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "daeb8f5e25fe2d579e4dd74990e27ddfc6cd61047f2c0ad277bc5cd7f96dec82"
+    },
+    {
+      "method": "Fader",
+      "symbol": "cui_fader_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_dials.c",
+      "reason": "ID is hashed immediately. Its fallback display label is synchronously measured and copied by cui__dl_caption/cui__text_node.",
+      "sha256": "688089435b3d6cb19ca98617abc1ca42a3ceb5052c53871b52b51f5f165bd5ff"
+    },
+    {
+      "method": "FeatureFlags",
+      "symbol": "cui_feature_flags_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devpanels.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "ea3dbac0c0c6b7294d802e4b16ddce6878a16b563774f3b5112627c5d05b1259"
+    },
+    {
+      "method": "FileBrowser",
+      "symbol": "cui_file_browser_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_files.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "f094cd93faefe4710b6902e53e1c37154ee8374fe8ffd6fc51245a3a46f93884"
+    },
+    {
+      "method": "FilePicker",
+      "symbol": "cui_file_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_files.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "f6d8200e35f44db7168b7dd0e71dcc854716da97aa80c6a3f411a159187815fd"
+    },
+    {
+      "method": "FilterBar",
+      "symbol": "cui_filter_bar",
+      "params": [
+        "id"
+      ],
+      "file": "cui_grid.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "f6f5c2162a62b20991e2967569edd82a3d92eddd9b8d13a3fc74844a09129227"
+    },
+    {
+      "method": "Gantt",
+      "symbol": "cui_gantt_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_planning.c",
+      "reason": "Followed through cui__gantt_ex_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "196f436ae9e494e5b5333f58ed1b779c4a07396ad888fbee477e2088362968d2"
+    },
+    {
+      "method": "ImageViewer",
+      "symbol": "cui_image_viewer_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_photo.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "1cc7318f1f93fba89ccf0526bd459f27d3dfa89d77f8c0f5ae6eb7d8e4d20622"
+    },
+    {
+      "method": "JsonView",
+      "symbol": "cui_json_view_ex",
+      "params": [
+        "id",
+        "json"
+      ],
+      "file": "cui_code.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "b2f1b1faf0d3195fe5da4422b80b2518366f54ba05e09b42d6a0daae989ceba1"
+    },
+    {
+      "method": "KanbanBegin",
+      "symbol": "cui_kanban_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_planning.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "98b0d935d44efc502072334d966a852e85468ae9542ba0f858418b7523a6f9f2"
+    },
+    {
+      "method": "Keymap",
+      "symbol": "cui_keymap_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "ddc280eb07dd8066fa7a2d550ae899d212b8d34f4bacad7e66334021dad7f9af"
+    },
+    {
+      "method": "Knob",
+      "symbol": "cui_knob_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_dials.c",
+      "reason": "ID is hashed immediately. Its fallback display label is synchronously measured and copied by cui__dl_caption/cui__text_node.",
+      "sha256": "c969ee1196e66bc42158342bc634b00a0330b3f30070350f45fdabfc89ce4ca3"
+    },
+    {
+      "method": "KvEditor",
+      "symbol": "cui_kv_editor_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "6f7ecf927545bb18b98b5fd3bf1817fe7ea71a2e655a16f2690158e4c6be3612"
+    },
+    {
+      "method": "LineChart",
+      "symbol": "cui_line_chart_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_charts.c",
+      "reason": "Followed through cui__xy_chart: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "21fa75c3174e7c2fc62dd1f5a45a53a909808702d16c4333a726ab23027881ec"
+    },
+    {
+      "method": "MonthCalendar",
+      "symbol": "cui_month_calendar_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_month.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "e1ae4d15fd462f7b0573dfe1adaa6eb14818c320e8d8620ed14de3053c1767d9"
+    },
+    {
+      "method": "MultiSelect",
+      "symbol": "cui_multi_select_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "a3a27675697656f13c698860d366872840b4978d15938fbc2aa1428a123a5180"
+    },
+    {
+      "method": "NodeEditorBegin",
+      "symbol": "cui_node_editor_begin_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_nodes.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "9929daaa0ad5ecc43b7bd409945588995c1958fb60865b8206433c6ad2a90224"
+    },
+    {
+      "method": "NowPlaying",
+      "symbol": "cui_now_playing_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_motion.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "57f99c229abe6b1780612ab5b4ae67deb063d6b89163b2f5a10836db131041d7"
+    },
+    {
+      "method": "Number",
+      "symbol": "cui_number_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_textedit.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "4007cf83d94fd0ce594ad327bbb1434b257e8615e3a8d60972319902b06c24ec"
+    },
+    {
+      "method": "OtpInput",
+      "symbol": "cui_otp_input",
+      "params": [
+        "id"
+      ],
+      "file": "cui_extras.c",
+      "reason": "Followed through cui__otp_input_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "d7dd12023c2dc4e44e24ebca55c207b109f1e2760c479b0db43bae6dec07fc4f"
+    },
+    {
+      "method": "Pagination",
+      "symbol": "cui_pagination",
+      "params": [
+        "id"
+      ],
+      "file": "cui_controls.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "60b9b759f4186891fbbd85b6eca9c7f068815c2d0e61671c434282a69d400591"
+    },
+    {
+      "method": "Problems",
+      "symbol": "cui_problems_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "22dbd68e0953e883cd33669e6af13965516f95bd968491091ae745d2636ee5e6"
+    },
+    {
+      "method": "QueryBuilder",
+      "symbol": "cui_query_builder_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "f7bb5380fdb59b4ddeb338a1e263a1aa89a62e2ad3ef17efc1784053919f67f0"
+    },
+    {
+      "method": "RadioCards",
+      "symbol": "cui_radio_cards_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_extras.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "a7103e0e3af6929c588cd06fa189eac83f868d55f804233708d436f39790d479"
+    },
+    {
+      "method": "RangeCalendar",
+      "symbol": "cui_range_calendar",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "52b36888ab760f63dae8714096647254d66046596f704f0693395651b7438fd7"
+    },
+    {
+      "method": "ReasoningBegin",
+      "symbol": "cui_reasoning_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "be7a81bdacd3f70d65face3fa67167c21896de8fbe9f7fcb8b7aee5266dcc948"
+    },
+    {
+      "method": "RegexTester",
+      "symbol": "cui_regex_tester_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devpanels.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "db746efae9ed36ec6e37f61d955406bcef92512e47d26fe28c25b3e04176af66"
+    },
+    {
+      "method": "RequestBar",
+      "symbol": "cui_request_bar_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devpanels.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "20a4f1aa2d2a232bd5268dfb922be088d48fbeb9ede1ea935b27e9bed356fe76"
+    },
+    {
+      "method": "ResponseActions",
+      "symbol": "cui_response_actions_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_ai.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "fd85969cb973256f7da34e5ce3349468e47be7ee828f326b168a808dbed02659"
+    },
+    {
+      "method": "SchedulePicker",
+      "symbol": "cui_schedule_picker_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "670f38f0aaf28e22548aa6ea716e1418b18a6eb0ff05ac112101e3e3b2c2869c"
+    },
+    {
+      "method": "Segmented",
+      "symbol": "cui_segmented_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_controls.c",
+      "reason": "Followed through cui__segments: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "b0464c7e27f6ee10a80d82abfb9330ca02dbfea00b8fbc1ca9267f83319df965"
+    },
+    {
+      "method": "ShortcutRecorder",
+      "symbol": "cui_shortcut_recorder_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "Followed through cui__shortcut_recorder_ex_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "c9d8e27c83e8f6fa6332dd883b91bad427134358692a334cc6e98e97b7293fc9"
+    },
+    {
+      "method": "SignaturePad",
+      "symbol": "cui_signature_pad_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "01da0b20ddc16529505183dea0c7e5354044f25ebfe030a11a708b0c7aa3a378"
+    },
+    {
+      "method": "StackTrace",
+      "symbol": "cui_stack_trace_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devpanels.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "4412f94362ecff4f9edda0d68119e3422a8b604868c5ec60bff42a763f68d308"
+    },
+    {
+      "method": "SwipeItemBegin",
+      "symbol": "cui_swipe_item_begin",
+      "params": [
+        "id"
+      ],
+      "file": "cui_actions.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "6289329852159fe35bb94335c3f16744a05d3c719ab1da204138fce8bb7396dd"
+    },
+    {
+      "method": "TabBar",
+      "symbol": "cui_tab_bar_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_motion.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "8a4aa37ddbef61342b4493fe6d082b3a9024872158665d5136379718a15de8f1"
+    },
+    {
+      "method": "TableBegin",
+      "symbol": "cui_table_begin_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_data.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "a93714d655a4f16847553d844e7167409044c653288d4d55247197c2caa9c967"
+    },
+    {
+      "method": "Tabs",
+      "symbol": "cui_tabs_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_controls.c",
+      "reason": "Followed through cui__segments: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "c47e55e88432aecd1723d306ebc7f560aaa3b7440d5fe8e4155f34c295f9a611"
+    },
+    {
+      "method": "TagInput",
+      "symbol": "cui_tag_input_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_extras.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "577934d6b68568b777185d38e7b2a271211f975169f14133abde84d296f877e9"
+    },
+    {
+      "method": "TestExplorer",
+      "symbol": "cui_test_explorer_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devtools.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "256c51e97c45c0dcfa0bab7303e37733c2127419b2d7d62c972d0b5ac27a62e3"
+    },
+    {
+      "method": "TextReveal",
+      "symbol": "cui_text_reveal_ex",
+      "params": [
+        "id",
+        "text"
+      ],
+      "file": "cui_motion.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "fba415773cd9705c5b39c75700ea6c9e844b536a8cff64601ead0281e53585d5"
+    },
+    {
+      "method": "TimeDial",
+      "symbol": "cui_time_dial",
+      "params": [
+        "id"
+      ],
+      "file": "cui_pickers.c",
+      "reason": "Followed through cui__time_dial_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "41f2d4562336ff53193680c352ea67b2dffe11686d0553a6db82c070aa9d610a"
+    },
+    {
+      "method": "Toc",
+      "symbol": "cui_toc",
+      "params": [
+        "scroll_id"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "Followed through cui_scroll_to: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "03157a2f15a8664ab21dde350c320bfc62a4af5719f763095d33cc7963157423"
+    },
+    {
+      "method": "TocAnchor",
+      "symbol": "cui_toc_anchor",
+      "params": [
+        "anchor"
+      ],
+      "file": "cui_disclosure.c",
+      "reason": "cui__anchor_id synchronously hashes the anchor using cui__hash_str; only the numeric ID is retained.",
+      "sha256": "03ad083a89c40445712461dacf41fa0f4477b4bd1890a30d8b649019201790c6"
+    },
+    {
+      "method": "ToolCall",
+      "symbol": "cui_tool_call_ex",
+      "params": [
+        "id",
+        "name"
+      ],
+      "file": "cui_ai.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "f7824fd38dd86ed0911997190169f7288863b6e407d55058075ccb6d11ece37c"
+    },
+    {
+      "method": "Tour",
+      "symbol": "cui_tour_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_tour.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "d733bc8dc35ea3a1cc7b023814e5b28cb775d8335094cc4a74f12ae4c9b24d81"
+    },
+    {
+      "method": "Typewriter",
+      "symbol": "cui_typewriter_ex",
+      "params": [
+        "id",
+        "text"
+      ],
+      "file": "cui_motion.c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md.",
+      "sha256": "627d57ddb0c2c9b36b0bd76793a77530eac633c762cef69fc03b2877f9322fc5"
+    },
+    {
+      "method": "Uptime",
+      "symbol": "cui_uptime_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_devviews.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "c3506caf99568d6d5a377c1fd1b6fe25fda6627bf7e424b94e1ef62f1f8ca9d3"
+    },
+    {
+      "method": "Waterfall",
+      "symbol": "cui_waterfall_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_flame.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "ff6550f0212b8d179860bda54ca6b4cc697b11704984f6312643496a094e1f4a"
+    },
+    {
+      "method": "WeekCalendar",
+      "symbol": "cui_week_calendar_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_planning.c",
+      "reason": "Followed through cui__week_calendar_ex_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "32e4daf1b066e565c6a2bf14c13181857c40ef0e405364c24265fcd984f49cf0"
+    },
+    {
+      "method": "RadioGroup",
+      "symbol": "cui_radio_group",
+      "params": [
+        "id"
+      ],
+      "file": "cui_controls.c",
+      "reason": "All ID uses traced to synchronous cui_make_id/cui_push_id hashing; cui_push_id stores only the numeric hash.",
+      "sha256": "7e6d3d3498176e09ef5db30f533e737608a0f6fa2f679e6e9eeecc11f404664e"
+    },
+    {
+      "method": "Terminal",
+      "symbol": "cui_terminal_ex",
+      "params": [
+        "id"
+      ],
+      "file": "cui_terminal.c",
+      "reason": "Followed through cui__terminal_ex_body: caller ID is consumed synchronously by hashing/ID-stack operations; no caller ID pointer retained.",
+      "sha256": "dc5d64fa18694723ec4ab2b431ac05f51ce7c790c05ffdaaa1f6ff1c75615b32"
+    },
+    {
+      "method": "AccordionBegin",
+      "symbol": "cui_accordion_begin",
+      "file": "cui_data.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "e0a5d35ca846fad577b2ff29b42bdb6fa2e39d54e592252eb09d34a007c5d8a9",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "AgentStatus",
+      "symbol": "cui_agent_status_ex",
+      "file": "cui_ai.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "f1d417f4e801d2d3ec7ff9a08161ab5c81c1227b166ecf67b38fc3fe69efac6e",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Alert",
+      "symbol": "cui_alert_ex",
+      "file": "cui_widgets.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "d1b5a1a49bb85e0f2fb95756733d865896db9f8164f279da6ebcb710f55a7ddd",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Banner",
+      "symbol": "cui_banner_ex",
+      "file": "cui_disclosure.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "f40f62d248e0f7806e32d9631b97e71f2628fe302587ff50671e6223c2bc4428",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ChatDivider",
+      "symbol": "cui_chat_divider",
+      "file": "cui_social.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "286cc8ac74fb4b25a944ba08109579b32ed655e64fb97e1e127f80468a8a152f",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ChatMessage",
+      "symbol": "cui_chat_message_ex",
+      "file": "cui_social.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "3358a138a2dd6fd42b86524be750454d2b33e8aa7bba983e09d4521199a193ad",
+      "reason": "Text is copied by cui__text_node only when opts.Markdown is false. Markdown retains stable wrapper storage for deferred inline source slices."
+    },
+    {
+      "method": "Checkbox",
+      "symbol": "cui_checkbox_ex",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "ea7d8d5083f1b82f7c5ea4add97131a5d9d501fc05e82b37e1435d4efa858a33",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Chip",
+      "symbol": "cui_chip_ex",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "3d651362396b85e851933bbcb12c7b3cdc650dc70246d71dfe490b3fbc4ca23d",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ConfirmButton",
+      "symbol": "cui_confirm_button_ex",
+      "file": "cui_actions.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "7faba2160946bd4a79da2c5a5404f901dcfe9fe5665929d8f3f10708367adf46",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ControlTile",
+      "symbol": "cui_control_tile_ex",
+      "file": "cui_motion.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "f5414e7e0e7783c505fda816de78707801c51197ca33509777b5e6cf57def915",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "DialogBegin",
+      "symbol": "cui_dialog_begin",
+      "file": "cui_overlay.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "2bde03d42ffaf2bf8f95f9e07a883a94e9ed37637e4b4475cfd9c6af3dbe4916",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "DockItem",
+      "symbol": "cui_dock_item_ex",
+      "file": "cui_motion.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "d12ba3cb56e5428377947559ae3c51ba8b7204773c8b3b7bc4872b7a242f01b3",
+      "reason": "Label is synchronously copied into tooltip state. Icon is retained in paint data and is excluded from scoped marshalling."
+    },
+    {
+      "method": "DotDisplay",
+      "symbol": "cui_dot_display_ex",
+      "file": "cui_instrument.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "f5836cd7e0642a6e0f8bc6b5a1a7fe47ac7a2dfd0fd2d7c9798c0585f5c58aaf",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "EmojiFontLoadFile",
+      "symbol": "cui_emoji_font_load_file",
+      "file": "cui_emoji.c",
+      "params": [
+        "path"
+      ],
+      "sha256": "f4799ca887928fe0fb53aee793e40614804607f59ec76d077fdccf61e9e66ee5",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "EmptyState",
+      "symbol": "cui_empty_state_ex",
+      "file": "cui_widgets.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "5189ac34c63af78b8fa3d5660882f954963a5855415391942e453aae66921646",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ExpandableCardBegin",
+      "symbol": "cui_expandable_card_begin",
+      "file": "cui_disclosure.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "be811f6fddfa072d2993637153eaa0fa05b32d61efdeb9b8940f57f52712c81b",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Gauge",
+      "symbol": "cui_gauge",
+      "file": "cui_charts.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "d836642848e53f39f161616dba4fca4882ee105c18d20d12bac269c84fa7a053",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "GradientText",
+      "symbol": "cui_gradient_text_ex",
+      "file": "cui_motion.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "caa3db43d272059628d69d6471885bda37b930ce530464a66b0f08fe5aa97893",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "HistogramSlider",
+      "symbol": "cui_histogram_slider_ex",
+      "file": "cui_pickers.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "887a43c684a0fdcf43553a4ce60147e3f93c2a54ed0390b1fda8270124d1849f",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "HoldButton",
+      "symbol": "cui_hold_button_ex",
+      "file": "cui_extras.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "045a93d966046bce3592bd86d794dfdf372b9b0de74d070691fa24c58bebbbc0",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Icon",
+      "symbol": "cui_icon",
+      "file": "cui_widgets.c",
+      "params": [
+        "icon"
+      ],
+      "sha256": "6e423f4a4764b0534d31c7424505bdad13acf61f549ca58a52c20e4ab9e72f49",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "InputText",
+      "symbol": "cui_input_text",
+      "file": "cui_core.c",
+      "params": [
+        "utf8"
+      ],
+      "sha256": "2b4b95eb6daefccb0702c1c0c1192bbda34948ea6007300e7cacc9200d79fa74",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "KanbanColumnBegin",
+      "symbol": "cui_kanban_column_begin_ex",
+      "file": "cui_planning.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "5bff6b9fe0ea43a0c82693f6e1fdc284ae0c5c4cb63eea73a7cb499295ae5518",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Link",
+      "symbol": "cui_link",
+      "file": "cui_widgets.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "3898ccdad0259b4cee644b283286136df8206aa01ccb87399410261ee79abd7c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ListItem",
+      "symbol": "cui_list_item_ex",
+      "file": "cui_data.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "488313e18f3b722abc7435d206a24726e22d1c69495f555d7063a5a3e0a3c2f5",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "MenuBegin",
+      "symbol": "cui_menu_begin",
+      "file": "cui_overlay.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "4dd74927437c4027c16dda478a6ad356df4124a9a6f7b208d3cc45deefc4a3ba",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "MenuItem",
+      "symbol": "cui_menu_item_ex",
+      "file": "cui_overlay.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "1d9036e6489120aafdefe5edf4b90572eee40582418e8d0fbf0c552a2e95ab40",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "MenuLabel",
+      "symbol": "cui_menu_label",
+      "file": "cui_overlay.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "2e74d9db4e49d95302c252f9b974b0cd059b11e0338234e5b4b2435a88cb3a6e",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Meter",
+      "symbol": "cui_meter",
+      "file": "cui_widgets.c",
+      "params": [
+        "label",
+        "unit"
+      ],
+      "sha256": "134e9c2574a38b9c05ddae51cde6a7b70e457f539beaaa6571d30a8d04752ee8",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Metric",
+      "symbol": "cui_metric_ex",
+      "file": "cui_widgets.c",
+      "params": [
+        "label",
+        "value"
+      ],
+      "sha256": "eb0e92f97ebac0dc2bd7b0a43533ed6f51a60c12e7d09342b7a999b98c3b0300",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "NavItem",
+      "symbol": "cui_nav_item_ex",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "53f1b978a1e0f0271511b1f9069062ecb180f19856299019a9667249dd680b13",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "NavSection",
+      "symbol": "cui_nav_section",
+      "file": "cui_controls.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "c8162fcaaac1d14279bf15a3208c5a6a24c9639fa98e67d97de081196238f528",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "PasswordStrength",
+      "symbol": "cui_password_strength",
+      "file": "cui_extras.c",
+      "params": [
+        "password"
+      ],
+      "sha256": "52a5f32c0ba02552fd90834117c5f34ec83a546919b73accf3c79cf1495db028",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ProgressRing",
+      "symbol": "cui_progress_ring",
+      "file": "cui_extras.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "337aac5c8552bc5053713ab800625f4b033adba31f9a92c85efe27266bee6974",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Radio",
+      "symbol": "cui_radio_ex",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "3398490dce354e95883222bde0cf7a9f8985c49c93427826c4b2e58b78554be8",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "RangeSlider",
+      "symbol": "cui_range_slider",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "f74d61091d0c0ad40e783835f1a8422712c99a60c390d9455fb5b1892d572f92",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Readout",
+      "symbol": "cui_readout_ex",
+      "file": "cui_instrument.c",
+      "params": [
+        "label",
+        "value"
+      ],
+      "sha256": "e0ba78c18b4e5da2ee428c544f180e95b3ba51a87e52566e1a9cc37952cc7cb4",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "RulerSlider",
+      "symbol": "cui_ruler_slider_ex",
+      "file": "cui_pickers.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "e40e33086d2d00d346d1db84535b651bcbeab78f281ad75348e6eda5a2822b98",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Scrub",
+      "symbol": "cui_scrub_ex",
+      "file": "cui_actions.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "2ab90cbd6f7e098271303f4414eb08eaf8f08140840725b9c0c0497e646cb211",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "SheetBegin",
+      "symbol": "cui_sheet_begin",
+      "file": "cui_overlay.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "d02e26818964db133da4940f36f697c61a08d53c7ad3fb1f6d93d47956dea367",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ShimmerText",
+      "symbol": "cui_shimmer_text_ex",
+      "file": "cui_motion.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "6417dda52f7345836d3f148c1a485442da58861b7f893c01de6ddaf3e2c92719",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Slider",
+      "symbol": "cui_slider_ex",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "34e41044774a40da6e9c51fe0380453832210d5ba7b1834e1ac46eb784ba49ec",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "SplitButton",
+      "symbol": "cui_split_button_ex",
+      "file": "cui_actions.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "f079c25d14b6162ee5c68f25165c5d8cddd7c0845aa503bb308dc6fd4b531076",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "StatusButton",
+      "symbol": "cui_status_button_ex",
+      "file": "cui_actions.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "c4e2bd34bfa75ca427ca04c3c88ce4f47b3b6588d0b688bb3849b8023dee2553",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Switch",
+      "symbol": "cui_switch_ex",
+      "file": "cui_controls.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "de2e259841fd590bbdab3133cfff9afaf4a1f5d3f364ea97009f0194edfbb6a6",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "TimelineItem",
+      "symbol": "cui_timeline_item_ex",
+      "file": "cui_extras.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "17d0818c58e4030ce290db96ef24e626d552bf7749e3608ca991c20301625364",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Toast",
+      "symbol": "cui_toast_ex",
+      "file": "cui_overlay.c",
+      "params": [
+        "title"
+      ],
+      "sha256": "a7c0a8c560d0cb301e05aba9484c9ce7a2f4d068dc382475464b0077ef6d1700",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "Tooltip",
+      "symbol": "cui_tooltip",
+      "file": "cui_overlay.c",
+      "params": [
+        "text"
+      ],
+      "sha256": "f59c32b9b40e0750b63a4135d0b442a49090c47af5ee1eeda5e7e60560193567",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "TreeBegin",
+      "symbol": "cui_tree_begin",
+      "file": "cui_data.c",
+      "params": [
+        "label"
+      ],
+      "sha256": "00f528cb316eb90c6f84852538da57d1773247a50546112e649a018fd41f988c",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "TreeCell",
+      "symbol": "cui_tree_cell",
+      "file": "cui_grid.c",
+      "params": [
+        "label",
+        "icon"
+      ],
+      "sha256": "d60d09e868c8e803b292a2b59317395789fbb241ca964eb6a09acc204b4e0e33",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "TypingIndicator",
+      "symbol": "cui_typing_indicator",
+      "file": "cui_social.c",
+      "params": [
+        "name"
+      ],
+      "sha256": "720cd86b3c135ea1ad9303b36561c8702a0e7d363571a5becdc92324bbf7d13a",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "UserMenuBegin",
+      "symbol": "cui_user_menu_begin",
+      "file": "cui_actions.c",
+      "params": [
+        "name"
+      ],
+      "sha256": "4d056a5dd5945a34049461b7f5285fea47a2862112bc8f7582f222520cb663f7",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "ImageLoad",
+      "symbol": "cui_image_load",
+      "file": "cui_image.c",
+      "params": [
+        "path"
+      ],
+      "sha256": "ce28536e97d5fd0ce148a17522e03d8354776acc79a4fe903c6b49012c54e956",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "FsList",
+      "symbol": "cui_fs_list",
+      "file": "cui_files.c",
+      "params": [
+        "path"
+      ],
+      "sha256": "d6a663abddfa269ad498859c74c7d127dc6ae32956ebe6f98b9270df4e6a7c2b",
+      "reason": "Translated entrypoint uses PlatformHost.ListDirectory, which decodes the path into an owned managed string before enumeration. Native Windows branch also consumes it synchronously."
+    },
+    {
+      "method": "UrlParams",
+      "symbol": "cui_url_params",
+      "file": "cui_devpanels.c",
+      "params": [
+        "url"
+      ],
+      "sha256": "49d9b7ab31d5ac17852ce3f6247aa4f40a32d7236cbc3b302bec4bcab5ac523b",
+      "reason": "Listed arguments are consumed synchronously or copied into CUI-owned storage before returning; see UTF8-STORAGE-AUDIT.md."
+    },
+    {
+      "method": "CodeEditor",
+      "params": [
+        "id"
+      ],
+      "reason": "ID is consumed synchronously by hashing and ID-stack operations in the body and find/goto bar. Editable text uses the checked TextBuffer lease; placeholder and mark option pointees use stable storage.",
+      "symbol": "cui_code_editor_ex",
+      "file": "cui_editor.c",
+      "sha256": "411bd685fef8de779b4eb499f6fdbbab045676e3f91027cee0ab2282e9d0a046"
+    }
+  ],
+  "helpers": [
+    {
+      "symbol": "cui__hash_str",
+      "file": "cui_core.c",
+      "sha256": "e1f4cdd8765fddff61c5991cb8509ad7fe913d5acff648591b70a28cc48c2bba"
+    },
+    {
+      "symbol": "cui_make_id",
+      "file": "cui_core.c",
+      "sha256": "fddcbe0c4707cbc02e1cd23d027fad509eb8ceca1ccc646d7f7bc384222bf142"
+    },
+    {
+      "symbol": "cui__frame_strdup",
+      "file": "cui_core.c",
+      "sha256": "a2370f318dfa2458bafa8f6309bd6c0b50455c2643fd7e2e8ec82c14df2056f6"
+    },
+    {
+      "symbol": "cui__frame_alloc",
+      "file": "cui_core.c",
+      "sha256": "5b76eb5666dcd04b0c500de93d8fb2282aaba49121b4c4698b85458595d0e0cd"
+    },
+    {
+      "symbol": "cui_begin_frame",
+      "file": "cui_core.c",
+      "sha256": "baff8bc40f44a331c039c6060e01ee7c7ae3d21f9c8af6874a54936309bf1ca7"
+    },
+    {
+      "symbol": "cui__text_node",
+      "file": "cui_layout.c",
+      "sha256": "bf43d1ba997d810246a1a137c0fc9d952e100fef98ecf4964e6fbbfe971c6a2d"
+    },
+    {
+      "symbol": "cui__button_impl",
+      "file": "cui_widgets.c",
+      "sha256": "67879bff0ff6816ec18dcbc793b89ed47a1d0a5f752e38bd69fa8ec014f5b572"
+    },
+    {
+      "symbol": "cui__icon_button_id",
+      "file": "cui_widgets.c",
+      "sha256": "7ca02e20179998ede116933759c6443e21c857d04501685f26502b728d353a21"
+    },
+    {
+      "symbol": "cui__icon_node",
+      "file": "cui_widgets.c",
+      "sha256": "ff9fbdbb509e2a631a5af9d86a35fed25436ab6b59162e9fea9981207f1c8a16"
+    },
+    {
+      "symbol": "cui__label_text",
+      "file": "cui_widgets.c",
+      "sha256": "0d09bd17884f3d5e4181a8380b24745a4a5c2e09e00074ca8563637e5dae50e3"
+    },
+    {
+      "symbol": "cui__name_tone",
+      "file": "cui_widgets.c",
+      "sha256": "378fa78f2a404753e922f3f050df9e5d0223ae20860326036f7c03b85aa1849c"
+    },
+    {
+      "symbol": "cui__initials",
+      "file": "cui_widgets.c",
+      "sha256": "3a82a2e5b41c5121507c8d89995c70c85201b2e188220dcbc0a73e8e6b0d207d"
+    },
+    {
+      "symbol": "cui__tooltip_passive",
+      "file": "cui_overlay.c",
+      "sha256": "8ae04626744731dd4ed268dad14b5d47ea48865cb16519d2c382d13da8bbbc35"
+    },
+    {
+      "symbol": "cui__draw_text_line",
+      "file": "cui_text.c",
+      "sha256": "23ac449fdba709feea6a0f329d4312cc7a9c17009fe580deffefa8b2cd5095bd"
+    },
+    {
+      "symbol": "cui__draw_run",
+      "file": "cui_text.c",
+      "sha256": "d6aa40caf1b866ec5766f7fbd7076a6cacf0840f42e809d2f55eb0651009a490"
+    },
+    {
+      "symbol": "cui__text_width",
+      "file": "cui_text.c",
+      "sha256": "c3d005825a68ef4fd1ce221d318ea3b1dd857c2b6ff0f747b288250fce6471f8"
+    },
+    {
+      "symbol": "cui__em_draw",
+      "file": "cui_emoji.c",
+      "sha256": "b8db751974be3c671763bb45a40e896af47aac132a3e7e598ce00abdcb3668ae"
+    },
+    {
+      "symbol": "cui__em_get_slot",
+      "file": "cui_emoji.c",
+      "sha256": "89f8ab5824314b17b443f44f105cc28828abf8b734b28eec7f15f32d0a7d257d"
+    },
+    {
+      "symbol": "cui__shape_run",
+      "file": "cui_text.c",
+      "sha256": "3eff35c067be187fd83c8e97b0ec45eb2db53c34b64dad56a22e4348e7a0f148"
+    },
+    {
+      "symbol": "cui__paragraph",
+      "file": "cui_text.c",
+      "sha256": "ff8dbb41dc2eb43393456923143db705214de7f93430bcde468858b52e06576c"
+    },
+    {
+      "symbol": "cui__code_block_ex_body",
+      "file": "cui_code.c",
+      "sha256": "bce236da270b9f45a372cf49e9492cb9f36bf3118c7a049c04306b2ff836b477"
+    },
+    {
+      "symbol": "cui__countdown_ex_body",
+      "file": "cui_disclosure.c",
+      "sha256": "753ee34203d0f048599beb81e30421d1b25c4852b21009e7633b96e8e28c469d"
+    },
+    {
+      "symbol": "cui__counter_ex_body",
+      "file": "cui_media.c",
+      "sha256": "6f597cec2e24c0ac41cc8eabf50e0579da67918a0f8855e04569359e16d719e0"
+    },
+    {
+      "symbol": "cui__dl_caption",
+      "file": "cui_dials.c",
+      "sha256": "6dddf5e5123eac325c0ca3496fdec623290b761b9e4841d4fd04fa32d034a586"
+    },
+    {
+      "symbol": "cui__frame_printf",
+      "file": "cui_core.c",
+      "sha256": "e2ee2c64b8a43452a7a9388fd1b3d147f5b57e72804aeec040fe25197261281d"
+    },
+    {
+      "symbol": "cui__frame_vprintf",
+      "file": "cui_core.c",
+      "sha256": "2a7d39ae7ab90b281c3166dd351c88ed69af11640cbc5ccb41d9455bf5ec634d"
+    },
+    {
+      "symbol": "cui__gantt_ex_body",
+      "file": "cui_planning.c",
+      "sha256": "544124956fa2f6dceb02a5700c6e217e4f5d4ede13100662dc13fd27afa3a7fb"
+    },
+    {
+      "symbol": "cui__json_view_ex_body",
+      "file": "cui_code.c",
+      "sha256": "a82b0ee5d9f308fbfee0eb6f5e7703681f0b841c75b0dbdde67da6d6cb46a464"
+    },
+    {
+      "symbol": "cui__otp_input_body",
+      "file": "cui_extras.c",
+      "sha256": "c949a2b81193806ab0ad605538efb72fa465e1456300c231d643ea6229329e81"
+    },
+    {
+      "symbol": "cui__segments",
+      "file": "cui_controls.c",
+      "sha256": "3fffd011f7459e1a463931046e7505d1b196c545d9bd601ae228be210f5edef8"
+    },
+    {
+      "symbol": "cui__shortcut_recorder_ex_body",
+      "file": "cui_actions.c",
+      "sha256": "667b9d30bd30a26ad30b8531db6a5f47c208497eda9996e6f869f8ed614695ae"
+    },
+    {
+      "symbol": "cui__terminal_ex_body",
+      "file": "cui_terminal.c",
+      "sha256": "d0ef9f7bf9ed75f41354aa83ab53975d5748baeab942acb8df0cdee9ae494ab1"
+    },
+    {
+      "symbol": "cui__time_dial_body",
+      "file": "cui_pickers.c",
+      "sha256": "b73efc54d4c9b320418b5bf9c274320e64e7cc3581a8c2999bdd3bdf69c36d5c"
+    },
+    {
+      "symbol": "cui__week_calendar_ex_body",
+      "file": "cui_planning.c",
+      "sha256": "28cfdccf6b11d8a1c8aa3d446d2f8c73102f2e4f9658f1c408cc1987ac8c2dc4"
+    },
+    {
+      "symbol": "cui__xy_chart",
+      "file": "cui_charts.c",
+      "sha256": "e786d7782c8216a8dfc72524e9b9f466336d3e97750ea7181e988eaff487dfbd"
+    },
+    {
+      "symbol": "cui_hover_card_begin",
+      "file": "cui_disclosure.c",
+      "sha256": "aefdd922bc26cd9310a810cbe9e71763d2f6009db66e97b2466347030178ac61"
+    },
+    {
+      "symbol": "cui_popover_begin",
+      "file": "cui_overlay.c",
+      "sha256": "7695a57d1970bcd6700cef39fb01bb46201fd6fffa9d0caddbf6d205a3a2c3cc"
+    },
+    {
+      "symbol": "cui_progress_ring",
+      "file": "cui_extras.c",
+      "sha256": "337aac5c8552bc5053713ab800625f4b033adba31f9a92c85efe27266bee6974"
+    },
+    {
+      "symbol": "cui_push_id",
+      "file": "cui_core.c",
+      "sha256": "5c450a1ba1b5018c690c1b5ee01ab7811ac7a851c3cb5c409d3c32c3daa7e84c"
+    },
+    {
+      "symbol": "cui_scroll_to",
+      "file": "cui_widgets.c",
+      "sha256": "c31d4093e8d12bb56671d44da877b35249f3139de48152fa687b57793e504e99"
+    },
+    {
+      "symbol": "cui__anchor_id",
+      "file": "cui_disclosure.c",
+      "sha256": "244ea7fe23fed52d68a39ccb77ce66ebfb0043c49dbe2f50c037982f1734d57c"
+    },
+    {
+      "symbol": "cui__face_content",
+      "file": "cui_actions.c",
+      "sha256": "2a6784b27436e98e7cd03ba7992a11db698ca6e5bf640bb995647b3defe8f2e2"
+    },
+    {
+      "symbol": "cui__face_width",
+      "file": "cui_actions.c",
+      "sha256": "e552cfdf1f837e3eb711693e3212cf0a0b8505dffafb63ff9bd6dc39fed44baf"
+    },
+    {
+      "symbol": "cui__fx_text_node",
+      "file": "cui_motion.c",
+      "sha256": "e1d923aa262f534632d53f2565abe070a9a8088704a9870b0b3707205d2d333f"
+    },
+    {
+      "symbol": "cui__json_rows",
+      "file": "cui_code.c",
+      "sha256": "996c0cde3034f9785265ae48f786f50e3e65b2a83ba01321eb44ba30589ea619"
+    },
+    {
+      "symbol": "cui__modal_begin",
+      "file": "cui_overlay.c",
+      "sha256": "fa81c70b67b9e82dfb8822508231567c81395702fd0029093ffa9c48800500aa"
+    },
+    {
+      "symbol": "cui__morph_button",
+      "file": "cui_actions.c",
+      "sha256": "5aed3592587e8c11692fb5ad6cc41359eff520dae249eb74b8b480dcb827e8ea"
+    },
+    {
+      "symbol": "cui__slider_header",
+      "file": "cui_controls.c",
+      "sha256": "6d3767f291e796a07c8261d14bc1ba56db212f536903e98d369f8ef0ed59241a"
+    },
+    {
+      "symbol": "cui__toggle_row",
+      "file": "cui_controls.c",
+      "sha256": "f8d2c2717d6cb4558ae8741eac9a6e7848dc200a20653f3297cffe1e05350f0b"
+    },
+    {
+      "symbol": "cui_markdown_ex",
+      "file": "cui_markdown.c",
+      "sha256": "a4a8506f35a459771762d9dfbd09ecf48f2569982fcffdc88132d4940b8cb8bc"
+    },
+    {
+      "symbol": "cui_node_begin_ex",
+      "file": "cui_nodes.c",
+      "sha256": "38d4814c8101a1ff542a806c8c9262104e6ba3333c1ceab3fb45dcda10a453e2"
+    },
+    {
+      "symbol": "md_heading",
+      "file": "cui_markdown.c",
+      "sha256": "6ddb1e1538497c0f939061e7578cfe9962814e56113871e70ce06d3340cea262"
+    },
+    {
+      "symbol": "md_inline_block",
+      "file": "cui_markdown.c",
+      "sha256": "e60c92426fb7b2ff6af9ffb77974c355079a202428cacff50cb6c9ee1a5776a6"
+    },
+    {
+      "symbol": "md_inline_emit",
+      "file": "cui_markdown.c",
+      "sha256": "04c692ebc8f9d255fee0a90bb5045b6adb1867ca30a7a8a54c7a2f774e28e891"
+    },
+    {
+      "symbol": "md_join",
+      "file": "cui_markdown.c",
+      "sha256": "6e17f8fb8c78402600a37bb8d2d2cb436b895117d8ef871c42556acf0162adce"
+    },
+    {
+      "symbol": "md_paragraph",
+      "file": "cui_markdown.c",
+      "sha256": "88638af2da1a6819214b869a6aff83e391905e200cc8d6da07ce77d68d75146a"
+    },
+    {
+      "symbol": "md_parse_inline",
+      "file": "cui_markdown.c",
+      "sha256": "882b270ca2343fa78966d8ac36ef13c35b5d2036ba642c5926521a9bd3c42817"
+    },
+    {
+      "symbol": "md_seg_add",
+      "file": "cui_markdown.c",
+      "sha256": "12148af892cd36f59240009c53d5feeaa5f083c4229a5d3cdbd8cded10ea440e"
+    },
+    {
+      "symbol": "cui__code_editor_ex_body",
+      "file": "cui_editor.c",
+      "sha256": "a8dc8de25ea7536d2ec2cb0f8b553a615ca4dcc1ee58d8d7f535c508b754a964"
+    },
+    {
+      "symbol": "cui__edf_build_lines",
+      "file": "cui_editor.c",
+      "sha256": "0f934c80a063d8e910589213e8eb11f5d4509e4fa9fae8ece78c6a67c03be148"
+    },
+    {
+      "symbol": "cui__edf_build_bar",
+      "file": "cui_editor.c",
+      "sha256": "17ee2d36d53e09d5c431636e9082f9a7267c127e11c4d10a8e3a42c25134d2bd"
+    }
+  ],
+  "native_source_form": "CUI 1.4.0 with the committed translation profile adaptations",
+  "retained_scalars": [
+    {
+      "method": "NodeBegin",
+      "param": "title",
+      "reason": "cui_node_begin_ex stores title in deferred card paint data."
+    },
+    {
+      "method": "DockItem",
+      "param": "icon",
+      "reason": "cui_dock_item_ex stores icon in deferred paint data."
+    },
+    {
+      "method": "ChatMessage",
+      "param": "text",
+      "condition": "opts.Markdown",
+      "reason": "Markdown heading/inline paint segments retain source slices. Plain chat text uses scoped storage."
+    }
+  ],
+  "managed_evidence": [
+    {
+      "file": "cui/src/Host/PlatformHost.cs",
+      "sha256": "fb76c891423f60b9ec781c65f4dfb2ed641c2df916a3f2cb9e827ac23dde1046"
+    },
+    {
+      "file": "cui/src/Host/GlfwHost.cs",
+      "sha256": "3ff15c194f2941b30a81c348c3d86f1baf8627a09e9c4be5d9402acc577bdd73"
+    }
+  ]
+}

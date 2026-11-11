@@ -1,5 +1,10 @@
 # Managed CUI storage audit
 
+The later [scoped UTF-8 audit](UTF8-STORAGE-AUDIT.md) replaces the conservative
+stable-string policy below for 206 audited scalar-input entrypoints. Retained
+arrays, option pointees, node titles, dock icons and Markdown chat text keep
+their existing storage.
+
 The wrapper now passes synchronous singleton native arguments as unmanaged local
 values: `var native_opts = ToNative(opts); Raw.cui_...(ctx, &native_opts);`.
 There is no `fixed` requirement for an unmanaged local. This changes storage,

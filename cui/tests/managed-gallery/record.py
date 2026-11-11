@@ -53,7 +53,7 @@ def main():
         sourceCommit=args.source_commit, upstream='629b6fcb991d71527f2d67b25c51429c3dcdb498',
         libraryReceipt='MANAGED-LIBRARY-VALIDATION.json', libraryReceiptSha256=digest(ROOT / 'docs/MANAGED-LIBRARY-VALIDATION.json'),
         clockFixture=matrix['clockFixture'],
-        schema='Palette cases are [page, translated maximum channel error, native maximum channel error]. Every recorded case passed exact ordered text and node identity/parent/rectangle/font/length comparison; native float observations match IEEE float32 bits. No masks or omitted pages.',
+        schema='Palette cases are [page, translated maximum channel error, native maximum channel error]. Every recorded case passed exact ordered text and node identity/parent/rectangle/font/length comparison; native float observations match IEEE float32 bits. Original-layout captures exclude managed-only additions; all 27 original pages are compared without masks. Editable code is qualified by the default-gallery OS input suite.',
         totals=dict(wrapperCaptures=1728, translatedCaptures=1728, independentNativePaletteCaptures=432,
                     variants=4, palettesPerVariant=16, pagesPerPalette=27, safetyAssertionsPerVariant=75,
                     osAssertionsPerVariant=4042, osActionsPerVariant=95),

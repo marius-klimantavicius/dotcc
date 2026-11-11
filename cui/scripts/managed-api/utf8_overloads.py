@@ -4,6 +4,7 @@ This only substitutes text argument marshalling. Native calls, validation, scope
 tracking, state synchronization and pointer retention are copied unchanged.
 """
 import itertools
+import json
 import re
 from pathlib import Path
 
@@ -54,6 +55,8 @@ def methods(source):
 
 
 def generate(wrapper: Path, reviewed=None):
+    policy = json.loads(Path(__file__).with_name('utf8-lifetimes.json').read_text())
+    retained = {(item['method'], item['param']): item for item in policy['retained_scalars']}
     entries = []
     for name in INPUTS:
         data = reviewed[name].decode() if reviewed and name in reviewed else (wrapper / name).read_text()
@@ -65,6 +68,21 @@ def generate(wrapper: Path, reviewed=None):
               'using CBool = global::Managed.Forms.Cui.CBool;', 'namespace Cui.Managed;',
               'public sealed unsafe partial class Ui', '{']
     for result, name, params, body in entries:
+        # Scalar lifetimes are audited through helper calls, not inferred from
+        # names such as "id" or "label". Require an explicit retained exception
+        # before allowing a scalar to fall back to frame-arena encoding.
+        for kind, arg, _ in params:
+            if kind != 'string': continue
+            exception = retained.get((name, arg))
+            checked_body = body
+            if exception:
+                condition = exception.get('condition')
+                if not condition: continue
+                # Conditional retention is allowed only within the documented
+                # leaf branch. Reject an arena fallback on the other path.
+                checked_body = re.sub(r'\bif\s*\(\s*' + re.escape(condition) + r'\s*\)\s*\{[^{}]*\}', '', body)
+            if re.search(r'\bUtf8(?:Required)?\(\s*' + re.escape(arg) + r'\s*\)', checked_body):
+                raise ValueError(f'{name}({arg}): scalar still uses frame-arena marshalling; audit its native helper chain and use scoped UTF-8 or document retention')
         kinds = [TEXT_TYPES.get(kind, (kind,)) for kind, _, _ in params]
         for combination in itertools.product(*kinds):
             if combination == tuple(p[0] for p in params): continue

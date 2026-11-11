@@ -31,7 +31,10 @@ internal static unsafe partial class Program
     }
     private sealed class ObservedGallery
     {
-        internal readonly GalleryDemo Demo = new((ThemeMode)GalleryClockFixture.ThemeIndex, (Accent)GalleryClockFixture.AccentIndex);
+        internal readonly GalleryDemo Demo = new((ThemeMode)GalleryClockFixture.ThemeIndex, (Accent)GalleryClockFixture.AccentIndex)
+        {
+            IncludeManagedExamples = Environment.GetEnvironmentVariable("CUI_GALLERY_UPSTREAM_LAYOUT") != "1"
+        };
         internal int page { get => Demo.Page; set => Demo.Page = value; }
         internal CBool newsletter => Demo.Newsletter;
         internal CBool bluetooth => Demo.Bluetooth;

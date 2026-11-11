@@ -605,6 +605,7 @@ internal static unsafe partial class Program
             "Escape closes upstream modal and releases input layer");
 
         EmojiWorkflow(s, input, directory);
+        CodeEditorInteractions(s, input);
 
         Select(s, input, 9);
         Click(s, input, s.Text("Save"));
@@ -650,6 +651,7 @@ internal static unsafe partial class Program
             if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Gallery OS qualification currently executes Linux/X11 only; Windows remains unrun.");
             if (args.Length != 1) throw new ArgumentException("Expected capture/report directory");
             Directory.CreateDirectory(args[0]);
+            if (Environment.GetEnvironmentVariable("CUI_GALLERY_CODE_EDITOR_ONLY") == "1") return CodeEditorOnly();
             if (Environment.GetEnvironmentVariable("CUI_GALLERY_RESPONSIVE_ONLY") == "1") return ResponsiveOnly();
             if (!inputOnly) CapturePages(args[0]);
             if (!captureOnly) Interact(args[0]);
