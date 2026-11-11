@@ -35,7 +35,11 @@ public readonly struct PaintContext
     public void DrawPolygon(ReadOnlySpan<Vec2> points, Color color) { Check(); ui.DrawPolygon(points, points.Length, color); }
     public void DrawArc(Vec2 center, float radius, float start, float end, float thickness, Color color) { Check(); ui.DrawArc(center, radius, start, end, thickness, color); }
     public void DrawText(Font font, float size, Vec2 position, Color color, string text) { Check(); ui.DrawText(font, size, position, color, text, -1); }
+    public void DrawText(Font font, float size, Vec2 position, Color color, ReadOnlySpan<byte> text) { Check(); ui.DrawText(font, size, position, color, text, -1); }
+    public void DrawText(Font font, float size, Vec2 position, Color color, TextBuffer text) { Check(); ui.DrawText(font, size, position, color, text, -1); }
     public void DrawIcon(string icon, Rect rect, float size, Color color) { Check(); ui.DrawIcon(icon, rect, size, color); }
+    public void DrawIcon(ReadOnlySpan<byte> icon, Rect rect, float size, Color color) { Check(); ui.DrawIcon(icon, rect, size, color); }
+    public void DrawIcon(TextBuffer icon, Rect rect, float size, Color color) { Check(); ui.DrawIcon(icon, rect, size, color); }
     public void DrawImage(Texture texture, Rect rect, Rect uv, Corners corners, Color tint) { Check(); ui.DrawImage(texture, rect, uv, corners, tint); }
     public void DrawShadow(Rect rect, Corners corners, float blur, float spread, Vec2 offset, Color color) { Check(); ui.DrawShadow(rect, corners, blur, spread, offset, color); }
 }
@@ -43,8 +47,8 @@ public readonly struct PaintContext
 public sealed unsafe partial class Ui
 {
     private sealed record FileRoot(Ui Ui, FileListHandler Handler, FileEntry[] Entries);
-    private readonly Dictionary<FileListHandler, nint> fileRoots = new();
-    private readonly Dictionary<long, CanvasPainter> painters = new();
+    private readonly Dictionary<FileListHandler, nint> fileRoots = new Dictionary<FileListHandler, IntPtr>();
+    private readonly Dictionary<long, CanvasPainter> painters = new Dictionary<long, CanvasPainter>();
     private long nextPainter;
     private long paintEpoch;
     private nint selfRoot;
@@ -71,13 +75,13 @@ public sealed unsafe partial class Ui
             if (count == -1) return -1; // Upstream's ordinary listing failure.
             CheckLength(count, capacity, nameof(count));
             ulong offset = 0;
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                var entry = entries[i]; string name = entry.Name ?? "";
+                var entry = entries[i]; var name = entry.Name ?? "";
                 if (name.Contains('\0')) throw new ArgumentException("File names cannot contain NUL.");
-                int length = Encoding.UTF8.GetByteCount(name);
+                var length = Encoding.UTF8.GetByteCount(name);
                 if ((ulong)length + 1 > namesCapacity - offset) return -1;
-                byte* target = names + offset;
+                var target = names + offset;
                 Encoding.UTF8.GetBytes(name, new Span<byte>(target, length)); target[length] = 0; offset += (ulong)length + 1;
                 output[i] = new cui_file_entry { name = target, dir = entry.Dir, size = entry.Size, modified = entry.Modified };
             }
@@ -101,7 +105,7 @@ public sealed unsafe partial class Ui
             var root = GCHandle.Alloc(this); callbackRoots.Add(root); selfRoot = GCHandle.ToIntPtr(root);
         }
         // CUI copies user bytes into its frame arena, retaining the stable root/key values.
-        CanvasUser user = new() { Context = selfRoot, Key = painter.Key };
+        CanvasUser user = new CanvasUser { Context = selfRoot, Key = painter.Key };
         return FromNative(Raw.cui_canvas(ctx, Utf8Required(id), ToNative(width), ToNative(height), &CanvasThunk, &user, (ulong)sizeof(CanvasUser)));
     }
     private struct CanvasUser { internal nint Context; internal long Key; }
@@ -115,7 +119,7 @@ public sealed unsafe partial class Ui
             if (context != ui.ctx) throw new InvalidOperationException("Canvas callback context mismatch.");
             var painter = ui.painters[data.Key];
             if (painter.Callback == null) return;
-            ui.painting = true; long epoch = ++ui.paintEpoch;
+            ui.painting = true; var epoch = ++ui.paintEpoch;
             painter.Callback(new PaintContext(ui, ui.FromNative(rect), epoch));
         }
         catch (Exception error) { ui?.Contain(error); }

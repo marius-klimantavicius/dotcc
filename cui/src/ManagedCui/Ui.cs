@@ -19,14 +19,14 @@ public sealed unsafe partial class Ui
     private long generation;
     private long nextScope;
     private long closedScope;
-    private readonly List<(long Id, ScopeKind Kind)> scopes = new();
-    private readonly List<IStateLease> states = new();
-    private readonly List<IStateLease> activeStates = new();
-    private readonly HashSet<TextBuffer> buffers = new();
-    private readonly HashSet<TerminalBuffer> terminals = new();
-    private readonly Dictionary<ulong, Texture> textures = new();
-    private readonly List<Texture> pendingTextures = new();
-    private readonly List<GCHandle> callbackRoots = new();
+    private readonly List<(long Id, ScopeKind Kind)> scopes = new List<(long Id, ScopeKind Kind)>();
+    private readonly List<IStateLease> states = new List<IStateLease>();
+    private readonly List<IStateLease> activeStates = new List<IStateLease>();
+    private readonly HashSet<TextBuffer> buffers = new HashSet<TextBuffer>();
+    private readonly HashSet<TerminalBuffer> terminals = new HashSet<TerminalBuffer>();
+    private readonly Dictionary<ulong, Texture> textures = new Dictionary<ulong, Texture>();
+    private readonly List<Texture> pendingTextures = new List<Texture>();
+    private readonly List<GCHandle> callbackRoots = new List<GCHandle>();
     private ExceptionDispatchInfo? callbackError;
     private bool arraysDirty;
     internal Ui(cui_ctx* context, int arenaLimit)
@@ -157,7 +157,7 @@ public sealed unsafe partial class Ui
     private byte* Use(TextBuffer? buffer)
     {
         if (buffer == null) return null;
-        if (!buffers.Contains(buffer)) { byte* pointer = buffer.Acquire(this); buffers.Add(buffer); return pointer; }
+        if (!buffers.Contains(buffer)) { var pointer = buffer.Acquire(this); buffers.Add(buffer); return pointer; }
         // Repeated Acquire would add a lease; validate without changing ownership.
         _ = buffer.Length;
         return buffer.Pointer;
@@ -167,14 +167,14 @@ public sealed unsafe partial class Ui
     private byte* Utf8(ReadOnlySpan<char> value)
     {
         if (value.Contains('\0')) throw new ArgumentException("CUI strings cannot contain NUL.", nameof(value));
-        int size = Encoding.UTF8.GetByteCount(value);
+        var size = Encoding.UTF8.GetByteCount(value);
         var pointer = (byte*)arena.Allocate(checked(size + 1));
         Encoding.UTF8.GetBytes(value, new Span<byte>(pointer, size)); pointer[size] = 0; return pointer;
     }
     private byte** Strings(ReadOnlySpan<string> values)
     {
         var result = (byte**)arena.Allocate(checked(values.Length * sizeof(byte*)));
-        for (int i = 0; i < values.Length; i++)
+        for (var i = 0; i < values.Length; i++)
         {
             if (values[i] == null) throw new ArgumentException("String array entries must be non-null.", nameof(values));
             result[i] = Utf8(values[i]);
@@ -184,20 +184,20 @@ public sealed unsafe partial class Ui
     private byte** OptionalStrings(ReadOnlySpan<string?> values)
     {
         var result = (byte**)arena.Allocate(checked(values.Length * sizeof(byte*)));
-        for (int i = 0; i < values.Length; i++) result[i] = Utf8(values[i]);
+        for (var i = 0; i < values.Length; i++) result[i] = Utf8(values[i]);
         return result;
     }
     private static string? Decode(byte* value, string? old = null, int maximum = int.MaxValue)
     {
         if (value == null) return null;
-        int length = 0; while (length < maximum && value[length] != 0) length++;
+        var length = 0; while (length < maximum && value[length] != 0) length++;
         var utf8 = new ReadOnlySpan<byte>(value, length);
         if (old != null)
         {
-            int index = 0; bool equal = true;
+            var index = 0; var equal = true;
             foreach (var rune in old.EnumerateRunes())
             {
-                if (Rune.DecodeFromUtf8(utf8[index..], out var next, out int used) != System.Buffers.OperationStatus.Done || rune != next) { equal = false; break; }
+                if (Rune.DecodeFromUtf8(utf8[index..], out var next, out var used) != System.Buffers.OperationStatus.Done || rune != next) { equal = false; break; }
                 index += used;
             }
             if (equal && index == length) return old;
@@ -208,7 +208,7 @@ public sealed unsafe partial class Ui
     {
         if (value == null) { output[0] = 0; return; }
         if (value.Contains('\0')) throw new ArgumentException("Text cannot contain NUL.");
-        int length = Encoding.UTF8.GetByteCount(value);
+        var length = Encoding.UTF8.GetByteCount(value);
         if (length >= capacity) throw new ArgumentException("Text exceeds the upstream field capacity.");
         Encoding.UTF8.GetBytes(value, new Span<byte>(output, length)); output[length] = 0;
     }
@@ -229,14 +229,14 @@ public sealed unsafe partial class Ui
     private UiScope TrackScope(ScopeKind kind, bool open, int result)
     {
         if (!open) return new UiScope(this, 0, generation, false, result);
-        long id = ++nextScope; scopes.Add((id, kind)); return new UiScope(this, id, generation, true, result);
+        var id = ++nextScope; scopes.Add((id, kind)); return new UiScope(this, id, generation, true, result);
     }
     internal void CloseScope(long id, long expected)
     {
         Check();
         if (expected != generation) throw new InvalidOperationException("Scope token is stale.");
         if (id <= closedScope || !inFrame) return;
-        int index = scopes.Count - 1;
+        var index = scopes.Count - 1;
         while (index >= 0 && scopes[index].Id != id) index--;
         if (index < 0) return;
         if (index != scopes.Count - 1) throw new InvalidOperationException("Dispose CUI scopes in reverse nesting order.");

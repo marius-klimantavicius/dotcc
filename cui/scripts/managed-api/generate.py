@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the reviewed managed API from authoritative, literal C# templates.
+"""Reproduce reviewed managed API templates and derived UTF-8 overloads.
 
 Default: check only. Generation refuses to overwrite unrecognized source changes.
 This is deliberately not a header-to-wrapper inference engine: pointer retention,
@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import re
 import sys
+from utf8_overloads import generate as generate_utf8
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
@@ -51,7 +52,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", type=Path, default=REPO, help="repository whose reviewed wrapper is checked")
     parser.add_argument("--check", action="store_true", help="compare templates with destination (the default)")
-    parser.add_argument("--output-dir", type=Path, help="reproduce the four API files here; do not write unless supplied")
+    parser.add_argument("--output-dir", type=Path, help="reproduce the five API files here; do not write unless supplied")
     parser.add_argument("--native-root", type=Path, help="optional upstream root containing src/ and include/cui/cui.h; verify audited definitions")
     args = parser.parse_args()
     if args.check and args.output_dir is not None:
@@ -67,6 +68,7 @@ def main():
         if re.search(rb"arena\s*\.\s*Allocate\s*\(\s*(?:checked\s*\(\s*)?sizeof\b", data):
             raise ValueError(f"{name}.in: singleton arena allocation needs a retention audit")
         outputs[name] = data
+    outputs["Ui.Utf8.g.cs"] = generate_utf8(wrapper, outputs)
     if args.native_root is not None:
         native = args.native_root.resolve()
         if sha((native / "include/cui/cui.h").read_bytes()) != manifest["native_header_sha256"]:

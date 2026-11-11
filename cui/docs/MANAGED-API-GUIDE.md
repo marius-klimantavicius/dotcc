@@ -100,11 +100,41 @@ policy and the reviewed guards during source reproduction.
 ## Text, resources and callbacks
 
 String overloads encode to a reusable stable frame arena without allocating
-temporary managed byte arrays. `Text(ReadOnlySpan<char>)`, `TextUtf8` and
-`ButtonUtf8` accept stack-backed input; supplied bytes are copied, and UTF-8
-overloads reject malformed input and embedded NUL. `TextBuffer` owns persistent
-UTF-8 edit storage, with capacity including the terminator. `SetUtf8` and
+temporary managed byte arrays. Every direct string input on `Ui` also accepts
+`ReadOnlySpan<byte>` or `TextBuffer`, including IDs, labels, file paths, scope
+titles and drawing calls. Multiple text arguments can mix all three forms.
+`PaintContext.DrawText` and `DrawIcon` have the same alternatives. `TextUtf8` and
+`ButtonUtf8` remain compatibility aliases for the ordinary span overloads.
+
+```csharp
+ui.Text("Café 😀"u8);
+ui.Button("Save"u8);
+using var code = new TextBuffer(4096, "int answer = 42;"u8);
+ui.CodeBlock("example", code); // string ID, already encoded content
+code.Set("int answer = 43;"u8);
+ui.Input("editor"u8, code); // editor still uses owned mutable storage
+```
+
+Text collections such as tab labels accept `ReadOnlySpan<ReadOnlyMemory<byte>>`
+or `ReadOnlySpan<TextBuffer>` in addition to `ReadOnlySpan<string>`. Keep the
+backing arrays/memories for reuse. These overloads copy validated UTF-8 directly
+to stable frame storage; they never decode to a managed string. Stack/array
+inputs can be changed after a call. Read-only buffer arguments are snapshots:
+later edits or disposal do not change already submitted labels. This copy is
+needed because upstream can retain text until layout, paint or a later redraw.
+It does not add an editable-buffer lease. Malformed UTF-8, embedded NUL,
+disposed buffers and use from a different owner thread are rejected. Explicit
+text lengths remain **byte counts**. An empty span means empty text; null buffer
+arguments are invalid. With the additional reference-type overloads, callers
+testing a null literal must disambiguate it, e.g. `(string)null!`.
+
+`TextBuffer` owns persistent UTF-8 edit storage, with capacity including the
+terminator. Its UTF-8 constructor, `Set(ReadOnlySpan<byte>)`, `SetUtf8` and
 `CopyUtf8To(Span<byte>)` avoid string conversion; reading `Text` creates a string.
+`TerminalBuffer.Write` also accepts spans and buffers. No public span exposes
+disposable native storage. Option/record string fields (such as `InputOpts.Label`),
+string-returning APIs, and decoded file-list callbacks retain their existing
+types; these overloads cover direct method inputs, not those fields or outputs.
 Editors support the translated UTF-8 scalar behavior, including existing emoji
 editing. They do not promise grapheme-cluster editing.
 

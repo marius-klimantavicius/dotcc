@@ -3,8 +3,20 @@
 `templates/*.cs.in` are authoritative literal C# source templates for the four
 files originally emitted by the header scaffold: `Types.cs`, `Ui.Api.cs`,
 `Ui.Marshalling.cs`, and `Ui.ScopeDispatch.cs`. The rest of `ManagedCui` is
-handwritten and is never emitted. There is no translated CUI/gallery generation
+handwritten, except for `Ui.Utf8.g.cs`, described below. There is no translated CUI/gallery generation
 here, no compiler workaround, and no dependency on external scaffold artifacts.
+
+`utf8_overloads.py` mechanically derives `Ui.Utf8.g.cs` from reviewed method
+bodies in the `Ui.Api.cs` template and handwritten `Ui`, overload, resource and
+callback sources. It adds span/buffer alternatives for every scalar string and
+string collection input, including mixed argument combinations. Private
+stack-only argument carriers share each copied implementation. Native calls,
+scope/lifecycle checks and state synchronization remain those of the source
+method; the only new marshalling copies already encoded text into stable frame
+storage. The generator does not infer native pointer retention from headers.
+Edit the source method rather than the derived file. Generation/checking covers
+all five outputs. `ManagedCui.Tests --utf8` checks overload completeness,
+pixel equivalence, UTF-8 rejection, input lifetime and warmed allocation behavior.
 
 The original scaffold's `author.py` unconditionally put native options, const
 singleton inputs, and mutable singleton arguments in the arena; its follow-up

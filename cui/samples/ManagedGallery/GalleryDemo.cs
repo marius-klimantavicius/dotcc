@@ -283,7 +283,7 @@ public sealed partial class GalleryDemo : IDisposable
     }
 
     private static void DrawFrameRate(Ui ui, ReadOnlySpan<byte> frameRate) =>
-        ui.TextUtf8(frameRate, new() { Size = 12, Color = Color.TextSecondary, Nowrap = true });
+        ui.Text(frameRate, new() { Size = 12, Color = Color.TextSecondary, Nowrap = true });
 
     private void Dialogs(Ui ui)
     {

@@ -53,13 +53,13 @@ public sealed unsafe partial class Ui
     {
         CheckLength(seriesCount, series.Length, nameof(seriesCount));
         if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-        for (int i = 0; i < seriesCount; i++) CheckOptional(count, series[i].Values.Length, nameof(series));
+        for (var i = 0; i < seriesCount; i++) CheckOptional(count, series[i].Values.Length, nameof(series));
     }
     private static void ValidateHistogram(ReadOnlySpan<HistogramSeries> series, int seriesCount, int buckets)
     {
         CheckLength(seriesCount, series.Length, nameof(seriesCount));
         if (buckets < 0) throw new ArgumentOutOfRangeException(nameof(buckets));
-        for (int i = 0; i < seriesCount; i++) CheckOptional(buckets, series[i].Counts.Length, nameof(series));
+        for (var i = 0; i < seriesCount; i++) CheckOptional(buckets, series[i].Counts.Length, nameof(series));
     }
     private static void ValidateGrid(GridOpts opts, int rows)
     {
@@ -75,28 +75,28 @@ public sealed unsafe partial class Ui
     private static void ValidateEdges(ReadOnlySpan<GraphEdge> edges, int count, int nodes)
     {
         CheckLength(count, edges.Length, nameof(count));
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             if ((uint)edges[i].From >= (uint)nodes || (uint)edges[i].To >= (uint)nodes) throw new ArgumentOutOfRangeException(nameof(edges));
     }
     private static void ValidateLinks(ReadOnlySpan<SankeyLink> edges, int count, int nodes)
     {
         CheckLength(count, edges.Length, nameof(count));
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             if ((uint)edges[i].From >= (uint)nodes || (uint)edges[i].To >= (uint)nodes) throw new ArgumentOutOfRangeException(nameof(edges));
     }
     private static void ValidateTracks(ReadOnlySpan<TraceSpan> spans, int count, int tracks)
     {
         CheckLength(count, spans.Length, nameof(count));
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             if ((uint)spans[i].Track >= (uint)tracks || spans[i].Depth < 0) throw new ArgumentOutOfRangeException(nameof(spans));
     }
     private static void ValidateOrder(ReadOnlySpan<int> order, int count)
     {
         if (count > ManagedCuiInfo.ReorderCapacity) throw new ArgumentOutOfRangeException(nameof(count), "CUI supports at most 256 reorder items.");
         CheckLength(count, order.Length, nameof(count));
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
-            for (int j = 0; j < i; j++) if (order[i] == order[j]) throw new ArgumentException("Reorder entries must be a permutation.", nameof(order));
+            for (var j = 0; j < i; j++) if (order[i] == order[j]) throw new ArgumentException("Reorder entries must be a permutation.", nameof(order));
         }
     }
     private static void ValidateQueryNodes(ReadOnlySpan<QueryNode> nodes, int fieldCount)
@@ -108,13 +108,13 @@ public sealed unsafe partial class Ui
     private static string? CheckFormat(string? format, int arguments)
     {
         if (format == null) return null;
-        int conversions = 0;
-        for (int i = 0; i < format.Length; i++)
+        var conversions = 0;
+        for (var i = 0; i < format.Length; i++)
         {
             if (format[i] != '%') continue;
             if (++i < format.Length && format[i] == '%') continue;
             if (++conversions > arguments) throw new ArgumentException("Too many printf conversions.", nameof(format));
-            int width = 0;
+            var width = 0;
             while (i < format.Length && "-+ #0.123456789".Contains(format[i]))
             {
                 if (char.IsAsciiDigit(format[i])) width = checked(width * 10 + format[i] - '0');

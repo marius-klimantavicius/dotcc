@@ -46,13 +46,14 @@ public sealed unsafe class TerminalBuffer : IDisposable
     public void Write(string text)
     {
         Check(); ArgumentNullException.ThrowIfNull(text);
-        int count = Encoding.UTF8.GetByteCount(text);
+        var count = Encoding.UTF8.GetByteCount(text);
         byte[]? rented = null;
-        Span<byte> bytes = count <= 1024 ? stackalloc byte[count] : (rented = System.Buffers.ArrayPool<byte>.Shared.Rent(count)).AsSpan(0, count);
+        var bytes = count <= 1024 ? stackalloc byte[count] : (rented = System.Buffers.ArrayPool<byte>.Shared.Rent(count)).AsSpan(0, count);
         try { Encoding.UTF8.GetBytes(text, bytes); Write(bytes); }
         finally { if (rented != null) System.Buffers.ArrayPool<byte>.Shared.Return(rented); }
     }
     public void Write(ReadOnlySpan<byte> bytes) { Check(); fixed (byte* p = bytes) Raw.cui_terminal_write(Pointer, p, bytes.Length); }
+    public void Write(TextBuffer text) { Check(); ArgumentNullException.ThrowIfNull(text); Write(text.ReadUtf8()); }
     public void Clear() { Check(); Raw.cui_terminal_clear(Pointer); }
     internal void Acquire(Ui ui)
     {
@@ -92,7 +93,7 @@ public sealed unsafe partial class Ui
         CheckLength(checked(width * height * 4), rgba.Length, nameof(rgba));
         fixed (byte* p = rgba)
         {
-            ulong value = Raw.cui_image_create(ctx, width, height, p);
+            var value = Raw.cui_image_create(ctx, width, height, p);
             if (value == 0) throw new InvalidOperationException("CUI image creation failed.");
             return FindTexture(value)!;
         }
@@ -100,7 +101,7 @@ public sealed unsafe partial class Ui
     public Texture ImageLoad(string path, out int width, out int height)
     {
         Check(); ArgumentNullException.ThrowIfNull(path); int w, h;
-        ulong value = Raw.cui_image_load(ctx, Utf8(path), &w, &h); width = w; height = h;
+        var value = Raw.cui_image_load(ctx, Utf8(path), &w, &h); width = w; height = h;
         if (value == 0) throw new InvalidOperationException("CUI image loading failed.");
         return FindTexture(value)!;
     }
@@ -131,9 +132,9 @@ public sealed unsafe partial class Ui
         if (nameBytes < 1) throw new ArgumentOutOfRangeException(nameof(nameBytes));
         var output = (cui_file_entry*)arena.Allocate(checked(entries.Length * sizeof(cui_file_entry)));
         var names = (byte*)arena.Allocate(nameBytes);
-        int count = Raw.cui_fs_list(null, Utf8(path), output, entries.Length, names, (ulong)nameBytes, hidden);
+        var count = Raw.cui_fs_list(null, Utf8(path), output, entries.Length, names, (ulong)nameBytes, hidden);
         if (count > entries.Length) throw new InvalidOperationException("Invalid CUI filesystem result.");
-        for (int i = 0; i < count; i++) entries[i] = FromNative(output[i], entries[i]);
+        for (var i = 0; i < count; i++) entries[i] = FromNative(output[i], entries[i]);
         return count;
     }
     public ulong QueryText(ReadOnlySpan<QueryField> fields, int fieldCount, ReadOnlySpan<QueryNode> nodes, int count, TextBuffer output)
@@ -144,8 +145,8 @@ public sealed unsafe partial class Ui
     }
     public int UrlParams(string url, Span<KvPair> pairs)
     {
-        Check(); var native = CopyKvPair(pairs); int result = Raw.cui_url_params(Utf8Required(url), native, pairs.Length);
-        for (int i = 0; i < Math.Min(result, pairs.Length); i++) pairs[i] = FromNative(native[i], pairs[i]); return result;
+        Check(); var native = CopyKvPair(pairs); var result = Raw.cui_url_params(Utf8Required(url), native, pairs.Length);
+        for (var i = 0; i < Math.Min(result, pairs.Length); i++) pairs[i] = FromNative(native[i], pairs[i]); return result;
     }
     public bool UrlSetParams(TextBuffer url, ReadOnlySpan<KvPair> pairs, int count)
     {

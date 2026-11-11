@@ -1,3 +1,4 @@
+using Managed.Forms;
 using Raw = global::Managed.Forms.Cui;
 using static global::Managed.Forms.Cui;
 
@@ -28,10 +29,10 @@ public sealed unsafe class Application : IDisposable
     public Ui Ui { get; }
     public Application(ApplicationOptions? options = null)
     {
-        options ??= new();
+        options ??= new ApplicationOptions();
         if (!Enum.IsDefined(options.Theme) || !Enum.IsDefined(options.Accent) || options.Accent == Accent.Count) throw new ArgumentOutOfRangeException(nameof(options));
         if (options.FrameArenaLimit < 4096) throw new ArgumentOutOfRangeException(nameof(options.FrameArenaLimit));
-        app = new(options.Title, options.Width, options.Height, options.Hidden, options.Continuous,
+        app = new DesktopApplication(options.Title, options.Width, options.Height, options.Hidden, options.Continuous,
             options.MinWidth, options.MinHeight, (cui_theme_mode)options.Theme, (cui_accent)options.Accent, options.AppId);
         try { Ui = new Ui(app.Ui, options.FrameArenaLimit); }
         catch { app.Dispose(); app = null; throw; }

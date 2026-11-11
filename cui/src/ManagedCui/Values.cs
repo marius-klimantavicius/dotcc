@@ -35,21 +35,21 @@ public partial struct Size
         Kind = kind; Value = value;
     }
     public static Size Fit => default;
-    public static Size Fill => new(SizeKind.Grow, 1);
-    public static Size Grow(float weight = 1) => new(SizeKind.Grow, weight);
-    public static Size Px(float points) => new(SizeKind.Fixed, points);
-    public static Size Percent(float percent) => new(SizeKind.Percent, percent);
+    public static Size Fill => new Size(SizeKind.Grow, 1);
+    public static Size Grow(float weight = 1) => new Size(SizeKind.Grow, weight);
+    public static Size Px(float points) => new Size(SizeKind.Fixed, points);
+    public static Size Percent(float percent) => new Size(SizeKind.Percent, percent);
 }
 public partial struct Color
 {
     public Color(byte r, byte g, byte b, byte a = 255) { R = r; G = g; B = b; A = a; }
-    public static Color Rgb(uint rgb) => new((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
-    public static Color Rgba(uint rgba) => new((byte)(rgba >> 24), (byte)(rgba >> 16), (byte)(rgba >> 8), (byte)rgba);
+    public static Color Rgb(uint rgb) => new Color((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb);
+    public static Color Rgba(uint rgba) => new Color((byte)(rgba >> 24), (byte)(rgba >> 16), (byte)(rgba >> 8), (byte)rgba);
     public static Color Transparent => default;
     public static Color Semantic(Token token)
     {
         if ((uint)token >= (uint)Token.Count) throw new ArgumentOutOfRangeException(nameof(token));
-        return new((byte)token, 0xC5, 0x1D, 0);
+        return new Color((byte)token, 0xC5, 0x1D, 0);
     }
     public static Color Background => Semantic(Token.Background);
     public static Color Surface => Semantic(Token.Surface);
@@ -81,7 +81,7 @@ public partial struct Date
 {
     public Date(int year, int month, int day) { Year = year; Month = month; Day = day; }
     public Date(DateOnly date) : this(date.Year, date.Month, date.Day) { }
-    public readonly DateOnly ToDateOnly() => new(Year, Month, Day);
+    public readonly DateOnly ToDateOnly() => new DateOnly(Year, Month, Day);
 }
 public partial struct DateRange
 {

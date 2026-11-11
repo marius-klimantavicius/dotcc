@@ -802,7 +802,7 @@ public sealed unsafe partial class Ui
         r.date = Utf8(v.Date);
         r.refs = Utf8(v.Refs);
         if (!v.Parent.IsEmpty && v.Parent.Length != 2) throw new ArgumentException("Commit.Parent requires 2 elements.");
-        for (int i = 0; i < v.Parent.Length; i++) r.parent[i] = v.Parent.Span[i];
+        for (var i = 0; i < v.Parent.Length; i++) r.parent[i] = v.Parent.Span[i];
         return r;
     }
     private Commit FromNative(cui_commit r, Commit old = default)
@@ -814,7 +814,7 @@ public sealed unsafe partial class Ui
         v.Date = Decode(r.date, old.Date);
         v.Refs = Decode(r.refs, old.Refs);
         if (v.Parent.Length != 2) v.Parent = new int[2];
-        for (int i = 0; i < 2; i++) v.Parent.Span[i] = r.parent[i];
+        for (var i = 0; i < 2; i++) v.Parent.Span[i] = r.parent[i];
         return v;
     }
     private cui_commit_graph_opts ToNative(CommitGraphOpts v)
@@ -1506,9 +1506,9 @@ public sealed unsafe partial class Ui
         r.key = Utf8(v.Key);
         r.description = Utf8(v.Description);
         if (!v.On.IsEmpty && v.On.Length != CUI_FLAG_ENVS) throw new ArgumentException("FeatureFlag.On requires CUI_FLAG_ENVS elements.");
-        for (int i = 0; i < v.On.Length; i++) r.on[i] = v.On.Span[i];
+        for (var i = 0; i < v.On.Length; i++) r.on[i] = v.On.Span[i];
         if (!v.Rollout.IsEmpty && v.Rollout.Length != CUI_FLAG_ENVS) throw new ArgumentException("FeatureFlag.Rollout requires CUI_FLAG_ENVS elements.");
-        for (int i = 0; i < v.Rollout.Length; i++) r.rollout[i] = v.Rollout.Span[i];
+        for (var i = 0; i < v.Rollout.Length; i++) r.rollout[i] = v.Rollout.Span[i];
         return r;
     }
     private FeatureFlag FromNative(cui_feature_flag r, FeatureFlag old = default)
@@ -1517,9 +1517,9 @@ public sealed unsafe partial class Ui
         v.Key = Decode(r.key, old.Key);
         v.Description = Decode(r.description, old.Description);
         if (v.On.Length != CUI_FLAG_ENVS) v.On = new bool[CUI_FLAG_ENVS];
-        for (int i = 0; i < CUI_FLAG_ENVS; i++) v.On.Span[i] = (r.on[i] != 0);
+        for (var i = 0; i < CUI_FLAG_ENVS; i++) v.On.Span[i] = (r.on[i] != 0);
         if (v.Rollout.Length != CUI_FLAG_ENVS) v.Rollout = new int[CUI_FLAG_ENVS];
-        for (int i = 0; i < CUI_FLAG_ENVS; i++) v.Rollout.Span[i] = r.rollout[i];
+        for (var i = 0; i < CUI_FLAG_ENVS; i++) v.Rollout.Span[i] = r.rollout[i];
         return v;
     }
     private cui_feature_flags_opts ToNative(FeatureFlagsOpts v)
@@ -2542,7 +2542,7 @@ public sealed unsafe partial class Ui
         r.size = v.Size;
         r.start = v.Start;
         if (!v.Timing.IsEmpty && v.Timing.Length != 6) throw new ArgumentException("NetRequest.Timing requires 6 elements.");
-        for (int i = 0; i < v.Timing.Length; i++) r.timing[i] = v.Timing.Span[i];
+        for (var i = 0; i < v.Timing.Length; i++) r.timing[i] = v.Timing.Span[i];
         return r;
     }
     private NetRequest FromNative(cui_net_request r, NetRequest old = default)
@@ -2555,7 +2555,7 @@ public sealed unsafe partial class Ui
         v.Size = r.size;
         v.Start = r.start;
         if (v.Timing.Length != 6) v.Timing = new float[6];
-        for (int i = 0; i < 6; i++) v.Timing.Span[i] = r.timing[i];
+        for (var i = 0; i < 6; i++) v.Timing.Span[i] = r.timing[i];
         return v;
     }
     private cui_node_editor_opts ToNative(NodeEditorOpts v)
@@ -4528,10 +4528,10 @@ public sealed unsafe partial class Ui
     private CBool* CopyBool(ReadOnlySpan<bool> values)
     {
         var p = (CBool*)arena.Allocate(checked(values.Length * sizeof(CBool)));
-        for (int i = 0; i < values.Length; i++) p[i] = values[i];
+        for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
-    private readonly List<(Memory<bool> Memory, nuint Pointer)> journalBool = new();
+    private readonly List<(Memory<bool> Memory, nuint Pointer)> journalBool = new List<(Memory<bool> Memory, UIntPtr Pointer)>();
     private void JournalBool(Memory<bool> memory, CBool* pointer) { journalBool.Add((memory, (nuint)pointer)); arraysDirty = true; }
     private void SyncBool()
     {
@@ -4539,16 +4539,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (CBool*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = (p[i] != 0);
+            for (var i = 0; i < span.Length; i++) span[i] = (p[i] != 0);
         }
     }
     private cui_api_endpoint* CopyApiEndpoint(ReadOnlySpan<ApiEndpoint> values)
     {
         var p = (cui_api_endpoint*)arena.Allocate(checked(values.Length * sizeof(cui_api_endpoint)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<ApiEndpoint> Memory, nuint Pointer)> journalApiEndpoint = new();
+    private readonly List<(Memory<ApiEndpoint> Memory, nuint Pointer)> journalApiEndpoint = new List<(Memory<ApiEndpoint> Memory, UIntPtr Pointer)>();
     private void JournalApiEndpoint(Memory<ApiEndpoint> memory, cui_api_endpoint* pointer) => journalApiEndpoint.Add((memory, (nuint)pointer));
     private void SyncApiEndpoint()
     {
@@ -4556,16 +4556,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_api_endpoint*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_api_param* CopyApiParam(ReadOnlySpan<ApiParam> values)
     {
         var p = (cui_api_param*)arena.Allocate(checked(values.Length * sizeof(cui_api_param)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<ApiParam> Memory, nuint Pointer)> journalApiParam = new();
+    private readonly List<(Memory<ApiParam> Memory, nuint Pointer)> journalApiParam = new List<(Memory<ApiParam> Memory, UIntPtr Pointer)>();
     private void JournalApiParam(Memory<ApiParam> memory, cui_api_param* pointer) => journalApiParam.Add((memory, (nuint)pointer));
     private void SyncApiParam()
     {
@@ -4573,16 +4573,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_api_param*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_blame_commit* CopyBlameCommit(ReadOnlySpan<BlameCommit> values)
     {
         var p = (cui_blame_commit*)arena.Allocate(checked(values.Length * sizeof(cui_blame_commit)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<BlameCommit> Memory, nuint Pointer)> journalBlameCommit = new();
+    private readonly List<(Memory<BlameCommit> Memory, nuint Pointer)> journalBlameCommit = new List<(Memory<BlameCommit> Memory, UIntPtr Pointer)>();
     private void JournalBlameCommit(Memory<BlameCommit> memory, cui_blame_commit* pointer) => journalBlameCommit.Add((memory, (nuint)pointer));
     private void SyncBlameCommit()
     {
@@ -4590,16 +4590,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_blame_commit*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_cal_event* CopyCalEvent(ReadOnlySpan<CalEvent> values)
     {
         var p = (cui_cal_event*)arena.Allocate(checked(values.Length * sizeof(cui_cal_event)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<CalEvent> Memory, nuint Pointer)> journalCalEvent = new();
+    private readonly List<(Memory<CalEvent> Memory, nuint Pointer)> journalCalEvent = new List<(Memory<CalEvent> Memory, UIntPtr Pointer)>();
     private void JournalCalEvent(Memory<CalEvent> memory, cui_cal_event* pointer) => journalCalEvent.Add((memory, (nuint)pointer));
     private void SyncCalEvent()
     {
@@ -4607,16 +4607,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_cal_event*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_candle* CopyCandle(ReadOnlySpan<Candle> values)
     {
         var p = (cui_candle*)arena.Allocate(checked(values.Length * sizeof(cui_candle)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Candle> Memory, nuint Pointer)> journalCandle = new();
+    private readonly List<(Memory<Candle> Memory, nuint Pointer)> journalCandle = new List<(Memory<Candle> Memory, UIntPtr Pointer)>();
     private void JournalCandle(Memory<Candle> memory, cui_candle* pointer) => journalCandle.Add((memory, (nuint)pointer));
     private void SyncCandle()
     {
@@ -4624,16 +4624,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_candle*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_chart_annotation* CopyChartAnnotation(ReadOnlySpan<ChartAnnotation> values)
     {
         var p = (cui_chart_annotation*)arena.Allocate(checked(values.Length * sizeof(cui_chart_annotation)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<ChartAnnotation> Memory, nuint Pointer)> journalChartAnnotation = new();
+    private readonly List<(Memory<ChartAnnotation> Memory, nuint Pointer)> journalChartAnnotation = new List<(Memory<ChartAnnotation> Memory, UIntPtr Pointer)>();
     private void JournalChartAnnotation(Memory<ChartAnnotation> memory, cui_chart_annotation* pointer) => journalChartAnnotation.Add((memory, (nuint)pointer));
     private void SyncChartAnnotation()
     {
@@ -4641,16 +4641,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_chart_annotation*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_check_step* CopyCheckStep(ReadOnlySpan<CheckStep> values)
     {
         var p = (cui_check_step*)arena.Allocate(checked(values.Length * sizeof(cui_check_step)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<CheckStep> Memory, nuint Pointer)> journalCheckStep = new();
+    private readonly List<(Memory<CheckStep> Memory, nuint Pointer)> journalCheckStep = new List<(Memory<CheckStep> Memory, UIntPtr Pointer)>();
     private void JournalCheckStep(Memory<CheckStep> memory, cui_check_step* pointer) => journalCheckStep.Add((memory, (nuint)pointer));
     private void SyncCheckStep()
     {
@@ -4658,16 +4658,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_check_step*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_choice* CopyChoice(ReadOnlySpan<Choice> values)
     {
         var p = (cui_choice*)arena.Allocate(checked(values.Length * sizeof(cui_choice)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Choice> Memory, nuint Pointer)> journalChoice = new();
+    private readonly List<(Memory<Choice> Memory, nuint Pointer)> journalChoice = new List<(Memory<Choice> Memory, UIntPtr Pointer)>();
     private void JournalChoice(Memory<Choice> memory, cui_choice* pointer) => journalChoice.Add((memory, (nuint)pointer));
     private void SyncChoice()
     {
@@ -4675,16 +4675,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_choice*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_command* CopyCommand(ReadOnlySpan<Command> values)
     {
         var p = (cui_command*)arena.Allocate(checked(values.Length * sizeof(cui_command)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Command> Memory, nuint Pointer)> journalCommand = new();
+    private readonly List<(Memory<Command> Memory, nuint Pointer)> journalCommand = new List<(Memory<Command> Memory, UIntPtr Pointer)>();
     private void JournalCommand(Memory<Command> memory, cui_command* pointer) => journalCommand.Add((memory, (nuint)pointer));
     private void SyncCommand()
     {
@@ -4692,16 +4692,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_command*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_commit* CopyCommit(ReadOnlySpan<Commit> values)
     {
         var p = (cui_commit*)arena.Allocate(checked(values.Length * sizeof(cui_commit)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Commit> Memory, nuint Pointer)> journalCommit = new();
+    private readonly List<(Memory<Commit> Memory, nuint Pointer)> journalCommit = new List<(Memory<Commit> Memory, UIntPtr Pointer)>();
     private void JournalCommit(Memory<Commit> memory, cui_commit* pointer) => journalCommit.Add((memory, (nuint)pointer));
     private void SyncCommit()
     {
@@ -4709,16 +4709,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_commit*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_coverage_file* CopyCoverageFile(ReadOnlySpan<CoverageFile> values)
     {
         var p = (cui_coverage_file*)arena.Allocate(checked(values.Length * sizeof(cui_coverage_file)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<CoverageFile> Memory, nuint Pointer)> journalCoverageFile = new();
+    private readonly List<(Memory<CoverageFile> Memory, nuint Pointer)> journalCoverageFile = new List<(Memory<CoverageFile> Memory, UIntPtr Pointer)>();
     private void JournalCoverageFile(Memory<CoverageFile> memory, cui_coverage_file* pointer) => journalCoverageFile.Add((memory, (nuint)pointer));
     private void SyncCoverageFile()
     {
@@ -4726,16 +4726,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_coverage_file*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_diagnostic* CopyDiagnostic(ReadOnlySpan<Diagnostic> values)
     {
         var p = (cui_diagnostic*)arena.Allocate(checked(values.Length * sizeof(cui_diagnostic)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Diagnostic> Memory, nuint Pointer)> journalDiagnostic = new();
+    private readonly List<(Memory<Diagnostic> Memory, nuint Pointer)> journalDiagnostic = new List<(Memory<Diagnostic> Memory, UIntPtr Pointer)>();
     private void JournalDiagnostic(Memory<Diagnostic> memory, cui_diagnostic* pointer) => journalDiagnostic.Add((memory, (nuint)pointer));
     private void SyncDiagnostic()
     {
@@ -4743,16 +4743,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_diagnostic*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_dot_series* CopyDotSeries(ReadOnlySpan<DotSeries> values)
     {
         var p = (cui_dot_series*)arena.Allocate(checked(values.Length * sizeof(cui_dot_series)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<DotSeries> Memory, nuint Pointer)> journalDotSeries = new();
+    private readonly List<(Memory<DotSeries> Memory, nuint Pointer)> journalDotSeries = new List<(Memory<DotSeries> Memory, UIntPtr Pointer)>();
     private void JournalDotSeries(Memory<DotSeries> memory, cui_dot_series* pointer) => journalDotSeries.Add((memory, (nuint)pointer));
     private void SyncDotSeries()
     {
@@ -4760,16 +4760,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_dot_series*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_feature_flag* CopyFeatureFlag(ReadOnlySpan<FeatureFlag> values)
     {
         var p = (cui_feature_flag*)arena.Allocate(checked(values.Length * sizeof(cui_feature_flag)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<FeatureFlag> Memory, nuint Pointer)> journalFeatureFlag = new();
+    private readonly List<(Memory<FeatureFlag> Memory, nuint Pointer)> journalFeatureFlag = new List<(Memory<FeatureFlag> Memory, UIntPtr Pointer)>();
     private void JournalFeatureFlag(Memory<FeatureFlag> memory, cui_feature_flag* pointer) => journalFeatureFlag.Add((memory, (nuint)pointer));
     private void SyncFeatureFlag()
     {
@@ -4777,16 +4777,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_feature_flag*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_filter_field* CopyFilterField(ReadOnlySpan<FilterField> values)
     {
         var p = (cui_filter_field*)arena.Allocate(checked(values.Length * sizeof(cui_filter_field)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<FilterField> Memory, nuint Pointer)> journalFilterField = new();
+    private readonly List<(Memory<FilterField> Memory, nuint Pointer)> journalFilterField = new List<(Memory<FilterField> Memory, UIntPtr Pointer)>();
     private void JournalFilterField(Memory<FilterField> memory, cui_filter_field* pointer) => journalFilterField.Add((memory, (nuint)pointer));
     private void SyncFilterField()
     {
@@ -4794,16 +4794,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_filter_field*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_gantt_task* CopyGanttTask(ReadOnlySpan<GanttTask> values)
     {
         var p = (cui_gantt_task*)arena.Allocate(checked(values.Length * sizeof(cui_gantt_task)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<GanttTask> Memory, nuint Pointer)> journalGanttTask = new();
+    private readonly List<(Memory<GanttTask> Memory, nuint Pointer)> journalGanttTask = new List<(Memory<GanttTask> Memory, UIntPtr Pointer)>();
     private void JournalGanttTask(Memory<GanttTask> memory, cui_gantt_task* pointer) => journalGanttTask.Add((memory, (nuint)pointer));
     private void SyncGanttTask()
     {
@@ -4811,16 +4811,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_gantt_task*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_gauge_band* CopyGaugeBand(ReadOnlySpan<GaugeBand> values)
     {
         var p = (cui_gauge_band*)arena.Allocate(checked(values.Length * sizeof(cui_gauge_band)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<GaugeBand> Memory, nuint Pointer)> journalGaugeBand = new();
+    private readonly List<(Memory<GaugeBand> Memory, nuint Pointer)> journalGaugeBand = new List<(Memory<GaugeBand> Memory, UIntPtr Pointer)>();
     private void JournalGaugeBand(Memory<GaugeBand> memory, cui_gauge_band* pointer) => journalGaugeBand.Add((memory, (nuint)pointer));
     private void SyncGaugeBand()
     {
@@ -4828,16 +4828,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_gauge_band*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_graph_edge* CopyGraphEdge(ReadOnlySpan<GraphEdge> values)
     {
         var p = (cui_graph_edge*)arena.Allocate(checked(values.Length * sizeof(cui_graph_edge)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<GraphEdge> Memory, nuint Pointer)> journalGraphEdge = new();
+    private readonly List<(Memory<GraphEdge> Memory, nuint Pointer)> journalGraphEdge = new List<(Memory<GraphEdge> Memory, UIntPtr Pointer)>();
     private void JournalGraphEdge(Memory<GraphEdge> memory, cui_graph_edge* pointer) => journalGraphEdge.Add((memory, (nuint)pointer));
     private void SyncGraphEdge()
     {
@@ -4845,16 +4845,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_graph_edge*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_graph_node* CopyGraphNode(ReadOnlySpan<GraphNode> values)
     {
         var p = (cui_graph_node*)arena.Allocate(checked(values.Length * sizeof(cui_graph_node)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<GraphNode> Memory, nuint Pointer)> journalGraphNode = new();
+    private readonly List<(Memory<GraphNode> Memory, nuint Pointer)> journalGraphNode = new List<(Memory<GraphNode> Memory, UIntPtr Pointer)>();
     private void JournalGraphNode(Memory<GraphNode> memory, cui_graph_node* pointer) => journalGraphNode.Add((memory, (nuint)pointer));
     private void SyncGraphNode()
     {
@@ -4862,16 +4862,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_graph_node*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_grid_column* CopyGridColumn(ReadOnlySpan<GridColumn> values)
     {
         var p = (cui_grid_column*)arena.Allocate(checked(values.Length * sizeof(cui_grid_column)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<GridColumn> Memory, nuint Pointer)> journalGridColumn = new();
+    private readonly List<(Memory<GridColumn> Memory, nuint Pointer)> journalGridColumn = new List<(Memory<GridColumn> Memory, UIntPtr Pointer)>();
     private void JournalGridColumn(Memory<GridColumn> memory, cui_grid_column* pointer) => journalGridColumn.Add((memory, (nuint)pointer));
     private void SyncGridColumn()
     {
@@ -4879,16 +4879,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_grid_column*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_histogram_series* CopyHistogramSeries(ReadOnlySpan<HistogramSeries> values)
     {
         var p = (cui_histogram_series*)arena.Allocate(checked(values.Length * sizeof(cui_histogram_series)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<HistogramSeries> Memory, nuint Pointer)> journalHistogramSeries = new();
+    private readonly List<(Memory<HistogramSeries> Memory, nuint Pointer)> journalHistogramSeries = new List<(Memory<HistogramSeries> Memory, UIntPtr Pointer)>();
     private void JournalHistogramSeries(Memory<HistogramSeries> memory, cui_histogram_series* pointer) => journalHistogramSeries.Add((memory, (nuint)pointer));
     private void SyncHistogramSeries()
     {
@@ -4896,16 +4896,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_histogram_series*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_keymap_binding* CopyKeymapBinding(ReadOnlySpan<KeymapBinding> values)
     {
         var p = (cui_keymap_binding*)arena.Allocate(checked(values.Length * sizeof(cui_keymap_binding)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<KeymapBinding> Memory, nuint Pointer)> journalKeymapBinding = new();
+    private readonly List<(Memory<KeymapBinding> Memory, nuint Pointer)> journalKeymapBinding = new List<(Memory<KeymapBinding> Memory, UIntPtr Pointer)>();
     private void JournalKeymapBinding(Memory<KeymapBinding> memory, cui_keymap_binding* pointer) => journalKeymapBinding.Add((memory, (nuint)pointer));
     private void SyncKeymapBinding()
     {
@@ -4913,16 +4913,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_keymap_binding*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_kv_pair* CopyKvPair(ReadOnlySpan<KvPair> values)
     {
         var p = (cui_kv_pair*)arena.Allocate(checked(values.Length * sizeof(cui_kv_pair)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<KvPair> Memory, nuint Pointer)> journalKvPair = new();
+    private readonly List<(Memory<KvPair> Memory, nuint Pointer)> journalKvPair = new List<(Memory<KvPair> Memory, UIntPtr Pointer)>();
     private void JournalKvPair(Memory<KvPair> memory, cui_kv_pair* pointer) => journalKvPair.Add((memory, (nuint)pointer));
     private void SyncKvPair()
     {
@@ -4930,16 +4930,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_kv_pair*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_model* CopyModel(ReadOnlySpan<Model> values)
     {
         var p = (cui_model*)arena.Allocate(checked(values.Length * sizeof(cui_model)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Model> Memory, nuint Pointer)> journalModel = new();
+    private readonly List<(Memory<Model> Memory, nuint Pointer)> journalModel = new List<(Memory<Model> Memory, UIntPtr Pointer)>();
     private void JournalModel(Memory<Model> memory, cui_model* pointer) => journalModel.Add((memory, (nuint)pointer));
     private void SyncModel()
     {
@@ -4947,16 +4947,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_model*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_month_event* CopyMonthEvent(ReadOnlySpan<MonthEvent> values)
     {
         var p = (cui_month_event*)arena.Allocate(checked(values.Length * sizeof(cui_month_event)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<MonthEvent> Memory, nuint Pointer)> journalMonthEvent = new();
+    private readonly List<(Memory<MonthEvent> Memory, nuint Pointer)> journalMonthEvent = new List<(Memory<MonthEvent> Memory, UIntPtr Pointer)>();
     private void JournalMonthEvent(Memory<MonthEvent> memory, cui_month_event* pointer) => journalMonthEvent.Add((memory, (nuint)pointer));
     private void SyncMonthEvent()
     {
@@ -4964,16 +4964,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_month_event*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_net_request* CopyNetRequest(ReadOnlySpan<NetRequest> values)
     {
         var p = (cui_net_request*)arena.Allocate(checked(values.Length * sizeof(cui_net_request)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<NetRequest> Memory, nuint Pointer)> journalNetRequest = new();
+    private readonly List<(Memory<NetRequest> Memory, nuint Pointer)> journalNetRequest = new List<(Memory<NetRequest> Memory, UIntPtr Pointer)>();
     private void JournalNetRequest(Memory<NetRequest> memory, cui_net_request* pointer) => journalNetRequest.Add((memory, (nuint)pointer));
     private void SyncNetRequest()
     {
@@ -4981,16 +4981,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_net_request*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_pipeline_job* CopyPipelineJob(ReadOnlySpan<PipelineJob> values)
     {
         var p = (cui_pipeline_job*)arena.Allocate(checked(values.Length * sizeof(cui_pipeline_job)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<PipelineJob> Memory, nuint Pointer)> journalPipelineJob = new();
+    private readonly List<(Memory<PipelineJob> Memory, nuint Pointer)> journalPipelineJob = new List<(Memory<PipelineJob> Memory, UIntPtr Pointer)>();
     private void JournalPipelineJob(Memory<PipelineJob> memory, cui_pipeline_job* pointer) => journalPipelineJob.Add((memory, (nuint)pointer));
     private void SyncPipelineJob()
     {
@@ -4998,16 +4998,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_pipeline_job*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_plan_step* CopyPlanStep(ReadOnlySpan<PlanStep> values)
     {
         var p = (cui_plan_step*)arena.Allocate(checked(values.Length * sizeof(cui_plan_step)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<PlanStep> Memory, nuint Pointer)> journalPlanStep = new();
+    private readonly List<(Memory<PlanStep> Memory, nuint Pointer)> journalPlanStep = new List<(Memory<PlanStep> Memory, UIntPtr Pointer)>();
     private void JournalPlanStep(Memory<PlanStep> memory, cui_plan_step* pointer) => journalPlanStep.Add((memory, (nuint)pointer));
     private void SyncPlanStep()
     {
@@ -5015,16 +5015,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_plan_step*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_presence_user* CopyPresenceUser(ReadOnlySpan<PresenceUser> values)
     {
         var p = (cui_presence_user*)arena.Allocate(checked(values.Length * sizeof(cui_presence_user)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<PresenceUser> Memory, nuint Pointer)> journalPresenceUser = new();
+    private readonly List<(Memory<PresenceUser> Memory, nuint Pointer)> journalPresenceUser = new List<(Memory<PresenceUser> Memory, UIntPtr Pointer)>();
     private void JournalPresenceUser(Memory<PresenceUser> memory, cui_presence_user* pointer) => journalPresenceUser.Add((memory, (nuint)pointer));
     private void SyncPresenceUser()
     {
@@ -5032,16 +5032,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_presence_user*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_prompt_suggestion* CopyPromptSuggestion(ReadOnlySpan<PromptSuggestion> values)
     {
         var p = (cui_prompt_suggestion*)arena.Allocate(checked(values.Length * sizeof(cui_prompt_suggestion)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<PromptSuggestion> Memory, nuint Pointer)> journalPromptSuggestion = new();
+    private readonly List<(Memory<PromptSuggestion> Memory, nuint Pointer)> journalPromptSuggestion = new List<(Memory<PromptSuggestion> Memory, UIntPtr Pointer)>();
     private void JournalPromptSuggestion(Memory<PromptSuggestion> memory, cui_prompt_suggestion* pointer) => journalPromptSuggestion.Add((memory, (nuint)pointer));
     private void SyncPromptSuggestion()
     {
@@ -5049,16 +5049,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_prompt_suggestion*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_query_field* CopyQueryField(ReadOnlySpan<QueryField> values)
     {
         var p = (cui_query_field*)arena.Allocate(checked(values.Length * sizeof(cui_query_field)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<QueryField> Memory, nuint Pointer)> journalQueryField = new();
+    private readonly List<(Memory<QueryField> Memory, nuint Pointer)> journalQueryField = new List<(Memory<QueryField> Memory, UIntPtr Pointer)>();
     private void JournalQueryField(Memory<QueryField> memory, cui_query_field* pointer) => journalQueryField.Add((memory, (nuint)pointer));
     private void SyncQueryField()
     {
@@ -5066,16 +5066,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_query_field*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_query_node* CopyQueryNode(ReadOnlySpan<QueryNode> values)
     {
         var p = (cui_query_node*)arena.Allocate(checked(values.Length * sizeof(cui_query_node)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<QueryNode> Memory, nuint Pointer)> journalQueryNode = new();
+    private readonly List<(Memory<QueryNode> Memory, nuint Pointer)> journalQueryNode = new List<(Memory<QueryNode> Memory, UIntPtr Pointer)>();
     private void JournalQueryNode(Memory<QueryNode> memory, cui_query_node* pointer) => journalQueryNode.Add((memory, (nuint)pointer));
     private void SyncQueryNode()
     {
@@ -5083,16 +5083,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_query_node*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_reaction* CopyReaction(ReadOnlySpan<Reaction> values)
     {
         var p = (cui_reaction*)arena.Allocate(checked(values.Length * sizeof(cui_reaction)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Reaction> Memory, nuint Pointer)> journalReaction = new();
+    private readonly List<(Memory<Reaction> Memory, nuint Pointer)> journalReaction = new List<(Memory<Reaction> Memory, UIntPtr Pointer)>();
     private void JournalReaction(Memory<Reaction> memory, cui_reaction* pointer) => journalReaction.Add((memory, (nuint)pointer));
     private void SyncReaction()
     {
@@ -5100,16 +5100,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_reaction*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_sankey_link* CopySankeyLink(ReadOnlySpan<SankeyLink> values)
     {
         var p = (cui_sankey_link*)arena.Allocate(checked(values.Length * sizeof(cui_sankey_link)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<SankeyLink> Memory, nuint Pointer)> journalSankeyLink = new();
+    private readonly List<(Memory<SankeyLink> Memory, nuint Pointer)> journalSankeyLink = new List<(Memory<SankeyLink> Memory, UIntPtr Pointer)>();
     private void JournalSankeyLink(Memory<SankeyLink> memory, cui_sankey_link* pointer) => journalSankeyLink.Add((memory, (nuint)pointer));
     private void SyncSankeyLink()
     {
@@ -5117,16 +5117,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_sankey_link*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_scatter_series* CopyScatterSeries(ReadOnlySpan<ScatterSeries> values)
     {
         var p = (cui_scatter_series*)arena.Allocate(checked(values.Length * sizeof(cui_scatter_series)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<ScatterSeries> Memory, nuint Pointer)> journalScatterSeries = new();
+    private readonly List<(Memory<ScatterSeries> Memory, nuint Pointer)> journalScatterSeries = new List<(Memory<ScatterSeries> Memory, UIntPtr Pointer)>();
     private void JournalScatterSeries(Memory<ScatterSeries> memory, cui_scatter_series* pointer) => journalScatterSeries.Add((memory, (nuint)pointer));
     private void SyncScatterSeries()
     {
@@ -5134,16 +5134,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_scatter_series*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_series* CopySeries(ReadOnlySpan<Series> values)
     {
         var p = (cui_series*)arena.Allocate(checked(values.Length * sizeof(cui_series)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Series> Memory, nuint Pointer)> journalSeries = new();
+    private readonly List<(Memory<Series> Memory, nuint Pointer)> journalSeries = new List<(Memory<Series> Memory, UIntPtr Pointer)>();
     private void JournalSeries(Memory<Series> memory, cui_series* pointer) => journalSeries.Add((memory, (nuint)pointer));
     private void SyncSeries()
     {
@@ -5151,16 +5151,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_series*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_source* CopySource(ReadOnlySpan<Source> values)
     {
         var p = (cui_source*)arena.Allocate(checked(values.Length * sizeof(cui_source)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Source> Memory, nuint Pointer)> journalSource = new();
+    private readonly List<(Memory<Source> Memory, nuint Pointer)> journalSource = new List<(Memory<Source> Memory, UIntPtr Pointer)>();
     private void JournalSource(Memory<Source> memory, cui_source* pointer) => journalSource.Add((memory, (nuint)pointer));
     private void SyncSource()
     {
@@ -5168,16 +5168,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_source*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_speed_action* CopySpeedAction(ReadOnlySpan<SpeedAction> values)
     {
         var p = (cui_speed_action*)arena.Allocate(checked(values.Length * sizeof(cui_speed_action)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<SpeedAction> Memory, nuint Pointer)> journalSpeedAction = new();
+    private readonly List<(Memory<SpeedAction> Memory, nuint Pointer)> journalSpeedAction = new List<(Memory<SpeedAction> Memory, UIntPtr Pointer)>();
     private void JournalSpeedAction(Memory<SpeedAction> memory, cui_speed_action* pointer) => journalSpeedAction.Add((memory, (nuint)pointer));
     private void SyncSpeedAction()
     {
@@ -5185,16 +5185,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_speed_action*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_stack_frame* CopyStackFrame(ReadOnlySpan<StackFrame> values)
     {
         var p = (cui_stack_frame*)arena.Allocate(checked(values.Length * sizeof(cui_stack_frame)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<StackFrame> Memory, nuint Pointer)> journalStackFrame = new();
+    private readonly List<(Memory<StackFrame> Memory, nuint Pointer)> journalStackFrame = new List<(Memory<StackFrame> Memory, UIntPtr Pointer)>();
     private void JournalStackFrame(Memory<StackFrame> memory, cui_stack_frame* pointer) => journalStackFrame.Add((memory, (nuint)pointer));
     private void SyncStackFrame()
     {
@@ -5202,16 +5202,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_stack_frame*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_swipe_action* CopySwipeAction(ReadOnlySpan<SwipeAction> values)
     {
         var p = (cui_swipe_action*)arena.Allocate(checked(values.Length * sizeof(cui_swipe_action)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<SwipeAction> Memory, nuint Pointer)> journalSwipeAction = new();
+    private readonly List<(Memory<SwipeAction> Memory, nuint Pointer)> journalSwipeAction = new List<(Memory<SwipeAction> Memory, UIntPtr Pointer)>();
     private void JournalSwipeAction(Memory<SwipeAction> memory, cui_swipe_action* pointer) => journalSwipeAction.Add((memory, (nuint)pointer));
     private void SyncSwipeAction()
     {
@@ -5219,16 +5219,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_swipe_action*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_tab_bar_item* CopyTabBarItem(ReadOnlySpan<TabBarItem> values)
     {
         var p = (cui_tab_bar_item*)arena.Allocate(checked(values.Length * sizeof(cui_tab_bar_item)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TabBarItem> Memory, nuint Pointer)> journalTabBarItem = new();
+    private readonly List<(Memory<TabBarItem> Memory, nuint Pointer)> journalTabBarItem = new List<(Memory<TabBarItem> Memory, UIntPtr Pointer)>();
     private void JournalTabBarItem(Memory<TabBarItem> memory, cui_tab_bar_item* pointer) => journalTabBarItem.Add((memory, (nuint)pointer));
     private void SyncTabBarItem()
     {
@@ -5236,16 +5236,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_tab_bar_item*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_table_column* CopyTableColumn(ReadOnlySpan<TableColumn> values)
     {
         var p = (cui_table_column*)arena.Allocate(checked(values.Length * sizeof(cui_table_column)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TableColumn> Memory, nuint Pointer)> journalTableColumn = new();
+    private readonly List<(Memory<TableColumn> Memory, nuint Pointer)> journalTableColumn = new List<(Memory<TableColumn> Memory, UIntPtr Pointer)>();
     private void JournalTableColumn(Memory<TableColumn> memory, cui_table_column* pointer) => journalTableColumn.Add((memory, (nuint)pointer));
     private void SyncTableColumn()
     {
@@ -5253,16 +5253,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_table_column*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_test_item* CopyTestItem(ReadOnlySpan<TestItem> values)
     {
         var p = (cui_test_item*)arena.Allocate(checked(values.Length * sizeof(cui_test_item)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TestItem> Memory, nuint Pointer)> journalTestItem = new();
+    private readonly List<(Memory<TestItem> Memory, nuint Pointer)> journalTestItem = new List<(Memory<TestItem> Memory, UIntPtr Pointer)>();
     private void JournalTestItem(Memory<TestItem> memory, cui_test_item* pointer) => journalTestItem.Add((memory, (nuint)pointer));
     private void SyncTestItem()
     {
@@ -5270,16 +5270,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_test_item*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_ticker_item* CopyTickerItem(ReadOnlySpan<TickerItem> values)
     {
         var p = (cui_ticker_item*)arena.Allocate(checked(values.Length * sizeof(cui_ticker_item)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TickerItem> Memory, nuint Pointer)> journalTickerItem = new();
+    private readonly List<(Memory<TickerItem> Memory, nuint Pointer)> journalTickerItem = new List<(Memory<TickerItem> Memory, UIntPtr Pointer)>();
     private void JournalTickerItem(Memory<TickerItem> memory, cui_ticker_item* pointer) => journalTickerItem.Add((memory, (nuint)pointer));
     private void SyncTickerItem()
     {
@@ -5287,16 +5287,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_ticker_item*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_toc_item* CopyTocItem(ReadOnlySpan<TocItem> values)
     {
         var p = (cui_toc_item*)arena.Allocate(checked(values.Length * sizeof(cui_toc_item)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TocItem> Memory, nuint Pointer)> journalTocItem = new();
+    private readonly List<(Memory<TocItem> Memory, nuint Pointer)> journalTocItem = new List<(Memory<TocItem> Memory, UIntPtr Pointer)>();
     private void JournalTocItem(Memory<TocItem> memory, cui_toc_item* pointer) => journalTocItem.Add((memory, (nuint)pointer));
     private void SyncTocItem()
     {
@@ -5304,16 +5304,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_toc_item*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_tour_step* CopyTourStep(ReadOnlySpan<TourStep> values)
     {
         var p = (cui_tour_step*)arena.Allocate(checked(values.Length * sizeof(cui_tour_step)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TourStep> Memory, nuint Pointer)> journalTourStep = new();
+    private readonly List<(Memory<TourStep> Memory, nuint Pointer)> journalTourStep = new List<(Memory<TourStep> Memory, UIntPtr Pointer)>();
     private void JournalTourStep(Memory<TourStep> memory, cui_tour_step* pointer) => journalTourStep.Add((memory, (nuint)pointer));
     private void SyncTourStep()
     {
@@ -5321,16 +5321,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_tour_step*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_trace_marker* CopyTraceMarker(ReadOnlySpan<TraceMarker> values)
     {
         var p = (cui_trace_marker*)arena.Allocate(checked(values.Length * sizeof(cui_trace_marker)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TraceMarker> Memory, nuint Pointer)> journalTraceMarker = new();
+    private readonly List<(Memory<TraceMarker> Memory, nuint Pointer)> journalTraceMarker = new List<(Memory<TraceMarker> Memory, UIntPtr Pointer)>();
     private void JournalTraceMarker(Memory<TraceMarker> memory, cui_trace_marker* pointer) => journalTraceMarker.Add((memory, (nuint)pointer));
     private void SyncTraceMarker()
     {
@@ -5338,16 +5338,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_trace_marker*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_trace_span* CopyTraceSpan(ReadOnlySpan<TraceSpan> values)
     {
         var p = (cui_trace_span*)arena.Allocate(checked(values.Length * sizeof(cui_trace_span)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TraceSpan> Memory, nuint Pointer)> journalTraceSpan = new();
+    private readonly List<(Memory<TraceSpan> Memory, nuint Pointer)> journalTraceSpan = new List<(Memory<TraceSpan> Memory, UIntPtr Pointer)>();
     private void JournalTraceSpan(Memory<TraceSpan> memory, cui_trace_span* pointer) => journalTraceSpan.Add((memory, (nuint)pointer));
     private void SyncTraceSpan()
     {
@@ -5355,16 +5355,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_trace_span*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_trace_track* CopyTraceTrack(ReadOnlySpan<TraceTrack> values)
     {
         var p = (cui_trace_track*)arena.Allocate(checked(values.Length * sizeof(cui_trace_track)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<TraceTrack> Memory, nuint Pointer)> journalTraceTrack = new();
+    private readonly List<(Memory<TraceTrack> Memory, nuint Pointer)> journalTraceTrack = new List<(Memory<TraceTrack> Memory, UIntPtr Pointer)>();
     private void JournalTraceTrack(Memory<TraceTrack> memory, cui_trace_track* pointer) => journalTraceTrack.Add((memory, (nuint)pointer));
     private void SyncTraceTrack()
     {
@@ -5372,16 +5372,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_trace_track*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_uptime_service* CopyUptimeService(ReadOnlySpan<UptimeService> values)
     {
         var p = (cui_uptime_service*)arena.Allocate(checked(values.Length * sizeof(cui_uptime_service)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<UptimeService> Memory, nuint Pointer)> journalUptimeService = new();
+    private readonly List<(Memory<UptimeService> Memory, nuint Pointer)> journalUptimeService = new List<(Memory<UptimeService> Memory, UIntPtr Pointer)>();
     private void JournalUptimeService(Memory<UptimeService> memory, cui_uptime_service* pointer) => journalUptimeService.Add((memory, (nuint)pointer));
     private void SyncUptimeService()
     {
@@ -5389,16 +5389,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_uptime_service*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_vec2* CopyVec2(ReadOnlySpan<Vec2> values)
     {
         var p = (cui_vec2*)arena.Allocate(checked(values.Length * sizeof(cui_vec2)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<Vec2> Memory, nuint Pointer)> journalVec2 = new();
+    private readonly List<(Memory<Vec2> Memory, nuint Pointer)> journalVec2 = new List<(Memory<Vec2> Memory, UIntPtr Pointer)>();
     private void JournalVec2(Memory<Vec2> memory, cui_vec2* pointer) => journalVec2.Add((memory, (nuint)pointer));
     private void SyncVec2()
     {
@@ -5406,16 +5406,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_vec2*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private cui_viz_item* CopyVizItem(ReadOnlySpan<VizItem> values)
     {
         var p = (cui_viz_item*)arena.Allocate(checked(values.Length * sizeof(cui_viz_item)));
-        for (int i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
+        for (var i = 0; i < values.Length; i++) p[i] = ToNative(values[i]);
         return p;
     }
-    private readonly List<(Memory<VizItem> Memory, nuint Pointer)> journalVizItem = new();
+    private readonly List<(Memory<VizItem> Memory, nuint Pointer)> journalVizItem = new List<(Memory<VizItem> Memory, UIntPtr Pointer)>();
     private void JournalVizItem(Memory<VizItem> memory, cui_viz_item* pointer) => journalVizItem.Add((memory, (nuint)pointer));
     private void SyncVizItem()
     {
@@ -5423,16 +5423,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (cui_viz_item*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
+            for (var i = 0; i < span.Length; i++) span[i] = FromNative(p[i], span[i]);
         }
     }
     private double* CopyDouble(ReadOnlySpan<double> values)
     {
         var p = (double*)arena.Allocate(checked(values.Length * sizeof(double)));
-        for (int i = 0; i < values.Length; i++) p[i] = values[i];
+        for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
-    private readonly List<(Memory<double> Memory, nuint Pointer)> journalDouble = new();
+    private readonly List<(Memory<double> Memory, nuint Pointer)> journalDouble = new List<(Memory<double> Memory, UIntPtr Pointer)>();
     private void JournalDouble(Memory<double> memory, double* pointer) => journalDouble.Add((memory, (nuint)pointer));
     private void SyncDouble()
     {
@@ -5440,16 +5440,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (double*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = p[i];
+            for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
     private float* CopyFloat(ReadOnlySpan<float> values)
     {
         var p = (float*)arena.Allocate(checked(values.Length * sizeof(float)));
-        for (int i = 0; i < values.Length; i++) p[i] = values[i];
+        for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
-    private readonly List<(Memory<float> Memory, nuint Pointer)> journalFloat = new();
+    private readonly List<(Memory<float> Memory, nuint Pointer)> journalFloat = new List<(Memory<float> Memory, UIntPtr Pointer)>();
     private void JournalFloat(Memory<float> memory, float* pointer) => journalFloat.Add((memory, (nuint)pointer));
     private void SyncFloat()
     {
@@ -5457,16 +5457,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (float*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = p[i];
+            for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
     private int* CopyInt(ReadOnlySpan<int> values)
     {
         var p = (int*)arena.Allocate(checked(values.Length * sizeof(int)));
-        for (int i = 0; i < values.Length; i++) p[i] = values[i];
+        for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
-    private readonly List<(Memory<int> Memory, nuint Pointer)> journalInt = new();
+    private readonly List<(Memory<int> Memory, nuint Pointer)> journalInt = new List<(Memory<int> Memory, UIntPtr Pointer)>();
     private void JournalInt(Memory<int> memory, int* pointer) { journalInt.Add((memory, (nuint)pointer)); arraysDirty = true; }
     private void SyncInt()
     {
@@ -5474,16 +5474,16 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (int*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = p[i];
+            for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
     private uint* CopyUint32T(ReadOnlySpan<uint> values)
     {
         var p = (uint*)arena.Allocate(checked(values.Length * sizeof(uint)));
-        for (int i = 0; i < values.Length; i++) p[i] = values[i];
+        for (var i = 0; i < values.Length; i++) p[i] = values[i];
         return p;
     }
-    private readonly List<(Memory<uint> Memory, nuint Pointer)> journalUint32T = new();
+    private readonly List<(Memory<uint> Memory, nuint Pointer)> journalUint32T = new List<(Memory<uint> Memory, UIntPtr Pointer)>();
     private void JournalUint32T(Memory<uint> memory, uint* pointer) => journalUint32T.Add((memory, (nuint)pointer));
     private void SyncUint32T()
     {
@@ -5491,7 +5491,7 @@ public sealed unsafe partial class Ui
         {
             var span = entry.Memory.Span;
             var p = (uint*)entry.Pointer;
-            for (int i = 0; i < span.Length; i++) span[i] = p[i];
+            for (var i = 0; i < span.Length; i++) span[i] = p[i];
         }
     }
     private CBool* BindBool(State<bool>? value) => Bind<bool, CBool>(value, &EncodeBool, &DecodeBool);
