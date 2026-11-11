@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Forms.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Forms.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Forms.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Forms.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637 = global::Managed.Forms.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F36463030323445443930443336423631304530333646333830323435433145423031433345313044383234383841364536413131313038424634323346464232 = global::Managed.Forms.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Forms.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Forms.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Forms.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Forms.Cui.cui_t
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Forms.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Forms.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Forms.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F45303336324332393344374432443334303043373445453936414142393132363345303446314443434239304638413335384235453033433735303241453241 = global::Managed.Forms.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F36434632363632314634314433413230334642333937323641433137444442413232414632364444343646303031313333343646333244364438304236433932 = global::Managed.Forms.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Forms.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Forms.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Forms.Cui.cui_diff_row_kind;
@@ -247,7 +247,7 @@ public static unsafe partial class Cui
             for (int k = 0; Cond.B(((CBool)(k < count))); k++)
             {
                 byte* s = ((byte*)(Cond.B(segs[k]) ? segs[k] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
-                int n = snprintf(st->buf + len, (int)(((ulong)((1024 * sizeof(byte)))) - len), (DotCcLiterals.Pointer + DotCcLiterals.S1408 /*"%s%.*s"*/)).Arg(((byte*)(Cond.B(k) ? (DotCcLiterals.Pointer + DotCcLiterals.S1004 /*"/"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))).Arg(cui__display_len(s)).Arg(s).Done();
+                int n = snprintf(st->buf + len, (int)(((ulong)((1024 * sizeof(byte)))) - len), (DotCcLiterals.Pointer + DotCcLiterals.S1409 /*"%s%.*s"*/)).Arg(((byte*)(Cond.B(k) ? (DotCcLiterals.Pointer + DotCcLiterals.S1005 /*"/"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)))).Arg(cui__display_len(s)).Arg(s).Done();
                 if (Cond.B(((CBool)(Cond.B(((CBool)(n < 0))) || Cond.B(((CBool)((ulong)n >= ((ulong)((1024 * sizeof(byte)))) - len)))))))
                     break;
                 len += (ulong)n;
@@ -427,7 +427,7 @@ public static unsafe partial class Cui
                 int parent = ((int)(Cond.B(((CBool)(items[i - 1] >= 0))) ? items[i - 1] : hide_to - 1));
                 if (Cond.B(o->menus))
                 {
-                    uint sep_id = cui__pb_item_id(ui, id_str, parent, (DotCcLiterals.Pointer + DotCcLiterals.S1006 /*"sep"*/));
+                    uint sep_id = cui__pb_item_id(ui, id_str, parent, (DotCcLiterals.Pointer + DotCcLiterals.S1007 /*"sep"*/));
                     CBool showing = ((CBool)(Cond.B(((CBool)(Cond.B(mp) && Cond.B(mp->open)))) && Cond.B(((CBool)(st->menu_seg == parent)))));
                     if (Cond.B(showing))
                         menu_shown = 1;
@@ -475,13 +475,14 @@ public static unsafe partial class Cui
                 int p__1 = cui__pb_pill(ui, more_id, ph, 1, &r__1);
                 ui->nodes[p__1].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)more_w };
                 ui->nodes[p__1].flags |= (uint)(131072);
-                cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1034 /*""*/), 16, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
+                cui__icon_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1035 /*""*/), 16, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY]);
                 cui__close(ui);
                 cui__focus_ring(ui, p__1, ((float)(Cond.B(r__1.focus_visible) ? 1.0f : 0.0f)));
                 if (Cond.B(r__1.clicked))
                 {
                     cui_popup* pp = cui__popup_get(ui, more_pid, 1);
-                    if (Cond.B(pp))
+                    CBool key_activate = ((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(ui->focus == more_id))) && Cond.B(ui->focus_visible)))) && Cond.B(((CBool)(Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_ENTER)) || Cond.B(cui_key_pressed(ui, __DotCcEnum_6375695F6B6579.CUI_KEY_SPACE)))))));
+                    if (Cond.B(((CBool)(Cond.B(pp) && Cond.B((Cond.B(((CBool)(Cond.B(pp->open) && Cond.B(key_activate)))) ? 0 : 1))))))
                     {
                         cui__popup_set(ui, more_pid, (Cond.B(pp->open) ? 0 : 1));
                         pp->at_mouse = 0;
@@ -491,7 +492,7 @@ public static unsafe partial class Cui
             }
             byte* sg = ((byte*)(Cond.B(segs[k__3]) ? segs[k__3] : (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/)));
             CBool last = ((CBool)(k__3 == count - 1));
-            uint sid = cui__pb_item_id(ui, id_str, k__3, (DotCcLiterals.Pointer + DotCcLiterals.S870 /*"seg"*/));
+            uint sid = cui__pb_item_id(ui, id_str, k__3, (DotCcLiterals.Pointer + DotCcLiterals.S871 /*"seg"*/));
             int p__2 = cui__pb_pill(ui, sid, ph, 1, &r__1);
             ui->nodes[p__2].pad[1] = ui->nodes[p__2].pad[3] = 8.0f;
             if (Cond.B((Cond.B(last) ? 0 : 1)))
@@ -568,59 +569,59 @@ public static unsafe partial class Cui
 
     public static unsafe cui__lang cui__lang_for(byte* lang)
     {
-        cui__lang l = new cui__lang { kw = global::Managed.Forms.Cui.Globals.none__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3, types = global::Managed.Forms.Cui.Globals.none__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3, line_comment = null, line_comment2 = null, block_comments = 0, hash_preproc = 0, backtick = 0, no_caps_types = 0 };
+        cui__lang l = new cui__lang { kw = global::Managed.Forms.Cui.Globals.none__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A, types = global::Managed.Forms.Cui.Globals.none__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A, line_comment = null, line_comment2 = null, block_comments = 0, hash_preproc = 0, backtick = 0, no_caps_types = 0 };
         if (Cond.B((Cond.B(lang) ? 0 : 1)))
             return l;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1360 /*"c"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S853 /*"cpp"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S326 /*"c++"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S868 /*"h"*/))) ? 0 : 1))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1361 /*"c"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S854 /*"cpp"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S326 /*"c++"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S869 /*"h"*/))) ? 0 : 1))))))
         {
-            l.kw = global::Managed.Forms.Cui.Globals.kw_c__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-            l.types = global::Managed.Forms.Cui.Globals.ty_c__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-            l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"//"*/);
+            l.kw = global::Managed.Forms.Cui.Globals.kw_c__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+            l.types = global::Managed.Forms.Cui.Globals.ty_c__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+            l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1056 /*"//"*/);
             l.block_comments = 1;
             l.hash_preproc = 1;
         }
         else
-            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S31 /*"js"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S307 /*"ts"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1029 /*"javascript"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S874 /*"typescript"*/))) ? 0 : 1))))))
+            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S31 /*"js"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S307 /*"ts"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1030 /*"javascript"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S875 /*"typescript"*/))) ? 0 : 1))))))
             {
-                l.kw = global::Managed.Forms.Cui.Globals.kw_js__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                l.types = global::Managed.Forms.Cui.Globals.ty_js__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"//"*/);
+                l.kw = global::Managed.Forms.Cui.Globals.kw_js__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                l.types = global::Managed.Forms.Cui.Globals.ty_js__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1056 /*"//"*/);
                 l.block_comments = 1;
                 l.backtick = 1;
             }
             else
-                if (Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"python"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S286 /*"py"*/))) ? 0 : 1))))))
+                if (Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"python"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S286 /*"py"*/))) ? 0 : 1))))))
                 {
-                    l.kw = global::Managed.Forms.Cui.Globals.kw_py__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                    l.types = global::Managed.Forms.Cui.Globals.ty_py__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                    l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S915 /*"#"*/);
+                    l.kw = global::Managed.Forms.Cui.Globals.kw_py__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                    l.types = global::Managed.Forms.Cui.Globals.ty_py__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                    l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S916 /*"#"*/);
                 }
                 else
-                    if (Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S333 /*"rust"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1159 /*"rs"*/))) ? 0 : 1))))))
+                    if (Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S333 /*"rust"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1160 /*"rs"*/))) ? 0 : 1))))))
                     {
-                        l.kw = global::Managed.Forms.Cui.Globals.kw_rs__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                        l.types = global::Managed.Forms.Cui.Globals.ty_rs__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                        l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"//"*/);
+                        l.kw = global::Managed.Forms.Cui.Globals.kw_rs__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                        l.types = global::Managed.Forms.Cui.Globals.ty_rs__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                        l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1056 /*"//"*/);
                         l.block_comments = 1;
                     }
                     else
-                        if (Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1401 /*"go"*/))) ? 0 : 1)))
+                        if (Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1402 /*"go"*/))) ? 0 : 1)))
                         {
-                            l.kw = global::Managed.Forms.Cui.Globals.kw_go__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                            l.types = global::Managed.Forms.Cui.Globals.ty_go__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                            l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1055 /*"//"*/);
+                            l.kw = global::Managed.Forms.Cui.Globals.kw_go__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                            l.types = global::Managed.Forms.Cui.Globals.ty_go__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                            l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S1056 /*"//"*/);
                             l.block_comments = 1;
                             l.backtick = 1;
                         }
                         else
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1163 /*"shell"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1372 /*"sh"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1227 /*"bash"*/))) ? 0 : 1))))))
+                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1164 /*"shell"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1373 /*"sh"*/))) ? 0 : 1))))) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1228 /*"bash"*/))) ? 0 : 1))))))
                             {
-                                l.kw = global::Managed.Forms.Cui.Globals.kw_sh__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
-                                l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S915 /*"#"*/);
+                                l.kw = global::Managed.Forms.Cui.Globals.kw_sh__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
+                                l.line_comment = (DotCcLiterals.Pointer + DotCcLiterals.S916 /*"#"*/);
                                 l.no_caps_types = 1;
                             }
                             else
-                                if (Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S551 /*"text"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1161 /*"plain"*/))) ? 0 : 1))))))
+                                if (Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S551 /*"text"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1162 /*"plain"*/))) ? 0 : 1))))))
                                 {
                                     l.plain = 1;
                                 }
@@ -818,7 +819,7 @@ public static unsafe partial class Cui
                         if (Cond.B(cui__in_list(L->types, s + st__5, len)))
                             kind = 2;
                         else
-                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(len == 4))) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"true"*/), (ulong)(4))) ? 0 : 1)) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S315 /*"NULL"*/), (ulong)(4))) ? 0 : 1))))) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S946 /*"None"*/), (ulong)(4))) ? 0 : 1))))) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S879 /*"null"*/), (ulong)(4))) ? 0 : 1)))))))) || Cond.B(((CBool)(Cond.B(((CBool)(len == 5))) && Cond.B(((CBool)(Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S880 /*"false"*/), (ulong)(5))) ? 0 : 1)) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S727 /*"False"*/), (ulong)(5))) ? 0 : 1))))))))))) || Cond.B(((CBool)(Cond.B(((CBool)(len == 4))) && Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S168 /*"True"*/), (ulong)(4))) ? 0 : 1)))))))))
+                            if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(len == 4))) && Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S1258 /*"true"*/), (ulong)(4))) ? 0 : 1)) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S315 /*"NULL"*/), (ulong)(4))) ? 0 : 1))))) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S947 /*"None"*/), (ulong)(4))) ? 0 : 1))))) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S880 /*"null"*/), (ulong)(4))) ? 0 : 1)))))))) || Cond.B(((CBool)(Cond.B(((CBool)(len == 5))) && Cond.B(((CBool)(Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S881 /*"false"*/), (ulong)(5))) ? 0 : 1)) || Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S727 /*"False"*/), (ulong)(5))) ? 0 : 1))))))))))) || Cond.B(((CBool)(Cond.B(((CBool)(len == 4))) && Cond.B((Cond.B(strncmp(s + st__5, (DotCcLiterals.Pointer + DotCcLiterals.S168 /*"True"*/), (ulong)(4))) ? 0 : 1)))))))))
                                 kind = 9;
                             else
                             {
@@ -881,7 +882,7 @@ public static unsafe partial class Cui
 
     public static unsafe int cui__tokenize_lang(byte* lang, byte* s, int n, CBool* in_block, cui__tok* @out, int cap)
     {
-        CBool json = ((CBool)(Cond.B(lang) && Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1346 /*"json"*/))) ? 0 : 1))));
+        CBool json = ((CBool)(Cond.B(lang) && Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1347 /*"json"*/))) ? 0 : 1))));
         cui__lang L = cui__lang_for(((byte*)(Cond.B(json) ? null : lang)));
         return cui__tokenize(&L, json, s, n, in_block, @out, ((int)(Cond.B(((CBool)(cap < 256))) ? cap : 256)));
     }
@@ -910,7 +911,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_code__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_code__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__code_paint* p = (cui__code_paint*)(data);
         cui_rect r = n->rect;
@@ -1000,7 +1001,7 @@ public static unsafe partial class Cui
                 for (int k = i; Cond.B(((CBool)(k < e))); k++)
                     if (Cond.B(((CBool)(code[k] == 9))))
                         tabs++;
-                float w = cui__text_width(ui, 3, size, code + i, e - i, 1) + tabs * cui__text_width(ui, 3, size, (DotCcLiterals.Pointer + DotCcLiterals.S914 /*"   "*/), 3, 1);
+                float w = cui__text_width(ui, 3, size, code + i, e - i, 1) + tabs * cui__text_width(ui, 3, size, (DotCcLiterals.Pointer + DotCcLiterals.S915 /*"   "*/), 3, 1);
                 if (Cond.B(((CBool)(w > maxw))))
                     maxw = w;
                 if (Cond.B(((CBool)(e >= len))))
@@ -1012,7 +1013,7 @@ public static unsafe partial class Cui
                 lines--;
         }
         float pad = 16;
-        float gutter = ((float)(Cond.B(o->line_numbers) ? 16 + cui__text_width(ui, 3, size, (DotCcLiterals.Pointer + DotCcLiterals.S1138 /*"000"*/), ((int)(Cond.B(((CBool)(lines >= 100))) ? 3 : 2)), 1) + 4 : (float)(0)));
+        float gutter = ((float)(Cond.B(o->line_numbers) ? 16 + cui__text_width(ui, 3, size, (DotCcLiterals.Pointer + DotCcLiterals.S1139 /*"000"*/), ((int)(Cond.B(((CBool)(lines >= 100))) ? 3 : 2)), 1) + 4 : (float)(0)));
         float content_h = lines * lh + pad * 2;
         int outer = cui__node_new(ui, id);
         cui_node* on = &ui->nodes[outer];
@@ -1037,7 +1038,7 @@ public static unsafe partial class Cui
             hn->bg = ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SURFACE];
             hn->radius = new cui_corners { tl = ui->theme.radius_control, tr = ui->theme.radius_control, br = 0, bl = 0 };
             cui__open(ui, head);
-            cui__icon_node(ui, ((byte*)(Cond.B(o->title) ? (DotCcLiterals.Pointer + DotCcLiterals.S534 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S845 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
+            cui__icon_node(ui, ((byte*)(Cond.B(o->title) ? (DotCcLiterals.Pointer + DotCcLiterals.S534 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S846 /*""*/))), 14, ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED]);
             int t = cui__text_node(ui, ((byte*)(Cond.B(o->title) ? o->title : o->lang)), -1, 1, cui__fs(ui, ui->theme.text_sm), ((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_SECONDARY], 0);
             ui->nodes[t].line_height = 1.3f;
             ui->nodes[t].w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 };
@@ -1049,7 +1050,7 @@ public static unsafe partial class Cui
                 cui_badge_ex(ui, o->lang, &bo);
             }
             cui_push_id(ui, id_str);
-            _ = cui_copy_button(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1297 /*"copy"*/), code);
+            _ = cui_copy_button(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1298 /*"copy"*/), code);
             cui_pop_id(ui);
             cui__close(ui);
             int line = cui__leaf(ui, 0, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 }, new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)1 });
@@ -1074,7 +1075,7 @@ public static unsafe partial class Cui
         cui__code_paint* p = (cui__code_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui__code_paint)))));
         p->code = cui__frame_strdup(ui, code, len);
         p->len = len;
-        p->json = ((CBool)(Cond.B(o->lang) && Cond.B((Cond.B(strcmp(o->lang, (DotCcLiterals.Pointer + DotCcLiterals.S1346 /*"json"*/))) ? 0 : 1))));
+        p->json = ((CBool)(Cond.B(o->lang) && Cond.B((Cond.B(strcmp(o->lang, (DotCcLiterals.Pointer + DotCcLiterals.S1347 /*"json"*/))) ? 0 : 1))));
         p->lang = cui__lang_for(((byte*)(Cond.B(p->json) ? null : o->lang)));
         p->line_numbers = o->line_numbers;
         p->hl_from = o->highlight_from;
@@ -1086,7 +1087,7 @@ public static unsafe partial class Cui
         cui__syntax_colors(ui, (cui_color*)&p->colors);
         p->gutter_c = cui_alpha(((cui_color*)&ui->theme.colors)[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_TEXT_MUTED], 0.7f);
         p->hl_c = cui_alpha(cui__emphasis(ui), ((float)(Cond.B(((CBool)((int)ui->mode == (int)__DotCcEnum_6375695F7468656D655F6D6F6465.CUI_THEME_DARK))) ? 0.12f : 0.08f)));
-        cn->paint = DotCcPointers.cui__paint_code__unit_1178A1C826134150B9AEC52AB92DD90B79833F1DE7ADA1D836A7EA9EAA9AB0C3;
+        cn->paint = DotCcPointers.cui__paint_code__unit_4CD2F2BC47A489FCBF33D6320197E6C590388DAC6299D02EA723B097425F596A;
         cn->paint_data = p;
         cui__scroll_end_ex(ui);
         cui__close(ui);
@@ -1118,7 +1119,7 @@ public static unsafe partial class Cui
     public static unsafe CBool cui__jstring(cui__jparse* p, int* start, int* len)
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(p->i >= p->n))) || Cond.B(((CBool)(p->s[p->i] != 34)))))))
-            return cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S1402 /*"expected a string"*/));
+            return cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S1403 /*"expected a string"*/));
         int st = ++p->i;
         while (Cond.B(((CBool)(Cond.B(((CBool)(p->i < p->n))) && Cond.B(((CBool)(p->s[p->i] != 34)))))))
         {
@@ -1126,11 +1127,11 @@ public static unsafe partial class Cui
                 p->i++;
             else
                 if (Cond.B(((CBool)((byte)p->s[p->i] < 0x20))))
-                    return cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S823 /*"control character in string"*/));
+                    return cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S824 /*"control character in string"*/));
             p->i++;
         }
         if (Cond.B(((CBool)(p->i >= p->n))))
-            return cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S863 /*"unterminated string"*/));
+            return cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S864 /*"unterminated string"*/));
         *start = st;
         *len = p->i - st;
         p->i++;
@@ -1163,7 +1164,7 @@ public static unsafe partial class Cui
     {
         if (Cond.B(((CBool)(depth > 64))))
         {
-            _ = cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S1278 /*"nested too deeply"*/));
+            _ = cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S1279 /*"nested too deeply"*/));
             return -1;
         }
         cui__jws(p);
@@ -1225,7 +1226,7 @@ public static unsafe partial class Cui
                     p->i++;
                     break;
                 }
-                _ = cui__jfail(p, ((byte*)(Cond.B(obj) ? (DotCcLiterals.Pointer + DotCcLiterals.S1060 /*"expected ',' or '}'"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S171 /*"expected ',' or ']'"*/))));
+                _ = cui__jfail(p, ((byte*)(Cond.B(obj) ? (DotCcLiterals.Pointer + DotCcLiterals.S1061 /*"expected ',' or '}'"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S171 /*"expected ',' or ']'"*/))));
                 return -1;
             }
             return me;
@@ -1248,20 +1249,20 @@ public static unsafe partial class Cui
             p->nodes[me].type = 2;
         }
         else
-            if (Cond.B(((CBool)(Cond.B((Cond.B(strncmp(p->s + p->i, (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"true"*/), (ulong)(4))) ? 0 : 1)) || Cond.B((Cond.B(strncmp(p->s + p->i, (DotCcLiterals.Pointer + DotCcLiterals.S879 /*"null"*/), (ulong)(4))) ? 0 : 1))))))
+            if (Cond.B(((CBool)(Cond.B((Cond.B(strncmp(p->s + p->i, (DotCcLiterals.Pointer + DotCcLiterals.S1258 /*"true"*/), (ulong)(4))) ? 0 : 1)) || Cond.B((Cond.B(strncmp(p->s + p->i, (DotCcLiterals.Pointer + DotCcLiterals.S880 /*"null"*/), (ulong)(4))) ? 0 : 1))))))
             {
                 p->nodes[me].type = (byte)(((int)(Cond.B(((CBool)(p->s[p->i] == 116))) ? 1 : 0)));
                 p->i += 4;
             }
             else
-                if (Cond.B((Cond.B(strncmp(p->s + p->i, (DotCcLiterals.Pointer + DotCcLiterals.S880 /*"false"*/), (ulong)(5))) ? 0 : 1)))
+                if (Cond.B((Cond.B(strncmp(p->s + p->i, (DotCcLiterals.Pointer + DotCcLiterals.S881 /*"false"*/), (ulong)(5))) ? 0 : 1)))
                 {
                     p->nodes[me].type = 1;
                     p->i += 5;
                 }
                 else
                 {
-                    _ = cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S796 /*"unexpected character"*/));
+                    _ = cui__jfail(p, (DotCcLiterals.Pointer + DotCcLiterals.S797 /*"unexpected character"*/));
                     return -1;
                 }
         p->nodes[me].val_start = st;
@@ -1320,11 +1321,11 @@ public static unsafe partial class Cui
         switch ((int)nd->type)
         {
             case 5:
-                val = ((byte*)(Cond.B(collapsed) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1108 /*"{ %d key%s }"*/), nd->count, ((byte*)(Cond.B(((CBool)(nd->count == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S218 /*"s"*/)))) : (DotCcLiterals.Pointer + DotCcLiterals.S430 /*"{"*/)));
+                val = ((byte*)(Cond.B(collapsed) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1109 /*"{ %d key%s }"*/), nd->count, ((byte*)(Cond.B(((CBool)(nd->count == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S218 /*"s"*/)))) : (DotCcLiterals.Pointer + DotCcLiterals.S430 /*"{"*/)));
                 vc = col[8];
                 break;
             case 4:
-                val = ((byte*)(Cond.B(collapsed) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S320 /*"[ %d item%s ]"*/), nd->count, ((byte*)(Cond.B(((CBool)(nd->count == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S218 /*"s"*/)))) : (DotCcLiterals.Pointer + DotCcLiterals.S1210 /*"["*/)));
+                val = ((byte*)(Cond.B(collapsed) ? cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S320 /*"[ %d item%s ]"*/), nd->count, ((byte*)(Cond.B(((CBool)(nd->count == 1))) ? (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/) : (DotCcLiterals.Pointer + DotCcLiterals.S218 /*"s"*/)))) : (DotCcLiterals.Pointer + DotCcLiterals.S1211 /*"["*/)));
                 vc = col[8];
                 break;
             case 3:
@@ -1346,7 +1347,7 @@ public static unsafe partial class Cui
         {
             if (Cond.B((Cond.B(last) ? 0 : 1)))
             {
-                int c__1 = cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1212 /*","*/), 1, 3, fs, col[8], 0);
+                int c__1 = cui__text_node(ui, (DotCcLiterals.Pointer + DotCcLiterals.S1213 /*","*/), 1, 3, fs, col[8], 0);
                 ui->nodes[c__1].line_height = 1.3f;
             }
         }
@@ -1362,7 +1363,7 @@ public static unsafe partial class Cui
             cn->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)24 };
             cn->pad[3] = 8 + 16.0f * (float)nd->depth + 16;
             cui__open(ui, close);
-            int t = cui__text_node(ui, ((byte*)(Cond.B(((CBool)(nd->type == 5))) ? ((byte*)(Cond.B(last) ? (DotCcLiterals.Pointer + DotCcLiterals.S353 /*"}"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1201 /*"},"*/))) : ((byte*)(Cond.B(last) ? (DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"]"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1003 /*"],"*/))))), -1, 3, fs, col[8], 0);
+            int t = cui__text_node(ui, ((byte*)(Cond.B(((CBool)(nd->type == 5))) ? ((byte*)(Cond.B(last) ? (DotCcLiterals.Pointer + DotCcLiterals.S353 /*"}"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1202 /*"},"*/))) : ((byte*)(Cond.B(last) ? (DotCcLiterals.Pointer + DotCcLiterals.S1039 /*"]"*/) : (DotCcLiterals.Pointer + DotCcLiterals.S1004 /*"],"*/))))), -1, 3, fs, col[8], 0);
             ui->nodes[t].line_height = 1.3f;
             cui__close(ui);
         }
@@ -1405,7 +1406,7 @@ public static unsafe partial class Cui
         {
             cui__jws(&p);
             if (Cond.B(((CBool)(p.i < p.n))))
-                _ = cui__jfail(&p, (DotCcLiterals.Pointer + DotCcLiterals.S1143 /*"unexpected text after the value"*/));
+                _ = cui__jfail(&p, (DotCcLiterals.Pointer + DotCcLiterals.S1144 /*"unexpected text after the value"*/));
         }
         CBool ok = ((CBool)(Cond.B(((CBool)(root >= 0))) && Cond.B((Cond.B(p.err) ? 0 : 1))));
         if (Cond.B(((CBool)(Cond.B(ok) && Cond.B((Cond.B(st->init) ? 0 : 1))))))
@@ -1771,7 +1772,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe md_inline md_parse_inline__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(cui_ctx* ui, byte* s, int n, CBool tail)
+    public static unsafe md_inline md_parse_inline__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(cui_ctx* ui, byte* s, int n, CBool tail)
     {
         md_inline @out = default;
         memset(&@out, 0, ((ulong)(sizeof(md_inline))));
@@ -2041,8 +2042,8 @@ public static unsafe partial class Cui
                 int hit = -1;
                 for (int k__4 = 0; Cond.B(((CBool)(k__4 < unchecked((int)(((ulong)((6 * (2 * sizeof(byte*))))) / ((ulong)((2 * sizeof(byte*))))))))); k__4++)
                 {
-                    int el = (int)strlen((global::Managed.Forms.Cui.Globals.ent__s0__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D + k__4 * 2)[0]);
-                    if (Cond.B(((CBool)(Cond.B(((CBool)(n - i__1 >= el))) && Cond.B((Cond.B(strncmp(s + i__1, (global::Managed.Forms.Cui.Globals.ent__s0__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D + k__4 * 2)[0], (ulong)el)) ? 0 : 1))))))
+                    int el = (int)strlen((global::Managed.Forms.Cui.Globals.ent__s0__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F + k__4 * 2)[0]);
+                    if (Cond.B(((CBool)(Cond.B(((CBool)(n - i__1 >= el))) && Cond.B((Cond.B(strncmp(s + i__1, (global::Managed.Forms.Cui.Globals.ent__s0__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F + k__4 * 2)[0], (ulong)el)) ? 0 : 1))))))
                     {
                         hit = k__4;
                         break;
@@ -2056,8 +2057,8 @@ public static unsafe partial class Cui
                             md_add(&T, 0, s + ts, i__1 - ts);
                     }
                     while (false);
-                    md_add(&T, 0, (global::Managed.Forms.Cui.Globals.ent__s0__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D + hit * 2)[1], (int)strlen((global::Managed.Forms.Cui.Globals.ent__s0__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D + hit * 2)[1]));
-                    i__1 += (int)strlen((global::Managed.Forms.Cui.Globals.ent__s0__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D + hit * 2)[0]);
+                    md_add(&T, 0, (global::Managed.Forms.Cui.Globals.ent__s0__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F + hit * 2)[1], (int)strlen((global::Managed.Forms.Cui.Globals.ent__s0__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F + hit * 2)[1]));
+                    i__1 += (int)strlen((global::Managed.Forms.Cui.Globals.ent__s0__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F + hit * 2)[0]);
                     ts = i__1;
                     continue;
                 }
@@ -2398,7 +2399,7 @@ public static unsafe partial class Cui
             if (Cond.B(((CBool)(Cond.B(((CBool)(sp_run >= 0))) && Cond.B(((CBool)(x > 0)))))))
             {
                 md_run* S = &@in->runs[sp_run];
-                sw = cui__text_width(ui, md_font_of(f, S->style), md_size_of(f, S->style), (DotCcLiterals.Pointer + DotCcLiterals.S759 /*" "*/), 1, 0);
+                sw = cui__text_width(ui, md_font_of(f, S->style), md_size_of(f, S->style), (DotCcLiterals.Pointer + DotCcLiterals.S760 /*" "*/), 1, 0);
             }
             if (Cond.B(((CBool)(Cond.B(((CBool)(x > 0))) && Cond.B(((CBool)(x + sw + ww > W)))))))
             {
@@ -2408,7 +2409,7 @@ public static unsafe partial class Cui
             }
             if (Cond.B(((CBool)(sw > 0))))
             {
-                md_seg_add(ui, L, @in, sp_run, ((byte*)(Cond.B(((CBool)(*sp_p == 32))) ? sp_p : (DotCcLiterals.Pointer + DotCcLiterals.S759 /*" "*/))), 1, x, sw);
+                md_seg_add(ui, L, @in, sp_run, ((byte*)(Cond.B(((CBool)(*sp_p == 32))) ? sp_p : (DotCcLiterals.Pointer + DotCcLiterals.S760 /*" "*/))), 1, x, sw);
                 x += sw;
             }
             sp_run = -1;
@@ -2485,7 +2486,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void md_paint_inline__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void md_paint_inline__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(cui_ctx* ui, cui_node* n, void* data)
     {
         md_paint* p = (md_paint*)(data);
         md_font* f = &p->f;
@@ -2526,7 +2527,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void md_paint_marker__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void md_paint_marker__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(cui_ctx* ui, cui_node* n, void* data)
     {
         md_mark_paint* p = (md_mark_paint*)(data);
         cui_rect r = n->rect;
@@ -2557,7 +2558,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void md_paint_rail__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void md_paint_rail__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(cui_ctx* ui, cui_node* n, void* data)
     {
         cui_color* c = (cui_color*)(data);
         float w = 3.0f * ((float)(Cond.B(((CBool)(0.8f > n->pad[3] / 14.0f))) ? 0.8f : n->pad[3] / 14.0f));
@@ -2566,7 +2567,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void md_paint_root__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void md_paint_root__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(cui_ctx* ui, cui_node* n, void* data)
     {
         md_root_paint* p = (md_root_paint*)(data);
         if (Cond.B(((CBool)(fabsf(n->rect.w - p->w) > 0.5f))))
@@ -2696,7 +2697,7 @@ public static unsafe partial class Cui
         p->hover = hover;
         p->focus = focus;
         p->underline_rest = c->custom_color;
-        ui->nodes[leaf].paint = DotCcPointers.md_paint_inline__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D;
+        ui->nodes[leaf].paint = DotCcPointers.md_paint_inline__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F;
         ui->nodes[leaf].paint_data = p;
         if (Cond.B(((CBool)(@in->nlinks > 0))))
         {
@@ -2724,7 +2725,7 @@ public static unsafe partial class Cui
 
     public static unsafe float md_inline_block(md_ctx* c, byte* s, int n, md_font* f, cui_color fg, CBool tail, float W)
     {
-        md_inline @in = md_parse_inline__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(c->ui, s, n, tail);
+        md_inline @in = md_parse_inline__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(c->ui, s, n, tail);
         return md_inline_emit(c, &@in, f, fg, (int)(__DotCcEnum_6375695F746578745F616C69676E.CUI_TEXT_LEFT), W);
     }
 
@@ -3081,7 +3082,7 @@ public static unsafe partial class Cui
     public static unsafe int md_list(md_ctx* c, md_box* b, md_line* L, int n, int i, float* nat)
     {
         cui_ctx* ui = c->ui;
-        __Anon3F331F708F7889C9F8087D6453EC723D079D782218646A8E274E9169C49EB16C* items = (__Anon3F331F708F7889C9F8087D6453EC723D079D782218646A8E274E9169C49EB16C*)(cui__frame_alloc(ui, ((ulong)(sizeof(__Anon3F331F708F7889C9F8087D6453EC723D079D782218646A8E274E9169C49EB16C))) * (ulong)(n - i + 1)));
+        __AnonFFA93A1E723CFAAB11D613E67B730DF8E80475852578BE00E5689A6E39A10AAB* items = (__AnonFFA93A1E723CFAAB11D613E67B730DF8E80475852578BE00E5689A6E39A10AAB*)(cui__frame_alloc(ui, ((ulong)(sizeof(__AnonFFA93A1E723CFAAB11D613E67B730DF8E80475852578BE00E5689A6E39A10AAB))) * (ulong)(n - i + 1)));
         int count = 0;
         CBool loose = 0;
         md_marker m0 = default;
@@ -3098,7 +3099,7 @@ public static unsafe partial class Cui
                 break;
             if (Cond.B(((CBool)(count == 0))))
                 m0 = m;
-            __Anon3F331F708F7889C9F8087D6453EC723D079D782218646A8E274E9169C49EB16C* it = &items[count++];
+            __AnonFFA93A1E723CFAAB11D613E67B730DF8E80475852578BE00E5689A6E39A10AAB* it = &items[count++];
             md_line R = md_skip(T, m.w);
             int sb = default, sp = md_indent(R, &sb);
             if (Cond.B(md_blank(R)))
@@ -3202,7 +3203,7 @@ public static unsafe partial class Cui
         float best = 0;
         for (int k__2 = 0; Cond.B(((CBool)(k__2 < count))); k__2++)
         {
-            __Anon3F331F708F7889C9F8087D6453EC723D079D782218646A8E274E9169C49EB16C* it__1 = &items[k__2];
+            __AnonFFA93A1E723CFAAB11D613E67B730DF8E80475852578BE00E5689A6E39A10AAB* it__1 = &items[k__2];
             int row = cui__node_new(ui, 0);
             cui_node* rn = &ui->nodes[row];
             rn->dir = (byte)(__DotCcEnum_6375695F646972.CUI_ROW);
@@ -3238,7 +3239,7 @@ public static unsafe partial class Cui
                 mp->f = f;
                 if (Cond.B(m0.ordered))
                     mp->num = cui__frame_printf(ui, (DotCcLiterals.Pointer + DotCcLiterals.S553 /*"%d%c"*/), m0.num + k__2, (int)(m0.ch));
-                ui->nodes[mk__1].paint = DotCcPointers.md_paint_marker__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D;
+                ui->nodes[mk__1].paint = DotCcPointers.md_paint_marker__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F;
                 ui->nodes[mk__1].paint_data = mp;
             }
             int nl = it__1->end - it__1->start;
@@ -3301,7 +3302,7 @@ public static unsafe partial class Cui
         qn->pad[3] = 14 * u;
         cui_color* rc = (cui_color*)(cui__frame_alloc(ui, ((ulong)(sizeof(cui_color)))));
         *rc = c->rail_c;
-        qn->paint = DotCcPointers.md_paint_rail__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D;
+        qn->paint = DotCcPointers.md_paint_rail__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F;
         qn->paint_data = rc;
         cui__open(ui, q);
         md_box qb = new md_box { w = b->w - 14 * u, depth = b->depth + 1, tight = 0, fg = c->fg2 };
@@ -3349,7 +3350,7 @@ public static unsafe partial class Cui
             for (int k = 0; Cond.B(((CBool)(k < rowc[r]))); k++)
             {
                 md_inline* @in = &cells[r * ncols + k];
-                *@in = md_parse_inline__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D(ui, raw[k].s, raw[k].len, ((CBool)(Cond.B(tail) && Cond.B(((CBool)(k == rowc[r] - 1))))));
+                *@in = md_parse_inline__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F(ui, raw[k].s, raw[k].len, ((CBool)(Cond.B(tail) && Cond.B(((CBool)(k == rowc[r] - 1))))));
                 float w = md_runs_width(ui, @in, ((md_font*)(Cond.B(((CBool)(r == 0))) ? &hf : &f)));
                 if (Cond.B(((CBool)(r == 0))))
                 {
@@ -3581,7 +3582,7 @@ public static unsafe partial class Cui
         if (Cond.B((Cond.B(text) ? 0 : 1)))
             text = (DotCcLiterals.Pointer + DotCcLiterals.S617 /*""*/);
         if (Cond.B((Cond.B(id_str) ? 0 : 1)))
-            id_str = (DotCcLiterals.Pointer + DotCcLiterals.S1025 /*"markdown"*/);
+            id_str = (DotCcLiterals.Pointer + DotCcLiterals.S1026 /*"markdown"*/);
         int len = ((int)(Cond.B(((CBool)(o->length > 0))) ? o->length : (int)strlen(text)));
         uint id = cui_make_id(ui, id_str);
         md_ctx c = default;
@@ -3644,7 +3645,7 @@ public static unsafe partial class Cui
             rn->w = (Cond.B(((CBool)((int)o->width.kind != (int)__DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIT))) ? o->width : new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_GROW, value = 1 });
         md_root_paint* rp = (md_root_paint*)(cui__frame_alloc(ui, ((ulong)(sizeof(md_root_paint)))));
         rp->w = W;
-        rn->paint = DotCcPointers.md_paint_root__unit_FB8A938B6544307489A903785849C3C1E2AED451D50345EDCC8F984F5A9CC43D;
+        rn->paint = DotCcPointers.md_paint_root__unit_E3DFDD21E4F3B6BB9D02DEC690C530D4B14FFCAD9479C5142FDC573B6688BC5F;
         rn->paint_data = rp;
         cui__open(ui, root);
         cui_push_id(ui, id_str);
@@ -4279,7 +4280,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__paint_editor__unit_14EC32208CCA653620A9FEAD94615B412B556AC4ED386569EC0F8E42307CA904(cui_ctx* ui, cui_node* n, void* data)
+    public static unsafe void cui__paint_editor__unit_9FE48F1860CCB0DE0F16232D212DC3DAE5EB4604F0FA63ABC155D229204D2D00(cui_ctx* ui, cui_node* n, void* data)
     {
         cui__ed_paint* p = (cui__ed_paint*)(data);
         cui_rect r = n->rect;
@@ -4477,14 +4478,14 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe int cui__ed_lang_kind__unit_14EC32208CCA653620A9FEAD94615B412B556AC4ED386569EC0F8E42307CA904(byte* lang)
+    public static unsafe int cui__ed_lang_kind__unit_9FE48F1860CCB0DE0F16232D212DC3DAE5EB4604F0FA63ABC155D229204D2D00(byte* lang)
     {
         if (Cond.B((Cond.B(lang) ? 0 : 1)))
             return 0;
         for (int i = 0; Cond.B(((CBool)(i < unchecked((int)(((ulong)((12 * sizeof(byte*)))) / ((ulong)(sizeof(byte*)))))))); i++)
-            if (Cond.B((Cond.B(strcmp(lang, global::Managed.Forms.Cui.Globals.braces__s0__unit_14EC32208CCA653620A9FEAD94615B412B556AC4ED386569EC0F8E42307CA904[i])) ? 0 : 1)))
+            if (Cond.B((Cond.B(strcmp(lang, global::Managed.Forms.Cui.Globals.braces__s0__unit_9FE48F1860CCB0DE0F16232D212DC3DAE5EB4604F0FA63ABC155D229204D2D00[i])) ? 0 : 1)))
                 return 1;
-        return ((int)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1037 /*"python"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S286 /*"py"*/))) ? 0 : 1))))) ? 2 : 0));
+        return ((int)(Cond.B(((CBool)(Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S1038 /*"python"*/))) ? 0 : 1)) || Cond.B((Cond.B(strcmp(lang, (DotCcLiterals.Pointer + DotCcLiterals.S286 /*"py"*/))) ? 0 : 1))))) ? 2 : 0));
     }
 
 
@@ -4492,7 +4493,7 @@ public static unsafe partial class Cui
     public static unsafe cui_code_editor_result cui_code_editor_ex(cui_ctx* ui, byte* id_str, byte* buf, ulong cap, cui_code_editor_opts* o)
     {
         int first = ui->node_count;
-        cui_code_editor_result r = cui__code_editor_ex_body__unit_14EC32208CCA653620A9FEAD94615B412B556AC4ED386569EC0F8E42307CA904(ui, id_str, buf, cap, o);
+        cui_code_editor_result r = cui__code_editor_ex_body__unit_9FE48F1860CCB0DE0F16232D212DC3DAE5EB4604F0FA63ABC155D229204D2D00(ui, id_str, buf, cap, o);
         do
         {
             int f_ = first;
@@ -4545,7 +4546,7 @@ public static unsafe partial class Cui
         {
             int s0 = ((int)(Cond.B(((CBool)(e->cursor < e->anchor))) ? e->cursor : e->anchor)), s1 = ((int)(Cond.B(((CBool)(e->cursor > e->anchor))) ? e->cursor : e->anchor));
             if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(s1 > s0))) && Cond.B(((CBool)(s1 - s0 < unchecked((int)((ulong)((128 * sizeof(byte))))))))))) && Cond.B((Cond.B(memchr(E->buf + s0, 10, (ulong)(s1 - s0))) ? 0 : 1))))))
-                snprintf(st->query, unchecked((int)(((ulong)((128 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1110 /*"%.*s"*/)).Arg(s1 - s0).Arg(E->buf + s0).Done();
+                snprintf(st->query, unchecked((int)(((ulong)((128 * sizeof(byte)))))), (DotCcLiterals.Pointer + DotCcLiterals.S1111 /*"%.*s"*/)).Arg(s1 - s0).Arg(E->buf + s0).Done();
             st->mode = 1;
             st->bar_focus = 1;
             ui->kpressed[(int)__DotCcEnum_6375695F6B6579.CUI_KEY_F] = 0;

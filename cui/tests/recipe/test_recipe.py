@@ -80,7 +80,7 @@ class RecipeContracts(unittest.TestCase):
 
             runner.run = link
             with self.assertRaises(Linked):
-                runner.build("probe", work, [], ("examples/gallery_ui.c", "inflate"))
+                runner.build("probe", work / "source", [], ("examples/gallery_ui.c", "inflate"))
             command = next(command for label, command in commands if label == "probe/link")
             for flag in ("--deduplicate-inline", "--deduplicate-static"):
                 self.assertEqual(command.count(flag), 1)

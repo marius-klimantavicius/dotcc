@@ -50,8 +50,18 @@ the coordinator's exact objects instead, add both:
 The runner checks object fragment headers and records object hashes. The
 coordinator must supply corresponding source, profile and compiler provenance;
 the runner does not infer that arbitrary objects belong to the pinned source.
+Retained objects must have been emitted with `--source-root` naming their matching
+staged upstream root. Retained objects and source are read-only inputs: qualification
+copies source to `WORK/source` before adapting tests. Each root keeps upstream
+`src/`, `include/`, `examples/` and `tests/` paths; campaign shim headers are copied
+to `dotcc/include`. Every source-to-object emission supplies that common root via
+`--source-root`; object-only links omit the option. Matching root-relative header
+identities therefore survive relocation from the retained tree to private scratch.
+
 Minimal bidi/inflate/shaping programs independently emit their unchanged source
-closure. Every qualification link uses the same CUI profile's inline and static
+closure in `WORK/programs/NAME/source`, with the same upstream layout and private
+shim headers. Fresh qualification fixtures live under `dotcc/qualification/`.
+Every qualification link uses the same CUI profile's inline and static
 deduplication flags as the delivered libraries, including these minimal closures.
 No generated C# is patched. An authored managed entry point calls the
 emitted typed `Managed.Forms.Cui.main` API with stable UTF-8 arguments. Only
@@ -60,18 +70,22 @@ postprocessing cannot rewrite authored campaign sources.
 
 Core programs share one linked executable to avoid repeating the large core link.
 Each test's sole top-level `main` definition is renamed in a staged test copy,
-with a unique local anchor; all test bodies and assertions stay intact. The
+with a unique local anchor; all test bodies and assertions stay intact. These
+copies retain their original `tests/...` paths under `WORK/bundle-source`, so
+quoted includes resolve within the private root without absolute include rewrites.
+The dispatcher lives at `dotcc/qualification/bundle-dispatch.c`. The
 dispatcher selects one test per fresh process, so runtime/global state never
 leaks between suites. `--separate-programs` retains the slower diagnostic path.
 
 `test_main` includes upstream randomized docking checks. C's seeded `rand`
 sequence depends on its implementation, and C permits different operand
 evaluation orders for random calls in a mutation assignment. The ordinary native
-GLFW baseline retains its original 6,147 assertions. For strict differential
+GLFW baseline retains its original assertions (6,162 in CUI 1.4.0). For strict differential
 comparison, a test-only typed input hook records values from the actual emitted
 `Managed.Forms.Cui.Libc.srand/rand` provider, tagged with seed, original source
 line and call site. Native C replays those exact call-site queues and must consume
-every value. All 69 named groups must have identical cumulative assertion counts; the four
+every value. Every named group in the selected upstream entrypoint (70 in CUI
+1.4.0) must have identical cumulative assertion counts; the four
 managed variants must produce identical recorded input hashes. The control
 changes input delivery and adds group-count diagnostics; it preserves assertions
 and mutation/drag algorithms. No shared random generator is changed.

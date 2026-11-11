@@ -23,8 +23,90 @@ The authoritative upstream inputs are `include/cui/cui.h` and the corresponding
 translated C#. Declarations alone do not establish pointer lifetimes. The review
 followed struct copies, paint data, builder state and forwarded helper calls.
 The complete converted-site inventory is below; `reviewed.json` additionally
-records hashes of 214 definitions and the public header, so a different native
+records hashes of 216 definitions and the public header, so a different native
 revision cannot pass the optional native-evidence check silently.
+
+### Upstream refresh: CUI 1.4.0 (2026-11-11)
+
+Reviewed the source diff from CUI **1.3.1**, revision
+`629b6fcb991d71527f2d67b25c51429c3dcdb498`, to CUI **1.4.0**, revision
+`5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5`. Before refreshing evidence, all
+214 prior definition hashes and the header hash matched both the old pristine
+source and its adapted native/translation copies. Thus the prior evidence did
+not require adapted-only hashes. The new manifest binds **pristine upstream**;
+a private copy produced by the repository's guarded `stage.py` (21 adaptations)
+has the same header and all 216 recorded definitions. No acquired or
+coordinator-staged source was modified for this review.
+
+Of the prior 214 definitions, **209 are byte-identical**. The five changed
+entries are `cui__button_impl`, `cui_button_ex`, `cui_icon_button_ex`,
+`cui_chat_message_ex`, and `cui_split_button_ex`. Their hashes were refreshed
+only after the review below. Two additional entries cover the new forwarding
+helper `cui__icon_button_id` and the changed managed `CopyButton` entrypoint
+`cui_copy_button`. The manifest now checks **216 definitions**. Its 225 stack
+sites, storage policy and four `reviewed_outputs` hashes are unchanged.
+
+The complete changed/added native definition set is below, including definitions
+outside the original manifest. Paths are relative to upstream `src/`.
+
+| Source | Changed or added definitions | Retention and API findings |
+| --- | --- | --- |
+| `cui_widgets.c` | Changed `cui__button_impl`, `cui_button_ex`, `cui_icon_button_ex`; added `cui__icon_button_id` | ID creation moves to callers; the new helper immediately forwards a by-value ID and options. Icon-only glyphs use `cui__icon_node` directly; ordinary option icons still use `cui__icon_swap`. Both reach `cui__text_node`, which duplicates glyph text into native frame storage. Nodes/paint records receive numeric values or native allocations; the outer options address is never saved. Tooltip text is copied into native state by `cui_tooltip`. Keep stack options and existing stable UTF-8 pointees. |
+| `cui_extras.c` | Changed `cui_copy_button` | A constant per-scope button ID preserves keyboard focus while the icon/tooltip changes. Local `bo` is consumed synchronously through the new helper; persistent copy state contains only a timestamp. Clipboard text is passed synchronously to the platform callback; the managed GLFW bridge decodes it to an owned string. No new callback root or retained caller address. |
+| `cui_actions.c` | Changed `cui_split_button_ex` | Enter/Space on the focused chevron leaves an already-open menu available for selection. Options and local child options are read during this call; divider paint data copies its color. Popup state retains IDs/flags, not caller options. Stack options and existing item/icon arrays remain valid. |
+| `cui_social.c` | Changed `cui_chat_message_ex` | Only local radii names change to avoid the Windows SDK `small` macro. Radii are copied to the bubble node. Markdown-result writeback remains synchronous, and nested author/time/status/text/State storage keeps its prior policy. |
+| `cui_treetable.c` | Changed `cui_path_bar_ex` | The overflow pill gains the same keyboard guard as split menus. No pointer or signature change: persistent editing state owns its buffer/IDs, submitted text is frame-copied, and options are consumed in the call. Placeholder/icon strings still require stable pointees. This API has no safe wrapper entrypoint in the audited baseline. |
+| `cui_tools.c` | Changed `cui_log_appendv` | The 512-byte local `small` becomes `line`. Short formatted text is copied by `cui_log_append_text` into the persistent ring; long text is formatted directly into that ring. No local buffer or `va_list` address is retained. Log-buffer APIs have no safe wrapper resource in the audited baseline. |
+| `platform/cui_app.c` | Changed `cui_app_create` | The descriptor is copied by value into `app->desc`, and an empty `app_id` is normalized to null. Its nonempty pointer is shallow-copied, unlike the title, which is copied to `app->title`. All `app_id` dereferences in this revision occur during synchronous platform initialization. The outer descriptor can remain local; its string pointee must survive all initialization calls. |
+| `platform/cui_app_glfw.c` | Changed `cui__plat_init` | Reads `app_id` to set X11 class/instance and, when supported, Wayland ID string hints before window creation. The managed bridge must decode/copy hint text to an owned string, never retain a temporary pinned UTF-8 address. No later CUI read of the descriptor's `app_id` exists in this revision. |
+| `platform/cui_app_x11.c` | Changed `cui__plat_init` | Supplies `app_id` as both class-hint strings, falling back to title/`CUI`. Class hints are submitted during initialization and the temporary hint struct is freed there. This direct native backend is outside the translated product profile. |
+| `platform/cui_app_sdl2.c` | Changed `cui__plat_init`; added `cui__sdl_env_set` | Sets copied SDL hints/environment values for initialization, preserves user-provided environment variables and removes only variables set here after `SDL_Init`, including failure. No caller pointer is saved by the new helper. SDL2 is outside the translated product profile. |
+
+`include/cui/cui.h` changes only the version macros and Copy-button focus
+comment: after removing comments and the three changed version macros, its
+tokens are identical. No core public signatures or option layouts changed.
+The refreshed header SHA-256 is
+`f6534034afde0b30dd7f0a885a5cedc4ae361ef087a8fa7a716425122f83c379`.
+`src/cui_internal.h` adds only the `cui__icon_button_id` prototype.
+
+Separately, `include/cui/cui_app.h` appends `const char *app_id` to
+`cui_app_desc` (48 to 56 bytes on the selected 64-bit ABI). Its SHA-256 is
+`04b576a8e5db33976f4929a4d83c4759505eb9f340b4ce5ce2620a957ac1cd67`.
+Regeneration and every descriptor producer must use that new layout together.
+The optional generator evidence check covers `cui.h` and the manifest's function
+entries; it does **not** check `cui_app.h`, platform definitions or the internal
+header. Those changes were manually reviewed here, not silently added to the
+checker's guarantees.
+
+Reported for coordinator integration before any implementation change:
+`DesktopApplication` and `ApplicationOptions` initially lacked an application-ID
+option/pass-through, and the new native GLFW string-hint call needed an explicit
+host override/UTF-8-copy bridge. A creation-scoped pin is sufficient for the
+reviewed GLFW path if that bridge copies the string; retaining owned UTF-8 until
+app destruction is also conservative. The shallow descriptor pointer alone
+does not prove a deferred read. Re-audit this decision if later native code
+starts reading `app_id` after initialization. The pre-existing PathBar and
+log-buffer API omissions were reported separately; they do not invalidate the
+existing widget surface. No new widget resource owner or storage substitution
+is required. **All 225 stack-local sites and the retained carousel/node-view
+State leases remain justified.**
+
+Refresh verification passed (exit 0) with both pristine and privately staged
+new-source roots:
+
+```sh
+TMPDIR="$SCRATCH/tmp" python3 -B cui/scripts/managed-api/generate.py --check --native-root "$CUI_SOURCE"
+```
+
+Each reported `Native evidence: 216 definitions and public header match` and
+`Round-trip check: 4 reviewed API files match; no singleton arena allocations`.
+The check without `--native-root` and `git diff --check` for these two owned
+files also passed. A structural manifest comparison confirmed the unchanged
+225-site inventory, policy, schema and all four output/template hashes.
+
+This refresh performs source/hash checks only. It does not rerun or renew the
+historical build, runtime, allocation, performance or gallery qualifications
+below. The coordinator owns translation, host integration and those gates.
 
 ### Synchronous records and scalars
 
@@ -126,8 +208,10 @@ benchmark trials per variant passed allocation, timing and retention gates;
 pre-rename arena-use measurements are recorded in `MANAGED-LIBRARY-VALIDATION.json`.
 Full palette/page, OS, native geometry and standalone qualification are separate
 coordinator gates. The implementation delegate did not run or modify them.
-These historical hashes bind baseline `d5a662499`; [namespace validation](NAMESPACE-VALIDATION.json)
-records fresh post-rename safety checks and unchanged native retention evidence.
+Those historical wrapper/performance receipts bind baseline `d5a662499`;
+[namespace validation](NAMESPACE-VALIDATION.json) records post-rename safety
+checks at that campaign's native revision. The current native manifest is
+separately refreshed to CUI 1.4.0 as described above.
 
 ## Complete converted-site inventory
 

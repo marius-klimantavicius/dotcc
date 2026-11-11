@@ -6,6 +6,7 @@ namespace Cui.ManagedGallery;
 public sealed partial class GalleryDemo : IDisposable
 {
     public const int PageCount = 27;
+    private static readonly string versionBadge = "v" + ManagedCuiInfo.UpstreamVersion[..ManagedCuiInfo.UpstreamVersion.LastIndexOf('.')];
     private static readonly string[] pageNames =
     [
         "Overview", "Buttons", "Inputs", "Selection", "Navigation", "Overlays", "Feedback", "Data display", "Charts",
@@ -187,7 +188,7 @@ public sealed partial class GalleryDemo : IDisposable
                 ui.Text("C", new() { Font = Font.Display, Size = 16, Color = Color.Background, LineHeight = 1 });
             ui.Text("CUI", new() { Font = Font.Medium, Size = 15, Nowrap = true });
             ui.Spacer();
-            ui.Badge("v1.3", new() { Size = ControlSize.Sm });
+            ui.Badge(versionBadge, new() { Size = ControlSize.Sm });
         }
         using (ui.ScrollBegin(new() { Id = "nav", Height = Size.Fill, Gap = 2 }))
         {

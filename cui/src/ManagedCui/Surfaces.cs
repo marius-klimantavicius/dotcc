@@ -6,6 +6,8 @@ namespace Cui.Managed;
 public sealed class ApplicationOptions
 {
     public string Title { get; init; } = "CUI";
+    /// <summary>Linux desktop-file ID without .desktop; ignored on Windows. Read during window creation.</summary>
+    public string? AppId { get; init; }
     public int Width { get; init; } = 800;
     public int Height { get; init; } = 600;
     public int MinWidth { get; init; }
@@ -30,7 +32,7 @@ public sealed unsafe class Application : IDisposable
         if (!Enum.IsDefined(options.Theme) || !Enum.IsDefined(options.Accent) || options.Accent == Accent.Count) throw new ArgumentOutOfRangeException(nameof(options));
         if (options.FrameArenaLimit < 4096) throw new ArgumentOutOfRangeException(nameof(options.FrameArenaLimit));
         app = new(options.Title, options.Width, options.Height, options.Hidden, options.Continuous,
-            options.MinWidth, options.MinHeight, (cui_theme_mode)options.Theme, (cui_accent)options.Accent);
+            options.MinWidth, options.MinHeight, (cui_theme_mode)options.Theme, (cui_accent)options.Accent, options.AppId);
         try { Ui = new Ui(app.Ui, options.FrameArenaLimit); }
         catch { app.Dispose(); app = null; throw; }
     }

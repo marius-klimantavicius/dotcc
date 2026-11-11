@@ -16,25 +16,30 @@ public sealed unsafe class DesktopApplication : IDisposable
     public DesktopApplication(string title = "CUI", int width = 800, int height = 600,
         bool hidden = false, bool continuous = false, int minWidth = 0, int minHeight = 0,
         cui_theme_mode theme = cui_theme_mode.CUI_THEME_DARK,
-        cui_accent accent = cui_accent.CUI_ACCENT_BLUE)
+        cui_accent accent = cui_accent.CUI_ACCENT_BLUE, string? appId = null)
     {
         ArgumentNullException.ThrowIfNull(title);
         if (title.Contains('\0')) throw new ArgumentException("A window title cannot contain NUL.", nameof(title));
+        if (appId?.Contains('\0') == true) throw new ArgumentException("An application ID cannot contain NUL.", nameof(appId));
         if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width));
         if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height));
         if (minWidth < 0) throw new ArgumentOutOfRangeException(nameof(minWidth));
         if (minHeight < 0) throw new ArgumentOutOfRangeException(nameof(minHeight));
         byte[] utf8 = Encoding.UTF8.GetBytes(title + '\0');
+        byte[]? idUtf8 = string.IsNullOrEmpty(appId) ? null : Encoding.UTF8.GetBytes(appId + '\0');
         fixed (byte* text = utf8)
+        fixed (byte* id = idUtf8)
         {
             var description = new cui_app_desc
             {
-                title = text, width = width, height = height,
+                title = text, app_id = id, width = width, height = height,
                 min_width = minWidth, min_height = minHeight,
                 hidden = hidden, continuous = continuous,
                 renderer = cui_renderer_kind.CUI_RENDERER_OPENGL,
                 theme = theme, accent = accent
             };
+            // CUI reads app_id only during platform initialization. The GLFW
+            // string-hint bridge decodes/copies it before this pin ends.
             app = cui_app_create(&description);
         }
         if (app == null)

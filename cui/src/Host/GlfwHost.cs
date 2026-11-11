@@ -143,6 +143,7 @@ internal static unsafe partial class GlfwHost
     }
 
     public static void glfwWindowHint(int hint, int value) { CheckThread(); G.glfwWindowHint(hint, value); }
+    public static void glfwWindowHintString(int hint, byte* value) { CheckThread(); G.glfwWindowHintString(hint, Text(value)); }
     public static GLFWwindow* glfwCreateWindow(int width, int height, byte* title, GLFWmonitor* monitor, GLFWwindow* share)
     {
         CheckThread();

@@ -2,6 +2,11 @@
 
 Namespace `Cui.Managed`, project `src/ManagedCui/ManagedCui.csproj`. The wrapper references only the matching generated `Managed.Forms.Cui` core; it never references the translated gallery. Select raw with `-p:CuiVariant=Raw`, or override `CuiProject` with an ordinary project path.
 
+The current source refresh is CUI 1.4.0 with stable logical source identities;
+see [current qualification](UPSTREAM-1.4.md). `ApplicationOptions.AppId` safely
+forwards the Linux desktop-file ID during creation; the GLFW bridge copies
+the encoded text. Null/empty preserves defaults and embedded NUL is rejected.
+
 ## Frozen naming and data contract
 
 The authoritative public value/option definitions are `src/ManagedCui/Types.cs`; exact widget signatures are below and in `Ui.Api.cs`. Names derive directly from C: remove `cui_`, convert snake case to PascalCase, remove `_ex`. Options keep the `Opts` suffix. Fields become PascalCase properties. Zero/default options preserve upstream defaults. Counts remain explicit on widget methods (spans validate them); option array counts derive from memory lengths. No raw context, addresses, function pointers or raw translated structs cross this boundary. Top-level string arguments and ordinary string-array entries must be non-null. Heatmap axis-label arrays deliberately permit null entries for skipped ticks. Optional string fields in options retain the C null/default convention; all supplied strings reject embedded NUL.

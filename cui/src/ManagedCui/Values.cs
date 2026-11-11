@@ -93,7 +93,7 @@ public partial struct KeyCombo
 }
 public static class ManagedCuiInfo
 {
-    public const string UpstreamVersion = "1.3.1";
+    public const string UpstreamVersion = "1.4.0";
     public const int FeatureFlagEnvironments = 8;
     public const int ReorderCapacity = 256;
     public const int Changed = 1, Submitted = 2, Focused = 4, Blurred = 8;

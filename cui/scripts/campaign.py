@@ -36,6 +36,9 @@ def sources(root):
 def prepare(ctx):
     source = ctx.work / "source"
     ctx.receipt["adaptations"] = helper(ctx.root / "scripts/stage.py").stage(ctx.sources["product"], source)
+    includes = helper(ctx.root / "scripts/source_identity.py").stage_headers(ctx.root, source)
+    ctx.receipt["source_identity"] = dict(mode="root-relative-v1", root="source", separators="/",
+                                         disk_headers="dotcc/include and upstream layout")
     common = json_file(ctx.root / "config/host-overrides.json")
     glfw = json_file(ctx.root / "config/glfw-overrides.json")
     merged = ctx.work / "glfw-overrides.json"
@@ -43,8 +46,8 @@ def prepare(ctx):
     units = [Unit(source / name, ("--overrides-file", str(merged if name.endswith("cui_app_glfw.c") else ctx.root / "config/host-overrides.json")))
              for name in lines(ctx.root / "config/core-sources.txt")]
     return Translation(units,
-                       ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE",
-                        *flags(json_file(ctx.root / "config/profile.json")["defines"], [ctx.root / "config/include", source / "include"])],
+                       ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE", "--source-root", str(source),
+                        *flags(json_file(ctx.root / "config/profile.json")["defines"], [includes, source / "include"])],
                        [*helper(ctx.root / "scripts/codegen.py").link_flags(ctx.root, "Cui", "Managed.Forms"),
                         "--export-enum", "CUI_*", "--export-managed-symbols"],
                        objects=True, configure=configure, finish=finish,

@@ -9,6 +9,17 @@ from pathlib import Path
 import re
 
 
+def expected_groups(text):
+    """Inventory the selected upstream entrypoint, including newly added cases."""
+    start = re.search(r"(?m)^int (?:main|cui_qualification_cui_tests)\(", text)
+    if not start:
+        raise RuntimeError("Missing upstream test_main entry")
+    names = re.findall(r"(?m)^    (test_\w+)\(\);$", text[start.start():])
+    if not names or len(set(names)) != len(names):
+        raise RuntimeError("Missing or duplicate upstream test groups")
+    return names
+
+
 def adapt(text):
     lines = text.splitlines(keepends=True)
     sites = []

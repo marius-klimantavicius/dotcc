@@ -29,7 +29,7 @@ using __DotCcEnum_6375695F6D6F64 = global::Managed.Forms.Cui.cui_mod;
 using __DotCcEnum_6375695F7468656D655F6D6F6465 = global::Managed.Forms.Cui.cui_theme_mode;
 using __DotCcEnum_6375695F746F6E65 = global::Managed.Forms.Cui.cui_tone;
 using __DotCcEnum_6375695F656C65766174696F6E = global::Managed.Forms.Cui.cui_elevation;
-using __DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637 = global::Managed.Forms.Cui.cui__text_anchor;
+using __DotCcEnum_5F5F446F744363547970656465665F36463030323445443930443336423631304530333646333830323435433145423031433345313044383234383841364536413131313038424634323346464232 = global::Managed.Forms.Cui.cui__text_anchor;
 using __DotCcEnum_6375695F746578747572655F666F726D6174 = global::Managed.Forms.Cui.cui_texture_format;
 using __DotCcEnum_6375695F646972656374696F6E = global::Managed.Forms.Cui.cui_direction;
 using __DotCcEnum_6375695F6A757374696679 = global::Managed.Forms.Cui.cui_justify;
@@ -39,7 +39,7 @@ using __DotCcEnum_6375695F746578745F616C69676E = global::Managed.Forms.Cui.cui_t
 using __DotCcEnum_6375695F627574746F6E5F76617269616E74 = global::Managed.Forms.Cui.cui_button_variant;
 using __DotCcEnum_6375695F636F6E74726F6C5F73697A65 = global::Managed.Forms.Cui.cui_control_size;
 using __DotCcEnum_6375695F746162735F76617269616E74 = global::Managed.Forms.Cui.cui_tabs_variant;
-using __DotCcEnum_5F5F446F744363547970656465665F45303336324332393344374432443334303043373445453936414142393132363345303446314443434239304638413335384235453033433735303241453241 = global::Managed.Forms.Cui.cui__field_style;
+using __DotCcEnum_5F5F446F744363547970656465665F36434632363632314634314433413230334642333937323641433137444442413232414632364444343646303031313333343646333244364438304236433932 = global::Managed.Forms.Cui.cui__field_style;
 using __DotCcEnum_6375695F73696465 = global::Managed.Forms.Cui.cui_side;
 using __DotCcEnum_6375695F737461747573 = global::Managed.Forms.Cui.cui_status;
 using __DotCcEnum_6375695F646966665F726F775F6B696E64 = global::Managed.Forms.Cui.cui_diff_row_kind;
@@ -62,7 +62,7 @@ using DotCcPointers = global::Managed.Forms.Cui.CuiFunctionPointers;
 
 public static unsafe partial class Cui
 {
-    public static unsafe void* cui__default_alloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A(ulong size, void* user)
+    public static unsafe void* cui__default_alloc__unit_99F237DDC894D6D7F1E29245C3F9011CD0556124D56F953B193AE2C457439A00(ulong size, void* user)
     {
         ;
         return malloc(size);
@@ -70,7 +70,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void* cui__default_realloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A(void* p, ulong size, void* user)
+    public static unsafe void* cui__default_realloc__unit_99F237DDC894D6D7F1E29245C3F9011CD0556124D56F953B193AE2C457439A00(void* p, ulong size, void* user)
     {
         ;
         return realloc(p, size);
@@ -78,7 +78,7 @@ public static unsafe partial class Cui
 
 
 
-    public static unsafe void cui__default_free__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A(void* p, void* user)
+    public static unsafe void cui__default_free__unit_99F237DDC894D6D7F1E29245C3F9011CD0556124D56F953B193AE2C457439A00(void* p, void* user)
     {
         ;
         free(p);
@@ -91,7 +91,7 @@ public static unsafe partial class Cui
         void* p = ui->alloc.alloc(size, ui->alloc.user);
         if (Cond.B(((CBool)(Cond.B((Cond.B(p) ? 0 : 1)) && Cond.B(size)))))
         {
-            fprintf(stderr, (DotCcLiterals.Pointer + DotCcLiterals.S903 /*"cui: out of memory\n"*/)).Done();
+            fprintf(stderr, (DotCcLiterals.Pointer + DotCcLiterals.S904 /*"cui: out of memory\n"*/)).Done();
             {
                 abort();
                 throw new global::System.Diagnostics.UnreachableException("A noreturn function returned.");
@@ -107,7 +107,7 @@ public static unsafe partial class Cui
         void* np = ui->alloc.realloc(p, size, ui->alloc.user);
         if (Cond.B(((CBool)(Cond.B((Cond.B(np) ? 0 : 1)) && Cond.B(size)))))
         {
-            fprintf(stderr, (DotCcLiterals.Pointer + DotCcLiterals.S903 /*"cui: out of memory\n"*/)).Done();
+            fprintf(stderr, (DotCcLiterals.Pointer + DotCcLiterals.S904 /*"cui: out of memory\n"*/)).Done();
             {
                 abort();
                 throw new global::System.Diagnostics.UnreachableException("A noreturn function returned.");
@@ -401,9 +401,9 @@ public static unsafe partial class Cui
         cui_allocator a = d.allocator;
         if (Cond.B((Cond.B(a.alloc) ? 0 : 1)))
         {
-            a.alloc = DotCcPointers.cui__default_alloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A;
-            a.realloc = DotCcPointers.cui__default_realloc__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A;
-            a.free = DotCcPointers.cui__default_free__unit_0CED80CC3C9D68FA6F11B1CA394039449592AE86373F1BD026161FCC7A41DA7A;
+            a.alloc = DotCcPointers.cui__default_alloc__unit_99F237DDC894D6D7F1E29245C3F9011CD0556124D56F953B193AE2C457439A00;
+            a.realloc = DotCcPointers.cui__default_realloc__unit_99F237DDC894D6D7F1E29245C3F9011CD0556124D56F953B193AE2C457439A00;
+            a.free = DotCcPointers.cui__default_free__unit_99F237DDC894D6D7F1E29245C3F9011CD0556124D56F953B193AE2C457439A00;
             a.user = null;
         }
         cui_ctx* ui = (cui_ctx*)(a.alloc(((ulong)(sizeof(cui_ctx))), a.user));
@@ -787,7 +787,7 @@ public static unsafe partial class Cui
 
     public static unsafe uint cui_make_id(cui_ctx* ui, byte* str)
     {
-        byte* keep = ((byte*)(Cond.B(str) ? strstr(str, (DotCcLiterals.Pointer + DotCcLiterals.S1065 /*"###"*/)) : null));
+        byte* keep = ((byte*)(Cond.B(str) ? strstr(str, (DotCcLiterals.Pointer + DotCcLiterals.S1066 /*"###"*/)) : null));
         return cui__hash_str(((byte*)(Cond.B(keep) ? keep : str)), cui__seed(ui));
     }
 
@@ -1465,7 +1465,7 @@ public static unsafe partial class Cui
         ui->last_id = 0;
         ui->hover_id_for_tooltip = 0;
         ui->edit = null;
-        int root = cui__node_new(ui, cui__hash_str((DotCcLiterals.Pointer + DotCcLiterals.S965 /*"#root"*/), 0));
+        int root = cui__node_new(ui, cui__hash_str((DotCcLiterals.Pointer + DotCcLiterals.S966 /*"#root"*/), 0));
         cui_node* r = cui__node(ui, root);
         r->w = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)ui->vw };
         r->h = new cui_size { kind = __DotCcEnum_6375695F73697A655F6B696E64.CUI_SIZE_FIXED, value = (float)ui->vh };
@@ -1694,7 +1694,7 @@ public static unsafe partial class Cui
 
     public static unsafe byte* cui_accent_name(cui_accent a)
     {
-        return ((byte*)(Cond.B(((CBool)(Cond.B(((CBool)((int)a >= 0))) && Cond.B(((CBool)((int)a < (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_COUNT)))))) ? global::Managed.Forms.Cui.Globals.cui__accents__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC[(int)a].name : (DotCcLiterals.Pointer + DotCcLiterals.S522 /*"neutral"*/)));
+        return ((byte*)(Cond.B(((CBool)(Cond.B(((CBool)((int)a >= 0))) && Cond.B(((CBool)((int)a < (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_COUNT)))))) ? global::Managed.Forms.Cui.Globals.cui__accents__unit_EDA3288F2815DF2CDA52EED4C310350F9ECB699EB419DC63B44BC3B4E08762E0[(int)a].name : (DotCcLiterals.Pointer + DotCcLiterals.S522 /*"neutral"*/)));
     }
 
 
@@ -1766,7 +1766,7 @@ public static unsafe partial class Cui
         c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_INFO] = t->tone_sky;
         c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_HOVER] = cui_alpha(c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.05f);
         c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_ACTIVE] = cui_alpha(c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_FOREGROUND], 0.075f);
-        cui__accent_def* a = &global::Managed.Forms.Cui.Globals.cui__accents__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC[(int)accent];
+        cui__accent_def* a = &global::Managed.Forms.Cui.Globals.cui__accents__unit_EDA3288F2815DF2CDA52EED4C310350F9ECB699EB419DC63B44BC3B4E08762E0[(int)accent];
         float series_l = ((float)(Cond.B(dark) ? 0.73f : 0.58f));
         float series_h = 250;
         if (Cond.B(((CBool)((int)accent == (int)__DotCcEnum_6375695F616363656E74.CUI_ACCENT_NEUTRAL))))
@@ -1797,7 +1797,7 @@ public static unsafe partial class Cui
             float best = 1e9f;
             for (int i = 0; Cond.B(((CBool)(i < 6))); i++)
             {
-                float d = fabsf(fmodf(global::Managed.Forms.Cui.Globals.sh__s1__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC[i] - series_h + 540.0f, 360.0f) - 180.0f);
+                float d = fabsf(fmodf(global::Managed.Forms.Cui.Globals.sh__s1__unit_EDA3288F2815DF2CDA52EED4C310350F9ECB699EB419DC63B44BC3B4E08762E0[i] - series_h + 540.0f, 360.0f) - 180.0f);
                 if (Cond.B(((CBool)(d < best))))
                 {
                     best = d;
@@ -1807,7 +1807,7 @@ public static unsafe partial class Cui
         }
         for (int i__1 = 0; Cond.B(((CBool)(i__1 < 6))); i__1++)
         {
-            uint v = (global::Managed.Forms.Cui.Globals.sp__s0__unit_D85656ED839DD40B2C63B8C8D1C200DC825774CB2DAF24495EE69AB0613D52DC + dark * 6)[(first + i__1) % 6];
+            uint v = (global::Managed.Forms.Cui.Globals.sp__s0__unit_EDA3288F2815DF2CDA52EED4C310350F9ECB699EB419DC63B44BC3B4E08762E0 + dark * 6)[(first + i__1) % 6];
             c[(int)__DotCcEnum_6375695F746F6B656E.CUI_TOKEN_SERIES_1 + i__1] = cui__rgba((byte)(v >> 16), (byte)(v >> 8), (byte)v, 255);
         }
         t->radius_control = 10;
@@ -2800,7 +2800,7 @@ public static unsafe partial class Cui
     {
         float w = cui__text_width(ui, font, size, s, -1, tab);
         float fh = cui__font_line_height(ui, font, size);
-        float tx = ((float)(Cond.B(((CBool)((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637.CUI__AT_CENTER))) ? x - w * 0.5f : ((float)(Cond.B(((CBool)((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F35433139373738383936433338353538423536464637393636313641303646314635434642443343333533373045314333413434453641334536354638393637.CUI__AT_RIGHT))) ? x - w : x))));
+        float tx = ((float)(Cond.B(((CBool)((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F36463030323445443930443336423631304530333646333830323435433145423031433345313044383234383841364536413131313038424634323346464232.CUI__AT_CENTER))) ? x - w * 0.5f : ((float)(Cond.B(((CBool)((int)anchor == (int)__DotCcEnum_5F5F446F744363547970656465665F36463030323445443930443336423631304530333646333830323435433145423031433345313044383234383841364536413131313038424634323346464232.CUI__AT_RIGHT))) ? x - w : x))));
         cui__draw_text_line(ui, font, size, tx, y - fh * 0.5f, color, s, -1, tab);
     }
 
@@ -3023,13 +3023,13 @@ public static unsafe partial class Cui
     {
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == 49))) && Cond.B(((CBool)(font[1] == 0)))))) && Cond.B(((CBool)(font[2] == 0)))))) && Cond.B(((CBool)(font[3] == 0)))))))
             return 1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1393 /*"typ1"*/)[0]))) && Cond.B(((CBool)(font[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1393 /*"typ1"*/)[1])))))) && Cond.B(((CBool)(font[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1393 /*"typ1"*/)[2])))))) && Cond.B(((CBool)(font[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1393 /*"typ1"*/)[3])))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1394 /*"typ1"*/)[0]))) && Cond.B(((CBool)(font[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1394 /*"typ1"*/)[1])))))) && Cond.B(((CBool)(font[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1394 /*"typ1"*/)[2])))))) && Cond.B(((CBool)(font[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1394 /*"typ1"*/)[3])))))))
             return 1;
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == (DotCcLiterals.Pointer + DotCcLiterals.S237 /*"OTTO"*/)[0]))) && Cond.B(((CBool)(font[1] == (DotCcLiterals.Pointer + DotCcLiterals.S237 /*"OTTO"*/)[1])))))) && Cond.B(((CBool)(font[2] == (DotCcLiterals.Pointer + DotCcLiterals.S237 /*"OTTO"*/)[2])))))) && Cond.B(((CBool)(font[3] == (DotCcLiterals.Pointer + DotCcLiterals.S237 /*"OTTO"*/)[3])))))))
             return 1;
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == 0))) && Cond.B(((CBool)(font[1] == 1)))))) && Cond.B(((CBool)(font[2] == 0)))))) && Cond.B(((CBool)(font[3] == 0)))))))
             return 1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"true"*/)[0]))) && Cond.B(((CBool)(font[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"true"*/)[1])))))) && Cond.B(((CBool)(font[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"true"*/)[2])))))) && Cond.B(((CBool)(font[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1257 /*"true"*/)[3])))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1258 /*"true"*/)[0]))) && Cond.B(((CBool)(font[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1258 /*"true"*/)[1])))))) && Cond.B(((CBool)(font[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1258 /*"true"*/)[2])))))) && Cond.B(((CBool)(font[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1258 /*"true"*/)[3])))))))
             return 1;
         return 0;
     }
@@ -3056,7 +3056,7 @@ public static unsafe partial class Cui
     {
         if (Cond.B(stbtt__isfont(font_collection)))
             return ((int)(Cond.B(((CBool)(index == 0))) ? 0 : -1));
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font_collection[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[0]))) && Cond.B(((CBool)(font_collection[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[1])))))) && Cond.B(((CBool)(font_collection[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[2])))))) && Cond.B(((CBool)(font_collection[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[3])))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font_collection[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[0]))) && Cond.B(((CBool)(font_collection[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[1])))))) && Cond.B(((CBool)(font_collection[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[2])))))) && Cond.B(((CBool)(font_collection[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[3])))))))
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(ttULONG(font_collection + 4) == (uint)(0x00010000)))) || Cond.B(((CBool)(ttULONG(font_collection + 4) == (uint)(0x00020000))))))))
             {
@@ -3075,7 +3075,7 @@ public static unsafe partial class Cui
     {
         if (Cond.B(stbtt__isfont(font_collection)))
             return 1;
-        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font_collection[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[0]))) && Cond.B(((CBool)(font_collection[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[1])))))) && Cond.B(((CBool)(font_collection[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[2])))))) && Cond.B(((CBool)(font_collection[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1167 /*"ttcf"*/)[3])))))))
+        if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(font_collection[0] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[0]))) && Cond.B(((CBool)(font_collection[1] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[1])))))) && Cond.B(((CBool)(font_collection[2] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[2])))))) && Cond.B(((CBool)(font_collection[3] == (DotCcLiterals.Pointer + DotCcLiterals.S1168 /*"ttcf"*/)[3])))))))
         {
             if (Cond.B(((CBool)(Cond.B(((CBool)(ttULONG(font_collection + 4) == (uint)(0x00010000)))) || Cond.B(((CBool)(ttULONG(font_collection + 4) == (uint)(0x00020000))))))))
             {
@@ -3110,7 +3110,7 @@ public static unsafe partial class Cui
         uint t = default;
         if (Cond.B(((CBool)(info->svg < 0))))
         {
-            t = stbtt__find_table(info->data, (uint)(info->fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S825 /*"SVG "*/));
+            t = stbtt__find_table(info->data, (uint)(info->fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S826 /*"SVG "*/));
             if (Cond.B(t))
             {
                 uint offset = ttULONG(info->data + t + 2);
@@ -3133,14 +3133,14 @@ public static unsafe partial class Cui
         info->data = data;
         info->fontstart = fontstart;
         info->cff = stbtt__new_buf(null, 0);
-        cmap = stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S790 /*"cmap"*/));
-        info->loca = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S1252 /*"loca"*/)));
-        info->head = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S1066 /*"head"*/)));
-        info->glyf = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S789 /*"glyf"*/)));
+        cmap = stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S791 /*"cmap"*/));
+        info->loca = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S1253 /*"loca"*/)));
+        info->head = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S1067 /*"head"*/)));
+        info->glyf = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S790 /*"glyf"*/)));
         info->hhea = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S491 /*"hhea"*/)));
         info->hmtx = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S285 /*"hmtx"*/)));
         info->kern = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S323 /*"kern"*/)));
-        info->gpos = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S980 /*"GPOS"*/)));
+        info->gpos = (int)(stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S981 /*"GPOS"*/)));
         if (Cond.B(((CBool)(Cond.B(((CBool)(Cond.B(((CBool)(Cond.B((Cond.B(cmap) ? 0 : 1)) || Cond.B((Cond.B(info->head) ? 0 : 1))))) || Cond.B((Cond.B(info->hhea) ? 0 : 1))))) || Cond.B((Cond.B(info->hmtx) ? 0 : 1))))))
             return 0;
         if (Cond.B(info->glyf))
@@ -3153,7 +3153,7 @@ public static unsafe partial class Cui
             stbtt__buf b = default, topdict = default, topdictidx = default;
             uint cstype = 2, charstrings = 0, fdarrayoff = 0, fdselectoff = 0;
             uint cff = default;
-            cff = stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S1410 /*"CFF "*/));
+            cff = stbtt__find_table(data, (uint)(fontstart), (DotCcLiterals.Pointer + DotCcLiterals.S1411 /*"CFF "*/));
             if (Cond.B((Cond.B(cff) ? 0 : 1)))
                 return 0;
             info->fontdicts = stbtt__new_buf(null, 0);

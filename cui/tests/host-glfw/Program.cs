@@ -15,6 +15,7 @@ internal static unsafe class Program
     private static nint expectedWindow;
     private static Glfw.GlfwWindow? callbackWindow;
     private static int exceptionMode;
+    private const string AppId = "org.example.CuiHost.λ🙂";
     [DllImport("libc", EntryPoint = "setenv", CallingConvention = CallingConvention.Cdecl)]
     private static extern int SetEnvironment([MarshalAs(UnmanagedType.LPUTF8Str)] string name,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string value, int overwrite);
@@ -22,6 +23,16 @@ internal static unsafe class Program
     private static extern int XSendEvent(nint display, nuint window, int propagate, nint mask, void* ev);
     [DllImport("libX11.so.6", CallingConvention = CallingConvention.Cdecl)]
     private static extern int XSync(nint display, int discard);
+    [DllImport("libX11.so.6", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int XGetClassHint(nint display, nuint window, out XClassHint hints);
+    [DllImport("libX11.so.6", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int XFree(nint data);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct XClassHint
+    {
+        public nint res_name, res_class;
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     private struct XExpose
@@ -60,6 +71,41 @@ internal static unsafe class Program
         C.glfwWindowHint(K.GLFW_OPENGL_PROFILE, K.GLFW_OPENGL_CORE_PROFILE);
         C.glfwWindowHint(K.GLFW_VISIBLE, K.GLFW_FALSE);
         fixed (byte* title = "CUI host ABI λ"u8) return C.glfwCreateWindow(32, 32, title, null, null);
+    }
+
+    private static void SetAppIdHints()
+    {
+        // Match cui_app_glfw.c, then release/overwrite the caller's UTF-8
+        // storage before window creation: the managed hint must own its text.
+        Span<byte> utf8 = stackalloc byte[Encoding.UTF8.GetByteCount(AppId) + 1];
+        Encoding.UTF8.GetBytes(AppId, utf8);
+        utf8[^1] = 0;
+        fixed (byte* value = utf8)
+        {
+            C.glfwWindowHintString(C.GLFW_X11_CLASS_NAME, value);
+            C.glfwWindowHintString(C.GLFW_X11_INSTANCE_NAME, value);
+            C.glfwWindowHintString(C.GLFW_WAYLAND_APP_ID, value);
+        }
+        utf8.Clear();
+    }
+
+    private static void WindowClass(Glfw.GlfwWindow window, string? appId)
+    {
+        if (!OperatingSystem.IsLinux()) return;
+        int result = XGetClassHint(G.glfwGetX11Display(), G.glfwGetX11Window(window), out var hints);
+        try
+        {
+            Assert(result != 0, "read actual X11 WM_CLASS");
+            string? resourceName = Environment.GetEnvironmentVariable("RESOURCE_NAME");
+            string? expectedName = appId ?? (string.IsNullOrEmpty(resourceName) ? window.Title : resourceName);
+            Assert(Marshal.PtrToStringUTF8(hints.res_name) == expectedName, "WM_CLASS instance hint and initialization reset");
+            Assert(Marshal.PtrToStringUTF8(hints.res_class) == (appId ?? window.Title), "WM_CLASS class hint and initialization reset");
+        }
+        finally
+        {
+            if (hints.res_name != 0) XFree(hints.res_name);
+            if (hints.res_class != 0) XFree(hints.res_class);
+        }
     }
 
     private static void Cursor(GLFWwindow* window, double x, double y)
@@ -229,6 +275,10 @@ internal static unsafe class Program
         try
         {
             C.glfwTerminate();
+            Assert(C.GLFW_X11_CLASS_NAME == K.GLFW_X11_CLASS_NAME &&
+                C.GLFW_X11_INSTANCE_NAME == K.GLFW_X11_INSTANCE_NAME &&
+                C.GLFW_WAYLAND_APP_ID == K.GLFW_WAYLAND_APP_ID, "emitted header and managed string-hint constants agree");
+            Reject(SetAppIdHints, "string hints before initialization");
             string? display = Environment.GetEnvironmentVariable("DISPLAY");
             if (OperatingSystem.IsLinux())
             {
@@ -241,11 +291,18 @@ internal static unsafe class Program
             for (int cycle = 0; cycle < 2; cycle++)
             {
                 Assert(C.glfwInit() == 1, "initialize/reinitialize GLFW");
+                Assert(G.glfwGetPlatform() == (OperatingSystem.IsWindows() ? K.GLFW_PLATFORM_WIN32 : K.GLFW_PLATFORM_X11),
+                    "managed GLFW runtime platform dispatch");
                 Assert(C.glfwInit() == 0, "second active app rejected on owner thread");
                 int duplicate = Task.Run(C.glfwInit).GetAwaiter().GetResult();
                 Assert(duplicate == 0, "second active app rejected on another thread");
                 Task.Run(() => Reject(() => C.glfwGetTime(), "wrong-thread GLFW call")).GetAwaiter().GetResult();
+                Task.Run(() => Reject(SetAppIdHints, "wrong-thread string hint")).GetAwaiter().GetResult();
                 fixed (byte* title = "invalid"u8) Assert(C.glfwCreateWindow(0, 0, title, null, null) == null, "failed window creation");
+                G.glfwGetError(out _); // Drain the intentional invalid-window error.
+                if (cycle == 0) SetAppIdHints();
+                Assert(G.glfwGetError(out _) == K.GLFW_NO_ERROR, "all three upstream string hints accepted on selected platform");
+                GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
                 var window = CreateWindow();
                 Assert(window != null && (nint)window != lastWindow, "new live opaque window identifier");
                 if (lastWindow != 0) Reject(() => C.glfwGetWindowUserPointer((GLFWwindow*)lastWindow), "released handle cannot revive");
@@ -275,6 +332,7 @@ internal static unsafe class Program
                 C.glfwMakeContextCurrent(window);
                 var managed = G.glfwGetCurrentContext()!;
                 Assert(managed != null, "copied managed GLFW context is current");
+                WindowClass(managed!, cycle == 0 ? AppId : null);
                 nint ownerClear = Proc("glClear");
                 Task.Run(() => Reject(() => ((delegate*<uint, void>)ownerClear)(0x4000), "wrong-thread GL thunk call")).GetAwaiter().GetResult();
                 Task.Run(() => Reject(C.glfwTerminate, "wrong-thread termination")).GetAwaiter().GetResult();
@@ -293,11 +351,13 @@ internal static unsafe class Program
                 // from the old context must not be reused implicitly.
                 var replacement = CreateWindow();
                 C.glfwMakeContextCurrent(replacement);
+                WindowClass(G.glfwGetCurrentContext()!, cycle == 0 ? AppId : null);
                 Reject(() => stale(0x4000), "cached thunk after replacement context");
                 ((delegate*<uint, void>)Proc("glClear"))(0x4000);
                 lastWindow = (nint)window;
                 // Termination must release live windows, cursors and callbacks.
                 C.glfwTerminate();
+                Reject(SetAppIdHints, "string hints after termination");
                 retained(managed);
                 C.glfwTerminate();
                 Reject(() => stale(0x4000), "cached thunk after termination");

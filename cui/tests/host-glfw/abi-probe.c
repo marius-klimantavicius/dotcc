@@ -41,4 +41,7 @@ void cui_host_probe_declarations(void) {
     (void)glfwWaitEvents();
     (void)glfwWaitEventsTimeout(0);
     (void)glfwWindowHint(0, 0);
+    (void)glfwWindowHintString(GLFW_X11_CLASS_NAME, "org.example.CuiHost");
+    (void)glfwWindowHintString(GLFW_X11_INSTANCE_NAME, "org.example.CuiHost");
+    (void)glfwWindowHintString(GLFW_WAYLAND_APP_ID, "org.example.CuiHost");
 }

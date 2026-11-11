@@ -7,7 +7,10 @@
     "Ui.Marshalling.cs": "fea6b93c2bf0de2b4a6775a0756305bf628dcfc1132a067ab1ca9a099081a992",
     "Ui.ScopeDispatch.cs": "36899aed78866bc9b8596a9fe2fc86a668c62e7aaa353e9afd64f3134804880c"
   },
-  "native_header_sha256": "1c6b9d51c14428f13d986072ba59699a1773107ba5567e6b20702ed7035503ee",
+  "native_revision": "5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5",
+  "native_version": "1.4.0",
+  "native_source_form": "pristine upstream",
+  "native_header_sha256": "f6534034afde0b30dd7f0a885a5cedc4ae361ef087a8fa7a716425122f83c379",
   "native_evidence": [
     {
       "symbol": "cui__apply_box",
@@ -17,7 +20,7 @@
     {
       "symbol": "cui__button_impl",
       "file": "cui_widgets.c",
-      "sha256": "5676138cc7575cc34070be4389dae9e00ec6849b2c532a9eed2682d8791afc14"
+      "sha256": "67879bff0ff6816ec18dcbc793b89ed47a1d0a5f752e38bd69fa8ec014f5b572"
     },
     {
       "symbol": "cui__code_block_ex_body",
@@ -58,6 +61,11 @@
       "symbol": "cui__hm_layout",
       "file": "cui_viz.c",
       "sha256": "344368c32f7da12078235b997aed5f7272e8bfcb33e820de6f92c596178f3d43"
+    },
+    {
+      "symbol": "cui__icon_button_id",
+      "file": "cui_widgets.c",
+      "sha256": "7ca02e20179998ede116933759c6443e21c857d04501685f26502b728d353a21"
     },
     {
       "symbol": "cui__json_view_ex_body",
@@ -257,7 +265,7 @@
     {
       "symbol": "cui_button_ex",
       "file": "cui_widgets.c",
-      "sha256": "18b0f1997ae1eace50b145cbd35aef6f5723b557643e6af7d13eaee952e8200c"
+      "sha256": "a30ed9471b100f57b3e3e16635e02ad373a8d7693f7c6f30724535083447a3c7"
     },
     {
       "symbol": "cui_calendar",
@@ -302,7 +310,7 @@
     {
       "symbol": "cui_chat_message_ex",
       "file": "cui_social.c",
-      "sha256": "e03e0876c7aedece284c05124e2d5de040bd7bee2ff275d80d99c47b92d4b600"
+      "sha256": "3358a138a2dd6fd42b86524be750454d2b33e8aa7bba983e09d4521199a193ad"
     },
     {
       "symbol": "cui_checkbox_ex",
@@ -373,6 +381,11 @@
       "symbol": "cui_control_tile_ex",
       "file": "cui_motion.c",
       "sha256": "f5414e7e0e7783c505fda816de78707801c51197ca33509777b5e6cf57def915"
+    },
+    {
+      "symbol": "cui_copy_button",
+      "file": "cui_extras.c",
+      "sha256": "7f3107b98434e121138fb3dc080400646a1a4d75acafcfe78ba2f1abb1081f43"
     },
     {
       "symbol": "cui_countdown_ex",
@@ -537,7 +550,7 @@
     {
       "symbol": "cui_icon_button_ex",
       "file": "cui_widgets.c",
-      "sha256": "51bf977c3bcb9d8cfc99be03917556c4765939295d59864076cfa7606a8d2bbb"
+      "sha256": "080943f498247e00f078d9063df4519c06a965654f3a828314077e9171e15302"
     },
     {
       "symbol": "cui_image_compare_ex",
@@ -877,7 +890,7 @@
     {
       "symbol": "cui_split_button_ex",
       "file": "cui_actions.c",
-      "sha256": "daaaf6742a7f118c6d37f0e5011f13810bdf5ebfe849b6c743286012d91bf49b"
+      "sha256": "f079c25d14b6162ee5c68f25165c5d8cddd7c0845aa503bb308dc6fd4b531076"
     },
     {
       "symbol": "cui_spotlight_begin",

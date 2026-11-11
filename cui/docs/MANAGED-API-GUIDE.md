@@ -14,7 +14,7 @@ using Cui.Managed;
 
 using var app = new Application(new ApplicationOptions
 {
-    Title = "Workspace", Width = 800, Height = 600,
+    Title = "Workspace", AppId = "org.example.Workspace", Width = 800, Height = 600,
     Theme = ThemeMode.Light, Accent = Accent.Violet
 });
 using var name = new TextBuffer(128, "Maya");
@@ -42,6 +42,12 @@ OpenGL readback. Captures are diagnostic work, not an allocation-free hot path.
 Call `Quit` to request loop exit. Use and dispose an application on its creating
 thread. CUI supports one active desktop application. The copied managed GLFW
 port selects Windows or Linux X11 at runtime; desktop rendering uses OpenGL.
+
+`ApplicationOptions.AppId` (CUI 1.4) is the Linux desktop-file name without
+`.desktop`. It sets both X11 `WM_CLASS` strings for desktop grouping and icons;
+Windows ignores it. Null/empty keeps default behavior; embedded NUL is rejected.
+The host pins encoded UTF-8 only during creation, where the managed GLFW hint
+bridge copies it. No caller address is retained for later window use.
 
 ## Frames, scopes and state
 

@@ -131,6 +131,19 @@ def abi(ctx, suite):
                             "-p:PublishAot=true", "-o", output, timeout=1800)
                 command = [output / ("HostGlfw.Tests.exe" if sys.platform == "win32" else "HostGlfw.Tests")]
             ctx.run(command, label + "-run", timeout=suite.timeout, separate=True)
+            if sys.platform == "linux":
+                app_project = ctx.root / "tests/app-id/AppId.Tests.csproj"
+                app_label = f"app-id-{form}-{mode}"
+                app_output = ctx.work / app_label
+                app_args = [prop, "--artifacts-path", ctx.work / (app_label + "-artifacts"), "-o", app_output]
+                if mode == "jit":
+                    ctx.managed("build", app_project, app_label + "-build", *app_args)
+                    app_command = ["dotnet", app_output / "AppId.Tests.dll"]
+                else:
+                    ctx.managed("publish", app_project, app_label + "-publish", *app_args,
+                                "-r", ctx.options.rid, "-p:PublishAot=true", timeout=1800)
+                    app_command = [app_output / "AppId.Tests"]
+                ctx.run(app_command, app_label + "-run", timeout=suite.timeout, separate=True)
             desktop = [sys.executable, ctx.root / "tests/desktop/run.py", "--work-root", ctx.work / ("desktop-" + form + "-" + mode),
                        "--cui-project", product]
             if mode == "aot":

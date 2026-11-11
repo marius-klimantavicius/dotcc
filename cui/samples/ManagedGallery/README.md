@@ -38,7 +38,7 @@ The original row-position selection behavior through data-grid sorting is
 preserved. Existing scalar UTF-8/emoji behavior and adaptations are retained.
 
 The design, content, data and image-generation algorithms derive from CUI
-revision `629b6fcb991d71527f2d67b25c51429c3dcdb498`. Original sources and provenance
+revision `5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5` (1.4.0). Original sources and provenance
 are retained under `generated/TranslatedCuiGallery/upstream`, with CUI's license
 and dependency notices in that companion's `notices` directory. The safe wrapper,
 translated core, embedded assets and copied GLFW port retain their respective

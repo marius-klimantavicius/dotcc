@@ -7,11 +7,15 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(ROOT.parent / 'Scripts'))
+from campaigns.recipes import helper
 
 
 def run(args, work, **kwargs):
@@ -36,18 +40,24 @@ def main():
         parser.error('this focused suite requires Linux x64')
     sys.dont_write_bytecode = True
     work = args.work.resolve()
-    if work.is_relative_to(ROOT.parent):
-        parser.error('--work must be outside the checkout')
+    source = args.source.resolve()
+    if work.is_relative_to(ROOT.parent) or work.is_relative_to(source):
+        parser.error('--work must be outside the checkout and input source tree')
     work.mkdir(parents=True, exist_ok=True)
     (work / 'tmp').mkdir(exist_ok=True)
     os.environ['TMPDIR'] = str(work / 'tmp')
+    os.environ['TEMP'] = os.environ['TMP'] = str(work / 'tmp')
     os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
-    source = args.source.resolve()
     spec = importlib.util.spec_from_file_location('stage', ROOT / 'scripts/stage.py')
     stage = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(stage)
     staged = work / 'source'
     adaptations = stage.stage(source, staged)
+    helper(ROOT / 'scripts/source_identity.py').stage_headers(ROOT, staged)
+    fixtures = staged / 'dotcc/tests/platform'
+    fixtures.mkdir(parents=True, exist_ok=True)
+    for name in ('fixture.c', 'emoji-fixture.c', 'glfw-prefix-fixture.c', 'windows-shim.c'):
+        shutil.copyfile(ROOT / 'tests/platform' / name, fixtures / name)
     print(f'Applied {len(adaptations)} guarded adaptations', flush=True)
 
     def section(text, begin, end):
@@ -58,12 +68,12 @@ def main():
     selected = section(emoji, 'bool cui_emoji_font_load_system(cui_ctx *ui)', '/* Code points to a glyph')
     # Drop the opening separator comment belonging to the next section.
     selected = selected[:selected.rindex('/* ------------------------------------------------------------------------ */')]
-    (work / 'platform-emoji-selected.c').write_text(selected, encoding='utf-8')
+    (fixtures / 'platform-emoji-selected.c').write_text(selected, encoding='utf-8')
     glfw = (staged / 'src/platform/cui_app_glfw.c').read_text(encoding='utf-8')
     selected = section(glfw, 'typedef struct {\n    GLFWwindow *win;', 'static cui__glfw *cui__g')
     selected += section(glfw, 'bool cui__plat_init(cui_app *app) {', '    app->plat = g;')
     selected += '    abort(); return false;\n}\n'
-    (work / 'platform-glfw-prefix-selected.c').write_text(selected, encoding='utf-8')
+    (fixtures / 'platform-glfw-prefix-selected.c').write_text(selected, encoding='utf-8')
 
     # Missing/ambiguous anchors must fail. Use only the adapted files to keep
     # these negative fixtures small, and record every individual mutation.
@@ -94,9 +104,9 @@ def main():
     defines = ['-D' + value for value in json.loads((ROOT / 'config/profile.json').read_text(encoding='utf-8'))['defines']]
     native = work / 'native'
     run(['cc', '-std=c99', '-D_POSIX_C_SOURCE=200809L', '-DPLATFORM_TEST_MAIN', '-DGLFW_INCLUDE_NONE', *defines,
-         '-ffunction-sections', '-fdata-sections', '-I', work, '-I', ROOT / 'config/include', '-I', staged / 'include', '-I', staged / 'src',
-         ROOT / 'tests/platform/fixture.c', '-Wl,--gc-sections', '-lm', '-o', native], work)
-    run(['cc', '-std=c11', '-shared', '-fPIC', ROOT / 'tests/platform/windows-shim.c',
+         '-ffunction-sections', '-fdata-sections', '-I', fixtures, '-I', staged / 'dotcc/include', '-I', staged / 'include', '-I', staged / 'src',
+         fixtures / 'fixture.c', '-Wl,--gc-sections', '-lm', '-o', native], work)
+    run(['cc', '-std=c11', '-shared', '-fPIC', fixtures / 'windows-shim.c',
          '-o', work / 'windows-shim.so'], work)
     result = run([native], work, capture_output=True, text=True)
     print(result.stderr, end='')
@@ -112,12 +122,12 @@ def main():
     selected += section(files, 'typedef struct {\n    char loaded[', '\nstatic void cui__fb_dtor')
     selected += section(files, 'static cui__fb_state *cui__fb_sorting;', '/* the filtered, sorted index;')
     selected += section(files, 'static void cui__fb_default_places', '/* one frame of the browser:')
-    (work / 'platform-files-selected.c').write_text(selected, encoding='utf-8')
+    (fixtures / 'platform-files-selected.c').write_text(selected, encoding='utf-8')
     app = (staged / 'src/platform/cui_app.c').read_text(encoding='utf-8')
     selected = app[:app.index('/* NULL means the app')]
     selected += section(app, 'static cui_app *cui__app_or_current', 'void *cui_app_native_window')
     selected += section(app, 'static void cui__app_set_clip(void *user, const char *utf8) {', 'void cui__app_render')
-    (work / 'platform-app-selected.c').write_text(selected, encoding='utf-8')
+    (fixtures / 'platform-app-selected.c').write_text(selected, encoding='utf-8')
 
     overrides = json.loads((ROOT / 'config/host-overrides.json').read_text(encoding='utf-8'))
     # The actual staged path helpers are exercised under both OS selections.
@@ -126,11 +136,11 @@ def main():
     overrides['functionOverrides'] = [item for item in overrides['functionOverrides'] if item['name'] != 'cui_host_is_windows']
     (work / 'overrides.json').write_text(json.dumps(overrides), encoding='utf-8')
     generated = work / 'generated'
-    run(['dotnet', args.dotcc.resolve(), ROOT / 'tests/platform/fixture.c', '--emit=managedlib',
+    run(['dotnet', args.dotcc.resolve(), fixtures / 'fixture.c', '--emit=managedlib', '--source-root', staged,
          '--class-name', 'Cui', '--namespace', 'Managed.Forms', '--runtime=c', '--literal-pool',
          '--overrides-file', work / 'overrides.json', '--override-report', work / 'override-report.jsonl',
          '-std=c99', '-DPLATFORM_ISOLATED', '-DGLFW_INCLUDE_NONE', *defines,
-         '-I', work, '-I', ROOT / 'config/include', '-I', staged / 'include', '-I', staged / 'src', '-I', staged / 'src/platform',
+         '-I', fixtures, '-I', staged / 'dotcc/include', '-I', staged / 'include', '-I', staged / 'src', '-I', staged / 'src/platform',
          '-o', generated], work)
     project = ET.Element('Project', Sdk='Microsoft.NET.Sdk')
     props = ET.SubElement(project, 'PropertyGroup')

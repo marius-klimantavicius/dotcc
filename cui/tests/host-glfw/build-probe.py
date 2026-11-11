@@ -3,10 +3,16 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
+import stat
 import subprocess
+import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(ROOT.parent / "Scripts"))
+from campaigns.recipes import helper
 
 
 def main():
@@ -16,19 +22,31 @@ def main():
     parser.add_argument("--work-root", type=Path, required=True, help="Caller-selected disposable output directory")
     args = parser.parse_args()
     work = args.work_root.resolve()
+    upstream = args.source_root.resolve()
+    if work.is_relative_to(ROOT.parent) or work.is_relative_to(upstream):
+        parser.error("--work-root must be outside the checkout and input source tree")
     work.mkdir(parents=True, exist_ok=True)
     temporary = work / "tmp"
     temporary.mkdir(exist_ok=True)
     env = dict(os.environ, TMPDIR=str(temporary), TMP=str(temporary), TEMP=str(temporary))
     compiler = args.compiler.resolve()
     command = ["dotnet", str(compiler)] if compiler.suffix.lower() == ".dll" else [str(compiler)]
-    source = args.source_root.resolve()
+    source = work / "source"
+    shutil.copytree(upstream, source, copy_function=shutil.copyfile,
+                    ignore=shutil.ignore_patterns(".git", "build", "__pycache__"))
+    for path in [source, *(p for p in source.rglob("*") if p.is_dir())]:
+        path.chmod(path.stat().st_mode | stat.S_IWUSR)
+    helper(ROOT / "scripts/source_identity.py").stage_headers(ROOT, source)
+    probe = source / "dotcc/tests/host-glfw/abi-probe.c"
+    probe.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ROOT / "tests/host-glfw/abi-probe.c", probe)
     objects = work / "objects"
     objects.mkdir(exist_ok=True)
     output = work / "emitted"
-    common = ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE", "-I", str(ROOT / "config/include"), "-I", str(source / "include")]
+    common = ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE", "--source-root", str(source),
+              "-I", str(source / "dotcc/include"), "-I", str(source / "include")]
     common += ["-D" + value for value in json.loads((ROOT / "config/profile.json").read_text())["defines"]]
-    subprocess.run([*command, str(ROOT / "tests/host-glfw/abi-probe.c"), "--emit=obj", *common,
+    subprocess.run([*command, str(probe), "--emit=obj", *common,
                     "--overrides-file", str(ROOT / "config/glfw-overrides.json"), "-o", str(objects / "glfw.cs")], check=True, env=env)
     subprocess.run([*command, str(source / "src/render/cui_render_gl.c"), "--emit=obj", *common,
                     "-o", str(objects / "render.cs")], check=True, env=env)

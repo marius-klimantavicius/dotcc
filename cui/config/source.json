@@ -1,9 +1,20 @@
 {
   "upstream": "https://github.com/yappologistic/CUI",
-  "version": "1.3.1-development",
-  "revision": "629b6fcb991d71527f2d67b25c51429c3dcdb498",
-  "url": "https://github.com/yappologistic/CUI/archive/629b6fcb991d71527f2d67b25c51429c3dcdb498.tar.gz",
+  "version": "1.4.0",
+  "revision": "5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5",
+  "url": "https://github.com/yappologistic/CUI/archive/5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5.tar.gz",
   "archive": "cui-source.tar.gz",
-  "directory": "CUI-629b6fcb991d71527f2d67b25c51429c3dcdb498",
-  "required": ["CMakeLists.txt", "include/cui/cui.h", "src/cui_core.c", "src/platform/cui_platform.h", "examples/gallery_ui.c", "examples/gallery_ui.h", "examples/gallery_more.c", "examples/gallery_more.h", "LICENSE", "THIRD_PARTY.md"]
+  "directory": "CUI-5a9c12b433d4501bc2f5632ead3a1cc05e5b1ee5",
+  "required": [
+    "CMakeLists.txt",
+    "include/cui/cui.h",
+    "src/cui_core.c",
+    "src/platform/cui_platform.h",
+    "examples/gallery_ui.c",
+    "examples/gallery_ui.h",
+    "examples/gallery_more.c",
+    "examples/gallery_more.h",
+    "LICENSE",
+    "THIRD_PARTY.md"
+  ]
 }

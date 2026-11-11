@@ -13,7 +13,7 @@ retired. Header-only inference cannot establish retention or reproduce those
 repairs honestly. These complete source templates preserve the final guarded
 implementation, including nested array marshalling, state leases, and scope
 synchronization. `reviewed.json` records storage decisions for all 225 converted
-sites and hashes of 214 native definitions plus the public header used in review.
+sites and hashes of 216 native definitions plus the public header used in review.
 The native sources are external inputs, never copied into this generator.
 
 From the repository root, check reproduction without writing:

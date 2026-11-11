@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import time
@@ -161,11 +162,39 @@ class Run:
 
     def flags(self, source):
         return ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE",
-                "-DCUI_TEXT_SHAPING", "-DCUI_IMAGE_ALL_FORMATS", "-I", ROOT / "config/include", "-I", source / "include"]
+                "-DCUI_TEXT_SHAPING", "-DCUI_IMAGE_ALL_FORMATS", "-I", source / "dotcc/include", "-I", source / "include"]
 
-    def emit(self, source, output, flags, label):
+    def stage_source(self, source, destination):
+        """Copy a complete logical root; retained inputs are never adapted in place."""
+        if destination.resolve().is_relative_to(source.resolve()):
+            raise RuntimeError("Qualification source copy must be outside its input tree")
+        shutil.copytree(source, destination, copy_function=shutil.copyfile,
+                        ignore=shutil.ignore_patterns(".git", "build", "__pycache__"))
+        # copyfile leaves files writable, but copytree preserves directory modes.
+        # A retained read-only tree must still produce a writable private root.
+        for path in [destination, *(p for p in destination.rglob("*") if p.is_dir())]:
+            path.chmod(path.stat().st_mode | stat.S_IWUSR)
+        helper(ROOT / "scripts/source_identity.py").stage_headers(ROOT, destination)
+        return destination
+
+    def fixture(self, source, relative):
+        destination = source / "dotcc/qualification" / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(FIXTURES / relative, destination)
+        return destination
+
+    def emit(self, source, output, flags, label, source_root):
+        source_root = source_root.resolve()
+        logical = source.resolve().relative_to(source_root).as_posix()
+        flags = list(flags)
+        if "--source-root" in flags:
+            if Path(flags[flags.index("--source-root") + 1]).resolve() != source_root:
+                raise RuntimeError("Emission flags must use the common staged source root")
+        else:
+            flags += ["--source-root", source_root]
         output.parent.mkdir(parents=True, exist_ok=True)
         self.run(["dotnet", self.args.compiler, *flags, source, "--emit=obj", "-o", output], label)
+        self.report.setdefault("source_emissions", []).append(dict(source_root=str(source_root), source=logical, object=str(output)))
         return output
 
     def library(self):
@@ -176,7 +205,7 @@ class Run:
                 raise RuntimeError("--objects-dir must contain retained DotCC object fragments")
             if not self.args.staged_source:
                 raise RuntimeError("--objects-dir requires --staged-source from that same translation")
-            source = self.args.staged_source
+            source = self.stage_source(self.args.staged_source, self.work / "source")
         else:
             recipe = helper(ROOT / "scripts/campaign.py")
             from types import SimpleNamespace
@@ -187,7 +216,7 @@ class Run:
             def one(row):
                 index, unit = row
                 return self.emit(unit.path, ctx.work / "objects" / f"{index:03d}-{unit.path.stem}.cs",
-                                 [*spec.flags, *unit.flags], f"core/{index:03d}-{unit.path.stem}")
+                                 [*spec.flags, *unit.flags], f"core/{index:03d}-{unit.path.stem}", source)
             with ThreadPoolExecutor(max_workers=self.args.jobs) as pool:
                 objects = list(pool.map(one, enumerate(spec.units)))
             self.report["adaptations"] = ctx.receipt.get("adaptations", [])
@@ -196,12 +225,15 @@ class Run:
 
     def bundle(self, names, source, core):
         """One core link, separate processes per original upstream test entry."""
+        # Keep the library copy pristine for the independent-build fallback.
+        source = self.stage_source(source, self.work / "bundle-source")
         extra = []
         declarations, branches = [], []
         for name in names:
             relative, _ = PROGRAMS[name]
-            original = FIXTURES / relative[1:] if relative.startswith("@") else source / relative
+            original = self.fixture(source, relative[1:]) if relative.startswith("@") else source / relative
             text = original.read_text(encoding="utf-8")
+            self.report.setdefault("test_input_sha256", {})[name] = sha(original)
             test_flags = self.flags(source)
             if name == "cui_tests":
                 text, sites = RANDOM_INPUTS.adapt(text)
@@ -215,24 +247,26 @@ class Run:
             if len(re.findall(anchor, text)) != 1:
                 raise RuntimeError("Expected one test entry anchor: " + str(original))
             symbol = "cui_qualification_" + name
-            # Retained coordinator source/objects are read-only inputs. Preserve
-            # quoted include resolution while staging test entry copies privately.
-            text = re.sub(r'(?m)^(\s*#\s*include\s*)"([^"]+)"',
-                          lambda m: m[1] + '"' + (original.parent / m[2]).resolve().as_posix() + '"', text)
-            copied = self.work / "test-inputs" / (symbol + ".c")
-            copied.parent.mkdir(exist_ok=True)
-            copied.write_text(re.sub(anchor, "int " + symbol + "(", text), encoding="utf-8")
-            emitted = self.emit(copied, self.work / "bundle-objects" / (name + ".cs"), test_flags, name + "/emit")
+            # Preserve tests/... identities and quoted includes, including ../examples.
+            copied = original
+            original_bytes = original.read_bytes()
+            try:
+                copied.write_text(re.sub(anchor, "int " + symbol + "(", text), encoding="utf-8")
+                emitted = self.emit(copied, self.work / "bundle-objects" / (name + ".cs"), test_flags, name + "/emit", source)
+            finally:
+                # Another upstream test can include this .c under a main macro
+                # (rtl_paragraph includes rtl_layout). Keep that include pristine.
+                copied.write_bytes(original_bytes)
             extra.append(emitted)
             takes_args = bool(re.search(r"\b" + symbol + r"\(int argc,", emitted.read_text()))
             declarations.append("int " + symbol + ("(int,char**);" if takes_args else "(void);"))
             branches.append('if(!strcmp(argv[1],"' + name + '")) return ' + symbol + ("(argc-1,argv+1);" if takes_args else "();"))
-            self.report.setdefault("test_input_sha256", {})[name] = sha(original)
             self.report.setdefault("test_entry_adaptations", []).append(dict(program=name, kind="rename-main-only", symbol=symbol))
-        dispatch = self.work / "bundle-dispatch.c"
+        dispatch = source / "dotcc/qualification/bundle-dispatch.c"
+        dispatch.parent.mkdir(parents=True, exist_ok=True)
         dispatch.write_text('#include <string.h>\n' + "\n".join(declarations) +
                             '\nint main(int argc,char **argv){if(argc<2)return 2;\n' + "\n".join(branches) + "\nreturn 2;}\n")
-        managed, _ = self.build("cui_qualification_bundle", source, [*core,*extra], (str(dispatch), "core"))
+        managed, _ = self.build("cui_qualification_bundle", source, [*core,*extra], ("dotcc/qualification/bundle-dispatch.c", "core"))
         return {name: {label:[*command,name] for label,command in managed.items()} for name in names}
 
     def native_command(self, name):
@@ -259,7 +293,11 @@ class Run:
         relative, kind = specification or PROGRAMS[name]
         program = self.work / "programs" / name
         program.mkdir(parents=True, exist_ok=True)
-        input_file = FIXTURES / relative[1:] if relative.startswith("@") else source / relative
+        if kind != "core":
+            # Minimal closures also use a full upstream-shaped root, never a
+            # per-input directory, with all disk headers inside that root.
+            source = self.stage_source(source, program / "source")
+        input_file = self.fixture(source, relative[1:]) if relative.startswith("@") else source / relative
         self.report.setdefault("test_input_sha256", {})[name] = sha(input_file)
         extra = []
         objects = core if kind == "core" else []
@@ -271,14 +309,15 @@ class Run:
         if name == "cui_tests":
             adapted, sites = RANDOM_INPUTS.adapt(input_file.read_text())
             self.report["random_input_sites"] = sites
-            input_file = program / "input-recorded.c"
+            # The source is private, and keeping tests/test_main.c in place
+            # preserves its logical identity and its original quoted includes.
             input_file.write_text(adapted)
             override = self.work / "random-overrides.json"
             RANDOM_INPUTS.overrides(override)
             flags += ["--overrides-file", override]
-        main = self.emit(input_file, program / "main.cs", flags, name + "/emit")
+        main = self.emit(input_file, program / "main.cs", flags, name + "/emit", source)
         for i, unit in enumerate(extra):
-            objects = [*objects, self.emit(unit, program / f"extra-{i}.cs", flags, name + f"/extra-{i}")]
+            objects = [*objects, self.emit(unit, program / f"extra-{i}.cs", flags, name + f"/extra-{i}", source)]
         raw = program / "raw"
         self.run(["dotnet", self.args.compiler, *objects, main, "--emit=managedlib",
                   *helper(ROOT / "scripts/codegen.py").link_flags(ROOT, "Cui", "Managed.Forms"),
@@ -432,12 +471,14 @@ internal static unsafe class QualificationEntry {
                 observations[label]["random_input_sha256"] = sha(trace)
                 observations[label]["random_input_records"] = trace.stat().st_size // 16
         native_groups = RANDOM_INPUTS.groups(transcripts["native"])
-        success = len(native_groups) == 69 and all(v["exit_code"] == 0 for v in observations.values())
+        expected_groups = RANDOM_INPUTS.expected_groups((self.args.source / "tests/test_main.c").read_text())
+        success = [name for name, _ in native_groups] == expected_groups and all(v["exit_code"] == 0 for v in observations.values())
         for label in managed:
             success &= observations[label]["checks"] == observations["native"]["checks"]
             success &= RANDOM_INPUTS.groups(transcripts[label]) == native_groups
         success &= len(traces) == len(managed) and len({sha(p) for p in traces}) == 1
-        observations["input_alignment"] = dict(seeds=[1234,99], groups=69, all_groups_exact=all(RANDOM_INPUTS.groups(transcripts[l]) == native_groups for l in managed),
+        observations["input_alignment"] = dict(seeds=[1234,99], groups=len(expected_groups), expected_group_names=expected_groups,
+                                               all_groups_exact=all(RANDOM_INPUTS.groups(transcripts[l]) == native_groups for l in managed),
                                                provider="Actual emitted Cui.Libc.srand/rand; recorded seed,line,call-site,value vectors replayed by native C",
                                                replay_source_sha256=sha(FIXTURES / "random_replay.c"), harness_source_sha256=sha(FIXTURES / "random_inputs.py"),
                                                native_all_records_consumed="all consumed" in transcripts["native"])
@@ -513,6 +554,8 @@ def main():
             setattr(args, attr, getattr(args, attr).resolve())
     if args.work == ROOT or ROOT in args.work.parents:
         p.error("--work must be disposable external storage, outside the campaign tree")
+    if any(args.work.is_relative_to(path) for path in (args.source, args.staged_source, args.objects_dir) if path is not None):
+        p.error("--work must be outside the read-only source and retained object trees")
     run = Run(args)
     if args.suite:
         args.action = "native" if args.suite == "native" else "managed"

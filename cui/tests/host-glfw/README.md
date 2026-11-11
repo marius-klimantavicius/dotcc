@@ -32,7 +32,7 @@ Use ordinary `dotnet`/executable invocation without Xvfb on a Windows desktop an
 select `win-x64` for NativeAOT. A different `CuiProject` property must be passed
 to both build and publish when selecting an alternate library.
 
-When the full campaign output is unavailable, `build-probe.py` emits all 40 GLFW
+When the full campaign output is unavailable, `build-probe.py` emits all 41 GLFW
 overrides from `abi-probe.c` and the **unmodified upstream GL renderer** with the
 campaign profile and compiler. It writes a disposable project referencing the
 authored host files and copied managed GLFW. No generated C# is patched.
@@ -63,3 +63,22 @@ arguments, native pointer-sized buffer lengths, texture upload/update/release,
 shader/program creation, GLboolean vertex normalization, indexed triangle
 rendering, and exact interior/exterior pixel invariants with ±1 clear-color
 rounding tolerance. It reports assertions and GL driver version.
+
+The string-hint fixture follows the upstream `cui_app_glfw.c` app-ID sequence
+through emitted `glfwWindowHintString` overrides. It checks header/managed
+constant agreement, owner-thread rejection, acceptance of all three hints on
+the selected Windows/Linux platform, UTF-8 copying before window creation,
+actual X11 `WM_CLASS` instance and class values, persistence for a second window,
+and reset after termination/reinitialization. The second cycle supplies no ID
+and checks the managed GLFW defaults. Native Wayland is outside the profile;
+accepting `GLFW_WAYLAND_APP_ID` does not qualify Wayland presentation.
+
+After updating upstream, regenerate both campaign forms before running this
+fixture. Also run the new upstream `tests/app_smoke.c` app-ID checks: on Linux,
+`CUI_SMOKE_X11` plus `CUI_SMOKE_GLFW` enables the real window-tree `WM_CLASS`
+check and requires Xlib. That conditional test path also calls
+`glfwGetPlatform`; a translated smoke-test runner needs a test-specific managed
+boundary for it and the Xlib probes. The product app adapter adds only
+`glfwWindowHintString`. Integration must additionally check `cui_app_create`
+with null/empty IDs and an explicit ID through the raw descriptor and any
+public application wrappers that expose it. Windows execution remains required.

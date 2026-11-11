@@ -14,9 +14,9 @@ def companions(ctx):
     objects = ctx.work / "gallery-objects"
     objects.mkdir()
     inputs = []
-    common = ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE",
+    common = ["-std=c99", "-U_WIN32", "-U__APPLE__", "-DGLFW_INCLUDE_NONE", "--source-root", str(source),
               *flags(json_file(ctx.root / "config/profile.json")["defines"],
-                     [ctx.root / "config/include", source / "include"])]
+                     [source / "dotcc/include", source / "include"])]
     for index, name in enumerate(config["sources"]):
         target = objects / f"{index:03d}-{Path(name).stem}.cs"
         ctx.run(["dotnet", ctx.compiler, *common, source / name, "--emit=obj", "-o", target],
@@ -52,6 +52,7 @@ def companions(ctx):
         shutil.copyfile(path, originals / path.name)
         hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
     provenance = {"source": json_file(ctx.root / "config/source.json"), "gallery": config,
+                  "source_identity": dict(mode="root-relative-v1", root="staged upstream tree", separators="/"),
                   "adaptations": [change for change in ctx.receipt.get("adaptations", [])
                                   if change["file"] in config["sources"]],
                   "sha256": hashes,
