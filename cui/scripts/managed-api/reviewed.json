@@ -1,0 +1,3533 @@
+{
+  "schema": 1,
+  "policy": "Stack for synchronous singleton arguments; frame/owned storage for retained pointees and state. No blanket pointer heuristic. See MANAGED-STORAGE-AUDIT.md.",
+  "reviewed_outputs": {
+    "Types.cs": "e98039a8e7dade7d2cf824e344a0e401071445cf33182d40125454bd9db53b55",
+    "Ui.Api.cs": "e75c96482783c84fa25a4e1e416cb8bea297bf32ea1af5d886e6d498f54a6593",
+    "Ui.Marshalling.cs": "56e0be601740bf48ad023575f051761ee354434b64f9bcb2b2ec5386ab4d5e5f",
+    "Ui.ScopeDispatch.cs": "c6cba5ebf9dbb618dbe38a8ec6fee40c416410c1dab86ebf6e7c3a8d6922b9e8"
+  },
+  "native_header_sha256": "1c6b9d51c14428f13d986072ba59699a1773107ba5567e6b20702ed7035503ee",
+  "native_evidence": [
+    {
+      "symbol": "cui__apply_box",
+      "file": "cui_layout.c",
+      "sha256": "0e15a680739cad2ae0563a5f029b791c3199ac68e3b701e4193da519767fe307"
+    },
+    {
+      "symbol": "cui__button_impl",
+      "file": "cui_widgets.c",
+      "sha256": "5676138cc7575cc34070be4389dae9e00ec6849b2c532a9eed2682d8791afc14"
+    },
+    {
+      "symbol": "cui__code_block_ex_body",
+      "file": "cui_code.c",
+      "sha256": "bce236da270b9f45a372cf49e9492cb9f36bf3118c7a049c04306b2ff836b477"
+    },
+    {
+      "symbol": "cui__countdown_ex_body",
+      "file": "cui_disclosure.c",
+      "sha256": "753ee34203d0f048599beb81e30421d1b25c4852b21009e7633b96e8e28c469d"
+    },
+    {
+      "symbol": "cui__counter_ex_body",
+      "file": "cui_media.c",
+      "sha256": "6f597cec2e24c0ac41cc8eabf50e0579da67918a0f8855e04569359e16d719e0"
+    },
+    {
+      "symbol": "cui__em_build_grid",
+      "file": "cui_emoji.c",
+      "sha256": "1ab75dcd359fa1d6f1ed37c357b57ed34bae5feaa55849a2d2f4957d513f0932"
+    },
+    {
+      "symbol": "cui__fb_build_rows",
+      "file": "cui_files.c",
+      "sha256": "6020959b892dc2a55b6084da08c29b55d3db18985fb83989674b65f5d38bf35a"
+    },
+    {
+      "symbol": "cui__fx_text_node",
+      "file": "cui_motion.c",
+      "sha256": "e1d923aa262f534632d53f2565abe070a9a8088704a9870b0b3707205d2d333f"
+    },
+    {
+      "symbol": "cui__gantt_ex_body",
+      "file": "cui_planning.c",
+      "sha256": "544124956fa2f6dceb02a5700c6e217e4f5d4ede13100662dc13fd27afa3a7fb"
+    },
+    {
+      "symbol": "cui__hm_layout",
+      "file": "cui_viz.c",
+      "sha256": "344368c32f7da12078235b997aed5f7272e8bfcb33e820de6f92c596178f3d43"
+    },
+    {
+      "symbol": "cui__json_view_ex_body",
+      "file": "cui_code.c",
+      "sha256": "a82b0ee5d9f308fbfee0eb6f5e7703681f0b841c75b0dbdde67da6d6cb46a464"
+    },
+    {
+      "symbol": "cui__kv_row",
+      "file": "cui_devtools.c",
+      "sha256": "eed6b3c4630218e99ad8e3a6f42f2f013cf23af26ed3611af70331cdd0ca7a04"
+    },
+    {
+      "symbol": "cui__mc_agenda",
+      "file": "cui_month.c",
+      "sha256": "ec4fae530d0914e2cbc16173e13f53c457af5c90a91962d7424bd513d9f39596"
+    },
+    {
+      "symbol": "cui__mc_names",
+      "file": "cui_month.c",
+      "sha256": "6fe3564014a3eeec7aa6b3c846952f88738c1b4a52d7d65fa503296b1f873e55"
+    },
+    {
+      "symbol": "cui__modal_begin",
+      "file": "cui_overlay.c",
+      "sha256": "fa81c70b67b9e82dfb8822508231567c81395702fd0029093ffa9c48800500aa"
+    },
+    {
+      "symbol": "cui__modal_end",
+      "file": "cui_overlay.c",
+      "sha256": "e2f9468b934c5259fe9beb78bb32d4d3dd90d0ada6654aa432cdf767286e15d2"
+    },
+    {
+      "symbol": "cui__ne_build_canvas",
+      "file": "cui_nodes.c",
+      "sha256": "60fae18664f3ef6c154820ed1484c3df4cd1a1aba28d1a49a0456c6944c9298d"
+    },
+    {
+      "symbol": "cui__paint_terminal",
+      "file": "cui_terminal.c",
+      "sha256": "ed86c582e2cb4705253d27e7f19296eb7f6cb047379d1ee6e43a5467c7a48222"
+    },
+    {
+      "symbol": "cui__range_month",
+      "file": "cui_pickers.c",
+      "sha256": "05ad4fa24deecdd8b0b5b8f83fd888eceeaaef6cd188be36196c5aa641004e4f"
+    },
+    {
+      "symbol": "cui__range_presets",
+      "file": "cui_pickers.c",
+      "sha256": "d4e657e9be0e957d05d7ccde33835ebb3111f1c11a038f145a55964d81ffcd8b"
+    },
+    {
+      "symbol": "cui__sc_layout",
+      "file": "cui_viz.c",
+      "sha256": "32387a6220fc87ca0368831b2cc3016f426328c15091aad21821d4be7f02b2f7"
+    },
+    {
+      "symbol": "cui__scroll_begin_ex",
+      "file": "cui_widgets.c",
+      "sha256": "ad310db611ce4968a55af54b02ddab8dbfa1deced08d0e20feb2a238898f6e41"
+    },
+    {
+      "symbol": "cui__segments",
+      "file": "cui_controls.c",
+      "sha256": "3fffd011f7459e1a463931046e7505d1b196c545d9bd601ae228be210f5edef8"
+    },
+    {
+      "symbol": "cui__shortcut_recorder_ex_body",
+      "file": "cui_actions.c",
+      "sha256": "667b9d30bd30a26ad30b8531db6a5f47c208497eda9996e6f869f8ed614695ae"
+    },
+    {
+      "symbol": "cui__stk_text",
+      "file": "cui_devpanels.c",
+      "sha256": "aa7e7eef54720e1f044c0b20162dd9367548f8832ddfee0ffa32b034f92d3c4d"
+    },
+    {
+      "symbol": "cui__terminal_ex_body",
+      "file": "cui_terminal.c",
+      "sha256": "d0ef9f7bf9ed75f41354aa83ab53975d5748baeab942acb8df0cdee9ae494ab1"
+    },
+    {
+      "symbol": "cui__text_field",
+      "file": "cui_textedit.c",
+      "sha256": "64406e3d423b1c95829840b28c9825905802c88c817bf28c357d1745e43d3246"
+    },
+    {
+      "symbol": "cui__text_node",
+      "file": "cui_layout.c",
+      "sha256": "bf43d1ba997d810246a1a137c0fc9d952e100fef98ecf4964e6fbbfe971c6a2d"
+    },
+    {
+      "symbol": "cui__time_dial_body",
+      "file": "cui_pickers.c",
+      "sha256": "b73efc54d4c9b320418b5bf9c274320e64e7cc3581a8c2999bdd3bdf69c36d5c"
+    },
+    {
+      "symbol": "cui__toggle_row",
+      "file": "cui_controls.c",
+      "sha256": "f8d2c2717d6cb4558ae8741eac9a6e7848dc200a20653f3297cffe1e05350f0b"
+    },
+    {
+      "symbol": "cui__tr_layout",
+      "file": "cui_flame.c",
+      "sha256": "7fd85b5b18436e3bbefcfbd96aa429a543191dcf1856c8b7dfbc1b88b0af9e08"
+    },
+    {
+      "symbol": "cui__trf_build",
+      "file": "cui_flame.c",
+      "sha256": "b439c4a12630f7ad82381f73ad7abf2edfc8b3c9c637e3b4bd4c8cd1a14a5eb3"
+    },
+    {
+      "symbol": "cui__week_calendar_ex_body",
+      "file": "cui_planning.c",
+      "sha256": "28cfdccf6b11d8a1c8aa3d446d2f8c73102f2e4f9658f1c408cc1987ac8c2dc4"
+    },
+    {
+      "symbol": "cui__xy_chart",
+      "file": "cui_charts.c",
+      "sha256": "e786d7782c8216a8dfc72524e9b9f466336d3e97750ea7181e988eaff487dfbd"
+    },
+    {
+      "symbol": "cui_accordion_begin",
+      "file": "cui_data.c",
+      "sha256": "e0a5d35ca846fad577b2ff29b42bdb6fa2e39d54e592252eb09d34a007c5d8a9"
+    },
+    {
+      "symbol": "cui_activity_rings_ex",
+      "file": "cui_viz.c",
+      "sha256": "4c98a452e6cbdd0864d736bd8bfd154381afa311915176d610bdb44dd030c3cf"
+    },
+    {
+      "symbol": "cui_agent_plan_ex",
+      "file": "cui_ai.c",
+      "sha256": "b1f1ec1815efa89dbbd1c909a7fffd2425d685bb068adeca7cd18946899c540f"
+    },
+    {
+      "symbol": "cui_agent_status_ex",
+      "file": "cui_ai.c",
+      "sha256": "f1d417f4e801d2d3ec7ff9a08161ab5c81c1227b166ecf67b38fc3fe69efac6e"
+    },
+    {
+      "symbol": "cui_alert_ex",
+      "file": "cui_widgets.c",
+      "sha256": "d1b5a1a49bb85e0f2fb95756733d865896db9f8164f279da6ebcb710f55a7ddd"
+    },
+    {
+      "symbol": "cui_api_explorer_ex",
+      "file": "cui_devpanels.c",
+      "sha256": "02b8a3f0a74500460bac0a787c7ea6af70ea7d36351349f693876b6df47ec128"
+    },
+    {
+      "symbol": "cui_avatar_ex",
+      "file": "cui_widgets.c",
+      "sha256": "72f6ac8524791ba9ea58308cf5d2f565c13f02d5c48c56cc0862c4b56e1335ba"
+    },
+    {
+      "symbol": "cui_avatar_upload",
+      "file": "cui_pickers.c",
+      "sha256": "a8f16cd6160dfd7d94df56189fc393969b8d6af89f5a9e4d76fd1a4e7418c243"
+    },
+    {
+      "symbol": "cui_badge_ex",
+      "file": "cui_widgets.c",
+      "sha256": "796a86bf060dce61f0c18d7ce401ad6f3fcbdd0ad340ff592d9789394ea0e65c"
+    },
+    {
+      "symbol": "cui_banner_ex",
+      "file": "cui_disclosure.c",
+      "sha256": "f40f62d248e0f7806e32d9631b97e71f2628fe302587ff50671e6223c2bc4428"
+    },
+    {
+      "symbol": "cui_bar_chart_ex",
+      "file": "cui_charts.c",
+      "sha256": "f36f86392aab761acd828c47add0a8035099dbd6724574c31dd07a58cd61295d"
+    },
+    {
+      "symbol": "cui_bar_list_ex",
+      "file": "cui_viz.c",
+      "sha256": "358646bdd7b02a92bb16ad10e657cfc8029506ec4e1b71bca6487e6a82cfb264"
+    },
+    {
+      "symbol": "cui_begin_frame",
+      "file": "cui_core.c",
+      "sha256": "baff8bc40f44a331c039c6060e01ee7c7ae3d21f9c8af6874a54936309bf1ca7"
+    },
+    {
+      "symbol": "cui_blame_ex",
+      "file": "cui_devviews.c",
+      "sha256": "c713ff0962f0044dab75b4c43059f6e64e5fb4b23c639ede9b2b7d2a7dbe9d62"
+    },
+    {
+      "symbol": "cui_box_begin",
+      "file": "cui_layout.c",
+      "sha256": "339d26a66ea2316099463951a9760f7e01090a977620852beecc2750cca997b9"
+    },
+    {
+      "symbol": "cui_button_ex",
+      "file": "cui_widgets.c",
+      "sha256": "18b0f1997ae1eace50b145cbd35aef6f5723b557643e6af7d13eaee952e8200c"
+    },
+    {
+      "symbol": "cui_calendar",
+      "file": "cui_overlay.c",
+      "sha256": "e72a713a962b4dca2512b36b2a67742bee8fb4a653780bd4cd197ea8c3b5ebb5"
+    },
+    {
+      "symbol": "cui_calendar_heatmap_ex",
+      "file": "cui_viz.c",
+      "sha256": "0cad7e9e23472f41fbc95a971c9f53dd953b617f3bde019600468bc0a54f4752"
+    },
+    {
+      "symbol": "cui_candlestick_ex",
+      "file": "cui_viz.c",
+      "sha256": "c3a715aa5764e87f8a59f8714e0b0ba538aae5a7344211112f7c1d20c645db1e"
+    },
+    {
+      "symbol": "cui_card_begin",
+      "file": "cui_widgets.c",
+      "sha256": "67f9cd0302c681354855aae77831111a697b9a25e01a61f5af95720c8ed0cced"
+    },
+    {
+      "symbol": "cui_card_stack_begin",
+      "file": "cui_media.c",
+      "sha256": "5c09a66f8b12dc0e57c4bf5b34a2a6a46b0b3b5e5e15f9fcfca0269ec84fe4df"
+    },
+    {
+      "symbol": "cui_carousel_begin",
+      "file": "cui_media.c",
+      "sha256": "bf4779795daad19b720aa0d80126b0ff57ca9c5561c1f2cadd485a525a84677d"
+    },
+    {
+      "symbol": "cui_carousel_end",
+      "file": "cui_media.c",
+      "sha256": "9aebf47d31770e8eac70a84b016d05aa1b867ae5934c277e4f84838a4e4855c8"
+    },
+    {
+      "symbol": "cui_chat_composer_ex",
+      "file": "cui_ai.c",
+      "sha256": "e3a45db3388f5c2c9fb179c12b2ac564ec93e5f49e0f0bfd07f41b83c6b89a80"
+    },
+    {
+      "symbol": "cui_chat_message_ex",
+      "file": "cui_social.c",
+      "sha256": "e03e0876c7aedece284c05124e2d5de040bd7bee2ff275d80d99c47b92d4b600"
+    },
+    {
+      "symbol": "cui_checkbox_ex",
+      "file": "cui_controls.c",
+      "sha256": "ea7d8d5083f1b82f7c5ea4add97131a5d9d501fc05e82b37e1435d4efa858a33"
+    },
+    {
+      "symbol": "cui_checklist_ex",
+      "file": "cui_disclosure.c",
+      "sha256": "76140ba8486ff5fe999082d312dcd2135819794319462c4703e1f1bf40c39a0c"
+    },
+    {
+      "symbol": "cui_chip_ex",
+      "file": "cui_controls.c",
+      "sha256": "3d651362396b85e851933bbcb12c7b3cdc650dc70246d71dfe490b3fbc4ca23d"
+    },
+    {
+      "symbol": "cui_citation",
+      "file": "cui_ai.c",
+      "sha256": "193f5307a112dab85604f33870c4ccb184a90973f8e383b0d82d2fb1ab7fec24"
+    },
+    {
+      "symbol": "cui_code_block_ex",
+      "file": "cui_code.c",
+      "sha256": "89d32a10305b20159842f2ff55c584c75d9c6c8a474085cdecc669346d7283c9"
+    },
+    {
+      "symbol": "cui_color_picker",
+      "file": "cui_overlay.c",
+      "sha256": "a55856781e6ac4e90ae05298075db137016a0d9657dc227982eaacaa93fe491f"
+    },
+    {
+      "symbol": "cui_column_begin",
+      "file": "cui_layout.c",
+      "sha256": "eab7879b9120e9d374ae600480765e5117f09601dc3873dcab152f04c2051afa"
+    },
+    {
+      "symbol": "cui_command_palette",
+      "file": "cui_overlay.c",
+      "sha256": "2efb69354bfb59cfb44799c24c5f5e767d63d77bba2b4280ca61f594d630d4c7"
+    },
+    {
+      "symbol": "cui_comment_ex",
+      "file": "cui_social.c",
+      "sha256": "fbb0e1406d963aab9d5dea4c9a03002e3ac571defb910b8dfe2ea2fb66f50724"
+    },
+    {
+      "symbol": "cui_commit_graph_ex",
+      "file": "cui_graph.c",
+      "sha256": "f34864fb52ad15c9f6fcf3d0e92a4d18ec14ac615717d4b5a687267a9cdffe3c"
+    },
+    {
+      "symbol": "cui_confirm_button_ex",
+      "file": "cui_actions.c",
+      "sha256": "7faba2160946bd4a79da2c5a5404f901dcfe9fe5665929d8f3f10708367adf46"
+    },
+    {
+      "symbol": "cui_confirm_popover_ex",
+      "file": "cui_disclosure.c",
+      "sha256": "08b6653a2c3d016524a44a499eaa8a7e981212e94f9c1917f646c15b67ca1eb8"
+    },
+    {
+      "symbol": "cui_context_meter_ex",
+      "file": "cui_ai.c",
+      "sha256": "b423f20b73229958232f063d6494bb4c99ad0f74ba83f404489124ae6bc1f114"
+    },
+    {
+      "symbol": "cui_control_tile_ex",
+      "file": "cui_motion.c",
+      "sha256": "f5414e7e0e7783c505fda816de78707801c51197ca33509777b5e6cf57def915"
+    },
+    {
+      "symbol": "cui_countdown_ex",
+      "file": "cui_disclosure.c",
+      "sha256": "eac5bf802ca295ea2126d153c4bca0a6d3a5e140bdc17b30ff22e888aa233f25"
+    },
+    {
+      "symbol": "cui_counter_ex",
+      "file": "cui_media.c",
+      "sha256": "3b92752346b8411782cac9b3051de40a46ea651f5f6f871db0e7be4138ab6f6b"
+    },
+    {
+      "symbol": "cui_coverage_ex",
+      "file": "cui_devviews.c",
+      "sha256": "038130853849c8ffc2b7ff7dd9d87cecfc0b4fd796a5e6a7de7838e78d25c4ea"
+    },
+    {
+      "symbol": "cui_cropper_ex",
+      "file": "cui_photo.c",
+      "sha256": "7f7eea0b8bf75f26fb8ed7299dc436b7aa0e07f238208732ac3938b80b09d6f5"
+    },
+    {
+      "symbol": "cui_data_grid_begin_ex",
+      "file": "cui_grid.c",
+      "sha256": "e222153c2a409017de0120e486875e6c5901aead8944cdfa58176c09ce42168f"
+    },
+    {
+      "symbol": "cui_data_grid_row",
+      "file": "cui_grid.c",
+      "sha256": "353a2e56c1800225acd05a50e2066a61225e16cfb799e9ced32365336f318c70"
+    },
+    {
+      "symbol": "cui_date_picker_ex",
+      "file": "cui_overlay.c",
+      "sha256": "a448e94002a36dc5b847c73012f054b07603d9845b7d8ecaf8484473905b900a"
+    },
+    {
+      "symbol": "cui_date_range_picker_ex",
+      "file": "cui_pickers.c",
+      "sha256": "088f42b8fcfa6d226b465c0ec659dcf553d96c0f830198b9c3c27828e8790874"
+    },
+    {
+      "symbol": "cui_dialog_begin",
+      "file": "cui_overlay.c",
+      "sha256": "2bde03d42ffaf2bf8f95f9e07a883a94e9ed37637e4b4475cfd9c6af3dbe4916"
+    },
+    {
+      "symbol": "cui_dock_begin",
+      "file": "cui_motion.c",
+      "sha256": "63af8c50ab81ce29e13245e59ef523c72cfe68c903855a30879f40b9ac153804"
+    },
+    {
+      "symbol": "cui_dock_item_ex",
+      "file": "cui_motion.c",
+      "sha256": "d12ba3cb56e5428377947559ae3c51ba8b7204773c8b3b7bc4872b7a242f01b3"
+    },
+    {
+      "symbol": "cui_donut_chart_ex",
+      "file": "cui_charts.c",
+      "sha256": "7a3869f26258ec304742305719b0cf49c38ce3d27516e7496d8c3393e4741f25"
+    },
+    {
+      "symbol": "cui_dot_chart_ex",
+      "file": "cui_instrument.c",
+      "sha256": "bf584809481590844456a9037efb635291aeece352c280607b27b40c1ead4be8"
+    },
+    {
+      "symbol": "cui_dot_display_ex",
+      "file": "cui_instrument.c",
+      "sha256": "f5836cd7e0642a6e0f8bc6b5a1a7fe47ac7a2dfd0fd2d7c9798c0585f5c58aaf"
+    },
+    {
+      "symbol": "cui_dropzone_ex",
+      "file": "cui_pickers.c",
+      "sha256": "2de37312c5aa612bc4169bb332353e144a5ffa20ec8fe2aab86fb61a9a968438"
+    },
+    {
+      "symbol": "cui_emoji_picker_ex",
+      "file": "cui_emoji.c",
+      "sha256": "845e264b0450a7e80a05a77781358aaedf56e319769dd1e53056775da753c1b3"
+    },
+    {
+      "symbol": "cui_empty_state_ex",
+      "file": "cui_widgets.c",
+      "sha256": "5189ac34c63af78b8fa3d5660882f954963a5855415391942e453aae66921646"
+    },
+    {
+      "symbol": "cui_event_track_ex",
+      "file": "cui_instrument.c",
+      "sha256": "6212ec042a2645e0e1f4f3ca6bd825e3bca79ee3d9cdd28a428a59a76dbc9a84"
+    },
+    {
+      "symbol": "cui_expandable_card_begin",
+      "file": "cui_disclosure.c",
+      "sha256": "be811f6fddfa072d2993637153eaa0fa05b32d61efdeb9b8940f57f52712c81b"
+    },
+    {
+      "symbol": "cui_expandable_text_ex",
+      "file": "cui_disclosure.c",
+      "sha256": "daeb8f5e25fe2d579e4dd74990e27ddfc6cd61047f2c0ad277bc5cd7f96dec82"
+    },
+    {
+      "symbol": "cui_fader_ex",
+      "file": "cui_dials.c",
+      "sha256": "688089435b3d6cb19ca98617abc1ca42a3ceb5052c53871b52b51f5f165bd5ff"
+    },
+    {
+      "symbol": "cui_feature_flags_ex",
+      "file": "cui_devpanels.c",
+      "sha256": "ea3dbac0c0c6b7294d802e4b16ddce6878a16b563774f3b5112627c5d05b1259"
+    },
+    {
+      "symbol": "cui_file_browser_ex",
+      "file": "cui_files.c",
+      "sha256": "f094cd93faefe4710b6902e53e1c37154ee8374fe8ffd6fc51245a3a46f93884"
+    },
+    {
+      "symbol": "cui_file_picker_ex",
+      "file": "cui_files.c",
+      "sha256": "f6d8200e35f44db7168b7dd0e71dcc854716da97aa80c6a3f411a159187815fd"
+    },
+    {
+      "symbol": "cui_funnel_ex",
+      "file": "cui_viz.c",
+      "sha256": "2cb8ee5054349bebe46f12f9037aaa8e684a0bc912dcfd5e16d9091f0609a69c"
+    },
+    {
+      "symbol": "cui_gantt_ex",
+      "file": "cui_planning.c",
+      "sha256": "196f436ae9e494e5b5333f58ed1b779c4a07396ad888fbee477e2088362968d2"
+    },
+    {
+      "symbol": "cui_gradient_text_ex",
+      "file": "cui_motion.c",
+      "sha256": "caa3db43d272059628d69d6471885bda37b930ce530464a66b0f08fe5aa97893"
+    },
+    {
+      "symbol": "cui_graph_view_ex",
+      "file": "cui_graph.c",
+      "sha256": "f34171c3cd19f7296abc9772401980c64ddc8e820d9c0b594cb66abe9a0c6957"
+    },
+    {
+      "symbol": "cui_heatmap_ex",
+      "file": "cui_viz.c",
+      "sha256": "0d5c64057c919339fd722c69bbe408893c65c4a5df01614c284cd28d479ec129"
+    },
+    {
+      "symbol": "cui_histogram_slider_ex",
+      "file": "cui_pickers.c",
+      "sha256": "887a43c684a0fdcf43553a4ce60147e3f93c2a54ed0390b1fda8270124d1849f"
+    },
+    {
+      "symbol": "cui_hold_button_ex",
+      "file": "cui_extras.c",
+      "sha256": "045a93d966046bce3592bd86d794dfdf372b9b0de74d070691fa24c58bebbbc0"
+    },
+    {
+      "symbol": "cui_hover_card_begin",
+      "file": "cui_disclosure.c",
+      "sha256": "aefdd922bc26cd9310a810cbe9e71763d2f6009db66e97b2466347030178ac61"
+    },
+    {
+      "symbol": "cui_icon_button_ex",
+      "file": "cui_widgets.c",
+      "sha256": "51bf977c3bcb9d8cfc99be03917556c4765939295d59864076cfa7606a8d2bbb"
+    },
+    {
+      "symbol": "cui_image_compare_ex",
+      "file": "cui_media.c",
+      "sha256": "fa3e2bcb7e6e0394001970d358543eef86e5f8dc31c1d45e95763c10fc44459a"
+    },
+    {
+      "symbol": "cui_image_ex",
+      "file": "cui_widgets.c",
+      "sha256": "dbe9cf0c7165bfea8ffed7e4c902571a62b610abdd6ab07c855bd91585ea7635"
+    },
+    {
+      "symbol": "cui_image_viewer_ex",
+      "file": "cui_photo.c",
+      "sha256": "1cc7318f1f93fba89ccf0526bd459f27d3dfa89d77f8c0f5ae6eb7d8e4d20622"
+    },
+    {
+      "symbol": "cui_inline_edit_ex",
+      "file": "cui_actions.c",
+      "sha256": "65b83c5e8707c2c4712c1b044ce457c4cd4ce9c83715c57430fd1d4fd59f759c"
+    },
+    {
+      "symbol": "cui_input_ex",
+      "file": "cui_textedit.c",
+      "sha256": "75c0933af69da145de75e4f8190f2be389dfc11237e44b72ab34cf82abd281ef"
+    },
+    {
+      "symbol": "cui_json_view_ex",
+      "file": "cui_code.c",
+      "sha256": "b2f1b1faf0d3195fe5da4422b80b2518366f54ba05e09b42d6a0daae989ceba1"
+    },
+    {
+      "symbol": "cui_kanban_column_begin_ex",
+      "file": "cui_planning.c",
+      "sha256": "5bff6b9fe0ea43a0c82693f6e1fdc284ae0c5c4cb63eea73a7cb499295ae5518"
+    },
+    {
+      "symbol": "cui_kanban_end",
+      "file": "cui_planning.c",
+      "sha256": "90597a00daef6ed25e032c2edf4f3b0ab9886b2de38a7359875ebdfc6d90ecac"
+    },
+    {
+      "symbol": "cui_keymap_ex",
+      "file": "cui_devtools.c",
+      "sha256": "ddc280eb07dd8066fa7a2d550ae899d212b8d34f4bacad7e66334021dad7f9af"
+    },
+    {
+      "symbol": "cui_knob_ex",
+      "file": "cui_dials.c",
+      "sha256": "c969ee1196e66bc42158342bc634b00a0330b3f30070350f45fdabfc89ce4ca3"
+    },
+    {
+      "symbol": "cui_kv_editor_ex",
+      "file": "cui_devtools.c",
+      "sha256": "6f7ecf927545bb18b98b5fd3bf1817fe7ea71a2e655a16f2690158e4c6be3612"
+    },
+    {
+      "symbol": "cui_level_meter_ex",
+      "file": "cui_dials.c",
+      "sha256": "381a9474bef793e2f382af46367a02f3f9135ff93f1844d84cb11638f0521ec8"
+    },
+    {
+      "symbol": "cui_line_chart_ex",
+      "file": "cui_charts.c",
+      "sha256": "21fa75c3174e7c2fc62dd1f5a45a53a909808702d16c4333a726ab23027881ec"
+    },
+    {
+      "symbol": "cui_list_item_ex",
+      "file": "cui_data.c",
+      "sha256": "488313e18f3b722abc7435d206a24726e22d1c69495f555d7063a5a3e0a3c2f5"
+    },
+    {
+      "symbol": "cui_loader_ex",
+      "file": "cui_motion.c",
+      "sha256": "64c75d94463d1d8316d0282b2ec1a344ab3ad6c12129859623445e67bb69b4d2"
+    },
+    {
+      "symbol": "cui_menu_begin",
+      "file": "cui_overlay.c",
+      "sha256": "4dd74927437c4027c16dda478a6ad356df4124a9a6f7b208d3cc45deefc4a3ba"
+    },
+    {
+      "symbol": "cui_menu_item_ex",
+      "file": "cui_overlay.c",
+      "sha256": "1d9036e6489120aafdefe5edf4b90572eee40582418e8d0fbf0c552a2e95ab40"
+    },
+    {
+      "symbol": "cui_metric_ex",
+      "file": "cui_widgets.c",
+      "sha256": "eb0e92f97ebac0dc2bd7b0a43533ed6f51a60c12e7d09342b7a999b98c3b0300"
+    },
+    {
+      "symbol": "cui_money_input_ex",
+      "file": "cui_actions.c",
+      "sha256": "25a1650bbef8b835037ccc737376344143eb5f1c1068a27b17a9da425772ead1"
+    },
+    {
+      "symbol": "cui_month_calendar_ex",
+      "file": "cui_month.c",
+      "sha256": "e1ae4d15fd462f7b0573dfe1adaa6eb14818c320e8d8620ed14de3053c1767d9"
+    },
+    {
+      "symbol": "cui_multi_select_ex",
+      "file": "cui_pickers.c",
+      "sha256": "a3a27675697656f13c698860d366872840b4978d15938fbc2aa1428a123a5180"
+    },
+    {
+      "symbol": "cui_nav_item_ex",
+      "file": "cui_controls.c",
+      "sha256": "53f1b978a1e0f0271511b1f9069062ecb180f19856299019a9667249dd680b13"
+    },
+    {
+      "symbol": "cui_node_begin_ex",
+      "file": "cui_nodes.c",
+      "sha256": "38d4814c8101a1ff542a806c8c9262104e6ba3333c1ceab3fb45dcda10a453e2"
+    },
+    {
+      "symbol": "cui_node_editor_begin_ex",
+      "file": "cui_nodes.c",
+      "sha256": "9929daaa0ad5ecc43b7bd409945588995c1958fb60865b8206433c6ad2a90224"
+    },
+    {
+      "symbol": "cui_node_editor_end",
+      "file": "cui_nodes.c",
+      "sha256": "484fe621885931d8959e9ebaf78f34866d9028f45d4c312d89cd0095609f10fa"
+    },
+    {
+      "symbol": "cui_node_end",
+      "file": "cui_nodes.c",
+      "sha256": "c887403e2cf1c2686706614156200d32444a91c504d15bd89d7050dcc77b5ce7"
+    },
+    {
+      "symbol": "cui_now_playing_ex",
+      "file": "cui_motion.c",
+      "sha256": "57f99c229abe6b1780612ab5b4ae67deb063d6b89163b2f5a10836db131041d7"
+    },
+    {
+      "symbol": "cui_number_ex",
+      "file": "cui_textedit.c",
+      "sha256": "4007cf83d94fd0ce594ad327bbb1434b257e8615e3a8d60972319902b06c24ec"
+    },
+    {
+      "symbol": "cui_pagination",
+      "file": "cui_controls.c",
+      "sha256": "60b9b759f4186891fbbd85b6eca9c7f068815c2d0e61671c434282a69d400591"
+    },
+    {
+      "symbol": "cui_pipeline_ex",
+      "file": "cui_devtools.c",
+      "sha256": "a5dcfa03ba6bb2fa2faa13f4daab7938d7f2beb00ac43e0fbf4d31d74d232520"
+    },
+    {
+      "symbol": "cui_popover_begin",
+      "file": "cui_overlay.c",
+      "sha256": "7695a57d1970bcd6700cef39fb01bb46201fd6fffa9d0caddbf6d205a3a2c3cc"
+    },
+    {
+      "symbol": "cui_problems_ex",
+      "file": "cui_devtools.c",
+      "sha256": "22dbd68e0953e883cd33669e6af13965516f95bd968491091ae745d2636ee5e6"
+    },
+    {
+      "symbol": "cui_progress_ex",
+      "file": "cui_widgets.c",
+      "sha256": "b7c3f1d8484e1a1f8ab7f8f68575fb04dd5d5b89ffd366b010d8a55d4344c364"
+    },
+    {
+      "symbol": "cui_prompt_suggestions_ex",
+      "file": "cui_ai.c",
+      "sha256": "72ab0e037956c41655fa75c41095f3cc1c02a6dd64dd79d15d02d485ae729926"
+    },
+    {
+      "symbol": "cui_query_builder_ex",
+      "file": "cui_devtools.c",
+      "sha256": "f7bb5380fdb59b4ddeb338a1e263a1aa89a62e2ad3ef17efc1784053919f67f0"
+    },
+    {
+      "symbol": "cui_radar_chart_ex",
+      "file": "cui_viz.c",
+      "sha256": "5d7895a8dcc760084ec29fc9e67ab1bd525bfa8845659f047eb2cdd79951e535"
+    },
+    {
+      "symbol": "cui_radial_gauge_ex",
+      "file": "cui_viz.c",
+      "sha256": "210040f039d3aa309632ee78ededa9d768738a4f99425d96f390c0d27e4364dc"
+    },
+    {
+      "symbol": "cui_radio_cards_ex",
+      "file": "cui_extras.c",
+      "sha256": "a7103e0e3af6929c588cd06fa189eac83f868d55f804233708d436f39790d479"
+    },
+    {
+      "symbol": "cui_radio_ex",
+      "file": "cui_controls.c",
+      "sha256": "3398490dce354e95883222bde0cf7a9f8985c49c93427826c4b2e58b78554be8"
+    },
+    {
+      "symbol": "cui_radio_group",
+      "file": "cui_controls.c",
+      "sha256": "7e6d3d3498176e09ef5db30f533e737608a0f6fa2f679e6e9eeecc11f404664e"
+    },
+    {
+      "symbol": "cui_range_calendar",
+      "file": "cui_pickers.c",
+      "sha256": "52b36888ab760f63dae8714096647254d66046596f704f0693395651b7438fd7"
+    },
+    {
+      "symbol": "cui_range_slider",
+      "file": "cui_controls.c",
+      "sha256": "f74d61091d0c0ad40e783835f1a8422712c99a60c390d9455fb5b1892d572f92"
+    },
+    {
+      "symbol": "cui_rating",
+      "file": "cui_controls.c",
+      "sha256": "13710ef872db71d97ed3d8eee55f4b817d2e070de7b075b0b91932de42353663"
+    },
+    {
+      "symbol": "cui_readout_ex",
+      "file": "cui_instrument.c",
+      "sha256": "e0ba78c18b4e5da2ee428c544f180e95b3ba51a87e52566e1a9cc37952cc7cb4"
+    },
+    {
+      "symbol": "cui_reasoning_begin",
+      "file": "cui_ai.c",
+      "sha256": "be7a81bdacd3f70d65face3fa67167c21896de8fbe9f7fcb8b7aee5266dcc948"
+    },
+    {
+      "symbol": "cui_regex_tester_ex",
+      "file": "cui_devpanels.c",
+      "sha256": "db746efae9ed36ec6e37f61d955406bcef92512e47d26fe28c25b3e04176af66"
+    },
+    {
+      "symbol": "cui_reorder_begin",
+      "file": "cui_extras.c",
+      "sha256": "c846d5c9d12f71e155ef129cd098ee4d4892c2289bb2500c981c328b233ae42e"
+    },
+    {
+      "symbol": "cui_reorder_end",
+      "file": "cui_extras.c",
+      "sha256": "074ee2875da1b2dda2c1ea5e1a0af5d9b1254b0bffb182c1d622f5f43bc04443"
+    },
+    {
+      "symbol": "cui_request_bar_ex",
+      "file": "cui_devpanels.c",
+      "sha256": "20a4f1aa2d2a232bd5268dfb922be088d48fbeb9ede1ea935b27e9bed356fe76"
+    },
+    {
+      "symbol": "cui_response_actions_ex",
+      "file": "cui_ai.c",
+      "sha256": "fd85969cb973256f7da34e5ce3349468e47be7ee828f326b168a808dbed02659"
+    },
+    {
+      "symbol": "cui_row_begin",
+      "file": "cui_layout.c",
+      "sha256": "1a04a88a0e86c2f5551c54502a4ed5dd71abaf53bf7b5ab587ec64f07bb00dc3"
+    },
+    {
+      "symbol": "cui_ruler_slider_ex",
+      "file": "cui_pickers.c",
+      "sha256": "e40e33086d2d00d346d1db84535b651bcbeab78f281ad75348e6eda5a2822b98"
+    },
+    {
+      "symbol": "cui_sankey_ex",
+      "file": "cui_viz.c",
+      "sha256": "fbe68e07f8287e953f839592cb5e4b5640a34d344407f6115e79229fcf7de91c"
+    },
+    {
+      "symbol": "cui_scatter_chart_ex",
+      "file": "cui_viz.c",
+      "sha256": "69b4e5db50388c45f1f227cae5b6f9924b62f0fcde7b1530fd04dda8498b0d5d"
+    },
+    {
+      "symbol": "cui_schedule_picker_ex",
+      "file": "cui_devtools.c",
+      "sha256": "670f38f0aaf28e22548aa6ea716e1418b18a6eb0ff05ac112101e3e3b2c2869c"
+    },
+    {
+      "symbol": "cui_scroll_begin",
+      "file": "cui_widgets.c",
+      "sha256": "f7d3c9e8fd55cd8fd4778c9f3a5909530c0e1226a8e9b4a99da623a457a7220d"
+    },
+    {
+      "symbol": "cui_scrub_ex",
+      "file": "cui_actions.c",
+      "sha256": "2ab90cbd6f7e098271303f4414eb08eaf8f08140840725b9c0c0497e646cb211"
+    },
+    {
+      "symbol": "cui_search_ex",
+      "file": "cui_textedit.c",
+      "sha256": "fd4b3a1c9422ea0661c7e7c9e87a59351d02e3ee668127f4ccc9ed56d8c99b46"
+    },
+    {
+      "symbol": "cui_segmented_ex",
+      "file": "cui_controls.c",
+      "sha256": "b0464c7e27f6ee10a80d82abfb9330ca02dbfea00b8fbc1ca9267f83319df965"
+    },
+    {
+      "symbol": "cui_select_ex",
+      "file": "cui_overlay.c",
+      "sha256": "1a2272e557d365eed0b8fc9999ae4319700aea7de3aceed62f37a7e41e84578a"
+    },
+    {
+      "symbol": "cui_sheet_begin",
+      "file": "cui_overlay.c",
+      "sha256": "d02e26818964db133da4940f36f697c61a08d53c7ad3fb1f6d93d47956dea367"
+    },
+    {
+      "symbol": "cui_shimmer_text_ex",
+      "file": "cui_motion.c",
+      "sha256": "6417dda52f7345836d3f148c1a485442da58861b7f893c01de6ddaf3e2c92719"
+    },
+    {
+      "symbol": "cui_shortcut_recorder_ex",
+      "file": "cui_actions.c",
+      "sha256": "c9d8e27c83e8f6fa6332dd883b91bad427134358692a334cc6e98e97b7293fc9"
+    },
+    {
+      "symbol": "cui_signature_pad_ex",
+      "file": "cui_pickers.c",
+      "sha256": "01da0b20ddc16529505183dea0c7e5354044f25ebfe030a11a708b0c7aa3a378"
+    },
+    {
+      "symbol": "cui_slider_ex",
+      "file": "cui_controls.c",
+      "sha256": "34e41044774a40da6e9c51fe0380453832210d5ba7b1834e1ac46eb784ba49ec"
+    },
+    {
+      "symbol": "cui_speed_dial_ex",
+      "file": "cui_actions.c",
+      "sha256": "cb54761ec0ea40aa66fc382abc3fcb9ad37c217dbd5a3b09efe9b60e2d0db77f"
+    },
+    {
+      "symbol": "cui_split_bar_ex",
+      "file": "cui_viz.c",
+      "sha256": "086216fe9836c2dbf8fa3213ef16452d4c56038da048cec87ba39a1bd930f49e"
+    },
+    {
+      "symbol": "cui_split_button_ex",
+      "file": "cui_actions.c",
+      "sha256": "daaaf6742a7f118c6d37f0e5011f13810bdf5ebfe849b6c743286012d91bf49b"
+    },
+    {
+      "symbol": "cui_spotlight_begin",
+      "file": "cui_motion.c",
+      "sha256": "ad886a3bb40c6bbc9215bc1a95e9972a6db3c7a56f016903668b2d88bd2c6913"
+    },
+    {
+      "symbol": "cui_stack_trace_ex",
+      "file": "cui_devpanels.c",
+      "sha256": "4412f94362ecff4f9edda0d68119e3422a8b604868c5ec60bff42a763f68d308"
+    },
+    {
+      "symbol": "cui_status_button_ex",
+      "file": "cui_actions.c",
+      "sha256": "c4e2bd34bfa75ca427ca04c3c88ce4f47b3b6588d0b688bb3849b8023dee2553"
+    },
+    {
+      "symbol": "cui_switch_ex",
+      "file": "cui_controls.c",
+      "sha256": "de2e259841fd590bbdab3133cfff9afaf4a1f5d3f364ea97009f0194edfbb6a6"
+    },
+    {
+      "symbol": "cui_tab_bar_ex",
+      "file": "cui_motion.c",
+      "sha256": "8a4aa37ddbef61342b4493fe6d082b3a9024872158665d5136379718a15de8f1"
+    },
+    {
+      "symbol": "cui_table_begin_ex",
+      "file": "cui_data.c",
+      "sha256": "a93714d655a4f16847553d844e7167409044c653288d4d55247197c2caa9c967"
+    },
+    {
+      "symbol": "cui_tabs_ex",
+      "file": "cui_controls.c",
+      "sha256": "c47e55e88432aecd1723d306ebc7f560aaa3b7440d5fe8e4155f34c295f9a611"
+    },
+    {
+      "symbol": "cui_tag_input_ex",
+      "file": "cui_extras.c",
+      "sha256": "577934d6b68568b777185d38e7b2a271211f975169f14133abde84d296f877e9"
+    },
+    {
+      "symbol": "cui_terminal_ex",
+      "file": "cui_terminal.c",
+      "sha256": "dc5d64fa18694723ec4ab2b431ac05f51ce7c790c05ffdaaa1f6ff1c75615b32"
+    },
+    {
+      "symbol": "cui_terminal_init",
+      "file": "cui_terminal.c",
+      "sha256": "22eb3bd41d46ef80e98561780037c4bef5badfcb429095f32979e197522f12ae"
+    },
+    {
+      "symbol": "cui_terminal_write",
+      "file": "cui_terminal.c",
+      "sha256": "28400a5035f22797bca1e6292dabbe144fbf28936f36b663cbd3805b88074bd1"
+    },
+    {
+      "symbol": "cui_test_explorer_ex",
+      "file": "cui_devtools.c",
+      "sha256": "256c51e97c45c0dcfa0bab7303e37733c2127419b2d7d62c972d0b5ac27a62e3"
+    },
+    {
+      "symbol": "cui_text_ex",
+      "file": "cui_widgets.c",
+      "sha256": "6292ac177b7584dae24be0503dea2eaaca15424ab59c584efc7996da6bb360c5"
+    },
+    {
+      "symbol": "cui_text_reveal_ex",
+      "file": "cui_motion.c",
+      "sha256": "fba415773cd9705c5b39c75700ea6c9e844b536a8cff64601ead0281e53585d5"
+    },
+    {
+      "symbol": "cui_textarea_ex",
+      "file": "cui_textedit.c",
+      "sha256": "beb44f4dfb4def2eb8e2f41113918cd091ae2966a07169ff52371c2b1117bb3f"
+    },
+    {
+      "symbol": "cui_theme_switcher",
+      "file": "cui_actions.c",
+      "sha256": "5840ecd0a19b46e29efd40a4aef7a44f9dcc5270c0014de697545590e2e3f128"
+    },
+    {
+      "symbol": "cui_ticker_ex",
+      "file": "cui_media.c",
+      "sha256": "c9172e6c17fbd9f2c248a4f1367f59f2aee100393b3ccf026e87d9eb60e130a6"
+    },
+    {
+      "symbol": "cui_time_dial",
+      "file": "cui_pickers.c",
+      "sha256": "41f2d4562336ff53193680c352ea67b2dffe11686d0553a6db82c070aa9d610a"
+    },
+    {
+      "symbol": "cui_time_histogram_ex",
+      "file": "cui_devviews.c",
+      "sha256": "0aff1f300695cab4890a5ad9c4d315ef9ab5f6bb6c02b310b58e8bc6c6d37249"
+    },
+    {
+      "symbol": "cui_time_picker_ex",
+      "file": "cui_pickers.c",
+      "sha256": "64933b7fedf99f956426883667fba53c849183135735bb2920d65c2976953a54"
+    },
+    {
+      "symbol": "cui_timeline_item_ex",
+      "file": "cui_extras.c",
+      "sha256": "17d0818c58e4030ce290db96ef24e626d552bf7749e3608ca991c20301625364"
+    },
+    {
+      "symbol": "cui_toast_ex",
+      "file": "cui_overlay.c",
+      "sha256": "a7c0a8c560d0cb301e05aba9484c9ce7a2f4d068dc382475464b0077ef6d1700"
+    },
+    {
+      "symbol": "cui_toggle_group_ex",
+      "file": "cui_actions.c",
+      "sha256": "122ed4ad6b6b936a59f313a9f930c4d0a33123c2537c2b7a1d764e5fcbace1b8"
+    },
+    {
+      "symbol": "cui_tool_call_ex",
+      "file": "cui_ai.c",
+      "sha256": "f7824fd38dd86ed0911997190169f7288863b6e407d55058075ccb6d11ece37c"
+    },
+    {
+      "symbol": "cui_tour_ex",
+      "file": "cui_tour.c",
+      "sha256": "d733bc8dc35ea3a1cc7b023814e5b28cb775d8335094cc4a74f12ae4c9b24d81"
+    },
+    {
+      "symbol": "cui_trace_view_ex",
+      "file": "cui_flame.c",
+      "sha256": "d9e23daa2ac4ad4734339d7fe2434d3d6f730f20ec10fe3fc8113b12c5087caa"
+    },
+    {
+      "symbol": "cui_tree_begin",
+      "file": "cui_data.c",
+      "sha256": "00f528cb316eb90c6f84852538da57d1773247a50546112e649a018fd41f988c"
+    },
+    {
+      "symbol": "cui_tree_cell",
+      "file": "cui_grid.c",
+      "sha256": "d60d09e868c8e803b292a2b59317395789fbb241ca964eb6a09acc204b4e0e33"
+    },
+    {
+      "symbol": "cui_treemap_ex",
+      "file": "cui_viz.c",
+      "sha256": "d7346e1e879cd97a24221c6e99012bb4b1aaea189cecf9acd3378fde041723ef"
+    },
+    {
+      "symbol": "cui_typewriter_ex",
+      "file": "cui_motion.c",
+      "sha256": "627d57ddb0c2c9b36b0bd76793a77530eac633c762cef69fc03b2877f9322fc5"
+    },
+    {
+      "symbol": "cui_uptime_ex",
+      "file": "cui_devviews.c",
+      "sha256": "c3506caf99568d6d5a377c1fd1b6fe25fda6627bf7e424b94e1ef62f1f8ca9d3"
+    },
+    {
+      "symbol": "cui_user_menu_begin",
+      "file": "cui_actions.c",
+      "sha256": "4d056a5dd5945a34049461b7f5285fea47a2862112bc8f7582f222520cb663f7"
+    },
+    {
+      "symbol": "cui_virtual_list_begin",
+      "file": "cui_data.c",
+      "sha256": "864b2581520fd01f404831f4799ed115cddabdf9cb4839e6d91174987ec9a602"
+    },
+    {
+      "symbol": "cui_voice_orb_ex",
+      "file": "cui_ai.c",
+      "sha256": "7aaf5dcdcd98d5e35c7372e3a609cc689b6b9546b81d2a51a002af3ed2f3f420"
+    },
+    {
+      "symbol": "cui_waffle_ex",
+      "file": "cui_viz.c",
+      "sha256": "75232a12b0d70119683367523cf3a9336fbab1cf4741a8d4294804eca48fbe15"
+    },
+    {
+      "symbol": "cui_waterfall_ex",
+      "file": "cui_flame.c",
+      "sha256": "ff6550f0212b8d179860bda54ca6b4cc697b11704984f6312643496a094e1f4a"
+    },
+    {
+      "symbol": "cui_waveform_ex",
+      "file": "cui_motion.c",
+      "sha256": "f37babb91e7748688dacaf0dd559c6b8ebaece596b263c0bc2b614c81c76c4cd"
+    },
+    {
+      "symbol": "cui_week_calendar_ex",
+      "file": "cui_planning.c",
+      "sha256": "32e4daf1b066e565c6a2bf14c13181857c40ef0e405364c24265fcd984f49cf0"
+    },
+    {
+      "symbol": "cui_wheel_picker_ex",
+      "file": "cui_pickers.c",
+      "sha256": "fac4359eeebc9060c69ffc036b9d99dcd1d91150e6dd351e3275f9d9fd6ca1d9"
+    },
+    {
+      "symbol": "cui_word_rotate_ex",
+      "file": "cui_motion.c",
+      "sha256": "73ecfdececada73001431bc4b3e777982cdf0438c6f6d6020b14100ec03fa2db"
+    }
+  ],
+  "stack_sites": [
+    {
+      "file": "Ui.Api.cs",
+      "method": "AccordionBegin",
+      "symbols": [
+        "cui_accordion_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ActivityRings",
+      "symbols": [
+        "cui_activity_rings_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_rings_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "AgentPlan",
+      "symbols": [
+        "cui_agent_plan_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_agent_plan_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "AgentStatus",
+      "symbols": [
+        "cui_agent_status_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_agent_status_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Alert",
+      "symbols": [
+        "cui_alert_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_alert_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ApiExplorer",
+      "symbols": [
+        "cui_api_explorer_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_api_explorer_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Avatar",
+      "symbols": [
+        "cui_avatar_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_avatar_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "AvatarUpload",
+      "symbols": [
+        "cui_avatar_upload"
+      ],
+      "locals": [
+        {
+          "name": "native_image",
+          "type": "ulong"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Badge",
+      "symbols": [
+        "cui_badge_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_badge_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Banner",
+      "symbols": [
+        "cui_banner_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_banner_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "BarChart",
+      "symbols": [
+        "cui_bar_chart_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_chart_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "BarList",
+      "symbols": [
+        "cui_bar_list_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_bar_list_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Blame",
+      "symbols": [
+        "cui_blame_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_blame_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "BoxBegin",
+      "symbols": [
+        "cui_box_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_box"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Button",
+      "symbols": [
+        "cui_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_button_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CalendarHeatmap",
+      "symbols": [
+        "cui_calendar_heatmap_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_calendar_heatmap_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Candlestick",
+      "symbols": [
+        "cui_candlestick_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_candlestick_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CardBegin",
+      "symbols": [
+        "cui_card_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_card_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CardStackBegin",
+      "symbols": [
+        "cui_card_stack_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_card_stack_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CarouselBegin",
+      "symbols": [
+        "cui_carousel_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_carousel_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ChatComposer",
+      "symbols": [
+        "cui_chat_composer_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_composer_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ChatMessage",
+      "symbols": [
+        "cui_chat_message_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_chat_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Checkbox",
+      "symbols": [
+        "cui_checkbox_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_check_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Checklist",
+      "symbols": [
+        "cui_checklist_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_checklist_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Chip",
+      "symbols": [
+        "cui_chip_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_selected",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_chip_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Citation",
+      "symbols": [
+        "cui_citation"
+      ],
+      "locals": [
+        {
+          "name": "native_source",
+          "type": "cui_source"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CodeBlock",
+      "symbols": [
+        "cui_code_block_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_code_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ColorPicker",
+      "symbols": [
+        "cui_color_picker"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "cui_color"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ColumnBegin",
+      "symbols": [
+        "cui_column_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_box"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CommandPalette",
+      "symbols": [
+        "cui_command_palette"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Comment",
+      "symbols": [
+        "cui_comment_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_comment_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "CommitGraph",
+      "symbols": [
+        "cui_commit_graph_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_commit_graph_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ConfirmButton",
+      "symbols": [
+        "cui_confirm_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_confirm_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ConfirmPopover",
+      "symbols": [
+        "cui_confirm_popover_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_confirm_popover_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ContextMeter",
+      "symbols": [
+        "cui_context_meter_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_context_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ControlTile",
+      "symbols": [
+        "cui_control_tile_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_on",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_tile_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Countdown",
+      "symbols": [
+        "cui_countdown_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_countdown_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Counter",
+      "symbols": [
+        "cui_counter_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_counter_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Coverage",
+      "symbols": [
+        "cui_coverage_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_coverage_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Cropper",
+      "symbols": [
+        "cui_cropper_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_crop",
+          "type": "cui_rect"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_cropper_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DataGridBegin",
+      "symbols": [
+        "cui_data_grid_begin_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_first",
+          "type": "int"
+        },
+        {
+          "name": "native_last",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_grid_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DatePicker",
+      "symbols": [
+        "cui_date_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "cui_date"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_date_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DateRangePicker",
+      "symbols": [
+        "cui_date_range_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_range",
+          "type": "cui_date_range"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_date_range_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DialogBegin",
+      "symbols": [
+        "cui_dialog_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_dialog_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DockBegin",
+      "symbols": [
+        "cui_dock_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_dock_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DockItem",
+      "symbols": [
+        "cui_dock_item_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_dock_item_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DonutChart",
+      "symbols": [
+        "cui_donut_chart_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_chart_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DotChart",
+      "symbols": [
+        "cui_dot_chart_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_dot_chart_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "DotDisplay",
+      "symbols": [
+        "cui_dot_display_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_dot_display_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Dropzone",
+      "symbols": [
+        "cui_dropzone_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_dropzone_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "EmojiPicker",
+      "symbols": [
+        "cui_emoji_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_emoji_picker_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "EmptyState",
+      "symbols": [
+        "cui_empty_state_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_empty_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "EventTrack",
+      "symbols": [
+        "cui_event_track_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_count",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_event_track_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ExpandableCardBegin",
+      "symbols": [
+        "cui_expandable_card_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_expandable_card_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ExpandableText",
+      "symbols": [
+        "cui_expandable_text_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_expandable_text_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Fader",
+      "symbols": [
+        "cui_fader_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_fader_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "FeatureFlags",
+      "symbols": [
+        "cui_feature_flags_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_feature_flags_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "FileBrowser",
+      "symbols": [
+        "cui_file_browser_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_file_browser_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "FilePicker",
+      "symbols": [
+        "cui_file_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_file_picker_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Funnel",
+      "symbols": [
+        "cui_funnel_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_funnel_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Gantt",
+      "symbols": [
+        "cui_gantt_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_gantt_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "GradientText",
+      "symbols": [
+        "cui_gradient_text_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_gradient_text_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "GraphView",
+      "symbols": [
+        "cui_graph_view_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_graph_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Heatmap",
+      "symbols": [
+        "cui_heatmap_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_heatmap_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "HistogramSlider",
+      "symbols": [
+        "cui_histogram_slider_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_lo",
+          "type": "float"
+        },
+        {
+          "name": "native_hi",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_histogram_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "HoldButton",
+      "symbols": [
+        "cui_hold_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_hold_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "HoverCardBegin",
+      "symbols": [
+        "cui_hover_card_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_hover_card_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "IconButton",
+      "symbols": [
+        "cui_icon_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_button_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ImageCompare",
+      "symbols": [
+        "cui_image_compare_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_pos",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_compare_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Image",
+      "symbols": [
+        "cui_image_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_image_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ImageViewer",
+      "symbols": [
+        "cui_image_viewer_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_view",
+          "type": "cui_image_view"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_image_viewer_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "InlineEdit",
+      "symbols": [
+        "cui_inline_edit_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_inline_edit_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Input",
+      "symbols": [
+        "cui_input_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_input_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "JsonView",
+      "symbols": [
+        "cui_json_view_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_json_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "KanbanColumnBegin",
+      "symbols": [
+        "cui_kanban_column_begin_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_kanban_column_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "KanbanEnd",
+      "symbols": [
+        "cui_kanban_end"
+      ],
+      "locals": [
+        {
+          "name": "native_move",
+          "type": "cui_kanban_move"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Keymap",
+      "symbols": [
+        "cui_keymap_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_keymap_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Knob",
+      "symbols": [
+        "cui_knob_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_knob_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "KvEditor",
+      "symbols": [
+        "cui_kv_editor_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_count",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_kv_editor_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "LevelMeter",
+      "symbols": [
+        "cui_level_meter_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_level_meter_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "LineChart",
+      "symbols": [
+        "cui_line_chart_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_chart_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ListItem",
+      "symbols": [
+        "cui_list_item_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_list_item_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Loader",
+      "symbols": [
+        "cui_loader_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_loader_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "MenuBegin",
+      "symbols": [
+        "cui_menu_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_menu_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "MenuItem",
+      "symbols": [
+        "cui_menu_item_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_menu_item_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Metric",
+      "symbols": [
+        "cui_metric_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_metric_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "MoneyInput",
+      "symbols": [
+        "cui_money_input_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "double"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_money_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "MonthCalendar",
+      "symbols": [
+        "cui_month_calendar_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_month",
+          "type": "cui_date"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_month_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "MultiSelect",
+      "symbols": [
+        "cui_multi_select_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_multi_select_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "NavItem",
+      "symbols": [
+        "cui_nav_item_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_nav_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "NodeBegin",
+      "symbols": [
+        "cui_node_begin_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_x",
+          "type": "float"
+        },
+        {
+          "name": "native_y",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_node_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "NodeEditorBegin",
+      "symbols": [
+        "cui_node_editor_begin_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_node_editor_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "NowPlaying",
+      "symbols": [
+        "cui_now_playing_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_np",
+          "type": "cui_now_playing"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_now_playing_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Number",
+      "symbols": [
+        "cui_number_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "double"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_number_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Pagination",
+      "symbols": [
+        "cui_pagination"
+      ],
+      "locals": [
+        {
+          "name": "native_page",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Pipeline",
+      "symbols": [
+        "cui_pipeline_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_pipeline_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "PopoverBegin",
+      "symbols": [
+        "cui_popover_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_popover_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Problems",
+      "symbols": [
+        "cui_problems_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_problems_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Progress",
+      "symbols": [
+        "cui_progress_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_progress_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "PromptSuggestions",
+      "symbols": [
+        "cui_prompt_suggestions_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_prompt_suggestions_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "QueryBuilder",
+      "symbols": [
+        "cui_query_builder_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_count",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_query_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RadarChart",
+      "symbols": [
+        "cui_radar_chart_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_radar_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RadialGauge",
+      "symbols": [
+        "cui_radial_gauge_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_radial_gauge_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RadioCards",
+      "symbols": [
+        "cui_radio_cards_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_index",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_radio_cards_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Radio",
+      "symbols": [
+        "cui_radio_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_check_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RangeCalendar",
+      "symbols": [
+        "cui_range_calendar"
+      ],
+      "locals": [
+        {
+          "name": "native_range",
+          "type": "cui_date_range"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RangeSlider",
+      "symbols": [
+        "cui_range_slider"
+      ],
+      "locals": [
+        {
+          "name": "native_lo",
+          "type": "float"
+        },
+        {
+          "name": "native_hi",
+          "type": "float"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Rating",
+      "symbols": [
+        "cui_rating"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Readout",
+      "symbols": [
+        "cui_readout_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_readout_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ReasoningBegin",
+      "symbols": [
+        "cui_reasoning_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_reasoning_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RegexTester",
+      "symbols": [
+        "cui_regex_tester_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_regex_tester_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RequestBar",
+      "symbols": [
+        "cui_request_bar_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_method",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_request_bar_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ResponseActions",
+      "symbols": [
+        "cui_response_actions_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_response_actions_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RowBegin",
+      "symbols": [
+        "cui_row_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_box"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "RulerSlider",
+      "symbols": [
+        "cui_ruler_slider_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_ruler_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Sankey",
+      "symbols": [
+        "cui_sankey_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_sankey_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ScatterChart",
+      "symbols": [
+        "cui_scatter_chart_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_scatter_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SchedulePicker",
+      "symbols": [
+        "cui_schedule_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_schedule_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ScrollBegin",
+      "symbols": [
+        "cui_scroll_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_scroll_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Scrub",
+      "symbols": [
+        "cui_scrub_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_scrub_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Search",
+      "symbols": [
+        "cui_search_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_input_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Segmented",
+      "symbols": [
+        "cui_segmented_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_index",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_segmented_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Select",
+      "symbols": [
+        "cui_select_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_index",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_select_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SheetBegin",
+      "symbols": [
+        "cui_sheet_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_sheet_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ShimmerText",
+      "symbols": [
+        "cui_shimmer_text_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_text_fx_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ShortcutRecorder",
+      "symbols": [
+        "cui_shortcut_recorder_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_combo",
+          "type": "cui_key_combo"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_shortcut_recorder_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SignaturePad",
+      "symbols": [
+        "cui_signature_pad_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_signature_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Slider",
+      "symbols": [
+        "cui_slider_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_slider_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SpeedDial",
+      "symbols": [
+        "cui_speed_dial_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_speed_dial_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SplitBar",
+      "symbols": [
+        "cui_split_bar_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_split_bar_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SplitButton",
+      "symbols": [
+        "cui_split_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_split_button_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "SpotlightBegin",
+      "symbols": [
+        "cui_spotlight_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_spotlight_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "StackTrace",
+      "symbols": [
+        "cui_stack_trace_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_stack_trace_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "StatusButton",
+      "symbols": [
+        "cui_status_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_status_button_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Switch",
+      "symbols": [
+        "cui_switch_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_value",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_check_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TabBar",
+      "symbols": [
+        "cui_tab_bar_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_selected",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_tab_bar_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TableBegin",
+      "symbols": [
+        "cui_table_begin_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_table_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Tabs",
+      "symbols": [
+        "cui_tabs_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_index",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_tabs_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TagInput",
+      "symbols": [
+        "cui_tag_input_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_tag_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TestExplorer",
+      "symbols": [
+        "cui_test_explorer_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_test_explorer_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Text",
+      "symbols": [
+        "cui_text_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_text_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TextReveal",
+      "symbols": [
+        "cui_text_reveal_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_text_fx_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Textarea",
+      "symbols": [
+        "cui_textarea_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_input_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ThemeSwitcher",
+      "symbols": [
+        "cui_theme_switcher"
+      ],
+      "locals": [
+        {
+          "name": "native_mode",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Ticker",
+      "symbols": [
+        "cui_ticker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_ticker_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TimeDial",
+      "symbols": [
+        "cui_time_dial"
+      ],
+      "locals": [
+        {
+          "name": "native_hour",
+          "type": "int"
+        },
+        {
+          "name": "native_minute",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TimeHistogram",
+      "symbols": [
+        "cui_time_histogram_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_sel_start",
+          "type": "double"
+        },
+        {
+          "name": "native_sel_end",
+          "type": "double"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_time_histogram_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TimePicker",
+      "symbols": [
+        "cui_time_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_hour",
+          "type": "int"
+        },
+        {
+          "name": "native_minute",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_time_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TimelineItem",
+      "symbols": [
+        "cui_timeline_item_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_timeline_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Toast",
+      "symbols": [
+        "cui_toast_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_toast_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ToggleGroup",
+      "symbols": [
+        "cui_toggle_group_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_toggle_group_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "ToolCall",
+      "symbols": [
+        "cui_tool_call_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_tool_call_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Tour",
+      "symbols": [
+        "cui_tour_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_step",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_tour_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TraceView",
+      "symbols": [
+        "cui_trace_view_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_view",
+          "type": "cui_trace_view"
+        },
+        {
+          "name": "native_selected",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_trace_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TreeBegin",
+      "symbols": [
+        "cui_tree_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_tree_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "TreeCell",
+      "symbols": [
+        "cui_tree_cell"
+      ],
+      "locals": [
+        {
+          "name": "native_open",
+          "type": "CBool"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Treemap",
+      "symbols": [
+        "cui_treemap_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_treemap_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Typewriter",
+      "symbols": [
+        "cui_typewriter_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_text_fx_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Uptime",
+      "symbols": [
+        "cui_uptime_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_uptime_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "UserMenuBegin",
+      "symbols": [
+        "cui_user_menu_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_user_menu_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "VirtualListBegin",
+      "symbols": [
+        "cui_virtual_list_begin"
+      ],
+      "locals": [
+        {
+          "name": "native_first",
+          "type": "int"
+        },
+        {
+          "name": "native_last",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "VoiceOrb",
+      "symbols": [
+        "cui_voice_orb_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_voice_orb_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Waffle",
+      "symbols": [
+        "cui_waffle_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_waffle_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Waterfall",
+      "symbols": [
+        "cui_waterfall_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_waterfall_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "Waveform",
+      "symbols": [
+        "cui_waveform_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_progress",
+          "type": "float"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_waveform_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "WeekCalendar",
+      "symbols": [
+        "cui_week_calendar_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_week_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "WheelPicker",
+      "symbols": [
+        "cui_wheel_picker_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_index",
+          "type": "int"
+        },
+        {
+          "name": "native_opts",
+          "type": "cui_wheel_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Api.cs",
+      "method": "WordRotate",
+      "symbols": [
+        "cui_word_rotate_ex"
+      ],
+      "locals": [
+        {
+          "name": "native_opts",
+          "type": "cui_text_fx_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Overloads.cs",
+      "method": "TreeBegin",
+      "symbols": [
+        "cui_tree_begin"
+      ],
+      "locals": [
+        {
+          "name": "native",
+          "type": "cui_tree_opts"
+        }
+      ]
+    },
+    {
+      "file": "Ui.Overloads.cs",
+      "method": "RadioGroup",
+      "symbols": [
+        "cui_radio_group"
+      ],
+      "locals": [
+        {
+          "name": "state",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "file": "Utf8.cs",
+      "method": "TextUtf8",
+      "symbols": [
+        "cui_text_ex"
+      ],
+      "locals": [
+        {
+          "name": "options",
+          "type": "Raw.cui_text_opts"
+        }
+      ]
+    },
+    {
+      "file": "Utf8.cs",
+      "method": "ButtonUtf8",
+      "symbols": [
+        "cui_button_ex"
+      ],
+      "locals": [
+        {
+          "name": "options",
+          "type": "Raw.cui_button_opts"
+        }
+      ]
+    }
+  ]
+}

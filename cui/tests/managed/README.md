@@ -21,6 +21,15 @@ after observer installation. This excludes pre-observer context/font allocations
 the wrapper's NativeMemory allocations, the software renderer and graphics drivers;
 wrapper arena bytes and registration counts are independently observed.
 
+The delayed-temporary regression builds rings, charts, labels and a table, then
+returns from every wrapper call and overwrites returned stack-frame storage
+before compacting GC and deferred paint. Caller arrays are also modified. Exact
+software RGBA must match a direct workload whose native locals remain alive
+through paint. This distinguishes synchronous option records from their retained
+pointer-field data. Benchmark logs include arena bytes actually used as well as
+reserved capacity; the minimum reusable segment can remain unchanged even when
+stack-local conversion reduces frame arena demand.
+
 The three equivalent direct/wrapper workloads are 4 and 40 control rows, and a
 20,000-row virtualized grid. Before timing, software RGBA and node counts must
 match exactly. Every variant runs at least three independent process trials,

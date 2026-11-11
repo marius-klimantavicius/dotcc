@@ -11,6 +11,7 @@ public sealed unsafe partial class Ui
 {
     private cui_ctx* ctx;
     private readonly int owner = Environment.CurrentManagedThreadId;
+    // Stable pointees (UTF-8 and arrays), not synchronous singleton arguments.
     private readonly FrameArena arena;
     private bool inFrame;
     private bool painting;

@@ -81,6 +81,14 @@ registrations bind to their first context and cannot be reused with another.
 Create fresh owners when reopening an application. Owner-thread checks apply
 after binding; disposing buffer/resource owners is repeatable.
 
+Native singleton options and synchronous scalar/ref temporaries use unmanaged
+locals passed by address. Their pointer fields are a separate lifetime decision:
+retained UTF-8/arrays remain in stable frame storage and retained mutable scope
+addresses use owned `State<T>` leases. No singleton option/scalar arena slots
+remain. The [storage audit](MANAGED-STORAGE-AUDIT.md) documents all native paths,
+and the [template workflow](../scripts/managed-api/README.md) preserves this
+policy and the reviewed guards during source reproduction.
+
 ## Text, resources and callbacks
 
 String overloads encode to a reusable stable frame arena without allocating

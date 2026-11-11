@@ -135,7 +135,7 @@ internal static unsafe partial class Program
                 Check(wrapperAllocation == directAllocation, "steady wrapper adds zero managed allocation over identical core");
                 Check(wb.p95 - db.p95 <= raw->node_count * .5, "wrapper construction p95 adds at most 0.5 microsecond per node");
                 Check(wb.p50 + we.p50 <= 2 * (db.p50 + de.p50), "wrapper complete UI median stays within twice direct CUI");
-                Console.WriteLine(FormattableString.Invariant($"BENCH\tworkload={workload}\tsamples={samples}\tnodes={raw->node_count}\twrapperBytesPerFrame={wrapperAllocation / (double)samples:F3}\tdirectBytesPerFrame={directAllocation / (double)samples:F3}\tarena={final.FrameArenaReservedBytes}\tbuildWrapperUs={wb.p50:F3},{wb.p95:F3},{wb.p99:F3}\tbuildDirectUs={db.p50:F3},{db.p95:F3},{db.p99:F3}\tendWrapperUs={we.p50:F3},{we.p95:F3},{we.p99:F3}\tendDirectUs={de.p50:F3},{de.p95:F3},{de.p99:F3}"));
+                Console.WriteLine(FormattableString.Invariant($"BENCH\tworkload={workload}\tsamples={samples}\tnodes={raw->node_count}\twrapperBytesPerFrame={wrapperAllocation / (double)samples:F3}\tdirectBytesPerFrame={directAllocation / (double)samples:F3}\tarena={final.FrameArenaReservedBytes}\tarenaUsed={final.FrameArenaUsedBytes}\tbuildWrapperUs={wb.p50:F3},{wb.p95:F3},{wb.p99:F3}\tbuildDirectUs={db.p50:F3},{db.p95:F3},{db.p99:F3}\tendWrapperUs={we.p50:F3},{we.p95:F3},{we.p99:F3}\tendDirectUs={de.p50:F3},{de.p95:F3},{de.p99:F3}"));
                 // Separate actual core-allocator instrumentation from timings.
                 var measured = new OffscreenSurface(800, 600, theme: ThemeMode.Light, accent: Accent.Neutral);
                 TrackAllocations(measured.Ui);

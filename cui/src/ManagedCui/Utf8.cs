@@ -30,14 +30,14 @@ public sealed unsafe partial class Ui
     public void TextUtf8(ReadOnlySpan<byte> text, TextOpts opts = default)
     {
         CheckFrame();
-        var options = (Raw.cui_text_opts*)arena.Allocate(sizeof(Raw.cui_text_opts)); *options = ToNative(opts);
-        Raw.cui_text_ex(ctx, CopyUtf8(text), options); SyncState();
+        Raw.cui_text_opts options = ToNative(opts);
+        Raw.cui_text_ex(ctx, CopyUtf8(text), &options); SyncState();
     }
     /// <summary>Builds a button from validated UTF-8. Input storage may be stack-backed.</summary>
     public bool ButtonUtf8(ReadOnlySpan<byte> label, ButtonOpts opts = default)
     {
         CheckFrame();
-        var options = (Raw.cui_button_opts*)arena.Allocate(sizeof(Raw.cui_button_opts)); *options = ToNative(opts);
-        bool result = Raw.cui_button_ex(ctx, CopyUtf8(label), options) != 0; SyncState(); return result;
+        Raw.cui_button_opts options = ToNative(opts);
+        bool result = Raw.cui_button_ex(ctx, CopyUtf8(label), &options) != 0; SyncState(); return result;
     }
 }

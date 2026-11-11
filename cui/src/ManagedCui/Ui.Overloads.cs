@@ -11,8 +11,8 @@ public sealed unsafe partial class Ui
     public UiScope TreeBegin(string label, TreeOpts opts = default)
     {
         CheckFrame(); CheckBegin(); ArgumentNullException.ThrowIfNull(label);
-        var native = (cui_tree_opts*)arena.Allocate(sizeof(cui_tree_opts)); *native = ToNative(opts);
-        bool opened = Raw.cui_tree_begin(ctx, Utf8(label), null, native) != 0;
+        cui_tree_opts native = ToNative(opts);
+        bool opened = Raw.cui_tree_begin(ctx, Utf8(label), null, &native) != 0;
         SyncState(); return TrackScope(ScopeKind.Tree, opened, opened ? 1 : 0);
     }
     public UiScope Tree(string label, TreeOpts opts = default) => TreeBegin(label, opts);
@@ -34,9 +34,9 @@ public sealed unsafe partial class Ui
     public bool RadioGroup(string id, ReadOnlySpan<string> items, ref int index)
     {
         CheckFrame();
-        int* state = (int*)arena.Allocate(sizeof(int)); *state = index;
-        bool changed = Raw.cui_radio_group(ctx, Utf8Required(id), Strings(items), items.Length, state) != 0;
-        index = *state; SyncState(); return changed;
+        int state = index;
+        bool changed = Raw.cui_radio_group(ctx, Utf8Required(id), Strings(items), items.Length, &state) != 0;
+        index = state; SyncState(); return changed;
     }
     public bool MultiSelect(string id, ReadOnlySpan<string> items, Span<bool> selected, MultiSelectOpts opts = default) => MultiSelect(id, items, items.Length, selected, opts);
     public bool ToggleGroup(string id, ReadOnlySpan<string> labels, Span<bool> selected, ToggleGroupOpts opts = default) => ToggleGroup(id, labels, labels.Length, selected, opts);

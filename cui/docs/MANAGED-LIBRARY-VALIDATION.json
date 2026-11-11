@@ -7,7 +7,7 @@
       "form": "raw",
       "mode": "jit",
       "status": "passed",
-      "binarySha256": "d6fc5e2216efe293bff0bc37d83a4f4b8cadd3110b17deb97996fa284a550870",
+      "binarySha256": "4015b3dbe40f63ec97dbcccb95b409f89cd5979e368e141409e59ed876f06254",
       "surfaceLog": "${MANAGED_CUI_WORK}/raw-jit/surface.log",
       "safetyLog": "${MANAGED_CUI_WORK}/raw-jit/safety.log",
       "benchmarks": [
@@ -22,10 +22,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.026,3.216,5.331",
-              "buildDirectUs": "1.633,1.684,2.806",
-              "endWrapperUs": "32.612,38.803,58.520",
-              "endDirectUs": "32.542,37.651,57.879"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.765,2.866,4.899",
+              "buildDirectUs": "1.663,1.724,2.685",
+              "endWrapperUs": "32.432,36.439,45.777",
+              "endDirectUs": "32.572,36.399,46.609"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -44,10 +45,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "26.199,30.147,48.061",
-              "buildDirectUs": "14.678,16.010,26.781",
-              "endWrapperUs": "202.292,216.329,337.218",
-              "endDirectUs": "202.323,213.073,312.080"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "24.236,27.733,36.349",
+              "buildDirectUs": "14.628,15.619,23.284",
+              "endWrapperUs": "202.054,225.068,231.250",
+              "endDirectUs": "202.446,226.742,234.617"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -66,10 +68,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "36.489,42.310,87.876",
-              "buildDirectUs": "18.695,21.991,29.436",
-              "endWrapperUs": "77.606,111.892,137.480",
-              "endDirectUs": "77.677,90.691,136.077"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "36.339,40.688,48.051",
+              "buildDirectUs": "18.726,21.782,27.132",
+              "endWrapperUs": "77.077,86.394,104.959",
+              "endDirectUs": "77.537,84.831,104.318"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -93,10 +96,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "2.935,3.046,5.280",
-              "buildDirectUs": "1.643,1.703,2.955",
-              "endWrapperUs": "32.632,36.859,58.260",
-              "endDirectUs": "32.561,36.469,58.431"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.745,2.895,4.890",
+              "buildDirectUs": "1.643,1.723,2.736",
+              "endWrapperUs": "32.642,36.720,46.197",
+              "endDirectUs": "32.452,37.281,49.224"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -115,10 +119,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "25.338,29.446,47.700",
-              "buildDirectUs": "14.698,16.131,26.590",
-              "endWrapperUs": "201.802,215.248,340.604",
-              "endDirectUs": "201.791,211.841,337.909"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "23.955,28.123,39.415",
+              "buildDirectUs": "14.738,15.499,22.884",
+              "endWrapperUs": "202.425,227.433,237.482",
+              "endDirectUs": "201.513,225.089,237.371"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -137,10 +142,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "36.639,40.837,53.371",
-              "buildDirectUs": "18.745,19.376,28.744",
-              "endWrapperUs": "77.837,83.107,117.873",
-              "endDirectUs": "77.707,82.827,135.597"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "36.800,40.186,43.343",
+              "buildDirectUs": "18.886,19.427,23.154",
+              "endWrapperUs": "77.548,82.006,91.033",
+              "endDirectUs": "77.568,81.856,88.388"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -164,10 +170,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "2.875,3.046,5.149",
-              "buildDirectUs": "1.633,1.733,2.866",
-              "endWrapperUs": "32.742,37.791,58.560",
-              "endDirectUs": "32.752,38.463,58.791"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.705,2.785,2.896",
+              "buildDirectUs": "1.644,1.684,1.733",
+              "endWrapperUs": "32.481,34.636,37.482",
+              "endDirectUs": "32.572,33.524,37.531"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -186,10 +193,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "24.676,28.915,46.618",
-              "buildDirectUs": "14.638,16.291,27.472",
-              "endWrapperUs": "202.543,224.735,306.230",
-              "endDirectUs": "203.014,214.205,317.821"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "23.625,24.507,28.364",
+              "buildDirectUs": "14.578,15.369,19.237",
+              "endWrapperUs": "200.752,206.954,214.368",
+              "endDirectUs": "200.772,206.803,212.324"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -208,10 +216,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "36.530,41.178,87.886",
-              "buildDirectUs": "18.655,20.499,28.324",
-              "endWrapperUs": "78.399,87.846,136.358",
-              "endDirectUs": "78.468,91.884,136.408"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "36.439,38.323,41.268",
+              "buildDirectUs": "18.656,19.226,22.823",
+              "endWrapperUs": "77.097,81.805,86.605",
+              "endDirectUs": "77.036,81.565,84.000"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -226,8 +235,8 @@
         }
       ],
       "safetySummary": [
-        "SAFETY\tassertions=69\tarenaHighWater=65536\tregistrations=3",
-        "PASS assertions=69 runtime=.NET 10.0.14 arch=X64"
+        "SAFETY\tassertions=75\tarenaHighWater=65536\tregistrations=3",
+        "PASS assertions=75 runtime=.NET 10.0.14 arch=X64"
       ],
       "surfaceSummary": [
         "SURFACE\ttypes=293\tunsafe=0",
@@ -238,7 +247,7 @@
       "form": "raw",
       "mode": "aot",
       "status": "passed",
-      "binarySha256": "bbc4d622473dfc89edcbfd3e1b8d9cf2d1d507fbab3259ee7b79e5fc4a5d6ed2",
+      "binarySha256": "4e692686ca6803d4c91b000318de97965a8197be37f1446ca8227a7360b4c1ae",
       "surfaceLog": "${MANAGED_CUI_WORK}/raw-aot/surface.log",
       "safetyLog": "${MANAGED_CUI_WORK}/raw-aot/safety.log",
       "benchmarks": [
@@ -253,10 +262,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.296,3.406,4.218",
-              "buildDirectUs": "1.894,1.954,2.835",
-              "endWrapperUs": "35.437,38.062,40.757",
-              "endDirectUs": "35.397,38.994,43.973"
+              "arenaUsed": "256",
+              "buildWrapperUs": "3.186,3.297,6.773",
+              "buildDirectUs": "1.824,1.904,3.066",
+              "endWrapperUs": "35.497,39.966,55.035",
+              "endDirectUs": "35.607,39.906,53.852"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -275,10 +285,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "29.386,30.087,33.824",
-              "buildDirectUs": "16.551,16.812,20.438",
-              "endWrapperUs": "218.884,223.583,226.148",
-              "endDirectUs": "218.583,223.303,225.116"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "28.525,30.518,35.388",
+              "buildDirectUs": "16.411,17.273,22.303",
+              "endWrapperUs": "218.706,227.212,243.073",
+              "endDirectUs": "218.466,227.963,244.786"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -297,10 +308,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "37.250,40.136,41.759",
-              "buildDirectUs": "19.086,19.326,23.164",
-              "endWrapperUs": "84.660,89.068,94.879",
-              "endDirectUs": "84.519,88.688,89.579"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "37.191,40.998,44.444",
+              "buildDirectUs": "19.046,19.687,24.126",
+              "endWrapperUs": "84.891,90.812,105.581",
+              "endDirectUs": "84.661,89.630,99.329"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -324,10 +336,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.286,3.367,5.070",
-              "buildDirectUs": "1.844,1.904,2.775",
-              "endWrapperUs": "35.457,39.535,54.874",
-              "endDirectUs": "35.487,39.104,46.849"
+              "arenaUsed": "256",
+              "buildWrapperUs": "3.166,3.286,5.912",
+              "buildDirectUs": "1.843,1.944,3.537",
+              "endWrapperUs": "35.487,40.046,49.774",
+              "endDirectUs": "35.928,40.737,52.129"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -346,10 +359,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "29.636,34.465,46.548",
-              "buildDirectUs": "16.471,17.273,23.836",
-              "endWrapperUs": "225.717,252.187,257.948",
-              "endDirectUs": "218.463,223.913,245.965"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "28.243,32.662,41.579",
+              "buildDirectUs": "16.451,18.124,26.100",
+              "endWrapperUs": "219.007,243.834,252.581",
+              "endDirectUs": "219.368,244.204,251.750"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -368,10 +382,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "37.340,40.727,50.335",
-              "buildDirectUs": "19.116,19.938,25.990",
-              "endWrapperUs": "84.780,90.421,110.679",
-              "endDirectUs": "84.610,89.610,109.738"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "37.131,41.479,48.161",
+              "buildDirectUs": "19.026,22.152,25.889",
+              "endWrapperUs": "84.541,92.626,106.854",
+              "endDirectUs": "84.421,92.997,109.348"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -395,10 +410,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.256,3.336,5.230",
-              "buildDirectUs": "1.854,1.914,2.736",
-              "endWrapperUs": "35.667,39.264,47.510",
-              "endDirectUs": "35.628,37.982,45.005"
+              "arenaUsed": "256",
+              "buildWrapperUs": "3.196,3.407,6.292",
+              "buildDirectUs": "1.833,1.924,3.006",
+              "endWrapperUs": "35.468,39.976,52.931",
+              "endDirectUs": "35.398,39.866,50.486"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -417,10 +433,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "29.366,30.347,33.784",
-              "buildDirectUs": "16.571,16.912,20.388",
-              "endWrapperUs": "219.786,224.514,228.021",
-              "endDirectUs": "220.296,224.886,228.141"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "28.585,33.023,42.301",
+              "buildDirectUs": "16.532,18.815,26.360",
+              "endWrapperUs": "221.682,246.680,258.592",
+              "endDirectUs": "219.006,243.513,259.694"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -439,10 +456,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "37.261,40.407,41.759",
-              "buildDirectUs": "19.076,19.567,23.204",
-              "endWrapperUs": "85.051,89.369,90.962",
-              "endDirectUs": "84.871,89.118,90.482"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "37.151,41.810,49.083",
+              "buildDirectUs": "19.036,20.419,27.562",
+              "endWrapperUs": "84.661,92.977,109.488",
+              "endDirectUs": "84.501,93.719,111.362"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -457,8 +475,8 @@
         }
       ],
       "safetySummary": [
-        "SAFETY\tassertions=69\tarenaHighWater=65536\tregistrations=3",
-        "PASS assertions=69 runtime=.NET 10.0.14 arch=X64"
+        "SAFETY\tassertions=75\tarenaHighWater=65536\tregistrations=3",
+        "PASS assertions=75 runtime=.NET 10.0.14 arch=X64"
       ],
       "surfaceSummary": [
         "SURFACE\ttypes=293\tunsafe=0",
@@ -469,7 +487,7 @@
       "form": "processed",
       "mode": "jit",
       "status": "passed",
-      "binarySha256": "629b52f7f05db300c740b08265406b4cfa4965bcedc0cc38e5970aaa4f62ae3d",
+      "binarySha256": "3b2db0d5a9ae185672d6bc3e73b61f78f14823a71af6efeb2cb48a49e8ab78f3",
       "surfaceLog": "${MANAGED_CUI_WORK}/processed-jit/surface.log",
       "safetyLog": "${MANAGED_CUI_WORK}/processed-jit/safety.log",
       "benchmarks": [
@@ -484,10 +502,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "2.685,2.775,3.396",
-              "buildDirectUs": "1.473,1.513,1.543",
-              "endWrapperUs": "23.254,23.424,27.622",
-              "endDirectUs": "23.274,23.444,27.672"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.555,2.645,2.915",
+              "buildDirectUs": "1.493,1.533,1.563",
+              "endWrapperUs": "22.993,23.775,37.962",
+              "endDirectUs": "22.934,23.154,28.835"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -506,10 +525,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "23.404,25.368,28.093",
-              "buildDirectUs": "13.646,14.207,17.783",
-              "endWrapperUs": "134.144,138.913,142.600",
-              "endDirectUs": "133.402,138.272,142.500"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "22.223,24.587,31.871",
+              "buildDirectUs": "13.445,13.766,17.423",
+              "endWrapperUs": "133.534,144.925,193.809",
+              "endDirectUs": "132.703,147.040,190.363"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -528,10 +548,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "32.041,33.824,36.249",
-              "buildDirectUs": "14.307,14.437,18.155",
-              "endWrapperUs": "56.236,60.254,61.406",
-              "endDirectUs": "56.146,60.244,61.176"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "31.921,35.948,44.715",
+              "buildDirectUs": "14.217,14.728,20.569",
+              "endWrapperUs": "56.227,60.605,76.936",
+              "endDirectUs": "56.628,61.287,75.063"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -555,10 +576,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "2.776,2.876,3.577",
-              "buildDirectUs": "1.492,1.533,1.553",
-              "endWrapperUs": "22.943,23.143,27.632",
-              "endDirectUs": "23.033,23.224,27.743"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.635,2.755,4.408",
+              "buildDirectUs": "1.483,1.533,2.355",
+              "endWrapperUs": "22.824,24.677,32.692",
+              "endDirectUs": "23.365,26.470,34.125"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -577,10 +599,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "24.376,25.428,29.937",
-              "buildDirectUs": "13.345,13.575,17.122",
-              "endWrapperUs": "132.581,137.440,140.366",
-              "endDirectUs": "132.570,137.500,140.105"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "22.923,25.598,35.507",
+              "buildDirectUs": "13.375,13.816,20.840",
+              "endWrapperUs": "133.354,139.976,174.131",
+              "endDirectUs": "133.334,140.958,170.324"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -599,10 +622,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "32.963,33.974,37.230",
-              "buildDirectUs": "14.187,14.327,17.654",
-              "endWrapperUs": "56.016,60.244,60.885",
-              "endDirectUs": "56.177,60.335,60.965"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "32.051,35.037,38.644",
+              "buildDirectUs": "14.317,14.928,23.374",
+              "endWrapperUs": "57.499,61.447,66.316",
+              "endDirectUs": "56.577,60.716,66.917"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -626,10 +650,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "2.775,2.875,2.995",
-              "buildDirectUs": "1.483,1.533,1.563",
-              "endWrapperUs": "23.033,23.695,27.602",
-              "endDirectUs": "23.054,23.805,27.603"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.575,2.695,4.359",
+              "buildDirectUs": "1.482,1.533,2.334",
+              "endWrapperUs": "22.893,25.799,33.153",
+              "endDirectUs": "23.244,24.447,32.682"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -648,10 +673,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "24.617,25.919,29.927",
-              "buildDirectUs": "13.536,13.896,17.393",
-              "endWrapperUs": "133.683,138.643,143.070",
-              "endDirectUs": "133.253,138.142,142.840"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "22.363,24.156,33.734",
+              "buildDirectUs": "13.426,13.926,20.850",
+              "endWrapperUs": "133.955,142.121,163.301",
+              "endDirectUs": "132.803,144.996,162.139"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -670,10 +696,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "31.981,32.542,36.379",
-              "buildDirectUs": "14.267,14.408,17.833",
-              "endWrapperUs": "57.058,60.635,61.707",
-              "endDirectUs": "56.437,59.954,61.356"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "31.861,32.572,36.379",
+              "buildDirectUs": "14.287,14.407,18.215",
+              "endWrapperUs": "56.858,61.036,64.293",
+              "endDirectUs": "56.458,60.264,61.938"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -688,8 +715,8 @@
         }
       ],
       "safetySummary": [
-        "SAFETY\tassertions=69\tarenaHighWater=65536\tregistrations=3",
-        "PASS assertions=69 runtime=.NET 10.0.14 arch=X64"
+        "SAFETY\tassertions=75\tarenaHighWater=65536\tregistrations=3",
+        "PASS assertions=75 runtime=.NET 10.0.14 arch=X64"
       ],
       "surfaceSummary": [
         "SURFACE\ttypes=293\tunsafe=0",
@@ -700,7 +727,7 @@
       "form": "processed",
       "mode": "aot",
       "status": "passed",
-      "binarySha256": "d7639f0decf966ac4dde1576ea55f869f83b80b7a7c8443a226b89bd14a92b77",
+      "binarySha256": "c9c8aa34fd5b54463c456c3ee4b59f84cd33ca74fbab11a3abfbf4c9563e1148",
       "surfaceLog": "${MANAGED_CUI_WORK}/processed-aot/surface.log",
       "safetyLog": "${MANAGED_CUI_WORK}/processed-aot/safety.log",
       "benchmarks": [
@@ -715,10 +742,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.056,3.136,3.837",
-              "buildDirectUs": "1.633,1.673,1.713",
-              "endWrapperUs": "25.989,26.170,30.428",
-              "endDirectUs": "25.949,26.149,30.568"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.915,2.976,3.156",
+              "buildDirectUs": "1.673,1.713,1.743",
+              "endWrapperUs": "26.009,26.210,30.658",
+              "endDirectUs": "26.019,26.250,30.318"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -737,10 +765,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "26.941,27.692,31.560",
-              "buildDirectUs": "14.577,14.838,18.304",
-              "endWrapperUs": "154.122,158.781,161.826",
-              "endDirectUs": "153.861,158.510,160.353"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "25.849,26.710,30.549",
+              "buildDirectUs": "14.999,15.199,18.796",
+              "endWrapperUs": "153.603,158.001,159.153",
+              "endDirectUs": "153.902,158.442,160.275"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -759,10 +788,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "32.591,33.453,37.461",
-              "buildDirectUs": "14.547,14.737,18.425",
-              "endWrapperUs": "63.320,67.297,70.574",
-              "endDirectUs": "63.049,67.147,71.986"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "32.692,33.614,36.890",
+              "buildDirectUs": "14.668,14.908,18.205",
+              "endWrapperUs": "63.320,67.138,67.930",
+              "endDirectUs": "62.899,66.877,67.598"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -786,10 +816,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.086,3.166,6.232",
-              "buildDirectUs": "1.613,1.663,2.896",
-              "endWrapperUs": "25.979,26.961,44.013",
-              "endDirectUs": "25.899,29.686,43.953"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.886,3.005,5.281",
+              "buildDirectUs": "1.643,1.693,2.716",
+              "endWrapperUs": "25.999,29.256,39.996",
+              "endDirectUs": "26.029,29.526,37.161"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -808,10 +839,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "27.061,29.686,38.212",
-              "buildDirectUs": "14.598,15.369,20.138",
-              "endWrapperUs": "153.972,169.941,214.176",
-              "endDirectUs": "153.831,167.206,214.105"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "25.729,28.925,36.700",
+              "buildDirectUs": "14.838,15.941,22.412",
+              "endWrapperUs": "153.742,170.524,181.395",
+              "endDirectUs": "153.432,170.083,182.587"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -830,10 +862,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "32.622,35.948,40.216",
-              "buildDirectUs": "14.437,14.878,18.686",
-              "endWrapperUs": "62.869,67.337,79.460",
-              "endDirectUs": "63.190,67.668,104.538"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "32.502,36.469,43.673",
+              "buildDirectUs": "14.538,15.029,20.509",
+              "endWrapperUs": "63.020,68.350,83.599",
+              "endDirectUs": "63.130,68.320,82.296"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -857,10 +890,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "3.086,3.156,3.216",
-              "buildDirectUs": "1.623,1.673,1.713",
-              "endWrapperUs": "26.299,26.571,30.899",
-              "endDirectUs": "26.460,26.711,30.959"
+              "arenaUsed": "256",
+              "buildWrapperUs": "2.905,3.005,4.759",
+              "buildDirectUs": "1.643,1.693,2.565",
+              "endWrapperUs": "26.009,29.176,37.762",
+              "endDirectUs": "26.120,29.165,37.371"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -879,10 +913,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "27.172,28.144,32.040",
-              "buildDirectUs": "14.657,14.918,18.245",
-              "endWrapperUs": "154.853,159.421,165.063",
-              "endDirectUs": "154.963,159.642,167.327"
+              "arenaUsed": "2560",
+              "buildWrapperUs": "25.669,29.235,37.211",
+              "buildDirectUs": "14.939,17.313,23.435",
+              "endWrapperUs": "153.622,166.907,183.970",
+              "endDirectUs": "153.743,168.210,182.488"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -901,10 +936,11 @@
               "wrapperBytesPerFrame": "0.000",
               "directBytesPerFrame": "0.000",
               "arena": "65536",
-              "buildWrapperUs": "32.601,33.323,36.780",
-              "buildDirectUs": "14.437,14.578,17.964",
-              "endWrapperUs": "63.229,66.987,67.918",
-              "endDirectUs": "63.310,67.197,68.159"
+              "arenaUsed": "21104",
+              "buildWrapperUs": "32.763,36.550,44.154",
+              "buildDirectUs": "14.558,15.499,21.000",
+              "endWrapperUs": "62.970,68.180,83.739",
+              "endDirectUs": "62.980,68.089,82.176"
             },
             {
               "kind": "BENCH_MEMORY",
@@ -919,8 +955,8 @@
         }
       ],
       "safetySummary": [
-        "SAFETY\tassertions=69\tarenaHighWater=65536\tregistrations=3",
-        "PASS assertions=69 runtime=.NET 10.0.14 arch=X64"
+        "SAFETY\tassertions=75\tarenaHighWater=65536\tregistrations=3",
+        "PASS assertions=75 runtime=.NET 10.0.14 arch=X64"
       ],
       "surfaceSummary": [
         "SURFACE\ttypes=293\tunsafe=0",
@@ -935,9 +971,17 @@
     "Build + layout/paint median <= twice direct CUI",
     "Stable wrapper arena and core allocation retention; observed core allocations freed at disposal"
   ],
-  "scope": "Managed library. Full authored ManagedGallery qualification is recorded separately.",
+  "scope": "Current stack-local ManagedCui library; full gallery and standalone receipts are separate.",
   "baselineCommit": "d1aec0cc9b36a580f9f67b0cfe6f3a7dea7d9c76",
   "sdk": "10.0.114",
+  "storageAudit": {
+    "convertedSingletons": 225,
+    "methods": 172,
+    "optionsRecords": 157,
+    "otherValues": 68,
+    "remainingArenaSingletons": 0,
+    "retainedAddresses": "Stable strings/arrays, State leases and owned terminal/edit buffers"
+  },
   "wrapperSources": {
     "cui/src/ManagedCui/Callbacks.cs": "29c21d668b96b74772ac10629e52513dc54cbb37ffecd82da6e51ba2383d9c40",
     "cui/src/ManagedCui/Diagnostics.cs": "efad65c05a053cb4863a5b1f323e94414c544fac185877f767539083b41398fa",
@@ -947,22 +991,35 @@
     "cui/src/ManagedCui/Resources.cs": "d95da5bfcaf819124c6c5101a5f3130d445d11953c21f878470d59674c16efe0",
     "cui/src/ManagedCui/Surfaces.cs": "f2e1aa9c1582414a9bbc7d3792076f2d5bfaaddee58f4b08c453b528654fcfc9",
     "cui/src/ManagedCui/Types.cs": "e98039a8e7dade7d2cf824e344a0e401071445cf33182d40125454bd9db53b55",
-    "cui/src/ManagedCui/Ui.Api.cs": "eb72fe4426cbe018b23c993f72c78882acb51fd36c39c488dd207878097b6028",
+    "cui/src/ManagedCui/Ui.Api.cs": "e75c96482783c84fa25a4e1e416cb8bea297bf32ea1af5d886e6d498f54a6593",
     "cui/src/ManagedCui/Ui.Marshalling.cs": "56e0be601740bf48ad023575f051761ee354434b64f9bcb2b2ec5386ab4d5e5f",
-    "cui/src/ManagedCui/Ui.Overloads.cs": "2fbdb7337e5d049d40a288168e8d1bc464102be1b63c6cb10623ded13f729598",
+    "cui/src/ManagedCui/Ui.Overloads.cs": "c32ece50a3922a83277463b4275b1868915be323018f34fc24b49e284c7b75aa",
     "cui/src/ManagedCui/Ui.ScopeDispatch.cs": "c6cba5ebf9dbb618dbe38a8ec6fee40c416410c1dab86ebf6e7c3a8d6922b9e8",
-    "cui/src/ManagedCui/Ui.cs": "e8d0c34b910e8fac1cfc5d2fd1a6c4ea15df845606748c3d3780579b615897c5",
-    "cui/src/ManagedCui/Utf8.cs": "a8419173e8d6df92b993c75a8ac2d93b9a843fa3f3eaa781cebdaed5035a3dcc",
+    "cui/src/ManagedCui/Ui.cs": "0b83d96d3ecf7055cce27e83b1056d461afae628abd806acbfd47911f1bd1d41",
+    "cui/src/ManagedCui/Utf8.cs": "695f1eb8094bf3b28e718eca2a22c7e697652cba4125e05471cba757ecde543d",
     "cui/src/ManagedCui/Validation.cs": "99acceb1cde6ff0e1683aa83c15ec6ba93a094009a33f291b5668d173fb693d4",
     "cui/src/ManagedCui/Values.cs": "3cd6fb0bec0891b2d4fa388162dc2bbfd45d967f0e7e1efff9c4952826df8543"
   },
-  "reviewResolved": [
-    "Candlestick label count checked before native reads",
-    "Table and grid text cells require an active row",
-    "Active query field indexes validated",
-    "Reorder input capped at actual 256-item upstream capacity",
-    "Gantt day range independent of task array length",
-    "Previous-frame inputs and textures retired only after native begin",
-    "File-list -1 preserved as ordinary failure; optional heatmap labels preserve null"
-  ]
+  "preChangeArenaComparison": {
+    "status": "historical baseline, not current timing",
+    "libraryCommit": "3c0c561ad",
+    "baselineLog": "${MANAGED_CUI_BASELINE}/stack-baseline-benchmark.log",
+    "currentLog": "${MANAGED_CUI_WORK}/processed-jit/benchmark-0.log",
+    "workloadArenaUsedBefore": [
+      1824,
+      16800,
+      21376
+    ],
+    "workloadArenaUsedCurrent": [
+      256,
+      2560,
+      21104
+    ],
+    "reservedBytesBeforeAndAfter": 65536,
+    "descriptorOnlyNewTest": {
+      "boxes": 256,
+      "marshallingBudgetBytes": 4096,
+      "arenaUsedBytes": 0
+    }
+  }
 }

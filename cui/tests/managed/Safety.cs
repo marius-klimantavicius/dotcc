@@ -133,6 +133,8 @@ internal static unsafe partial class Program
         Check(final.FrameArenaReservedBytes == high.FrameArenaReservedBytes && final.StateOwners == high.StateOwners && final.CallbackRegistrations == high.CallbackRegistrations, "bounded retained wrapper resources");
         RetainedGrid();
         ReviewedBounds();
+        DelayedNativeTemporaries();
+        DescriptorOnlyFrame();
         AllocatorCleanup();
         surface.Dispose(); surface.Dispose();
         painter.Dispose(); painter.Dispose(); texture.Dispose(); texture.Dispose();
