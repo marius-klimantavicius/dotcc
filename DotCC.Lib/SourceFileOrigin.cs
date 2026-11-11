@@ -6,7 +6,7 @@ namespace DotCC;
 
 /// <summary>A physical source file, shared by all of its tokens. Positions stay
 /// in the parser's ordinary line/column/byte coordinates.</summary>
-internal sealed record SourceFileOrigin(string Name, string Identity)
+internal sealed record SourceFileOrigin(string Name, string Identity, string? PhysicalPath = null)
 {
     // Parser reductions create fresh base Items and carry only Position forward.
     // Associate each action's AST object with its first child's file, so trimmed

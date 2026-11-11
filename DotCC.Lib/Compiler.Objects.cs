@@ -58,17 +58,18 @@ public static partial class Compiler
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
         CDialect? dialect = null,
-        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
+        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null, string? sourceRoot = null)
         => EmitCSharp(new[] { inputPath }, includeDirs, defines,
-                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions);
+                      emit: EmitMode.Object, dialect: dialect, warnings: warnings, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions, sourceRoot: sourceRoot);
 
     private static string SerializeFragment(
         string functions, IReadOnlyDictionary<string, string> typeDecls, string aliases, IReadOnlyList<Backends.CSharpGlobalSource> globals, int mainArity,
         IReadOnlyList<(string Name, string FieldType)> importSpecs, IEnumerable<string> defNames, bool mainReturnsVoid = false,
-        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null, string? sourceAbiForeignProof = null, bool managedBoundarySourceTypes = false)
+        bool mainReturnsErrUnion = false, bool mainErrPayloadIsVoid = false, IReadOnlyList<CSharpFunctionSource>? functionSources = null, string overrideProfile = "none", bool usesZig = false, IReadOnlyDictionary<string, ObjectAggregateMetadata>? aggregateMetadata = null, IReadOnlyList<AggregateIdentity>? aggregateIdentities = null, IReadOnlyDictionary<string, string>? anonymousTypedefs = null, IReadOnlyDictionary<string, InlineFunctionMetadata>? inlineMetadata = null, IEnumerable<string>? globalNames = null, IEnumerable<string>? usedFunctionAddresses = null, IEnumerable<FunctionOverrideMetadata>? functionOverrides = null, IReadOnlyList<ExternalTypeOverride>? externalTypes = null, bool instanceMethods = false, IEnumerable<string>? weakFunctions = null, IEnumerable<string>? weakReferences = null, string? sourceAbiForeignProof = null, bool managedBoundarySourceTypes = false, IReadOnlyList<string>? logicalUnits = null)
     {
         var sb = new StringBuilder();
         sb.Append(MagicObject).Append(" 2 — link with `dotcc <objs> -o <out>`.\n");
+        if (logicalUnits != null) sb.Append(SerializeSourceIdentity(logicalUnits));
         if (anonymousTypedefs != null) sb.Append(AnonymousTypedefNames.Serialize(anonymousTypedefs));
         if (aggregateIdentities != null) sb.Append(AggregateIdentities.Serialize(aggregateIdentities));
         sb.Append("//!!dotcc-obj calling-convention:").Append(instanceMethods ? "instance-v1" : "static-v1").Append('\n');
@@ -185,6 +186,7 @@ public static partial class Compiler
         var definedNames = new HashSet<string>(StringComparer.Ordinal);
 
         var objectTexts = objectPaths.Select(path => File.ReadAllText(path).ReplaceLineEndings("\n")).ToArray();
+        var logicalObjectOrigins = ValidateObjectSourceIdentities(objectTexts, objectPaths);
         var foreignAbiProofs = objectTexts.Select((text, index) => SourceAbiForeignMetadata.Read(text, objectPaths[index])).ToArray();
         foreach (var text in objectTexts) InlineFunctionMetadata.ValidateVersion(text);
         var identityGraphs = objectTexts.Select(text => ManagedBoundaryContracts.Attach(text,
@@ -192,7 +194,7 @@ public static partial class Compiler
         var managedBridges = ManagedBoundaryContracts.Prepare(objectTexts, objectPaths, identityGraphs,
             emit, outputOptions?.InstanceMethods == true);
         var variantNames = AggregateIdentities.Plan(objectPaths.Select((path, index) =>
-            (path, identityGraphs[index])).ToArray());
+            (logicalObjectOrigins[index] ?? path, identityGraphs[index])).ToArray());
         var discardedWeakFunctions = ResolveWeakObjectFunctions(objectPaths);
         for (int objectIndex = 0; objectIndex < objectPaths.Count; objectIndex++)
         {
@@ -566,12 +568,12 @@ public static partial class Compiler
         return aliases.ToString();
     }
 
-    private static void QualifyObjectInternalFunctions(Ir.IrBuilder unit, IReadOnlyList<string> inputPaths)
+    private static void QualifyObjectInternalFunctions(Ir.IrBuilder unit, IReadOnlyList<string> inputPaths, bool logicalPaths = false)
     {
         // Separate compilation cannot know which other units use the same static
         // name. Qualify the shared Symbol before emission, so direct calls,
         // callback values, and cached addresses all retain the same binding.
-        var identity = string.Join("\0", inputPaths.Select(Path.GetFullPath));
+        var identity = string.Join("\0", logicalPaths ? inputPaths : inputPaths.Select(Path.GetFullPath));
         var suffix = "__unit_" + Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(identity)));
         foreach (var function in unit.Functions.Where(function => function.Sym.Storage == Ir.Storage.Static))
             function.Sym.TargetName += suffix;

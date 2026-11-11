@@ -37,7 +37,7 @@ internal sealed partial class IrBuilder
         if (!StableAnonymousNames) return NameAnonymousAggregate($"__Anon{_anonAggrSeq++}");
         var identity = (object?)origin.Content ?? origin;
         if (_anonymousNames.TryGetValue(identity, out var existing)) return NameAnonymousAggregate(existing);
-        var source = SourceFileOrigin.Of(origin)?.Identity ?? _file;
+        var source = SourceFileOrigin.Of(origin)?.Identity ?? TranslationUnitIdentity ?? _file;
         var location = source + "\n" + SourceMappedItem.Physical(origin).ByteOffset.ToString(System.Globalization.CultureInfo.InvariantCulture)
             + (isUnion ? "\nunion" : "\nstruct");
         var occurrence = _anonymousNameOccurrences.GetValueOrDefault(location);
@@ -232,6 +232,7 @@ internal sealed partial class IrBuilder
     {
         _file = file;
         _anonymousTypedefOccurrences.Clear();
+        if (TranslationUnitIdentity is not null) _anonymousNameOccurrences.Clear();
         FlattenFns(root, BuildTopLevel);
         FinishWeakFunctionDefinitions();
     }

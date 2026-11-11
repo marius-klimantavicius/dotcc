@@ -20,14 +20,14 @@ internal sealed class PhysicalSourceMap
     private readonly int[] _spliceOffsets, _removedBytes, _lineStarts;
     private readonly int _initialLine;
 
-    public PhysicalSourceMap(string source, int initialLine = 1, string? filename = null, string? identity = null)
+    public PhysicalSourceMap(string source, int initialLine = 1, string? filename = null, string? identity = null, string? physicalPath = null)
     {
         _initialLine = initialLine;
         _original = Encoding.UTF8.GetBytes(source);
-        // Headers retain identity across TUs without depending on include order.
-        // Main files supply their absolute path to keep private declarations distinct.
+        // Disk origins supply absolute paths by default, logical root-relative paths
+        // in stable mode. The legacy virtual-header fallback remains unchanged.
         SourceFile = filename is null ? null : new SourceFileOrigin(filename,
-            identity ?? filename + ":" + Convert.ToHexString(SHA256.HashData(_original)));
+            identity ?? filename + ":" + Convert.ToHexString(SHA256.HashData(_original)), physicalPath);
         var offsets = new List<int>();
         var removed = new List<int>();
         var lines = new List<int> { 0 };

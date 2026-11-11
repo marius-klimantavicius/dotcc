@@ -34,6 +34,7 @@ internal sealed record MacroDef(
 
 internal sealed partial class CPreprocessor : C.IPreprocessor
 {
+    private readonly SourceIdentityPaths? _sourceIdentity;
     private readonly LexerGrammar _lexerTable;
     private readonly Compiler.IncludeMap _files;
     private readonly System.IO.TextWriter _diag;
@@ -123,8 +124,9 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         bool quiet = false,
         DialectGate? gate = null,
         IReadOnlyList<string>? embedDirs = null,
-        Dictionary<string, byte[]>? embeds = null, MacroOverrideSession? overrides = null)
+        Dictionary<string, byte[]>? embeds = null, MacroOverrideSession? overrides = null, SourceIdentityPaths? sourceIdentity = null)
     {
+        _sourceIdentity = sourceIdentity;
         _overrides = overrides;
         _lexerTable = lexerTable;
         _files = files;
@@ -296,7 +298,10 @@ internal sealed partial class CPreprocessor : C.IPreprocessor
         }
         var initialLine = Compiler.IsSyntheticHeaderContent(name, source)
             ? Ir.SrcPos.SyntheticLineBase : 1;
-        var sourceMap = new PhysicalSourceMap(source, initialLine, name, identity: _files.SourceIdentity(key));
+        var physicalPath = _files.SourceIdentity(key);
+        var identity = _sourceIdentity is null ? physicalPath
+            : physicalPath is not null ? _sourceIdentity.File(physicalPath) : "\0dotcc-system\0" + key;
+        var sourceMap = new PhysicalSourceMap(source, initialLine, name, identity: identity, physicalPath: physicalPath);
         // First-time include of this file: scan the source text for a
         // controlling header guard. Cache the result (or null) so the
         // detection cost is paid at most once per filename.

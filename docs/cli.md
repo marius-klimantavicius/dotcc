@@ -18,6 +18,7 @@
 | `--override-report <path>` | Write JSONL selection/expansion/provenance diagnostics for macro overrides, field type names and runtime intrinsics. |
 | `--class-name <name>` | Set the generated API class for `--emit=managedlib` or `-shared` (default `DotCcLib`). Applies to whole-program emission and object linking; specify it at link time, not with `--emit=obj`. Accepts a single ASCII identifier, optionally `@`-escaped; keywords are escaped automatically. Executable, preprocessing and WAT modes reject this option. |
 | `--namespace <name>` | Place generated functions, aggregate types and embedded runtime in a dotted C# namespace. Default: global namespace. Supported by C# executable/library output and object linking; rejected with preprocessing, WAT and object emission. Specify at link time for objects. |
+| `--source-root <root>` | Opt in to stable logical C source/header identities relative to one explicit common root. Set during source/object emission; omit at object-only link time. Default retains absolute-path identities. See [stable source identities](#stable-source-identities). |
 | `--nest-types` | Place translated types, globals/cache helpers and embedded runtime inside the library wrapper. Supports managed/shared libraries and object linking. Split output uses file-local aliases so differently named translations can share a consumer namespace. |
 | `--export-managed-symbols` | Export a `Dotcc.ManagedSymbols.json` manifest for dependent managed-library object links. Requires a nested static managed library and `--runtime=c`. |
 | `--managed-reference <manifest>` | Import canonical aggregate types, functions and the C runtime from one exported managed-library manifest at object link time. Requires the same nested/static/C-runtime mode and an ordinary project reference to that library. |
@@ -88,6 +89,67 @@ immutable assembly data alongside the existing writable C storage, replacing
 many scalar initializer instructions. The optional Zydis campaign profile
 and its full qualification/paired measurements are documented
 [here](../zydis/docs/AGGREGATE-DATA.md).
+
+
+## Stable source identities
+
+By default, compiler-generated private names retain the historical absolute-path
+identities. Existing objects and managed-symbol manifests remain readable. To
+make generated identities survive moving a C source tree, explicitly choose one
+common source root for the **whole program**, including its disk headers:
+
+```bash
+dotcc /checkout/program/src/left/unit.c --source-root /checkout/program --emit=obj -o left.cs
+dotcc /checkout/program/src/right/unit.c --source-root /checkout/program --emit=obj -o right.cs
+dotcc left.cs right.cs --emit=managedlib -o TranslatedProgram
+```
+
+The equivalent API option is the optional `sourceRoot:` argument on
+`Compiler.EmitObject`, `EmitCSharp`, `EmitCSharpFiles`, `EmitWat`, and `Preprocess`.
+It defaults to `null`. Object-link APIs consume stored identities; they have no
+root rewrite option. An object-only CLI link with `--source-root` is an error.
+Mixed source/object invocations apply the root only to the source inputs.
+
+Stable mode uses root-relative paths with `/` directory separators, preserving
+case and every subdirectory. Object qualification hashes the ordered input list
+joined by NUL using full SHA256 (64 hexadecimal characters), as before. Paths
+are normalized lexically with host platform semantics, including `.` and `..`;
+backslashes remain legal filename characters on Unix and are separators on
+Windows. Outside-root inputs, different Windows drives/shares, empty roots,
+missing root directories, and duplicate logical translation units are errors.
+Windows device/extended path spellings are unsupported in this mode. Path
+normalization does not resolve symlinks or infer roots from Git, basenames,
+source contents, or compile options.
+
+Every **included disk header**, including angle includes and included `.c`
+fragments, also uses its path relative to the same root. An actually included
+header outside that root is an error. Unused `-I` entries are permitted. Stage
+configuration/vendor headers under the common root when they live outside the
+upstream tree, then pass the staged include directories. Embedded compiler
+headers have a distinct virtual origin and need no staging. A shared header's
+anonymous typedefs and nested anonymous aggregates retain the same declaration
+identity across units and relocated builds. Private functions, globals, and
+block statics still belong to their containing translation unit.
+
+All participating builds must use the same logical layout/root convention.
+Separate per-unit roots can collapse distinct files to the same relative path;
+the linker rejects duplicate stable logical units, even when their object text
+is identical. Disjoint relative paths are the caller's assertion that the
+objects belong to one logical program: physical root names are deliberately
+not serialized, so the linker cannot infer whether two disjoint trees were
+intended to share that program model. Preserve distinct top-level directories
+under a common root when combining independently maintained trees. Regenerate
+all affected objects and managed-symbol manifests when adopting or changing
+the root convention; old objects retain their original identities rather than
+being remapped during linking.
+
+This option changes generated identities, not physical include resolution,
+dependency paths, diagnostics, override selectors, `#line`, or `__FILE__`
+semantics. Source-authored absolute paths/macros and explicit override profiles
+can therefore still make emitted bytes location-dependent. Identical logical
+layouts, source/options, and input order produce stable compiler identities;
+this is not a general path redaction option. Stable mode currently rejects Zig
+sources because their module graph requires a separate root contract.
 
 ## Generated namespaces
 

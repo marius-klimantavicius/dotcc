@@ -65,10 +65,10 @@ public static partial class Compiler
         CDialect? dialect,
         Ir.INameLegalizer? names = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool testMode = false, CPreprocessingOptions? preprocessing = null, bool objectMode = false, ZigCompilationOptions? zigOptions = null)
+        bool testMode = false, CPreprocessingOptions? preprocessing = null, bool objectMode = false, ZigCompilationOptions? zigOptions = null, SourceIdentityPaths? sourceIdentity = null)
     {
         var request = new Frontends.FrontendRequest(
-            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing, objectMode, zigOptions);
+            inputPaths, includeDirs, defines, dialect, names, warnings, testMode, preprocessing, objectMode, zigOptions, sourceIdentity);
         var anyZig = inputPaths.Any(IsZigSource);
         var anyC = inputPaths.Any(p => !IsZigSource(p));
         if (zigOptions is not null && !anyZig) throw new CompileException("Zig module configuration requires Zig source input");
@@ -131,6 +131,8 @@ public static partial class Compiler
     /// a <c>return main(…);</c> entry.</param>
     /// <param name="className">Optional library API class identifier; defaults to DotCcLib.
     /// Valid only for managed or native shared library output.</param>
+    /// <param name="sourceRoot">Optional common logical root for C sources and included disk headers.
+    /// Null preserves legacy absolute identities. Set when emitting sources/objects, never to rewrite existing objects.</param>
     public static string EmitCSharp(
         IReadOnlyList<string> inputPaths,
         IReadOnlyList<string>? includeDirs = null,
@@ -141,11 +143,12 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
-        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions).Values.Single();
+        string? className = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null, string? sourceRoot = null)
+        => EmitCSharpFiles(inputPaths, includeDirs, defines, emit, dialect, debugHeap, imports, warnings, testMode, className, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions, sourceRoot: sourceRoot).Values.Single();
 
     /// <summary>Emit one or more named C# sources. Split modes require project output.
-    /// Function boundaries come from the backend; shared declarations remain together.</summary>
+    /// Function boundaries come from the backend; shared declarations remain together.
+    /// sourceRoot optionally selects common-root-relative C identities; null preserves legacy identities.</summary>
     public static IReadOnlyDictionary<string, string> EmitCSharpFiles(
         IReadOnlyList<string> inputPaths,
         IReadOnlyList<string>? includeDirs = null,
@@ -156,8 +159,12 @@ public static partial class Compiler
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
         bool testMode = false,
-        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
+        string? className = null, SourceSplit split = SourceSplit.None, int splitSize = 262144, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null, string? sourceRoot = null)
     {
+        var sourceIdentity = sourceRoot is null ? null : new SourceIdentityPaths(sourceRoot);
+        var logicalUnits = sourceIdentity?.Units(inputPaths);
+        if (sourceIdentity is not null && inputPaths.Any(IsZigSource))
+            throw new CompileException("--source-root currently supports C sources; Zig module identities require a separate module-root contract");
         ValidateOutputOptions(outputOptions, emit);
         bool nested = outputOptions?.NestTypes == true;
         bool usesZig = inputPaths.Any(p => p.EndsWith(".zig", StringComparison.OrdinalIgnoreCase));
@@ -169,9 +176,9 @@ public static partial class Compiler
         if (emit == EmitMode.ManagedLib && imports is { HasAny: true })
             throw new CompileException("managed-library output does not support native import or archive bindings");
         var asObject = emit == EmitMode.Object;
-        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing, objectMode: asObject, zigOptions: zigOptions);
+        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, warnings: warnings, testMode: testMode, preprocessing: preprocessing, objectMode: asObject, zigOptions: zigOptions, sourceIdentity: sourceIdentity);
         ValidateSourceAbiBindings(irBuilder, emit);
-        if (asObject) QualifyObjectInternalFunctions(irBuilder, inputPaths);
+        if (asObject) QualifyObjectInternalFunctions(irBuilder, logicalUnits ?? inputPaths, logicalUnits is not null);
         else irBuilder.ValidateWeakFunctionReferences();
         // -Wconversion: collect narrowing-conversion warnings during codegen, then
         // flush to stderr. Off by default (the bit is clear unless -Wconversion set).
@@ -235,7 +242,7 @@ public static partial class Compiler
                 .Concat(irBuilder.Globals.Select(g => g.Sym.Name))
                 .Distinct(StringComparer.Ordinal);
             return SingleSource(SerializeFragment(cg.Functions, cg.TypeDeclarations ?? new Dictionary<string, string>(), cg.Aliases, cg.Globals, cg.MainArity,
-                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, aggregateIdentities: irBuilder.AggregateIdentityGraph(cg.UsedFunctionAddresses), anonymousTypedefs: irBuilder.AnonymousTypedefs, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes, instanceMethods: outputOptions?.InstanceMethods == true, weakFunctions: irBuilder.Functions.Where(f => f.Sym.IsWeak).Select(f => f.Sym.TargetName), weakReferences: irBuilder.ReferencedWeakFunctionNames, sourceAbiForeignProof: SourceAbiObjectProof(irBuilder), managedBoundarySourceTypes: zigOptions?.StdlibTypes == ZigStdlibTypeModel.Source));
+                objImports, objDefs, cg.MainReturnsVoid, cg.MainReturnsErrUnion, cg.MainErrPayloadIsVoid, cg.FunctionSources, preprocessing?.ProfileHash ?? "none", usesZig, aggregateMetadata: cg.AggregateMetadata, aggregateIdentities: irBuilder.AggregateIdentityGraph(cg.UsedFunctionAddresses), anonymousTypedefs: irBuilder.AnonymousTypedefs, inlineMetadata: cg.InlineMetadata, globalNames: irBuilder.Globals.Select(g => g.Sym.TargetName), usedFunctionAddresses: cg.UsedFunctionAddresses, functionOverrides: irBuilder.FunctionOverrideMetadata, externalTypes: preprocessing?.ExternalTypes, instanceMethods: outputOptions?.InstanceMethods == true, weakFunctions: irBuilder.Functions.Where(f => f.Sym.IsWeak).Select(f => f.Sym.TargetName), weakReferences: irBuilder.ReferencedWeakFunctionNames, sourceAbiForeignProof: SourceAbiObjectProof(irBuilder), managedBoundarySourceTypes: zigOptions?.StdlibTypes == ZigStdlibTypeModel.Source, logicalUnits: logicalUnits));
         }
         if (UsesInlineOptions(outputOptions))
         {
@@ -302,9 +309,12 @@ public static partial class Compiler
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
         CDialect? dialect = null,
-        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null)
+        WarningFlags warnings = WarningFlags.Default, CPreprocessingOptions? preprocessing = null, string? sourceRoot = null)
     {
-        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, new Backends.WatNameLegalizer(), warnings, preprocessing: preprocessing);
+        var sourceIdentity = sourceRoot is null ? null : new SourceIdentityPaths(sourceRoot);
+        sourceIdentity?.Units(inputPaths);
+        if (sourceIdentity is not null && inputPaths.Any(IsZigSource)) throw new CompileException("--source-root currently supports C sources");
+        var irBuilder = BuildIr(inputPaths, includeDirs, defines, dialect, new Backends.WatNameLegalizer(), warnings, preprocessing: preprocessing, sourceIdentity: sourceIdentity);
         return Backends.WatBackend.Run(irBuilder);
     }
 
@@ -369,8 +379,10 @@ public static partial class Compiler
         TextWriter output,
         IReadOnlyList<string>? includeDirs = null,
         IReadOnlyList<string>? defines = null,
-        CDialect? dialect = null, CPreprocessingOptions? preprocessing = null)
+        CDialect? dialect = null, CPreprocessingOptions? preprocessing = null, string? sourceRoot = null)
     {
+        var sourceIdentity = sourceRoot is null ? null : new SourceIdentityPaths(sourceRoot);
+        sourceIdentity?.Units(inputPaths);
         var includeMap = BuildIncludeMap(inputPaths, includeDirs);
         var lexerTable = LexerGrammar.C;
         var seededDefines = SeedDialectDefines(dialect ?? CDialect.Default, defines);
@@ -378,9 +390,9 @@ public static partial class Compiler
         foreach (var unitPath in inputPaths)
         {
             output.WriteLine($"# {unitPath}");
-            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath), identity: sourceIdentity?.File(unitPath));
             var source = sourceMap.Text;
-            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, overrides: overrides);
+            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, overrides: overrides, sourceIdentity: sourceIdentity);
             pre.SetActiveFilename(Path.GetFileName(unitPath), unitPath);
             using var lexer = lexerTable.FromString(source);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);

@@ -11,7 +11,8 @@ internal sealed partial class IrBuilder
     private readonly Dictionary<Symbol, (FunctionOverride Rule, string Signature, string TranslationUnit, string? DeclarationFile)> _functionReplacements = new();
     private readonly Dictionary<FunctionOverride, HashSet<Symbol>> _functionOverrideMatches = new();
     internal string TranslationUnitPath { get; set; } = "";
-    private string FunctionUnitIdentity => TranslationUnitPath.Length == 0 ? _file : TranslationUnitPath;
+    internal string? TranslationUnitIdentity { get; set; }
+    private string FunctionUnitIdentity => TranslationUnitIdentity ?? (TranslationUnitPath.Length == 0 ? _file : TranslationUnitPath);
 
     internal void ConfigureFunctionOverrides(CPreprocessingOptions? options) => _functionOverrideOptions = options;
 
@@ -28,7 +29,7 @@ internal sealed partial class IrBuilder
             if (rule.Name != symbol.Name
                 || (rule.Linkage is not null && rule.Linkage != (symbol.Storage == Storage.Static ? "internal" : "external"))
                 || (rule.TranslationUnit is not null && rule.TranslationUnit != TranslationUnitPath)
-                || (rule.DeclarationFile is not null && rule.DeclarationFile != SourceFileOrigin.Of(declaration)?.Identity)) continue;
+                || (rule.DeclarationFile is not null && rule.DeclarationFile != (SourceFileOrigin.Of(declaration)?.PhysicalPath ?? SourceFileOrigin.Of(declaration)?.Identity))) continue;
             var expected = BindOverrideSignature(rule);
             if (OverrideTypeKey(expected) != key)
                 throw CPreprocessingOptions.FunctionError(rule, "signature mismatch: expected " + OverrideTypeKey(expected) + ", found " + key);
@@ -41,7 +42,7 @@ internal sealed partial class IrBuilder
             matches.Add(symbol);
             if (matches.Count > 1)
                 throw CPreprocessingOptions.FunctionError(rule, "ambiguous function selector; specify translationUnit and/or linkage");
-            _functionReplacements[symbol] = (rule, key, TranslationUnitPath, SourceFileOrigin.Of(declaration)?.Identity);
+            _functionReplacements[symbol] = (rule, key, TranslationUnitPath, (SourceFileOrigin.Of(declaration)?.PhysicalPath ?? SourceFileOrigin.Of(declaration)?.Identity));
             if (rule.Target.Kind == "intrinsic") symbol.IntrinsicOverride = rule.Target;
             // A later declaration can select a previously bound definition.
             var index = Functions.FindIndex(f => ReferenceEquals(f.Sym, symbol));

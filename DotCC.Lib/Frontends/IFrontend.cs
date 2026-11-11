@@ -42,4 +42,4 @@ internal sealed record FrontendRequest(
     INameLegalizer? Names = null,
     WarningFlags Warnings = WarningFlags.Default,
     bool TestMode = false, CPreprocessingOptions? Preprocessing = null, bool ObjectMode = false,
-    ZigCompilationOptions? ZigOptions = null);
+    ZigCompilationOptions? ZigOptions = null, SourceIdentityPaths? SourceIdentity = null);

@@ -55,7 +55,7 @@ internal sealed class CFrontend : IFrontend
         // Each unit is parsed once; one override session spans the invocation.
         Item ParseUnit(string unitPath, global::LALR.CC.Parser parser, bool quiet, DialectGate? gate = null)
         {
-            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath), identity: Path.GetFullPath(unitPath));
+            var sourceMap = new PhysicalSourceMap(File.ReadAllText(unitPath), filename: Path.GetFileName(unitPath), identity: req.SourceIdentity?.File(unitPath) ?? Path.GetFullPath(unitPath), physicalPath: Path.GetFullPath(unitPath));
             var source = sourceMap.Text;
             // #embed search path: the TU's own directory first, then the -I dirs
             // (first-wins, mirroring #include). Resolved on the filesystem since
@@ -63,7 +63,7 @@ internal sealed class CFrontend : IFrontend
             var embedDirs = new List<string>();
             if (Path.GetDirectoryName(unitPath) is { Length: > 0 } unitDir) { embedDirs.Add(unitDir); }
             if (includeDirs is not null) { embedDirs.AddRange(includeDirs); }
-            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds, overrides);
+            var pre = new CPreprocessor(lexerTable, includeMap, seededDefines, quiet, gate, embedDirs, embeds, overrides, req.SourceIdentity);
             pre.SetActiveFilename(Path.GetFileName(unitPath), unitPath);
             using var lexer = lexerTable.FromString(source);
             using var mappedLexer = new SourceMappingLexer(lexer, sourceMap);
@@ -143,7 +143,7 @@ internal sealed class CFrontend : IFrontend
         Ir.IrBuilder NewBuilder(IReadOnlyDictionary<string, string>? typeNames = null, bool discovery = false)
         {
             var builder = new Ir.IrBuilder(typeNames is null && !discovery ? gate : null, names ?? new Backends.CSharpNameLegalizer(), embeds, warnings)
-            { StableAnonymousNames = req.ObjectMode || naming || multiple, AnonymousTypeNames = typeNames,
+            { StableAnonymousNames = req.ObjectMode || naming || multiple || req.SourceIdentity is not null, AnonymousTypeNames = typeNames,
                 SourceAbi = req.Preprocessing?.SourceAbi ?? new CSourceAbi() };
             builder.ConfigureExternalTypes(req.Preprocessing?.ExternalTypes);
             builder.ConfigureFunctionOverrides(req.Preprocessing);
@@ -176,9 +176,10 @@ internal sealed class CFrontend : IFrontend
             {
                 var discovery = NewBuilder(discovery: true);
                 discovery.TranslationUnitPath = unit.File;
+                discovery.TranslationUnitIdentity = req.SourceIdentity?.File(unit.File);
                 discovery.AddUnit(unit.Root, Path.GetFileName(unit.File));
                 discovery.FinishAggregateTypes();
-                return (unit.File, (IReadOnlyList<AggregateIdentity>?)discovery.AggregateIdentityGraph());
+                return (req.SourceIdentity?.File(unit.File) ?? unit.File, (IReadOnlyList<AggregateIdentity>?)discovery.AggregateIdentityGraph());
             }).ToArray();
             var plans = AggregateIdentities.Plan(graphs);
             for (var index = 0; index < parsed.Count; index++) variants.Add(parsed[index].File, plans[index]);
@@ -212,6 +213,7 @@ internal sealed class CFrontend : IFrontend
         void BindUnit(Item root, string file, IEnumerable<(string Name, IReadOnlyList<Item> Body, bool Selected)> macros)
         {
             irBuilder.TranslationUnitPath = file;
+            irBuilder.TranslationUnitIdentity = req.SourceIdentity?.File(file);
             irBuilder.AggregateNames = variants.GetValueOrDefault(file);
             irBuilder.AddUnit(root, Path.GetFileName(file));
             // Lower before the next TU can replace typedef/enum bindings.

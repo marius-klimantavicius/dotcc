@@ -42,6 +42,10 @@ internal static class Program
         {
             Description = "Namespace for all generated C# types (default: global namespace). Set at link time for objects.",
         };
+        var sourceRootOpt = new Option<string?>("--source-root")
+        {
+            Description = "Common logical root for stable C source/header identities. Set during source/object emission; every disk source/header must be inside it. Omit when linking objects.",
+        };
         var nestTypesOpt = new Option<bool>("--nest-types") { Description = "Nest translated types and embedded runtime in the library wrapper; set at link time." };
         var deduplicateInlineOpt = new Option<bool>("--deduplicate-inline") { Description = "Merge provably equivalent static inline functions; set at link time for objects." };
         var pruneUnusedInlineOpt = new Option<bool>("--prune-unused-inline") { Description = "Remove unreferenced static inline helper bodies; preserve exports and function addresses. Set at link time for objects." };
@@ -182,7 +186,7 @@ internal static class Program
         };
         var root = new RootCommand("dotcc — a C compiler frontend that transpiles to .NET 10 / C# 14.")
         {
-            inputArg, outOpt, emitOpt, managedReferenceOpt, exportManagedSymbolsOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, zigModulesOpt, overrideReportOpt, classNameOpt, namespaceOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
+            inputArg, outOpt, emitOpt, managedReferenceOpt, exportManagedSymbolsOpt, emitDefineOpt, typeNameOpt, overrideOpt, overridesFileOpt, zigModulesOpt, overrideReportOpt, classNameOpt, namespaceOpt, sourceRootOpt, nestTypesOpt, literalPoolOpt, aggregateDataOpt, stateContextOpt, instanceMethodsOpt, runtimeOpt, deduplicateInlineOpt, pruneUnusedInlineOpt, deduplicateStaticOpt, exportInlineOpt, exportEnumOpt, splitOpt, splitSizeOpt, targetOpt, preprocessOpt, includeOpt, defineOpt, undefineOpt, compileOpt, sharedOpt, stdOpt,
             pedanticOpt, pedanticErrorsOpt, wconversionOpt, wnoDiscardedQualifiersOpt, wimplicitFallthroughOpt, sanitizeOpt, mdOpt, mmdOpt, mfOpt, mtOpt, linkOpt, libDirOpt,
         };
         // Accept-and-ignore unknown flags (-Wall, -O2, -g, -f*, -m*, …) instead
@@ -318,7 +322,7 @@ internal static class Program
             return Run(inputs, output, emit, target, preprocessOnly, includes, defines.ToArray(), sharedFlag, dialect,
                        mdFlag, mmdFlag, depFile, depTargets, debugHeapFlag, imports, warnings,
                        buildManaged: compileFlag && emit == EmitKind.ManagedLib, className: parse.GetValue(classNameOpt), zigOptions: zigOptions,
-                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), AggregateData: parse.GetValue(aggregateDataOpt), ExportManagedSymbols: parse.GetValue(exportManagedSymbolsOpt), ManagedReferences: parse.GetValue(managedReferenceOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
+                       split: parse.GetValue(splitOpt), splitSize: parse.GetValue(splitSizeOpt), namespaceName: parse.GetValue(namespaceOpt), sourceRoot: parse.GetValue(sourceRootOpt), preprocessing: preprocessing, outputOptions: new CSharpOutputOptions(NestTypes: parse.GetValue(nestTypesOpt), Runtime: parse.GetValue(runtimeOpt), DeduplicateInline: parse.GetValue(deduplicateInlineOpt), PruneUnusedInline: parse.GetValue(pruneUnusedInlineOpt), DeduplicateStatic: parse.GetValue(deduplicateStaticOpt), ExportInline: parse.GetValue(exportInlineOpt), ExportEnum: parse.GetValue(exportEnumOpt), LiteralPool: parse.GetValue(literalPoolOpt), AggregateData: parse.GetValue(aggregateDataOpt), ExportManagedSymbols: parse.GetValue(exportManagedSymbolsOpt), ManagedReferences: parse.GetValue(managedReferenceOpt), StateContext: parse.GetValue(stateContextOpt), InstanceMethods: parse.GetValue(instanceMethodsOpt)));
             }
             catch (Exception ex) when (ex is CompileException or IOException or UnauthorizedAccessException)
             {
@@ -376,7 +380,7 @@ internal static class Program
         bool debugHeap = false,
         ImportOptions? imports = null,
         WarningFlags warnings = WarningFlags.Default,
-        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null)
+        bool buildManaged = false, string? className = null, SourceSplit split = SourceSplit.None, int? splitSize = null, string? namespaceName = null, CPreprocessingOptions? preprocessing = null, CSharpOutputOptions? outputOptions = null, ZigCompilationOptions? zigOptions = null, string? sourceRoot = null)
     {
         if (zigOptions is not null && (preprocessOnly || target is not null && !target.Equals("cs", StringComparison.OrdinalIgnoreCase)
             || !inputPaths.Any(p => p.EndsWith(".zig", StringComparison.OrdinalIgnoreCase))))
@@ -410,7 +414,7 @@ internal static class Program
         }
         if (preprocessOnly)
         {
-            Compiler.Preprocess(inputPaths, Console.Out, includeDirs, defines, dialect, preprocessing);
+            Compiler.Preprocess(inputPaths, Console.Out, includeDirs, defines, dialect, preprocessing, sourceRoot);
             return 0;
         }
 
@@ -427,7 +431,7 @@ internal static class Program
             {
                 Console.Error.WriteLine("dotcc: warning: -l/-L native library imports are ignored for --target=wat");
             }
-            return RunWat(inputPaths, outputPath, includeDirs, defines, dialect, warnings, preprocessing);
+            return RunWat(inputPaths, outputPath, includeDirs, defines, dialect, warnings, preprocessing, sourceRoot);
         }
 
         // Separate compilation: `--emit=obj a.c -o a.cs` compiles ONE translation
@@ -447,7 +451,7 @@ internal static class Program
             var objOut = outputPath ?? Path.ChangeExtension(Path.GetFileName(inputPaths[0]), ".cs");
             try
             {
-                var frag = Compiler.EmitObject(inputPaths[0], includeDirs, defines, dialect, warnings, preprocessing, outputOptions, zigOptions);
+                var frag = Compiler.EmitObject(inputPaths[0], includeDirs, defines, dialect, warnings, preprocessing, outputOptions, zigOptions, sourceRoot);
                 File.WriteAllText(objOut, frag);
             }
             catch (CompileException ex)
@@ -479,6 +483,8 @@ internal static class Program
             && System.Array.TrueForAll(inputPaths, p =>
                 !p.EndsWith(".c", System.StringComparison.OrdinalIgnoreCase)
                 && !p.EndsWith(".zig", System.StringComparison.OrdinalIgnoreCase));
+        if (linking && sourceRoot is not null)
+            throw new CompileException("--source-root requires source emission; it cannot rewrite identities in existing objects. Rebuild objects with one common root, then link without --source-root");
         if (linking && (preprocessing is { HasOverrides: true } or { HasMacroExports: true }))
             throw new CompileException("translation overrides/macro exports require C source; rebuild objects to change their definitions");
         IReadOnlyDictionary<string, string> generatedSources;
@@ -492,7 +498,7 @@ internal static class Program
             if (sourceGroup.Length != 0 && objectGroup.Length != 0)
             {
                 var fragment = Compiler.EmitCSharp(sourceGroup, includeDirs, defines, EmitMode.Object, dialect,
-                    warnings: warnings, preprocessing: preprocessing, zigOptions: zigOptions);
+                    warnings: warnings, preprocessing: preprocessing, zigOptions: zigOptions, sourceRoot: sourceRoot);
                 var temporary = Path.GetTempFileName();
                 try
                 {
@@ -514,7 +520,7 @@ internal static class Program
                     dialect: dialect,
                     debugHeap: debugHeap,
                     imports: imports,
-                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions);
+                    warnings: warnings, className: className, split: split, splitSize: splitSize ?? 262144, namespaceName: namespaceName, preprocessing: preprocessing, outputOptions: outputOptions, zigOptions: zigOptions, sourceRoot: sourceRoot);
         }
         catch (CompileException ex)
         {
@@ -613,7 +619,7 @@ internal static class Program
         string[] includeDirs,
         string[] defines,
         CDialect dialect,
-        WarningFlags warnings, CPreprocessingOptions? preprocessing = null)
+        WarningFlags warnings, CPreprocessingOptions? preprocessing = null, string? sourceRoot = null)
     {
         var sources = inputPaths.Where(p =>
             p.EndsWith(".c", StringComparison.OrdinalIgnoreCase) ||
@@ -626,7 +632,7 @@ internal static class Program
         string wat;
         try
         {
-            wat = Compiler.EmitWat(sources, includeDirs, defines, dialect, warnings, preprocessing);
+            wat = Compiler.EmitWat(sources, includeDirs, defines, dialect, warnings, preprocessing, sourceRoot);
         }
         catch (CompileException ex)
         {
